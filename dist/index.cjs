@@ -21,6 +21,9 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   ChartType: () => ChartType,
+  axes: () => axes_exports,
+  color: () => color_exports,
+  convert: () => convert_exports,
   dataset: () => dataset_exports,
   datetime: () => datetime_exports,
   default: () => src_default,
@@ -521,6 +524,101 @@ var toChartConfig = (details, results) => {
   };
 };
 
+// src/utils/axes.ts
+var axes_exports = {};
+__export(axes_exports, {
+  swap: () => swap
+});
+var swap = (conf) => {
+  const tmpAxis = conf.xAxis;
+  conf.xAxis = conf.yAxis;
+  conf.yAxis = tmpAxis;
+  return conf;
+};
+
+// src/utils/convert.ts
+var convert_exports = {};
+__export(convert_exports, {
+  config: () => config
+});
+var resetFeatures = (conf) => {
+  const tmpFeatures = conf.features;
+  conf.features = {};
+  conf.features.title = tmpFeatures.title ?? false;
+  conf.features.legend = tmpFeatures.legend ?? false;
+  return conf;
+};
+var convertAllColumnTypesInAxes = (axes, to) => {
+  const columns = [];
+  axes.forEach((axis2) => {
+    axis2.columns.forEach((col) => {
+      col.type = to;
+      col.color = to === "pie" /* PIE */ ? color_exports.LIME_PALETTE : col.color;
+      columns.push(col);
+    });
+  });
+  return [{ columns }];
+};
+var toLine = (conf) => {
+  const from = conf.type;
+  conf.type = "line" /* LINE */;
+  const previousFeatures = conf.features;
+  conf = resetFeatures(conf);
+  switch (from) {
+    case "pie" /* PIE */: {
+      conf.yAxis[0].columns[0].type = "line" /* LINE */;
+      conf.yAxis[0].columns[0].color = color_exports.LIME_200;
+      return conf;
+    }
+    default: {
+      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
+        conf = swap(conf);
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "line" /* LINE */);
+      return conf;
+    }
+  }
+};
+var toBar = (conf) => {
+  const from = conf.type;
+  conf.type = "bar" /* BAR */;
+  conf = resetFeatures(conf);
+  switch (from) {
+    case "pie" /* PIE */: {
+      conf.yAxis[0].columns[0].type = "bar" /* BAR */;
+      conf.yAxis[0].columns[0].color = color_exports.LIME_200;
+      return conf;
+    }
+    default: {
+      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "bar" /* BAR */);
+      return conf;
+    }
+  }
+};
+var toPie = (conf) => {
+  const from = conf.type;
+  conf.type = "pie" /* PIE */;
+  conf = resetFeatures(conf);
+  switch (from) {
+    default: {
+      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "pie" /* PIE */);
+      return conf;
+    }
+  }
+};
+var config = (conf, to) => {
+  switch (to) {
+    case "line" /* LINE */:
+      return toLine(conf);
+    case "bar" /* BAR */:
+      return toBar(conf);
+    case "pie" /* PIE */:
+      return toPie(conf);
+    default:
+      return conf;
+  }
+};
+
 // src/main.ts
 var ecOptionFromDataset = (conf, dataset) => {
   dataset.source = frame_exports.formatValues(dataset.source);
@@ -547,6 +645,9 @@ var src_default = main_exports;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   ChartType,
+  axes,
+  color,
+  convert,
   dataset,
   datetime,
   determine,
