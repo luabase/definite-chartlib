@@ -1,0 +1,14 @@
+{
+  "cSpell.words": [
+    "chartlib",
+    "datetime",
+    "echart",
+    "echarts",
+    "Showable",
+    "splitline",
+    "tsup"
+  ],
+  "editor.tabSize": 2,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.enabled": "all"
+}
