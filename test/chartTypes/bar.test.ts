@@ -8,7 +8,9 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       type: ChartType.BAR,
       features: {},
       xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
-      yAxis: [{ columns: [{ index: 1, type: ChartType.BAR, color: "#2f4b7c" }] }],
+      yAxis: [
+        { columns: [{ index: 1, type: ChartType.BAR, color: "#2f4b7c" }] },
+      ],
     };
     const dataset = {
       dimensions: ["cat", "val"],
@@ -108,7 +110,9 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       features: {
         orientation: "horizontal",
       },
-      xAxis: [{ columns: [{ index: 1, type: ChartType.BAR, color: "#2f4b7c" }] }],
+      xAxis: [
+        { columns: [{ index: 1, type: ChartType.BAR, color: "#2f4b7c" }] },
+      ],
       yAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
     };
     const dataset = {

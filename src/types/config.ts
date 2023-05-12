@@ -6,7 +6,7 @@ export interface Column {
   color: string | string[] | null;
 }
 
-interface Axis {
+export interface Axis {
   columns: Column[];
 }
 
