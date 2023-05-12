@@ -15,7 +15,7 @@ Unified charting library
 
 ## Configuration Schema
 
-```ts
+```typescript
 {
   name: string,
   type: "pie" | "line" | "scatter" | "bar", // combo is implicit
@@ -66,7 +66,7 @@ See tests for more configuration examples.
 
 ### Create option from block results
 
-```ts
+```typescript
 import chartlib from "@definite/chartlib"
 
 const blockResult = {
