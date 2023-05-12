@@ -1,0 +1,19 @@
+{
+  "name": "@definite/chartlib",
+  "type": "module",
+  "version": "0.2.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist ./node_modules && pnpm install && tsup src/index.ts --dts --format esm,cjs",
+    "test": "vitest --reporter verbose"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.0"
+  }
+}
