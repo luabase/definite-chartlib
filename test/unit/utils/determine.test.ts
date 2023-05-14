@@ -51,29 +51,6 @@ describe("determine.axis", () => {
       expect(actual).toEqual([]);
     });
   });
-  describe("given an axis config", () => {
-    describe("given chart type of pie", () => {
-      const conf = {
-        name: "My chart",
-        type: ChartType.PIE,
-        features: {},
-        xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
-        yAxis: [],
-      };
-      const dataset = {
-        dimensions: ["year", "amount"],
-        source: [
-          ["2021", 2],
-          ["2022", 3],
-          ["2023", 5],
-        ],
-      };
-      it("will not add any eChart axes", () => {
-        const actual = determine.axis(conf, dataset, "horizontal");
-        expect(actual).toEqual([]);
-      });
-    });
-  });
   describe("given a single horizontal axis", () => {
     describe("given a single column", () => {
       const conf = {

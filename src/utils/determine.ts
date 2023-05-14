@@ -70,43 +70,41 @@ export const axis = (
   direction: "horizontal" | "vertical"
 ): ec.Axis[] => {
   const axes: ec.Axis[] = [];
-  if ([ChartType.LINE, ChartType.BAR, ChartType.SCATTER].includes(conf.type)) {
-    const confAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
-    confAxes.forEach((ax) => {
-      if (ax.columns.length >= 1) {
-        // NOTE: assumes all column in axis have same type
-        const type = getDataType(conf, direction);
-        const name = ax.columns
-          .map((col) => dataset.dimensions[col.index])
-          .join(", ");
-        const item: ec.Axis = {
+  const confAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  confAxes.forEach((ax) => {
+    if (ax.columns.length >= 1) {
+      // NOTE: assumes all column in axis have same type
+      const type = getDataType(conf, direction);
+      const name = ax.columns
+        .map((col) => dataset.dimensions[col.index])
+        .join(", ");
+      const item: ec.Axis = {
+        show: conf.type !== ChartType.PIE,
+        type: type,
+        name: name,
+        nameLocation: "center",
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 14,
+        },
+      };
+      if (direction === "vertical" || conf.type === ChartType.SCATTER) {
+        item.splitLine = {
           show: true,
-          type: type,
-          name: name,
-          nameLocation: "center",
-          nameGap: 50,
-          nameTextStyle: {
-            fontSize: 14,
-          },
+          lineStyle: { width: 1, type: "dashed", color: color.ZINC_800 },
         };
-        if (direction === "vertical" || conf.type === ChartType.SCATTER) {
-          item.splitLine = {
-            show: true,
-            lineStyle: { width: 1, type: "dashed", color: color.ZINC_800 },
-          };
-        }
-        // show all axis ticks for bar charts
-        if (conf.type === "bar" && direction === "horizontal") {
-          item.axisLabel = {
-            interval: 0,
-            rotate: dataset.source.length > 6 ? 30 : 0,
-          };
-          item.nameGap = dataset.source.length > 6 ? 81 : 50;
-        }
-        axes.push(item);
       }
-    });
-  }
+      // show all axis ticks for bar charts
+      if (conf.type === "bar" && direction === "horizontal") {
+        item.axisLabel = {
+          interval: 0,
+          rotate: dataset.source.length > 6 ? 30 : 0,
+        };
+        item.nameGap = dataset.source.length > 6 ? 81 : 50;
+      }
+      axes.push(item);
+    }
+  });
   return axes;
 };
 
@@ -197,7 +195,6 @@ export const tooltip = (conf: ChartConfig): ec.ToolTip => {
     return {
       show: true,
       trigger: "item",
-      formatter: "<b>{b}</b><br/>{c} ({d}%)",
     };
   }
 };

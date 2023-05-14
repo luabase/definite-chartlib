@@ -52,12 +52,41 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         left: "center",
       },
       grid: { show: false, containLabel: false, bottom: 50, left: 50 },
-      xAxis: [],
-      yAxis: [],
+      xAxis: [
+        {
+          name: "cat",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: false,
+          type: "category",
+        },
+      ],
+      yAxis: [
+        {
+          name: "val",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: false,
+          type: "value",
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+              width: 1,
+            },
+            show: true,
+          },
+        },
+      ],
       tooltip: {
         show: true,
         trigger: "item",
-        formatter: "<b>{b}</b><br/>{c} ({d}%)",
       },
       toolbox: {
         show: false,
