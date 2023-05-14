@@ -359,39 +359,37 @@ var getDataType = (conf, direction) => {
 };
 var axis = (conf, dataset, direction) => {
   const axes = [];
-  if (["line" /* LINE */, "bar" /* BAR */, "scatter" /* SCATTER */].includes(conf.type)) {
-    const confAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
-    confAxes.forEach((ax) => {
-      if (ax.columns.length >= 1) {
-        const type = getDataType(conf, direction);
-        const name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
-        const item = {
+  const confAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  confAxes.forEach((ax) => {
+    if (ax.columns.length >= 1) {
+      const type = getDataType(conf, direction);
+      const name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
+      const item = {
+        show: conf.type !== "pie" /* PIE */,
+        type,
+        name,
+        nameLocation: "center",
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 14
+        }
+      };
+      if (direction === "vertical" || conf.type === "scatter" /* SCATTER */) {
+        item.splitLine = {
           show: true,
-          type,
-          name,
-          nameLocation: "center",
-          nameGap: 50,
-          nameTextStyle: {
-            fontSize: 14
-          }
+          lineStyle: { width: 1, type: "dashed", color: color_exports.ZINC_800 }
         };
-        if (direction === "vertical" || conf.type === "scatter" /* SCATTER */) {
-          item.splitLine = {
-            show: true,
-            lineStyle: { width: 1, type: "dashed", color: color_exports.ZINC_800 }
-          };
-        }
-        if (conf.type === "bar" && direction === "horizontal") {
-          item.axisLabel = {
-            interval: 0,
-            rotate: dataset.source.length > 6 ? 30 : 0
-          };
-          item.nameGap = dataset.source.length > 6 ? 81 : 50;
-        }
-        axes.push(item);
       }
-    });
-  }
+      if (conf.type === "bar" && direction === "horizontal") {
+        item.axisLabel = {
+          interval: 0,
+          rotate: dataset.source.length > 6 ? 30 : 0
+        };
+        item.nameGap = dataset.source.length > 6 ? 81 : 50;
+      }
+      axes.push(item);
+    }
+  });
   return axes;
 };
 var addFeaturesForSeries = (conf, series2) => {
@@ -470,8 +468,7 @@ var tooltip = (conf) => {
   } else {
     return {
       show: true,
-      trigger: "item",
-      formatter: "<b>{b}</b><br/>{c} ({d}%)"
+      trigger: "item"
     };
   }
 };
