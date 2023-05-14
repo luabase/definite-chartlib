@@ -16,7 +16,11 @@ const convertAllColumnTypesInAxes = (axes: Axis[], to: ChartType) => {
   axes.forEach((axis) => {
     axis.columns.forEach((col) => {
       col.type = to;
-      col.color = to === ChartType.PIE ? color.LIME_PALETTE : col.color;
+      if (to === ChartType.PIE) {
+        col.color = color.LIME_PALETTE;
+      } else if (Array.isArray(col.color)) {
+        col.color = color.LIME_200;
+      }
       columns.push(col);
     });
   });
@@ -74,7 +78,7 @@ const toPie = (conf: ChartConfig): ChartConfig => {
 };
 
 export const config = (conf: ChartConfig, to: ChartType): ChartConfig => {
-  console.debug(`Converting chart from ${conf.type} to ${to}`)
+  console.debug(`Converting chart from ${conf.type} to ${to}`);
   switch (to) {
     case ChartType.LINE:
       return toLine(conf);

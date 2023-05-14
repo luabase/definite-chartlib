@@ -135,4 +135,32 @@ describe("convert.config", () => {
     };
     expect(convert.config(conf, ChartType.PIE)).toEqual(converted);
   });
+  it("can convert pie to line", () => {
+    const conf = {
+      name: "My chart",
+      type: ChartType.PIE,
+      features: {},
+      xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
+      yAxis: [
+        {
+          columns: [
+            { index: 1, type: ChartType.PIE, color: color.LIME_PALETTE },
+          ],
+        },
+      ],
+    };
+    const converted = {
+      name: "My chart",
+      type: ChartType.LINE,
+      features: {
+        title: false,
+        legend: false,
+      },
+      xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
+      yAxis: [
+        { columns: [{ index: 1, type: ChartType.LINE, color: "#d9f99d" }] },
+      ],
+    };
+    expect(convert.config(conf, ChartType.LINE)).toEqual(converted);
+  });
 });

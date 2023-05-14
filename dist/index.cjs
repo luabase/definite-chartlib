@@ -550,7 +550,11 @@ var convertAllColumnTypesInAxes = (axes, to) => {
   axes.forEach((axis2) => {
     axis2.columns.forEach((col) => {
       col.type = to;
-      col.color = to === "pie" /* PIE */ ? color_exports.LIME_PALETTE : col.color;
+      if (to === "pie" /* PIE */) {
+        col.color = color_exports.LIME_PALETTE;
+      } else if (Array.isArray(col.color)) {
+        col.color = color_exports.LIME_200;
+      }
       columns.push(col);
     });
   });
