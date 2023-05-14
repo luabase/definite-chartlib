@@ -68,6 +68,7 @@ const toBar = (conf: ChartConfig): ChartConfig => {
 const toPie = (conf: ChartConfig): ChartConfig => {
   const from = conf.type;
   conf.type = ChartType.PIE;
+  conf.features.legend = false;
   conf = resetFeatures(conf);
   switch (from) {
     default: {

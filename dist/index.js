@@ -569,6 +569,7 @@ var toBar = (conf) => {
 var toPie = (conf) => {
   const from = conf.type;
   conf.type = "pie" /* PIE */;
+  conf.features.legend = false;
   conf = resetFeatures(conf);
   switch (from) {
     default: {
