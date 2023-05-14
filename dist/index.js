@@ -574,6 +574,7 @@ var toPie = (conf) => {
   }
 };
 var config = (conf, to) => {
+  console.debug(`Converting chart from ${conf.type} to ${to}`);
   switch (to) {
     case "line" /* LINE */:
       return toLine(conf);
