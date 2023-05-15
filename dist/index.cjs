@@ -410,7 +410,7 @@ var axis = (conf, dataset, direction) => {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0
               };
-              item.nameGap = isLargeSet ? 55 : 50;
+              item.nameGap = isLargeSet ? 65 : 50;
             }
             break;
         }
