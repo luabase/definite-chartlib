@@ -314,7 +314,7 @@ var grid = (conf, dataset) => {
       if (isVertical) {
         grid2.bottom = isLargeSet ? "18%" : "12%";
       } else {
-        grid2.left = isLargeSet ? "15%" : "20%";
+        grid2.left = isLargeSet ? "15%" : "18%";
       }
     }
   }

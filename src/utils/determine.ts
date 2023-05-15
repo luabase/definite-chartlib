@@ -46,7 +46,7 @@ export const grid = (conf: ChartConfig, dataset: ec.DataSet): ec.Grid => {
       if (isVertical) {
         grid.bottom = isLargeSet ? "18%" : "12%";
       } else {
-        grid.left = isLargeSet ? "15%" : "20%";
+        grid.left = isLargeSet ? "15%" : "18%";
       }
     }
   }

@@ -148,7 +148,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       grid: {
         show: false,
         containLabel: false,
-        left: "20%",
+        left: "18%",
         bottom: "12%",
         right: "12%",
       },
