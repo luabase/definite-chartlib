@@ -400,8 +400,8 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
       grid: {
         show: false,
         containLabel: false,
-        left: "12%",
-        bottom: "18%",
+        left: "18%",
+        bottom: "12%",
         right: "12%",
       },
       xAxis: [

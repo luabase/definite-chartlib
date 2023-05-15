@@ -308,7 +308,9 @@ var grid = (conf, dataset) => {
   if ((conf.renderer ?? "canvas") === "canvas") {
     grid2 = { ...grid2, left: "12%", bottom: "12%", right: "12%" };
     if (conf.type === "bar" /* BAR */ && dataset.source.length > 6) {
-      grid2.bottom = "18%";
+      const orientation = conf.features.orientation ?? "vertical";
+      grid2.bottom = orientation === "vertical" ? "18%" : "12%";
+      grid2.left = orientation === "vertical" ? "12%" : "18%";
     }
   }
   return grid2;

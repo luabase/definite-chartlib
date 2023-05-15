@@ -40,7 +40,9 @@ export const grid = (conf: ChartConfig, dataset: ec.DataSet): ec.Grid => {
   if ((conf.renderer ?? "canvas") === "canvas") {
     grid = { ...grid, left: "12%", bottom: "12%", right: "12%" };
     if (conf.type === ChartType.BAR && dataset.source.length > 6) {
-      grid.bottom = "18%";
+      const orientation = conf.features.orientation ?? "vertical";
+      grid.bottom = orientation === "vertical" ? "18%" : "12%";
+      grid.left = orientation === "vertical" ? "12%" : "18%";
     }
   }
   return grid;
