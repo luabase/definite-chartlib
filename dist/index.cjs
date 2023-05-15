@@ -393,7 +393,7 @@ var axis = (conf, dataset, direction) => {
           interval: 0,
           rotate: dataset.source.length > 6 ? 30 : 0
         };
-        item.nameGap = 50;
+        item.nameGap = dataset.source.length > 6 ? 55 : 50;
       }
       axes.push(item);
     }

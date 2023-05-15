@@ -386,7 +386,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           show: true,
           name: "amount1, amount2",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 55,
           nameTextStyle: {
             fontSize: 14,
           },
