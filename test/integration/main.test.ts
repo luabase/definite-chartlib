@@ -35,7 +35,7 @@ describe("given block results and some configuration", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "9%" },
       xAxis: [
         {
           type: "category",

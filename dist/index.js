@@ -306,7 +306,7 @@ var legend = (conf) => {
 var grid = (conf, dataset) => {
   let grid2 = { show: false, containLabel: false };
   if ((conf.renderer ?? "canvas") === "canvas") {
-    grid2 = { ...grid2, left: "12%", bottom: "12%", right: "12%" };
+    grid2 = { ...grid2, left: "12%", bottom: "12%", right: "9%" };
     if (conf.type === "bar" /* BAR */) {
       const orientation = conf.features.orientation ?? "vertical";
       const isVertical = orientation === "vertical";

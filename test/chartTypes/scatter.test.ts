@@ -32,7 +32,7 @@ describe("given a dataset with 2 value columns", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "9%" },
       xAxis: [
         {
           type: "value",

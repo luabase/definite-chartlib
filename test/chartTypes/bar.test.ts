@@ -39,7 +39,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         containLabel: false,
         left: "12%",
         bottom: "12%",
-        right: "12%",
+        right: "9%",
       },
       xAxis: [
         {
@@ -150,7 +150,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         containLabel: false,
         left: "18%",
         bottom: "12%",
-        right: "12%",
+        right: "9%",
       },
       xAxis: [
         {
@@ -271,7 +271,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
         containLabel: false,
         left: "12%",
         bottom: "12%",
-        right: "12%",
+        right: "9%",
       },
       xAxis: [
         {
@@ -402,7 +402,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
         containLabel: false,
         left: "15%",
         bottom: "12%",
-        right: "12%",
+        right: "9%",
       },
       xAxis: [
         {

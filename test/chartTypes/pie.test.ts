@@ -53,7 +53,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "9%" },
       xAxis: [
         {
           name: "cat",
