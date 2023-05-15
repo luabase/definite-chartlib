@@ -12,7 +12,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         {
           columns: [
             {
-              index: 1,
+              index: 2,
               type: ChartType.PIE,
               color: [
                 "#f7fee7",
@@ -32,11 +32,11 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       ],
     };
     const dataset = {
-      dimensions: ["cat", "val"],
+      dimensions: ["cat", "val1", "val2"],
       source: [
-        ["cat1", 3],
-        ["cat2", 4],
-        ["cat3", 5],
+        ["cat1", 3, 5],
+        ["cat2", 4, 3],
+        ["cat3", 5, 4],
       ],
     };
     const ecOption = chartlib.ecOptionFromDataset(conf, dataset);
@@ -66,7 +66,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       ],
       yAxis: [
         {
-          name: "val",
+          name: "val2",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
@@ -92,11 +92,11 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         show: false,
       },
       dataset: {
-        dimensions: ["cat", "val"],
+        dimensions: ["cat", "val1", "val2"],
         source: [
-          ["cat1", 3],
-          ["cat2", 4],
-          ["cat3", 5],
+          ["cat1", 3, 5],
+          ["cat2", 4, 3],
+          ["cat3", 5, 4],
         ],
       },
       series: [
@@ -127,7 +127,11 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
             show: true,
             color: "#71717a",
           },
-          name: "val",
+          name: "val2",
+          encode: {
+            itemName: "cat",
+            value: "val2",
+          },
         },
       ],
       backgroundColor: "#18181b",

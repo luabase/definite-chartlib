@@ -429,7 +429,13 @@ var series = (conf, dataset) => {
         name: dataset.dimensions[col.index],
         color: col.color ?? color_exports.DARK_BLUE
       };
-      if (conf.type !== "pie" /* PIE */) {
+      if (conf.type === "pie" /* PIE */) {
+        item.encode = { itemName: "", value: "" };
+        item.encode.itemName = dataset.dimensions[catAxis[0].columns[0].index];
+        item.encode.value = dataset.dimensions[col.index];
+        item.textStyle = { color: color_exports.ZINC_500 };
+        item.label = { show: true, color: color_exports.ZINC_500 };
+      } else {
         item.encode = { x: "", y: "" };
         if (orientation === "vertical") {
           item.yAxisIndex = index;
@@ -440,9 +446,6 @@ var series = (conf, dataset) => {
           item.encode.y = dataset.dimensions[catAxis[0].columns[0].index];
           item.encode.x = dataset.dimensions[col.index];
         }
-      } else {
-        item.textStyle = { color: color_exports.ZINC_500 };
-        item.label = { show: true, color: color_exports.ZINC_500 };
       }
       series2.push(item);
     });

@@ -153,7 +153,13 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
         name: dataset.dimensions[col.index],
         color: col.color ?? color.DARK_BLUE,
       };
-      if (conf.type !== ChartType.PIE) {
+      if (conf.type === ChartType.PIE) {
+        item.encode = { itemName: "", value: "" };
+        item.encode.itemName = dataset.dimensions[catAxis[0].columns[0].index];
+        item.encode.value = dataset.dimensions[col.index];
+        item.textStyle = { color: color.ZINC_500 };
+        item.label = { show: true, color: color.ZINC_500 };
+      } else {
         item.encode = { x: "", y: "" };
         if (orientation === "vertical") {
           item.yAxisIndex = index;
@@ -164,9 +170,6 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
           item.encode.y = dataset.dimensions[catAxis[0].columns[0].index];
           item.encode.x = dataset.dimensions[col.index];
         }
-      } else {
-        item.textStyle = { color: color.ZINC_500 };
-        item.label = { show: true, color: color.ZINC_500 };
       }
       series.push(item);
     });

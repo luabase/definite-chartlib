@@ -115,8 +115,10 @@ interface Label extends IShowable {
     color?: string;
 }
 interface Encode {
-    x: string;
-    y: string;
+    x?: string;
+    y?: string;
+    itemName?: string;
+    value?: string;
 }
 interface Series extends IStylable {
     type: string;

@@ -6,8 +6,10 @@ interface Label extends IShowable {
 }
 
 interface Encode {
-  x: string;
-  y: string;
+  x?: string;
+  y?: string;
+  itemName?: string;
+  value?: string;
 }
 
 export default interface Series extends IStylable {
