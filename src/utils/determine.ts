@@ -81,7 +81,7 @@ export const axis = (
       let name = ax.columns
         .map((col) => dataset.dimensions[col.index])
         .join(", ");
-      name = name.length > 80 ? name.slice(0, 80) + "..." : name
+      name = name.length > 45 ? name.slice(0, 45) + "..." : name
       const item: ec.Axis = {
         show: conf.type !== ChartType.PIE,
         type: type,

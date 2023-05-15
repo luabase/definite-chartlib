@@ -338,7 +338,7 @@ var axis = (conf, dataset, direction) => {
     if (ax.columns.length >= 1) {
       const type = getDataType(conf, direction);
       let name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
-      name = name.length > 80 ? name.slice(0, 80) + "..." : name;
+      name = name.length > 45 ? name.slice(0, 45) + "..." : name;
       const item = {
         show: conf.type !== "pie" /* PIE */,
         type,
