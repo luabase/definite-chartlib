@@ -16,7 +16,7 @@ export const title = (conf: ChartConfig): ec.Title => {
     title.top = 10;
     title.left = 10;
   } else {
-    title.top = "2%"
+    title.top = "2%";
   }
   return title;
 };
@@ -35,12 +35,15 @@ export const legend = (conf: ChartConfig): ec.Legend => {
   return legend;
 };
 
-export const grid = (conf: ChartConfig): ec.Grid => {
+export const grid = (conf: ChartConfig, dataset: ec.DataSet): ec.Grid => {
+  let grid: ec.Grid = { show: false, containLabel: false };
   if ((conf.renderer ?? "canvas") === "canvas") {
-    return { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" };
-  } else {
-    return { show: false, containLabel: false };
+    grid = { ...grid, left: "12%", bottom: "12%", right: "12%" };
+    if (conf.type === ChartType.BAR && dataset.source.length > 6) {
+      grid.bottom = "18%";
+    }
   }
+  return grid;
 };
 
 const getDataType = (
@@ -81,7 +84,7 @@ export const axis = (
       let name = ax.columns
         .map((col) => dataset.dimensions[col.index])
         .join(", ");
-      name = name.length > 45 ? name.slice(0, 45) + "..." : name
+      name = name.length > 45 ? name.slice(0, 45) + "..." : name;
       const item: ec.Axis = {
         show: conf.type !== ChartType.PIE,
         type: type,
@@ -104,7 +107,7 @@ export const axis = (
           interval: 0,
           rotate: dataset.source.length > 6 ? 30 : 0,
         };
-        item.nameGap = dataset.source.length > 6 ? 81 : 50;
+        item.nameGap = 50;
       }
       axes.push(item);
     }

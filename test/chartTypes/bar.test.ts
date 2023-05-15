@@ -379,14 +379,14 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: { show: false, containLabel: false, left: "12%", bottom: "18%", right: "12%"},
       xAxis: [
         {
           type: "value",
           show: true,
           name: "amount1, amount2",
           nameLocation: "center",
-          nameGap: 81,
+          nameGap: 50,
           nameTextStyle: {
             fontSize: 14,
           },

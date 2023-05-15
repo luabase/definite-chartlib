@@ -11,7 +11,7 @@ export const ecOptionFromDataset = (
     animation: determine.animation(conf),
     backgroundColor: color.ZINC_900,
     dataset: dataset,
-    grid: determine.grid(conf),
+    grid: determine.grid(conf, dataset),
     legend: determine.legend(conf),
     series: determine.series(conf, dataset),
     title: determine.title(conf),

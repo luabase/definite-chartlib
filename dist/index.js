@@ -303,12 +303,15 @@ var legend = (conf) => {
   }
   return legend2;
 };
-var grid = (conf) => {
+var grid = (conf, dataset) => {
+  let grid2 = { show: false, containLabel: false };
   if ((conf.renderer ?? "canvas") === "canvas") {
-    return { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" };
-  } else {
-    return { show: false, containLabel: false };
+    grid2 = { ...grid2, left: "12%", bottom: "12%", right: "12%" };
+    if (conf.type === "bar" /* BAR */ && dataset.source.length > 6) {
+      grid2.bottom = "18%";
+    }
   }
+  return grid2;
 };
 var getDataType = (conf, direction) => {
   switch (conf.type) {
@@ -360,7 +363,7 @@ var axis = (conf, dataset, direction) => {
           interval: 0,
           rotate: dataset.source.length > 6 ? 30 : 0
         };
-        item.nameGap = dataset.source.length > 6 ? 81 : 50;
+        item.nameGap = 50;
       }
       axes.push(item);
     }
@@ -607,7 +610,7 @@ var ecOptionFromDataset = (conf, dataset) => {
     animation: determine_exports.animation(conf),
     backgroundColor: color_exports.ZINC_900,
     dataset,
-    grid: determine_exports.grid(conf),
+    grid: determine_exports.grid(conf, dataset),
     legend: determine_exports.legend(conf),
     series: determine_exports.series(conf, dataset),
     title: determine_exports.title(conf),

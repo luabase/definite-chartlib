@@ -249,7 +249,7 @@ declare namespace datetime {
 declare const renderer: (v: string | undefined) => string;
 declare const title: (conf: ChartConfig) => Title;
 declare const legend: (conf: ChartConfig) => Legend;
-declare const grid: (conf: ChartConfig) => Grid;
+declare const grid: (conf: ChartConfig, dataset: DataSet) => Grid;
 declare const axis: (conf: ChartConfig, dataset: DataSet, direction: "horizontal" | "vertical") => Axis[];
 declare const series: (conf: ChartConfig, dataset: DataSet) => Series[];
 declare const animation: (conf: ChartConfig) => boolean;
