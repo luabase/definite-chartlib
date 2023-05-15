@@ -42,7 +42,7 @@ describe("given block results and some configuration", () => {
           show: true,
           name: "date",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 30,
           nameTextStyle: {
             fontSize: 14,
           },

@@ -377,7 +377,7 @@ var axis = (conf, dataset, direction) => {
         type,
         name,
         nameLocation: "center",
-        nameGap: 50,
+        nameGap: direction === "horizontal" ? 30 : 50,
         nameTextStyle: {
           fontSize: 14
         }

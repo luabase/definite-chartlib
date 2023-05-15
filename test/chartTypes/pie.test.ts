@@ -57,7 +57,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       xAxis: [
         {
           name: "cat",
-          nameGap: 50,
+          nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
             fontSize: 14,

@@ -39,7 +39,7 @@ describe("given a dataset with 2 value columns", () => {
           show: true,
           name: "height",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 30,
           nameTextStyle: {
             fontSize: 14,
           },
