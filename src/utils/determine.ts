@@ -39,10 +39,15 @@ export const grid = (conf: ChartConfig, dataset: ec.DataSet): ec.Grid => {
   let grid: ec.Grid = { show: false, containLabel: false };
   if ((conf.renderer ?? "canvas") === "canvas") {
     grid = { ...grid, left: "12%", bottom: "12%", right: "12%" };
-    if (conf.type === ChartType.BAR && dataset.source.length > 6) {
+    if (conf.type === ChartType.BAR) {
       const orientation = conf.features.orientation ?? "vertical";
-      grid.bottom = orientation === "vertical" ? "18%" : "12%";
-      grid.left = orientation === "vertical" ? "12%" : "18%";
+      const isVertical = orientation === "vertical"
+      const isLargeSet = dataset.source.length > 6
+      if (isVertical) {
+        grid.bottom = isLargeSet ? "18%" : "12%";
+      } else {
+        grid.left = isLargeSet ? "20%" : "15%";
+      }
     }
   }
   return grid;
@@ -124,7 +129,7 @@ export const axis = (
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
               };
-              item.nameGap = isLargeSet ? 70 : 50;
+              item.nameGap = isLargeSet ? 70 : 85;
             }
             break;
         }

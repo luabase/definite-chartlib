@@ -148,7 +148,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       grid: {
         show: false,
         containLabel: false,
-        left: "12%",
+        left: "15%",
         bottom: "12%",
         right: "12%",
       },
@@ -170,7 +170,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           show: true,
           name: "cat",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 85,
           nameTextStyle: {
             fontSize: 14,
           },
@@ -400,7 +400,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
       grid: {
         show: false,
         containLabel: false,
-        left: "18%",
+        left: "20%",
         bottom: "12%",
         right: "12%",
       },

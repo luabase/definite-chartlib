@@ -337,10 +337,15 @@ var grid = (conf, dataset) => {
   let grid2 = { show: false, containLabel: false };
   if ((conf.renderer ?? "canvas") === "canvas") {
     grid2 = { ...grid2, left: "12%", bottom: "12%", right: "12%" };
-    if (conf.type === "bar" /* BAR */ && dataset.source.length > 6) {
+    if (conf.type === "bar" /* BAR */) {
       const orientation = conf.features.orientation ?? "vertical";
-      grid2.bottom = orientation === "vertical" ? "18%" : "12%";
-      grid2.left = orientation === "vertical" ? "12%" : "18%";
+      const isVertical = orientation === "vertical";
+      const isLargeSet = dataset.source.length > 6;
+      if (isVertical) {
+        grid2.bottom = isLargeSet ? "18%" : "12%";
+      } else {
+        grid2.left = isLargeSet ? "20%" : "15%";
+      }
     }
   }
   return grid2;
@@ -410,7 +415,7 @@ var axis = (conf, dataset, direction) => {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0
               };
-              item.nameGap = isLargeSet ? 70 : 50;
+              item.nameGap = isLargeSet ? 70 : 85;
             }
             break;
         }
