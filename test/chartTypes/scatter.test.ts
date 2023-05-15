@@ -24,13 +24,15 @@ describe("given a dataset with 2 value columns", () => {
         show: false,
         text: "My chart",
         left: "auto",
+        top: "2%",
       },
       legend: {
         show: false,
         type: "scroll",
         left: "center",
+        top: "2%",
       },
-      grid: { show: false, containLabel: false, bottom: 50, left: 50 },
+      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
       xAxis: [
         {
           type: "value",

@@ -15,6 +15,8 @@ export const title = (conf: ChartConfig): ec.Title => {
   if ((conf.renderer ?? "canvas") === "svg") {
     title.top = 10;
     title.left = 10;
+  } else {
+    title.top = "2%"
   }
   return title;
 };
@@ -27,13 +29,15 @@ export const legend = (conf: ChartConfig): ec.Legend => {
   };
   if ((conf.renderer ?? "canvas") === "svg") {
     legend.top = 10;
+  } else {
+    legend.top = "2%";
   }
   return legend;
 };
 
 export const grid = (conf: ChartConfig): ec.Grid => {
   if ((conf.renderer ?? "canvas") === "canvas") {
-    return { show: false, containLabel: false, bottom: 50, left: 50 };
+    return { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" };
   } else {
     return { show: false, containLabel: false };
   }

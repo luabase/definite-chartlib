@@ -285,6 +285,8 @@ var title = (conf) => {
   if ((conf.renderer ?? "canvas") === "svg") {
     title2.top = 10;
     title2.left = 10;
+  } else {
+    title2.top = "2%";
   }
   return title2;
 };
@@ -296,12 +298,14 @@ var legend = (conf) => {
   };
   if ((conf.renderer ?? "canvas") === "svg") {
     legend2.top = 10;
+  } else {
+    legend2.top = "2%";
   }
   return legend2;
 };
 var grid = (conf) => {
   if ((conf.renderer ?? "canvas") === "canvas") {
-    return { show: false, containLabel: false, bottom: 50, left: 50 };
+    return { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" };
   } else {
     return { show: false, containLabel: false };
   }
