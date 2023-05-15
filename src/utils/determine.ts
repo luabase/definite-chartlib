@@ -74,14 +74,14 @@ export const axis = (
   direction: "horizontal" | "vertical"
 ): ec.Axis[] => {
   const axes: ec.Axis[] = [];
-  const confAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
-  confAxes.forEach((ax) => {
+  const valueAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  valueAxes.forEach((ax) => {
     if (ax.columns.length >= 1) {
-      // NOTE: assumes all column in axis have same type
       const type = getDataType(conf, direction);
-      const name = ax.columns
+      let name = ax.columns
         .map((col) => dataset.dimensions[col.index])
         .join(", ");
+      name = name.length > 80 ? name.slice(0, 80) + "..." : name
       const item: ec.Axis = {
         show: conf.type !== ChartType.PIE,
         type: type,

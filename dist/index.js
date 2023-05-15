@@ -333,11 +333,12 @@ var getDataType = (conf, direction) => {
 };
 var axis = (conf, dataset, direction) => {
   const axes = [];
-  const confAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
-  confAxes.forEach((ax) => {
+  const valueAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  valueAxes.forEach((ax) => {
     if (ax.columns.length >= 1) {
       const type = getDataType(conf, direction);
-      const name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
+      let name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
+      name = name.length > 80 ? name.slice(0, 80) + "..." : name;
       const item = {
         show: conf.type !== "pie" /* PIE */,
         type,
