@@ -113,7 +113,7 @@ var isDate = (v) => {
     }
   }
   if (typeof v === "string") {
-    if (!isNaN(Date.parse(v)) && v.length >= 4) {
+    if (!isNaN(Date.parse(v)) && v.length >= 4 && v.length <= 10) {
       return true;
     }
   }
