@@ -34,7 +34,13 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "12%",
+        right: "12%",
+      },
       xAxis: [
         {
           type: "category",
@@ -139,20 +145,22 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "12%",
+        right: "12%",
+      },
       xAxis: [
         {
           type: "value",
           show: true,
           name: "val",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 30,
           nameTextStyle: {
             fontSize: 14,
-          },
-          axisLabel: {
-            interval: 0,
-            rotate: 0,
           },
         },
       ],
@@ -173,6 +181,10 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 0,
           },
         },
       ],
@@ -254,7 +266,13 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "12%" },
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "12%",
+        right: "12%",
+      },
       xAxis: [
         {
           type: "category",
@@ -379,20 +397,22 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "18%", right: "12%"},
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "18%",
+        right: "12%",
+      },
       xAxis: [
         {
           type: "value",
           show: true,
           name: "amount1, amount2",
           nameLocation: "center",
-          nameGap: 55,
+          nameGap: 30,
           nameTextStyle: {
             fontSize: 14,
-          },
-          axisLabel: {
-            interval: 0,
-            rotate: 30,
           },
         },
       ],
@@ -402,7 +422,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           show: true,
           name: "year",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 55,
           nameTextStyle: {
             fontSize: 14,
           },
@@ -413,6 +433,10 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 30,
           },
         },
       ],

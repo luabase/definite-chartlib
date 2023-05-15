@@ -77,8 +77,8 @@ export const axis = (
   direction: "horizontal" | "vertical"
 ): ec.Axis[] => {
   const axes: ec.Axis[] = [];
-  const valueAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
-  valueAxes.forEach((ax) => {
+  const targetAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  targetAxes.forEach((ax) => {
     if (ax.columns.length >= 1) {
       const type = getDataType(conf, direction);
       let name = ax.columns
@@ -101,13 +101,31 @@ export const axis = (
           lineStyle: { width: 1, type: "dashed", color: color.ZINC_800 },
         };
       }
-      // show all axis ticks for bar charts
-      if (conf.type === "bar" && direction === "horizontal") {
-        item.axisLabel = {
-          interval: 0,
-          rotate: dataset.source.length > 6 ? 30 : 0,
-        };
-        item.nameGap = dataset.source.length > 6 ? 55 : 50;
+      // handle orientation transformation for bar charts
+      if (conf.type === "bar") {
+        const orientation = conf.features.orientation ?? "vertical";
+        const isVertical = orientation === "vertical";
+        const isLargeSet = dataset.source.length > 6;
+        switch (direction) {
+          case "horizontal": // x-axis
+            if (isVertical) {
+              item.axisLabel = {
+                interval: 0,
+                rotate: isLargeSet ? 30 : 0,
+              };
+              item.nameGap = isLargeSet ? 55 : 50;
+            }
+            break;
+          case "vertical": // y-axis
+            if (!isVertical) {
+              item.axisLabel = {
+                interval: 0,
+                rotate: isLargeSet ? 30 : 0,
+              };
+              item.nameGap = isLargeSet ? 55 : 50;
+            }
+            break;
+        }
       }
       axes.push(item);
     }

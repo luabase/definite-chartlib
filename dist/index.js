@@ -336,8 +336,8 @@ var getDataType = (conf, direction) => {
 };
 var axis = (conf, dataset, direction) => {
   const axes = [];
-  const valueAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
-  valueAxes.forEach((ax) => {
+  const targetAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  targetAxes.forEach((ax) => {
     if (ax.columns.length >= 1) {
       const type = getDataType(conf, direction);
       let name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
@@ -358,12 +358,30 @@ var axis = (conf, dataset, direction) => {
           lineStyle: { width: 1, type: "dashed", color: color_exports.ZINC_800 }
         };
       }
-      if (conf.type === "bar" && direction === "horizontal") {
-        item.axisLabel = {
-          interval: 0,
-          rotate: dataset.source.length > 6 ? 30 : 0
-        };
-        item.nameGap = dataset.source.length > 6 ? 55 : 50;
+      if (conf.type === "bar") {
+        const orientation = conf.features.orientation ?? "vertical";
+        const isVertical = orientation === "vertical";
+        const isLargeSet = dataset.source.length > 6;
+        switch (direction) {
+          case "horizontal":
+            if (isVertical) {
+              item.axisLabel = {
+                interval: 0,
+                rotate: isLargeSet ? 30 : 0
+              };
+              item.nameGap = isLargeSet ? 55 : 50;
+            }
+            break;
+          case "vertical":
+            if (!isVertical) {
+              item.axisLabel = {
+                interval: 0,
+                rotate: isLargeSet ? 30 : 0
+              };
+              item.nameGap = isLargeSet ? 55 : 50;
+            }
+            break;
+        }
       }
       axes.push(item);
     }
