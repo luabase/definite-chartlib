@@ -50,7 +50,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           show: true,
           name: "year",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 30,
           nameTextStyle: {
             fontSize: 14,
           },
@@ -169,7 +169,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           show: true,
           name: "year",
           nameLocation: "center",
-          nameGap: 50,
+          nameGap: 30,
           nameTextStyle: {
             fontSize: 14,
           },

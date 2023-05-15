@@ -76,7 +76,7 @@ describe("determine.axis", () => {
             type: "category",
             name: "year",
             nameLocation: "center",
-            nameGap: 50,
+            nameGap: 30,
             nameTextStyle: {
               fontSize: 14,
             },
