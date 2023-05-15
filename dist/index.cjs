@@ -404,8 +404,7 @@ var axis = (conf, dataset, direction) => {
             if (isVertical) {
               item.axisLabel = {
                 interval: 0,
-                rotate: isLargeSet ? 30 : 0,
-                overflow: "truncate"
+                rotate: isLargeSet ? 30 : 0
               };
               item.nameGap = isLargeSet ? 55 : 30;
             }
@@ -414,8 +413,7 @@ var axis = (conf, dataset, direction) => {
             if (!isVertical) {
               item.axisLabel = {
                 interval: 0,
-                rotate: isLargeSet ? 30 : 0,
-                overflow: "truncate"
+                rotate: isLargeSet ? 30 : 0
               };
               item.nameGap = isLargeSet ? 70 : 85;
             }

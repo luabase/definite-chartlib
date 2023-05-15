@@ -54,7 +54,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           axisLabel: {
             interval: 0,
             rotate: 0,
-            overflow: "truncate",
+            
           },
         },
       ],
@@ -186,7 +186,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           axisLabel: {
             interval: 0,
             rotate: 0,
-            overflow: "truncate",
+            
           },
         },
       ],
@@ -288,7 +288,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           axisLabel: {
             interval: 0,
             rotate: 0,
-            overflow: "truncate",
+            
           },
         },
       ],
@@ -440,7 +440,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           axisLabel: {
             interval: 0,
             rotate: 30,
-            overflow: "truncate",
+            
           },
         },
       ],

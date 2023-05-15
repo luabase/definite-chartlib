@@ -83,7 +83,7 @@ describe("determine.axis", () => {
             axisLabel: {
               interval: 0,
               rotate: 0,
-              overflow: "truncate",
+              
             },
           },
         ]);

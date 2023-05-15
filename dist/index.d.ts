@@ -86,7 +86,6 @@ interface SplitLine extends IShowable {
 interface AxisLabel {
     interval: number;
     rotate: number;
-    overflow?: string;
 }
 interface Axis extends IShowable {
     type: "value" | "category";

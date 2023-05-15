@@ -119,7 +119,6 @@ export const axis = (
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
-                overflow: "truncate"
               };
               item.nameGap = isLargeSet ? 55 : 30;
             }
@@ -129,7 +128,6 @@ export const axis = (
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
-                overflow: "truncate"
               };
               item.nameGap = isLargeSet ? 70 : 85;
             }
