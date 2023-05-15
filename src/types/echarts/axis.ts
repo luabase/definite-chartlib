@@ -14,6 +14,7 @@ interface SplitLine extends IShowable {
 interface AxisLabel {
   interval: number;
   rotate: number;
+  formatter?: (value: string) => string;
 }
 
 export default interface Axis extends IShowable {

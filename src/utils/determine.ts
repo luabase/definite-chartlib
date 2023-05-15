@@ -1,6 +1,7 @@
 import * as ec from "../types/echarts";
-import { color } from "../constants";
 import { ChartConfig, ChartType } from "../types";
+import { color } from "../constants";
+import * as format from "./format"
 
 export const renderer = (v: string | undefined): string => {
   return v ?? "canvas";
@@ -119,6 +120,7 @@ export const axis = (
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
+                formatter: format.longValues
               };
               item.nameGap = isLargeSet ? 55 : 30;
             }
@@ -128,6 +130,7 @@ export const axis = (
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
+                formatter: format.longValues
               };
               item.nameGap = isLargeSet ? 70 : 85;
             }

@@ -86,6 +86,7 @@ interface SplitLine extends IShowable {
 interface AxisLabel {
     interval: number;
     rotate: number;
+    formatter?: (value: string) => string;
 }
 interface Axis extends IShowable {
     type: "value" | "category";
@@ -324,6 +325,15 @@ declare namespace convert {
   };
 }
 
+declare const longValues: (value: string) => string;
+
+declare const format_longValues: typeof longValues;
+declare namespace format {
+  export {
+    format_longValues as longValues,
+  };
+}
+
 declare const LIME_50 = "#f7fee7";
 declare const LIME_100 = "#ecfccb";
 declare const LIME_200 = "#d9f99d";
@@ -399,4 +409,4 @@ declare namespace color {
   };
 }
 
-export { Axis$1 as Axis, BlockDetails, BlockResults, ChartConfig, ChartType, Column, Frame, LegacyAdditionalSeries, Series$1 as Series, Value, axes, color, convert, dataset, datetime, chartlib as default, determine, index as echarts, frame, legacy };
+export { Axis$1 as Axis, BlockDetails, BlockResults, ChartConfig, ChartType, Column, Frame, LegacyAdditionalSeries, Series$1 as Series, Value, axes, color, convert, dataset, datetime, chartlib as default, determine, index as echarts, format, frame, legacy };

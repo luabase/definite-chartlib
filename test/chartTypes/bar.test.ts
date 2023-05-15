@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import chartlib, { ChartType } from "../../src";
+import chartlib, { ChartType, format } from "../../src";
 
 describe("given a dataset with 1 categorical and 1 value column", () => {
   it("can create a vertical bar chart", () => {
@@ -54,7 +54,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           axisLabel: {
             interval: 0,
             rotate: 0,
-            
+            formatter: format.longValues,
           },
         },
       ],
@@ -186,7 +186,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           axisLabel: {
             interval: 0,
             rotate: 0,
-            
+            formatter: format.longValues,
           },
         },
       ],
@@ -288,7 +288,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           axisLabel: {
             interval: 0,
             rotate: 0,
-            
+            formatter: format.longValues,
           },
         },
       ],
@@ -440,7 +440,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           axisLabel: {
             interval: 0,
             rotate: 30,
-            
+            formatter: format.longValues,
           },
         },
       ],

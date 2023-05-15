@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { determine } from "../../../src/utils";
+import { determine, format } from "../../../src/utils";
 import { ChartType } from "../../../src";
 
 describe("determine.title", () => {
@@ -83,7 +83,7 @@ describe("determine.axis", () => {
             axisLabel: {
               interval: 0,
               rotate: 0,
-              
+              formatter: format.longValues,
             },
           },
         ]);

@@ -29,6 +29,7 @@ __export(src_exports, {
   default: () => src_default,
   determine: () => determine_exports,
   echarts: () => echarts_exports,
+  format: () => format_exports,
   frame: () => frame_exports,
   legacy: () => legacy_exports
 });
@@ -302,6 +303,15 @@ var ChartType = /* @__PURE__ */ ((ChartType2) => {
   return ChartType2;
 })(ChartType || {});
 
+// src/utils/format.ts
+var format_exports = {};
+__export(format_exports, {
+  longValues: () => longValues
+});
+var longValues = (value) => {
+  return value.length > 15 ? value.slice(0, 11) + "..." + value.slice(-4) : value;
+};
+
 // src/utils/determine.ts
 var renderer = (v) => {
   return v ?? "canvas";
@@ -404,7 +414,8 @@ var axis = (conf, dataset, direction) => {
             if (isVertical) {
               item.axisLabel = {
                 interval: 0,
-                rotate: isLargeSet ? 30 : 0
+                rotate: isLargeSet ? 30 : 0,
+                formatter: longValues
               };
               item.nameGap = isLargeSet ? 55 : 30;
             }
@@ -413,7 +424,8 @@ var axis = (conf, dataset, direction) => {
             if (!isVertical) {
               item.axisLabel = {
                 interval: 0,
-                rotate: isLargeSet ? 30 : 0
+                rotate: isLargeSet ? 30 : 0,
+                formatter: longValues
               };
               item.nameGap = isLargeSet ? 70 : 85;
             }
@@ -691,6 +703,7 @@ var src_default = main_exports;
   datetime,
   determine,
   echarts,
+  format,
   frame,
   legacy
 });
