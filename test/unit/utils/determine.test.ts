@@ -83,7 +83,7 @@ describe("determine.axis", () => {
             axisLabel: {
               interval: 0,
               rotate: 0,
-              formatter: format.longValues,
+              formatter: format.categoricalValues,
             },
           },
         ]);
@@ -124,6 +124,9 @@ describe("determine.axis", () => {
             splitLine: {
               show: true,
               lineStyle: { width: 1, type: "dashed", color: "#27272a" },
+            },
+            axisLabel: {
+              formatter: format.numericalValues,
             },
           },
         ]);
@@ -168,6 +171,9 @@ describe("determine.axis", () => {
               show: true,
               lineStyle: { width: 1, type: "dashed", color: "#27272a" },
             },
+            axisLabel: {
+              formatter: format.numericalValues,
+            },
           },
         ]);
       });
@@ -209,6 +215,9 @@ describe("determine.axis", () => {
               show: true,
               lineStyle: { width: 1, type: "dashed", color: "#27272a" },
             },
+            axisLabel: {
+              formatter: format.numericalValues,
+            },
           },
           {
             show: true,
@@ -222,6 +231,9 @@ describe("determine.axis", () => {
             splitLine: {
               show: true,
               lineStyle: { width: 1, type: "dashed", color: "#27272a" },
+            },
+            axisLabel: {
+              formatter: format.numericalValues,
             },
           },
         ]);
@@ -278,6 +290,9 @@ describe("determine.axis", () => {
               show: true,
               lineStyle: { width: 1, type: "dashed", color: "#27272a" },
             },
+            axisLabel: {
+              formatter: format.numericalValues,
+            },
           },
           {
             show: true,
@@ -291,6 +306,9 @@ describe("determine.axis", () => {
             splitLine: {
               show: true,
               lineStyle: { width: 1, type: "dashed", color: "#27272a" },
+            },
+            axisLabel: {
+              formatter: format.numericalValues,
             },
           },
         ]);

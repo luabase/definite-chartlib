@@ -12,9 +12,9 @@ interface SplitLine extends IShowable {
 }
 
 interface AxisLabel {
-  interval: number;
-  rotate: number;
-  formatter?: (value: string) => string;
+  interval?: number;
+  rotate?: number;
+  formatter?: (value: string | number) => string;
 }
 
 export default interface Axis extends IShowable {

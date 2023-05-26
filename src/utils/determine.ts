@@ -1,7 +1,7 @@
 import * as ec from "../types/echarts";
 import { ChartConfig, ChartType } from "../types";
 import { color } from "../constants";
-import * as format from "./format"
+import * as format from "./format";
 
 export const renderer = (v: string | undefined): string => {
   return v ?? "canvas";
@@ -42,8 +42,8 @@ export const grid = (conf: ChartConfig, dataset: ec.DataSet): ec.Grid => {
     grid = { ...grid, left: "12%", bottom: "12%", right: "9%" };
     if (conf.type === ChartType.BAR) {
       const orientation = conf.features.orientation ?? "vertical";
-      const isVertical = orientation === "vertical"
-      const isLargeSet = dataset.source.length > 6
+      const isVertical = orientation === "vertical";
+      const isLargeSet = dataset.source.length > 6;
       if (isVertical) {
         grid.bottom = isLargeSet ? "18%" : "12%";
       } else {
@@ -109,6 +109,9 @@ export const axis = (
           lineStyle: { width: 1, type: "dashed", color: color.ZINC_800 },
         };
       }
+      if (type === "value") {
+        item.axisLabel = { formatter: format.numericalValues };
+      }
       // handle orientation transformation for bar charts
       if (conf.type === "bar") {
         const orientation = conf.features.orientation ?? "vertical";
@@ -120,7 +123,7 @@ export const axis = (
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
-                formatter: format.longValues
+                formatter: format.categoricalValues,
               };
               item.nameGap = isLargeSet ? 55 : 30;
             }
@@ -130,7 +133,7 @@ export const axis = (
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
-                formatter: format.longValues
+                formatter: format.categoricalValues,
               };
               item.nameGap = isLargeSet ? 70 : 85;
             }

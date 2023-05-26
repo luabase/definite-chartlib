@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import chartlib, { ChartType } from "../../src";
+import chartlib, { ChartType, format } from "../../src";
 
 describe("given block results and some configuration", () => {
   it("can create bar chart", () => {
@@ -65,6 +65,9 @@ describe("given block results and some configuration", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import chartlib, { ChartType } from "../../src";
+import chartlib, { ChartType, format } from "../../src";
 
 describe("given dataset with one categorical and one value column", () => {
   it("can create simple line chart", () => {
@@ -64,6 +64,9 @@ describe("given dataset with one categorical and one value column", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],
@@ -176,6 +179,9 @@ describe("given dataset with one categorical and two value columns", () => {
             },
             show: true,
           },
+          axisLabel: {
+            formatter: format.numericalValues,
+          },
         },
       ],
       tooltip: {
@@ -287,6 +293,9 @@ describe("given dataset with one categorical and two value columns", () => {
             },
             show: true,
           },
+          axisLabel: {
+            formatter: format.numericalValues,
+          },
         },
         {
           type: "value",
@@ -304,6 +313,9 @@ describe("given dataset with one categorical and two value columns", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],

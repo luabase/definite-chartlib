@@ -54,7 +54,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           axisLabel: {
             interval: 0,
             rotate: 0,
-            formatter: format.longValues,
+            formatter: format.categoricalValues,
           },
         },
       ],
@@ -75,6 +75,9 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],
@@ -163,6 +166,9 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           nameTextStyle: {
             fontSize: 14,
           },
+          axisLabel: {
+            formatter: format.numericalValues,
+          },
         },
       ],
       yAxis: [
@@ -186,7 +192,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
           axisLabel: {
             interval: 0,
             rotate: 0,
-            formatter: format.longValues,
+            formatter: format.categoricalValues,
           },
         },
       ],
@@ -288,7 +294,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           axisLabel: {
             interval: 0,
             rotate: 0,
-            formatter: format.longValues,
+            formatter: format.categoricalValues,
           },
         },
       ],
@@ -309,6 +315,9 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],
@@ -417,6 +426,9 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           nameTextStyle: {
             fontSize: 14,
           },
+          axisLabel: {
+            formatter: format.numericalValues,
+          },
         },
       ],
       yAxis: [
@@ -440,7 +452,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           axisLabel: {
             interval: 0,
             rotate: 30,
-            formatter: format.longValues,
+            formatter: format.categoricalValues,
           },
         },
       ],

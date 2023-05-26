@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import chartlib, { ChartType } from "../../src";
+import chartlib, { ChartType, format } from "../../src";
 
 describe("given a dataset with 2 value columns", () => {
   it("can create a scatter chart", () => {
@@ -7,8 +7,12 @@ describe("given a dataset with 2 value columns", () => {
       name: "My chart",
       type: ChartType.SCATTER,
       features: {},
-      xAxis: [{ columns: [{ index: 0, type: ChartType.SCATTER, color: "#2f4b7c" }] }],
-      yAxis: [{ columns: [{ index: 1, type: ChartType.SCATTER, color: "#2f4b7c" }] }],
+      xAxis: [
+        { columns: [{ index: 0, type: ChartType.SCATTER, color: "#2f4b7c" }] },
+      ],
+      yAxis: [
+        { columns: [{ index: 1, type: ChartType.SCATTER, color: "#2f4b7c" }] },
+      ],
     };
     const dataset = {
       dimensions: ["height", "weight"],
@@ -32,7 +36,13 @@ describe("given a dataset with 2 value columns", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "9%" },
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "12%",
+        right: "9%",
+      },
       xAxis: [
         {
           type: "value",
@@ -50,6 +60,9 @@ describe("given a dataset with 2 value columns", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],
@@ -70,6 +83,9 @@ describe("given a dataset with 2 value columns", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],

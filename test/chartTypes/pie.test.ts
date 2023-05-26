@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import chartlib, { ChartType } from "../../src";
+import chartlib, { ChartType, format } from "../../src";
 
 describe("given a dataset with 1 categorical and 1 value column", () => {
   it("can create a pie chart", () => {
@@ -83,6 +83,9 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
               width: 1,
             },
             show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
           },
         },
       ],
