@@ -306,11 +306,14 @@ var ChartType = /* @__PURE__ */ ((ChartType2) => {
 // src/utils/format.ts
 var format_exports = {};
 __export(format_exports, {
-  longValues: () => longValues
+  categoricalValues: () => categoricalValues,
+  numericalValues: () => numericalValues
 });
-var longValues = (value) => {
-  return value.length > 15 ? value.slice(0, 11) + "..." + value.slice(-4) : value;
-};
+var categoricalValues = (value) => String(value).length > 15 ? String(value).slice(0, 11) + "..." + String(value).slice(-4) : String(value);
+var numericalValues = (value) => Intl.NumberFormat("en-US", {
+  notation: "compact",
+  maximumFractionDigits: 1
+}).format(Number(value));
 
 // src/utils/determine.ts
 var renderer = (v) => {
@@ -405,6 +408,9 @@ var axis = (conf, dataset, direction) => {
           lineStyle: { width: 1, type: "dashed", color: color_exports.ZINC_800 }
         };
       }
+      if (type === "value") {
+        item.axisLabel = { formatter: numericalValues };
+      }
       if (conf.type === "bar") {
         const orientation = conf.features.orientation ?? "vertical";
         const isVertical = orientation === "vertical";
@@ -415,7 +421,7 @@ var axis = (conf, dataset, direction) => {
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
-                formatter: longValues
+                formatter: categoricalValues
               };
               item.nameGap = isLargeSet ? 55 : 30;
             }
@@ -425,7 +431,7 @@ var axis = (conf, dataset, direction) => {
               item.axisLabel = {
                 interval: 0,
                 rotate: isLargeSet ? 30 : 0,
-                formatter: longValues
+                formatter: categoricalValues
               };
               item.nameGap = isLargeSet ? 70 : 85;
             }

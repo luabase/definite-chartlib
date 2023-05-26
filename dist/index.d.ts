@@ -84,9 +84,9 @@ interface SplitLine extends IShowable {
     lineStyle?: LineStyle;
 }
 interface AxisLabel {
-    interval: number;
-    rotate: number;
-    formatter?: (value: string) => string;
+    interval?: number;
+    rotate?: number;
+    formatter?: (value: string | number) => string;
 }
 interface Axis extends IShowable {
     type: "value" | "category";
@@ -325,12 +325,15 @@ declare namespace convert {
   };
 }
 
-declare const longValues: (value: string) => string;
+declare const categoricalValues: (value: string | number) => string;
+declare const numericalValues: (value: string | number) => string;
 
-declare const format_longValues: typeof longValues;
+declare const format_categoricalValues: typeof categoricalValues;
+declare const format_numericalValues: typeof numericalValues;
 declare namespace format {
   export {
-    format_longValues as longValues,
+    format_categoricalValues as categoricalValues,
+    format_numericalValues as numericalValues,
   };
 }
 
