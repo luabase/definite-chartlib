@@ -115,6 +115,137 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
       animation: true,
     });
   });
+  it("changes axis label interval with larger sets", () => {
+    const conf = {
+      name: "My chart",
+      type: ChartType.BAR,
+      features: {},
+      xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
+      yAxis: [
+        { columns: [{ index: 1, type: ChartType.BAR, color: "#2f4b7c" }] },
+      ],
+    };
+    const dataset = {
+      dimensions: ["cat", "val"],
+      source: [
+        ["cat1", 3],
+        ["cat2", 4],
+        ["cat3", 5],
+        ["cat4", 5],
+        ["cat5", 5],
+        ["cat6", 5],
+        ["cat7", 5],
+        ["cat8", 5],
+        ["cat9", 5],
+        ["cat10", 5],
+        ["cat11", 5],
+        ["cat12", 5],
+      ],
+    };
+    const ecOption = chartlib.ecOptionFromDataset(conf, dataset);
+    expect(ecOption).toEqual({
+      title: {
+        show: false,
+        text: "My chart",
+        left: "auto",
+        top: "2%",
+      },
+      legend: {
+        show: false,
+        type: "scroll",
+        left: "center",
+        top: "2%",
+      },
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "18%",
+        right: "9%",
+      },
+      xAxis: [
+        {
+          type: "category",
+          show: true,
+          name: "cat",
+          nameLocation: "center",
+          nameGap: 55,
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          axisLabel: {
+            interval: 1,
+            rotate: 30,
+            formatter: format.categoricalValues,
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: "value",
+          show: true,
+          name: "val",
+          nameLocation: "center",
+          nameGap: 50,
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+              width: 1,
+            },
+            show: true,
+          },
+          axisLabel: {
+            formatter: format.numericalValues,
+          },
+        },
+      ],
+      tooltip: {
+        show: true,
+        trigger: "axis",
+        axisPointer: {
+          type: "cross",
+          crossStyle: {
+            color: "#999999",
+          },
+        },
+      },
+      toolbox: {
+        show: false,
+      },
+      dataset: {
+        dimensions: ["cat", "val"],
+        source: [
+          ["cat1", 3],
+          ["cat2", 4],
+          ["cat3", 5],
+          ["cat4", 5],
+          ["cat5", 5],
+          ["cat6", 5],
+          ["cat7", 5],
+          ["cat8", 5],
+          ["cat9", 5],
+          ["cat10", 5],
+          ["cat11", 5],
+          ["cat12", 5],
+        ],
+      },
+      series: [
+        {
+          type: "bar",
+          color: "#2f4b7c",
+          yAxisIndex: 0,
+          encode: { x: "cat", y: "val" },
+          name: "val",
+        },
+      ],
+      backgroundColor: "#18181b",
+      animation: true,
+    });
+  });
   it("can create a horizontal bar chart", () => {
     const conf = {
       name: "My chart",

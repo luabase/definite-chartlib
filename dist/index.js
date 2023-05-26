@@ -388,7 +388,7 @@ var axis = (conf, dataset, direction) => {
           case "horizontal":
             if (isVertical) {
               item.axisLabel = {
-                interval: 0,
+                interval: Math.floor((dataset.source.length - 1) / 10),
                 rotate: isLargeSet ? 30 : 0,
                 formatter: categoricalValues
               };
@@ -398,7 +398,7 @@ var axis = (conf, dataset, direction) => {
           case "vertical":
             if (!isVertical) {
               item.axisLabel = {
-                interval: 0,
+                interval: Math.floor((dataset.source.length - 1) / 10),
                 rotate: isLargeSet ? 30 : 0,
                 formatter: categoricalValues
               };

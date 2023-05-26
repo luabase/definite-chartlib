@@ -121,7 +121,7 @@ export const axis = (
           case "horizontal": // x-axis
             if (isVertical) {
               item.axisLabel = {
-                interval: 0,
+                interval: Math.floor((dataset.source.length - 1) / 10),
                 rotate: isLargeSet ? 30 : 0,
                 formatter: format.categoricalValues,
               };
@@ -131,7 +131,7 @@ export const axis = (
           case "vertical": // y-axis
             if (!isVertical) {
               item.axisLabel = {
-                interval: 0,
+                interval: Math.floor((dataset.source.length - 1) / 10),
                 rotate: isLargeSet ? 30 : 0,
                 formatter: format.categoricalValues,
               };
