@@ -4,11 +4,14 @@
     "datetime",
     "echart",
     "echarts",
+    "mharrisb",
     "Showable",
     "splitline",
     "tsup"
   ],
   "editor.tabSize": 2,
   "typescript.inlayHints.parameterTypes.enabled": true,
-  "typescript.inlayHints.parameterNames.enabled": "all"
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "workbench.colorTheme": "GitHub Dark",
+  "workbench.iconTheme": "material-icon-theme"
 }
