@@ -19,11 +19,13 @@ export interface ChartConfig {
     legend?: boolean;
     toolbox?: boolean;
     labels?: boolean;
-    stack?: boolean;
     smooth?: boolean;
     area?: boolean;
+    stack?: boolean;
     orientation?: string;
+    piecewise?: boolean;
   };
   xAxis: Axis[];
   yAxis: Axis[];
+  zAxis?: Axis[];
 }
