@@ -687,7 +687,7 @@ var convertAllColumnTypesInAxes = (axes, to) => {
   axes.forEach((axis2) => {
     axis2.columns.forEach((col) => {
       col.type = to;
-      if (to === "pie" /* PIE */) {
+      if (["heatmap" /* HEATMAP */, "pie" /* PIE */].includes(to)) {
         col.color = color_exports.LIME_PALETTE;
       } else if (Array.isArray(col.color)) {
         col.color = color_exports.LIME_200;
@@ -706,6 +706,14 @@ var toLine = (conf) => {
     case "pie" /* PIE */: {
       conf.yAxis[0].columns[0].type = "line" /* LINE */;
       conf.yAxis[0].columns[0].color = color_exports.LIME_200;
+      return conf;
+    }
+    case "heatmap" /* HEATMAP */: {
+      if (!conf.zAxis) {
+        throw "zAxis not found";
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "line" /* LINE */);
+      delete conf.zAxis;
       return conf;
     }
     default: {
@@ -727,6 +735,14 @@ var toBar = (conf) => {
       conf.yAxis[0].columns[0].color = color_exports.LIME_200;
       return conf;
     }
+    case "heatmap" /* HEATMAP */: {
+      if (!conf.zAxis) {
+        throw "zAxis not found";
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "bar" /* BAR */);
+      delete conf.zAxis;
+      return conf;
+    }
     default: {
       conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "bar" /* BAR */);
       return conf;
@@ -736,11 +752,64 @@ var toBar = (conf) => {
 var toPie = (conf) => {
   const from = conf.type;
   conf.type = "pie" /* PIE */;
+  const previousFeatures = conf.features;
+  conf = resetFeatures(conf);
   conf.features.legend = false;
+  switch (from) {
+    case "heatmap" /* HEATMAP */: {
+      if (!conf.zAxis) {
+        throw "zAxis not found";
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "pie" /* PIE */);
+      delete conf.zAxis;
+      return conf;
+    }
+    default: {
+      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
+        conf = swap(conf);
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "pie" /* PIE */);
+      return conf;
+    }
+  }
+};
+var toHeatmap = (conf) => {
+  const from = conf.type;
+  conf.type = "heatmap" /* HEATMAP */;
+  const previousFeatures = conf.features;
   conf = resetFeatures(conf);
   switch (from) {
     default: {
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "pie" /* PIE */);
+      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
+        conf = swap(conf);
+      }
+      const xAxis = conf.xAxis;
+      conf.zAxis = convertAllColumnTypesInAxes(conf.yAxis, "heatmap" /* HEATMAP */);
+      conf.xAxis = xAxis;
+      conf.yAxis = xAxis;
+      return conf;
+    }
+  }
+};
+var toScatter = (conf) => {
+  const from = conf.type;
+  conf.type = "scatter" /* SCATTER */;
+  const previousFeatures = conf.features;
+  conf = resetFeatures(conf);
+  switch (from) {
+    case "heatmap" /* HEATMAP */: {
+      if (!conf.zAxis) {
+        throw "zAxis not found";
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "scatter" /* SCATTER */);
+      delete conf.zAxis;
+      return conf;
+    }
+    default: {
+      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
+        conf = swap(conf);
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "scatter" /* SCATTER */);
       return conf;
     }
   }
@@ -754,6 +823,10 @@ var config = (conf, to) => {
       return toBar(conf);
     case "pie" /* PIE */:
       return toPie(conf);
+    case "scatter" /* SCATTER */:
+      return toScatter(conf);
+    case "heatmap" /* HEATMAP */:
+      return toHeatmap(conf);
     default:
       return conf;
   }
