@@ -14,8 +14,8 @@
 | Pie              |   Categorical    |      Value       |        ❌        |   ❌    |
 | Line             |   Categorical    |      Value       |        ✅        |   ❌    |
 | Scatter          |      Value       |      Value       |        ❌        |   ❌    |
-| Vertical Bar     |   Categorical    |      Value       |        ❌        |   ❌    |
-| Horizontal Bar   |      Value       |   Categorical    |        ❌        |   ❌    |
+| Vertical Bar     |   Categorical    |      Value       |        ✅        |   ❌    |
+| Horizontal Bar   |      Value       |   Categorical    |        ✅        |   ❌    |
 | Grid Heatmap     |     Category     |     Category     |        ❌        |   ✅    |
 | Calendar Heatmap |     Category     |      Value       |        ❌        |   ❌    |
 

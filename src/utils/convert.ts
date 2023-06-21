@@ -100,7 +100,7 @@ const toPie = (conf: ChartConfig): ChartConfig => {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
         conf = axes.swap(conf);
       }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, ChartType.PIE);
+      conf.yAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], ChartType.PIE);
       return conf;
     }
   }
@@ -117,7 +117,7 @@ const toHeatmap = (conf: ChartConfig): ChartConfig => {
         conf = axes.swap(conf);
       }
       const xAxis = conf.xAxis;
-      conf.zAxis = convertAllColumnTypesInAxes(conf.yAxis, ChartType.HEATMAP);
+      conf.zAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], ChartType.HEATMAP);
       conf.xAxis = xAxis;
       conf.yAxis = xAxis;
       return conf;
@@ -143,7 +143,7 @@ const toScatter = (conf: ChartConfig): ChartConfig => {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
         conf = axes.swap(conf);
       }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, ChartType.SCATTER);
+      conf.yAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], ChartType.SCATTER);
       return conf;
     }
   }
