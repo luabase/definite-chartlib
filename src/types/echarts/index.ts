@@ -6,19 +6,31 @@ import Series from "./series";
 import Title from "./title";
 import ToolBox from "./toolbox";
 import ToolTip from "./tooltip";
+import VisualMap from "./visualMap";
 
-export { Axis, DataSet, Grid, Legend, Series, Title, ToolBox, ToolTip };
+export {
+  Axis,
+  DataSet,
+  Grid,
+  Legend,
+  Series,
+  Title,
+  ToolBox,
+  ToolTip,
+  VisualMap,
+};
 
 export interface ECOption {
-  title: Title;
-  legend: Legend;
+  animation: boolean;
+  backgroundColor: string;
+  dataset: DataSet;
   grid: Grid;
+  legend: Legend;
+  series: Series[];
+  title: Title;
+  toolbox: ToolBox;
+  tooltip: ToolTip;
+  visualMap: VisualMap | null;
   xAxis: Axis[];
   yAxis: Axis[];
-  tooltip: ToolTip;
-  toolbox: ToolBox;
-  dataset: DataSet;
-  series: Series[];
-  backgroundColor: string;
-  animation: boolean;
 }
