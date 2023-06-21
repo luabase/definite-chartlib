@@ -4,30 +4,35 @@ Unified charting library
 
 ## Supported Chart Types
 
-| Chart Type     | X-Axis Data Type | Y-Axis Data Type | Multiple Y-Axes |
-| -------------- | :--------------: | :--------------: | :-------------: |
-| Pie            |   Categorical    |      Value       |        ❌        |
-| Line           |   Categorical    |      Value       |        ✅        |
-| Combo          |   Categorical    |      Value       |        ✅        |
-| Scatter        |      Value       |      Value       |        ❌        |
-| Vertical Bar   |   Categorical    |      Value       |        ❌        |
-| Horizontal Bar |      Value       |   Categorical    |        ❌        |
+| Chart Type     | X-Axis Data Type | Y-Axis Data Type | Multiple Y-Axes | Z-Axis |
+| -------------- | :--------------: | :--------------: | :-------------: | :----: |
+| Pie            |   Categorical    |      Value       |        ❌        |   ❌    |
+| Line           |   Categorical    |      Value       |        ✅        |   ❌    |
+| Scatter        |      Value       |      Value       |        ❌        |   ❌    |
+| Vertical Bar   |   Categorical    |      Value       |        ❌        |   ❌    |
+| Horizontal Bar |      Value       |   Categorical    |        ❌        |   ❌    |
+| Grid Heatmap   |     Category     |     Category     |        ❌        |   ✅    |
 
 ## Configuration Schema
 
-```typescript
+```ts
 {
   name: string,
-  type: "pie" | "line" | "scatter" | "bar", // combo is implicit
+  type: "bar" | "line" | "pie" | "scatter" | "heatmap", // combo is implicit
   features: {
+    // common features (all chart types)
     title: boolean | undefined,
     legend: boolean | undefined,
     toolbox: boolean | undefined,
     labels: boolean | undefined,
-    stack: boolean | undefined,
+    // line only
     smooth: boolean | undefined,
     area: boolean | undefined,
-    orientation: "vertical" | "horizontal" | undefined, // bar only
+    // bar only
+    stack: boolean | undefined,
+    orientation: "vertical" | "horizontal" | undefined,
+    // heatmap only
+    piecewise: boolean | undefined
   },
   xAxis: [
     {
@@ -43,6 +48,20 @@ Unified charting library
     ...
   ],
   yAxis: [
+    {
+      columns: [
+        {
+          index: number,
+          type: string | null,
+          color: string | string[] | null
+        },
+        ...
+      ]
+    },
+    ...
+  ],
+  // only supported for select chart types
+  zAxis: [
     {
       columns: [
         {
