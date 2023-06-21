@@ -3,4 +3,5 @@ export enum ChartType {
   LINE = "line",
   PIE = "pie",
   SCATTER = "scatter",
+  HEATMAP = "heatmap",
 }
