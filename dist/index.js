@@ -596,7 +596,7 @@ var visualMap = (conf, dataset) => {
     type: conf.features.piecewise ?? false ? "piecewise" : "continuous",
     min,
     max,
-    calculable: true
+    calculable: (conf.renderer ?? "canvas") === "canvas"
   };
 };
 
@@ -753,9 +753,12 @@ var toHeatmap = (conf) => {
         conf = swap(conf);
       }
       const xAxis = conf.xAxis;
-      conf.zAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], "heatmap" /* HEATMAP */);
+      conf.zAxis = convertAllColumnTypesInAxes(
+        [conf.yAxis[0]],
+        "heatmap" /* HEATMAP */
+      );
       conf.xAxis = xAxis;
-      conf.yAxis = xAxis;
+      conf.yAxis = [...xAxis];
       return conf;
     }
   }
@@ -778,7 +781,10 @@ var toScatter = (conf) => {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
         conf = swap(conf);
       }
-      conf.yAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], "scatter" /* SCATTER */);
+      conf.yAxis = convertAllColumnTypesInAxes(
+        [conf.yAxis[0]],
+        "scatter" /* SCATTER */
+      );
       return conf;
     }
   }
