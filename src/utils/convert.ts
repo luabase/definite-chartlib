@@ -111,6 +111,7 @@ const toHeatmap = (conf: ChartConfig): ChartConfig => {
   conf.type = ChartType.HEATMAP;
   const previousFeatures = conf.features;
   conf = resetFeatures(conf);
+  conf.features.labels = true;
   switch (from) {
     default: {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {

@@ -100,6 +100,7 @@ describe("convert.config", () => {
         features: {
           title: false,
           legend: false,
+          labels: true,
         },
         xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
         yAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
@@ -217,6 +218,7 @@ describe("convert.config", () => {
         features: {
           title: false,
           legend: false,
+          labels: true,
         },
         xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
         yAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
@@ -326,6 +328,7 @@ describe("convert.config", () => {
         features: {
           title: false,
           legend: false,
+          labels: true,
         },
         xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
         yAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
@@ -449,6 +452,7 @@ describe("convert.config", () => {
         features: {
           title: false,
           legend: false,
+          labels: true,
         },
         xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
         yAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
@@ -685,7 +689,9 @@ describe("convert.config", () => {
         features: {},
         xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
         yAxis: [
-          { columns: [{ index: 1, type: ChartType.SCATTER, color: "#2f4b7c" }] },
+          {
+            columns: [{ index: 1, type: ChartType.SCATTER, color: "#2f4b7c" }],
+          },
         ],
       };
       const converted = {
@@ -694,6 +700,7 @@ describe("convert.config", () => {
         features: {
           title: false,
           legend: false,
+          labels: true,
         },
         xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
         yAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
