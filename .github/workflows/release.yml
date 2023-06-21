@@ -1,0 +1,53 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.6.3
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test:ci
+
+      - name: Run build
+        run: pnpm build
+
+      - name: Bump version
+        run: pnpm version $VERSION --no-commit-hooks --no-git-tag-version --no-workspaces-update
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git pull origin main
+          git add dist/*
+          git add package.json
+          git commit -m "🤖 build $VERSION"
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
