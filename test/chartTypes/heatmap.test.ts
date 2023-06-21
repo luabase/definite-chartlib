@@ -54,7 +54,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
         containLabel: false,
         left: "12%",
         bottom: "12%",
-        right: "9%",
+        right: "11%",
       },
       xAxis: [
         {

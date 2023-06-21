@@ -15,9 +15,9 @@ export const grid = (conf: ChartConfig, dataset: ec.DataSet): ec.Grid => {
       } else {
         grid.left = isLargeSet ? "15%" : "18%";
       }
-    } else if (conf.type === ChartType.HEATMAP && (conf.features.piecewise ?? false)) {
+    } else if (conf.type === ChartType.HEATMAP) {
       // handle heatmap
-      grid.right = "15%";
+      grid.right = conf.features.piecewise ?? false ? "15%" : "11%";
     }
   }
   return grid;
