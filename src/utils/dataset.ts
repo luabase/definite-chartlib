@@ -4,7 +4,7 @@ import { Frame, Series, BlockResults, echarts as ec } from "../types";
 // TODO - group by category
 export const fromBlockResult = (results: BlockResults): ec.DataSet => {
   const dimensions = results.schema.map((col) => col.name);
-  // NOTE: below approach is used because row keys can be out of order from schema
+  // NOTE: row keys can be out of order from schema
   const source: Frame = [];
   results.rows.forEach((r, i) => {
     const row: Series = [];
