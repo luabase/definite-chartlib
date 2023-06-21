@@ -277,7 +277,7 @@ var fromBlockResult = (results) => {
   return { dimensions, source: formatValues(source) };
 };
 
-// src/utils/determine.ts
+// src/utils/determine/index.ts
 var determine_exports = {};
 __export(determine_exports, {
   animation: () => animation,
@@ -288,20 +288,12 @@ __export(determine_exports, {
   series: () => series,
   title: () => title,
   toolbox: () => toolbox,
-  tooltip: () => tooltip
+  tooltip: () => tooltip,
+  visualMap: () => visualMap
 });
 
-// src/types/echarts/index.ts
-var echarts_exports = {};
-
-// src/types/enums.ts
-var ChartType = /* @__PURE__ */ ((ChartType2) => {
-  ChartType2["BAR"] = "bar";
-  ChartType2["LINE"] = "line";
-  ChartType2["PIE"] = "pie";
-  ChartType2["SCATTER"] = "scatter";
-  return ChartType2;
-})(ChartType || {});
+// src/utils/determine/animation.ts
+var animation = (conf) => (conf.renderer ?? "canvas") === "canvas";
 
 // src/utils/format.ts
 var format_exports = {};
@@ -315,68 +307,49 @@ var numericalValues = (value) => Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1
 }).format(Number(value));
 
-// src/utils/determine.ts
-var renderer = (v) => {
-  return v ?? "canvas";
-};
-var title = (conf) => {
-  const title2 = {
-    show: conf.features.title ?? false,
-    text: conf.name,
-    left: "auto"
-  };
-  if ((conf.renderer ?? "canvas") === "svg") {
-    title2.top = 10;
-    title2.left = 10;
-  } else {
-    title2.top = "2%";
-  }
-  return title2;
-};
-var legend = (conf) => {
-  const legend2 = {
-    show: conf.features.legend ?? false,
-    type: "scroll",
-    left: "center"
-  };
-  if ((conf.renderer ?? "canvas") === "svg") {
-    legend2.top = 10;
-  } else {
-    legend2.top = "2%";
-  }
-  return legend2;
-};
-var grid = (conf, dataset) => {
-  let grid2 = { show: false, containLabel: false };
-  if ((conf.renderer ?? "canvas") === "canvas") {
-    grid2 = { ...grid2, left: "12%", bottom: "12%", right: "9%" };
-    if (conf.type === "bar" /* BAR */) {
-      const orientation = conf.features.orientation ?? "vertical";
-      const isVertical = orientation === "vertical";
-      const isLargeSet = dataset.source.length > 6;
-      if (isVertical) {
-        grid2.bottom = isLargeSet ? "18%" : "12%";
+// src/types/echarts/index.ts
+var echarts_exports = {};
+
+// src/types/enums.ts
+var ChartType = /* @__PURE__ */ ((ChartType2) => {
+  ChartType2["BAR"] = "bar";
+  ChartType2["LINE"] = "line";
+  ChartType2["PIE"] = "pie";
+  ChartType2["SCATTER"] = "scatter";
+  ChartType2["HEATMAP"] = "heatmap";
+  return ChartType2;
+})(ChartType || {});
+
+// src/utils/determine/axis.ts
+var getTargetAxes = (conf, type) => {
+  switch (type) {
+    case "x":
+      return conf.xAxis;
+    case "y":
+      return conf.yAxis;
+    case "z":
+      if (conf.zAxis) {
+        return conf.zAxis;
       } else {
-        grid2.left = isLargeSet ? "15%" : "18%";
+        throw "zAxis not found";
       }
-    }
   }
-  return grid2;
 };
-var getDataType = (conf, direction) => {
+var getDataType = (conf, axisType) => {
   switch (conf.type) {
     case "pie" /* PIE */:
-      return direction === "horizontal" ? "category" : "value";
     case "line" /* LINE */:
-      return direction === "horizontal" ? "category" : "value";
+      return axisType === "x" ? "category" : "value";
     case "scatter" /* SCATTER */:
       return "value";
+    case "heatmap" /* HEATMAP */:
+      return "category";
     case "bar" /* BAR */:
       switch (conf.features.orientation ?? "vertical") {
         case "vertical":
-          return direction === "horizontal" ? "category" : "value";
+          return axisType === "x" ? "category" : "value";
         case "horizontal":
-          return direction === "horizontal" ? "value" : "category";
+          return axisType === "x" ? "value" : "category";
         default:
           return "category";
       }
@@ -384,12 +357,12 @@ var getDataType = (conf, direction) => {
       return "category";
   }
 };
-var axis = (conf, dataset, direction) => {
+var axis = (conf, dataset, axisType) => {
   const axes = [];
-  const targetAxes = direction === "vertical" ? conf.yAxis : conf.xAxis;
+  const targetAxes = getTargetAxes(conf, axisType);
   targetAxes.forEach((ax) => {
-    if (ax.columns.length >= 1) {
-      const type = getDataType(conf, direction);
+    if (ax.columns.length > 0) {
+      const type = getDataType(conf, axisType);
       let name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
       name = name.length > 45 ? name.slice(0, 45) + "..." : name;
       const item = {
@@ -397,12 +370,12 @@ var axis = (conf, dataset, direction) => {
         type,
         name,
         nameLocation: "center",
-        nameGap: direction === "horizontal" ? 30 : 50,
+        nameGap: axisType === "x" ? 30 : 50,
         nameTextStyle: {
           fontSize: 14
         }
       };
-      if (direction === "vertical" || conf.type === "scatter" /* SCATTER */) {
+      if (axisType === "y" || conf.type === "scatter" /* SCATTER */) {
         item.splitLine = {
           show: true,
           lineStyle: { width: 1, type: "dashed", color: color_exports.ZINC_800 }
@@ -411,13 +384,12 @@ var axis = (conf, dataset, direction) => {
       if (type === "value") {
         item.axisLabel = { formatter: numericalValues };
       }
-      if (conf.type === "bar") {
+      if (conf.type === "bar" /* BAR */) {
         const orientation = conf.features.orientation ?? "vertical";
-        const isVertical = orientation === "vertical";
         const isLargeSet = dataset.source.length > 6;
-        switch (direction) {
-          case "horizontal":
-            if (isVertical) {
+        switch (axisType) {
+          case "x":
+            if (orientation === "vertical") {
               item.axisLabel = {
                 interval: Math.floor((dataset.source.length - 1) / 10),
                 rotate: isLargeSet ? 30 : 0,
@@ -426,8 +398,8 @@ var axis = (conf, dataset, direction) => {
               item.nameGap = isLargeSet ? 55 : 30;
             }
             break;
-          case "vertical":
-            if (!isVertical) {
+          case "y":
+            if (orientation === "horizontal") {
               item.axisLabel = {
                 interval: Math.floor((dataset.source.length - 1) / 10),
                 rotate: isLargeSet ? 30 : 0,
@@ -443,72 +415,159 @@ var axis = (conf, dataset, direction) => {
   });
   return axes;
 };
-var addFeaturesForSeries = (conf, series2) => {
-  if (conf.features.labels ?? false) {
-    series2.label = { show: true };
+
+// src/utils/determine/grid.ts
+var grid = (conf, dataset) => {
+  let grid2 = { show: false, containLabel: false };
+  if ((conf.renderer ?? "canvas") === "canvas") {
+    grid2 = { ...grid2, left: "12%", bottom: "12%", right: "9%" };
+    if (conf.type === "bar" /* BAR */) {
+      const orientation = conf.features.orientation ?? "vertical";
+      const isVertical = orientation === "vertical";
+      const isLargeSet = dataset.source.length > 6;
+      if (isVertical) {
+        grid2.bottom = isLargeSet ? "18%" : "12%";
+      } else {
+        grid2.left = isLargeSet ? "15%" : "18%";
+      }
+    } else if (conf.type === "heatmap" /* HEATMAP */ && (conf.features.piecewise ?? false)) {
+      grid2.right = "15%";
+    }
   }
-  if (conf.features.stack ?? false) {
-    series2.stack = "total";
+  return grid2;
+};
+
+// src/utils/determine/legend.ts
+var legend = (conf) => {
+  return {
+    show: (conf.features.legend ?? false) && conf.type !== "heatmap" /* HEATMAP */,
+    type: "scroll",
+    left: "center",
+    top: conf.renderer === "svg" ? 10 : "2%"
+  };
+};
+
+// src/utils/determine/renderer.ts
+var renderer = (v) => v ?? "canvas";
+
+// src/utils/determine/series.ts
+var getTypedAxes = (conf) => {
+  switch (conf.type) {
+    case "bar" /* BAR */:
+      return (conf.features.orientation ?? "vertical") === "vertical" ? { valAxis: conf.yAxis, catAxis1: conf.xAxis } : { valAxis: conf.xAxis, catAxis1: conf.yAxis };
+    case "heatmap" /* HEATMAP */:
+      if (conf.zAxis) {
+        return {
+          valAxis: conf.zAxis,
+          catAxis1: conf.xAxis,
+          catAxis2: conf.yAxis
+        };
+      } else {
+        throw "zAxis not found";
+      }
+    default:
+      return { valAxis: conf.yAxis, catAxis1: conf.xAxis };
   }
-  if (conf.features.area ?? false) {
-    series2.areaStyle = {};
-  }
-  if (conf.features.smooth ?? false) {
-    series2.smooth = true;
-  }
-  if (conf.type === "pie" /* PIE */) {
-    series2.radius = ["40%", "70%"];
-    series2.itemStyle = {
-      borderRadius: 10,
-      borderColor: color_exports.ZINC_900,
-      borderWidth: 2
-    };
-  }
-  if (conf.type === "scatter" /* SCATTER */) {
-    series2.symbolSize = 15;
-  }
-  return series2;
 };
 var series = (conf, dataset) => {
-  let series2 = [];
-  const orientation = conf.features.orientation ?? "vertical";
-  const { catAxis, valAxis } = orientation === "vertical" ? { catAxis: conf.xAxis, valAxis: conf.yAxis } : { catAxis: conf.yAxis, valAxis: conf.xAxis };
+  const series2 = [];
+  const { valAxis, catAxis1, catAxis2 } = getTypedAxes(conf);
   valAxis.forEach((axis2, index) => {
     axis2.columns.forEach((col) => {
       const item = {
         type: col.type ?? conf.type,
-        name: dataset.dimensions[col.index],
-        color: col.color ?? color_exports.DARK_BLUE
+        name: dataset.dimensions[col.index]
       };
-      if (conf.type === "pie" /* PIE */) {
-        item.encode = { itemName: "", value: "" };
-        item.encode.itemName = dataset.dimensions[catAxis[0].columns[0].index];
-        item.encode.value = dataset.dimensions[col.index];
-        item.textStyle = { color: color_exports.ZINC_500 };
-        item.label = { show: true, color: color_exports.ZINC_500 };
-      } else {
-        item.encode = { x: "", y: "" };
-        if (orientation === "vertical") {
+      if (conf.features.labels ?? false) {
+        item.label = { show: true };
+      }
+      switch (conf.type) {
+        case "bar" /* BAR */:
+          item.color = col.color ?? color_exports.DARK_BLUE;
+          if ((conf.features.orientation ?? "vertical") === "vertical") {
+            item.yAxisIndex = index;
+            item.encode = {
+              x: dataset.dimensions[catAxis1[0].columns[0].index],
+              y: dataset.dimensions[col.index]
+            };
+          } else {
+            item.xAxisIndex = index;
+            item.encode = {
+              y: dataset.dimensions[catAxis1[0].columns[0].index],
+              x: dataset.dimensions[col.index]
+            };
+          }
+          if (conf.features.stack ?? false) {
+            item.stack = "total";
+          }
+          break;
+        case "line" /* LINE */:
+          item.color = col.color ?? color_exports.DARK_BLUE;
           item.yAxisIndex = index;
-          item.encode.x = dataset.dimensions[catAxis[0].columns[0].index];
-          item.encode.y = dataset.dimensions[col.index];
-        } else {
-          item.xAxisIndex = index;
-          item.encode.y = dataset.dimensions[catAxis[0].columns[0].index];
-          item.encode.x = dataset.dimensions[col.index];
-        }
+          item.encode = {
+            x: dataset.dimensions[catAxis1[0].columns[0].index],
+            y: dataset.dimensions[col.index]
+          };
+          if (conf.features.area ?? false) {
+            item.areaStyle = {};
+          }
+          if (conf.features.smooth ?? false) {
+            item.smooth = true;
+          }
+          break;
+        case "pie" /* PIE */:
+          item.color = col.color ?? color_exports.LIME_PALETTE;
+          item.encode = { itemName: "", value: "" };
+          item.encode.itemName = dataset.dimensions[catAxis1[0].columns[0].index];
+          item.encode.value = dataset.dimensions[col.index];
+          item.textStyle = { color: color_exports.ZINC_500 };
+          item.label = { show: true, color: color_exports.ZINC_500 };
+          item.radius = ["40%", "70%"];
+          item.itemStyle = {
+            borderRadius: 10,
+            borderColor: color_exports.ZINC_900,
+            borderWidth: 2
+          };
+          break;
+        case "scatter" /* SCATTER */:
+          item.color = col.color ?? color_exports.DARK_BLUE;
+          item.yAxisIndex = index;
+          item.encode = {
+            x: dataset.dimensions[catAxis1[0].columns[0].index],
+            y: dataset.dimensions[col.index]
+          };
+          item.symbolSize = 15;
+          break;
+        case "heatmap" /* HEATMAP */:
+          if (!catAxis2) {
+            throw "zAxis not found";
+          }
+          item.encode = {
+            x: dataset.dimensions[catAxis1[0].columns[0].index],
+            y: dataset.dimensions[catAxis2[0].columns[0].index],
+            value: dataset.dimensions[col.index]
+          };
+          break;
       }
       series2.push(item);
     });
   });
-  series2 = series2.map((s) => addFeaturesForSeries(conf, s));
   return series2;
 };
-var animation = (conf) => {
-  return (conf.renderer ?? "canvas") === "canvas";
+
+// src/utils/determine/title.ts
+var title = (conf) => {
+  return {
+    show: conf.features.title ?? false,
+    text: conf.name,
+    top: conf.renderer === "svg" ? 10 : "2%",
+    left: conf.renderer === "svg" ? 10 : "auto"
+  };
 };
+
+// src/utils/determine/tooltip.ts
 var tooltip = (conf) => {
-  if (conf.type !== "pie" /* PIE */) {
+  if (!["pie" /* PIE */, "heatmap" /* HEATMAP */].includes(conf.type)) {
     return {
       show: true,
       trigger: "axis",
@@ -526,6 +585,8 @@ var tooltip = (conf) => {
     };
   }
 };
+
+// src/utils/determine/toolbox.ts
 var toolbox = (conf) => {
   if ((conf.renderer ?? "canvas") === "canvas" && (conf.features.toolbox ?? false)) {
     return {
@@ -546,6 +607,28 @@ var toolbox = (conf) => {
       show: false
     };
   }
+};
+
+// src/utils/determine/visualMap.ts
+var visualMap = (conf, dataset) => {
+  if (conf.type !== "heatmap" /* HEATMAP */ || !conf.zAxis) {
+    return null;
+  }
+  const transposed = transpose(dataset.source);
+  const series2 = transposed[conf.zAxis[0].columns[0].index];
+  const min = Math.min(...series2);
+  const max = Math.max(...series2);
+  return {
+    inRange: {
+      color: conf.zAxis[0].columns[0].color
+    },
+    left: "right",
+    top: "center",
+    type: conf.features.piecewise ?? false ? "piecewise" : "continuous",
+    min,
+    max,
+    calculable: true
+  };
 };
 
 // src/utils/legacy.ts
@@ -689,8 +772,9 @@ var ecOptionFromDataset = (conf, dataset) => {
     title: determine_exports.title(conf),
     toolbox: determine_exports.toolbox(conf),
     tooltip: determine_exports.tooltip(conf),
-    xAxis: determine_exports.axis(conf, dataset, "horizontal"),
-    yAxis: determine_exports.axis(conf, dataset, "vertical")
+    xAxis: determine_exports.axis(conf, dataset, "x"),
+    yAxis: determine_exports.axis(conf, dataset, "y"),
+    visualMap: determine_exports.visualMap(conf, dataset)
   };
 };
 var ecOptionFromBlockResult = (conf, res) => {

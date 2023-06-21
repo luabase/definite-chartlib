@@ -27,7 +27,8 @@ declare enum ChartType {
     BAR = "bar",
     LINE = "line",
     PIE = "pie",
-    SCATTER = "scatter"
+    SCATTER = "scatter",
+    HEATMAP = "heatmap"
 }
 
 interface Column {
@@ -47,13 +48,15 @@ interface ChartConfig {
         legend?: boolean;
         toolbox?: boolean;
         labels?: boolean;
-        stack?: boolean;
         smooth?: boolean;
         area?: boolean;
+        stack?: boolean;
         orientation?: string;
+        piecewise?: boolean;
     };
     xAxis: Axis$1[];
     yAxis: Axis$1[];
+    zAxis?: Axis$1[];
 }
 
 interface TextStyle {
@@ -168,40 +171,55 @@ interface ToolTip extends IShowable {
     formatter?: string;
 }
 
-interface ECOption {
-    title: Title;
-    legend: Legend;
-    grid: Grid;
-    xAxis: Axis[];
-    yAxis: Axis[];
-    tooltip: ToolTip;
-    toolbox: ToolBox;
-    dataset: DataSet;
-    series: Series[];
-    backgroundColor: string;
-    animation: boolean;
+interface VisualMap {
+    min: number;
+    max: number;
+    type: string;
+    calculable: boolean;
+    left: string;
+    top: string;
+    inRange: {
+        color: string[];
+    };
 }
 
-type index_Axis = Axis;
-type index_DataSet = DataSet;
-type index_ECOption = ECOption;
-type index_Grid = Grid;
-type index_Legend = Legend;
-type index_Series = Series;
-type index_Title = Title;
-type index_ToolBox = ToolBox;
-type index_ToolTip = ToolTip;
-declare namespace index {
+interface ECOption {
+    animation: boolean;
+    backgroundColor: string;
+    dataset: DataSet;
+    grid: Grid;
+    legend: Legend;
+    series: Series[];
+    title: Title;
+    toolbox: ToolBox;
+    tooltip: ToolTip;
+    visualMap: VisualMap | null;
+    xAxis: Axis[];
+    yAxis: Axis[];
+}
+
+type index$1_Axis = Axis;
+type index$1_DataSet = DataSet;
+type index$1_ECOption = ECOption;
+type index$1_Grid = Grid;
+type index$1_Legend = Legend;
+type index$1_Series = Series;
+type index$1_Title = Title;
+type index$1_ToolBox = ToolBox;
+type index$1_ToolTip = ToolTip;
+type index$1_VisualMap = VisualMap;
+declare namespace index$1 {
   export {
-    index_Axis as Axis,
-    index_DataSet as DataSet,
-    index_ECOption as ECOption,
-    index_Grid as Grid,
-    index_Legend as Legend,
-    index_Series as Series,
-    index_Title as Title,
-    index_ToolBox as ToolBox,
-    index_ToolTip as ToolTip,
+    index$1_Axis as Axis,
+    index$1_DataSet as DataSet,
+    index$1_ECOption as ECOption,
+    index$1_Grid as Grid,
+    index$1_Legend as Legend,
+    index$1_Series as Series,
+    index$1_Title as Title,
+    index$1_ToolBox as ToolBox,
+    index$1_ToolTip as ToolTip,
+    index$1_VisualMap as VisualMap,
   };
 }
 
@@ -247,36 +265,48 @@ declare namespace datetime {
   };
 }
 
-declare const renderer: (v: string | undefined) => string;
-declare const title: (conf: ChartConfig) => Title;
-declare const legend: (conf: ChartConfig) => Legend;
-declare const grid: (conf: ChartConfig, dataset: DataSet) => Grid;
-declare const axis: (conf: ChartConfig, dataset: DataSet, direction: "horizontal" | "vertical") => Axis[];
-declare const series: (conf: ChartConfig, dataset: DataSet) => Series[];
 declare const animation: (conf: ChartConfig) => boolean;
+
+declare const axis: (conf: ChartConfig, dataset: DataSet, axisType: "x" | "y" | "z") => Axis[];
+
+declare const grid: (conf: ChartConfig, dataset: DataSet) => Grid;
+
+declare const legend: (conf: ChartConfig) => Legend;
+
+declare const renderer: (v: string | undefined) => string;
+
+declare const series: (conf: ChartConfig, dataset: DataSet) => Series[];
+
+declare const title: (conf: ChartConfig) => Title;
+
 declare const tooltip: (conf: ChartConfig) => ToolTip;
+
 declare const toolbox: (conf: ChartConfig) => ToolBox;
 
-declare const determine_animation: typeof animation;
-declare const determine_axis: typeof axis;
-declare const determine_grid: typeof grid;
-declare const determine_legend: typeof legend;
-declare const determine_renderer: typeof renderer;
-declare const determine_series: typeof series;
-declare const determine_title: typeof title;
-declare const determine_toolbox: typeof toolbox;
-declare const determine_tooltip: typeof tooltip;
-declare namespace determine {
+declare const visualMap: (conf: ChartConfig, dataset: DataSet) => VisualMap | null;
+
+declare const index_animation: typeof animation;
+declare const index_axis: typeof axis;
+declare const index_grid: typeof grid;
+declare const index_legend: typeof legend;
+declare const index_renderer: typeof renderer;
+declare const index_series: typeof series;
+declare const index_title: typeof title;
+declare const index_toolbox: typeof toolbox;
+declare const index_tooltip: typeof tooltip;
+declare const index_visualMap: typeof visualMap;
+declare namespace index {
   export {
-    determine_animation as animation,
-    determine_axis as axis,
-    determine_grid as grid,
-    determine_legend as legend,
-    determine_renderer as renderer,
-    determine_series as series,
-    determine_title as title,
-    determine_toolbox as toolbox,
-    determine_tooltip as tooltip,
+    index_animation as animation,
+    index_axis as axis,
+    index_grid as grid,
+    index_legend as legend,
+    index_renderer as renderer,
+    index_series as series,
+    index_title as title,
+    index_toolbox as toolbox,
+    index_tooltip as tooltip,
+    index_visualMap as visualMap,
   };
 }
 
@@ -412,4 +442,4 @@ declare namespace color {
   };
 }
 
-export { Axis$1 as Axis, BlockDetails, BlockResults, ChartConfig, ChartType, Column, Frame, LegacyAdditionalSeries, Series$1 as Series, Value, axes, color, convert, dataset, datetime, chartlib as default, determine, index as echarts, format, frame, legacy };
+export { Axis$1 as Axis, BlockDetails, BlockResults, ChartConfig, ChartType, Column, Frame, LegacyAdditionalSeries, Series$1 as Series, Value, axes, color, convert, dataset, datetime, chartlib as default, index as determine, index$1 as echarts, format, frame, legacy };
