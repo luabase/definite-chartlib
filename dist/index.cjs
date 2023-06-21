@@ -768,7 +768,7 @@ var toPie = (conf) => {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
         conf = swap(conf);
       }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "pie" /* PIE */);
+      conf.yAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], "pie" /* PIE */);
       return conf;
     }
   }
@@ -784,7 +784,7 @@ var toHeatmap = (conf) => {
         conf = swap(conf);
       }
       const xAxis = conf.xAxis;
-      conf.zAxis = convertAllColumnTypesInAxes(conf.yAxis, "heatmap" /* HEATMAP */);
+      conf.zAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], "heatmap" /* HEATMAP */);
       conf.xAxis = xAxis;
       conf.yAxis = xAxis;
       return conf;
@@ -809,7 +809,7 @@ var toScatter = (conf) => {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
         conf = swap(conf);
       }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "scatter" /* SCATTER */);
+      conf.yAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], "scatter" /* SCATTER */);
       return conf;
     }
   }
