@@ -22,6 +22,6 @@ export const visualMap = (
     type: conf.features.piecewise ?? false ? "piecewise" : "continuous",
     min,
     max,
-    calculable: (conf.renderer ?? "canvas") === "canvas",
+    calculable: true,
   };
 };
