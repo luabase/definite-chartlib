@@ -430,8 +430,8 @@ var grid = (conf, dataset) => {
       } else {
         grid2.left = isLargeSet ? "15%" : "18%";
       }
-    } else if (conf.type === "heatmap" /* HEATMAP */ && (conf.features.piecewise ?? false)) {
-      grid2.right = "15%";
+    } else if (conf.type === "heatmap" /* HEATMAP */) {
+      grid2.right = conf.features.piecewise ?? false ? "15%" : "11%";
     }
   }
   return grid2;
@@ -627,7 +627,7 @@ var visualMap = (conf, dataset) => {
     type: conf.features.piecewise ?? false ? "piecewise" : "continuous",
     min,
     max,
-    calculable: (conf.renderer ?? "canvas") === "canvas"
+    calculable: true
   };
 };
 
@@ -778,6 +778,7 @@ var toHeatmap = (conf) => {
   conf.type = "heatmap" /* HEATMAP */;
   const previousFeatures = conf.features;
   conf = resetFeatures(conf);
+  conf.features.labels = true;
   switch (from) {
     default: {
       if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
