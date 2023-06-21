@@ -120,6 +120,7 @@ describe("given a dataset with 2 value columns", () => {
           name: "weight",
         },
       ],
+      visualMap: null,
       backgroundColor: "#18181b",
       animation: true,
     });

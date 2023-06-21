@@ -47,7 +47,7 @@ describe("determine.axis", () => {
       ],
     };
     it("will return an empty eCharts axis config", () => {
-      const actual = determine.axis(conf, dataset, "horizontal");
+      const actual = determine.axis(conf, dataset, "x");
       expect(actual).toEqual([]);
     });
   });
@@ -69,7 +69,7 @@ describe("determine.axis", () => {
         ],
       };
       it("can correctly determine the corresponding eCharts axis config", () => {
-        const actual = determine.axis(conf, dataset, "horizontal");
+        const actual = determine.axis(conf, dataset, "x");
         expect(actual).toEqual([
           {
             show: true,
@@ -110,7 +110,7 @@ describe("determine.axis", () => {
         ],
       };
       it("can correctly determine the corresponding eCharts axis config", () => {
-        const actual = determine.axis(conf, dataset, "vertical");
+        const actual = determine.axis(conf, dataset, "y");
         expect(actual).toEqual([
           {
             show: true,
@@ -156,7 +156,7 @@ describe("determine.axis", () => {
         ],
       };
       it("can correctly determine the corresponding eCharts axis config", () => {
-        const actual = determine.axis(conf, dataset, "vertical");
+        const actual = determine.axis(conf, dataset, "y");
         expect(actual).toEqual([
           {
             show: true,
@@ -200,7 +200,7 @@ describe("determine.axis", () => {
         ],
       };
       it("can correctly determine the corresponding eCharts axes config", () => {
-        const actual = determine.axis(conf, dataset, "vertical");
+        const actual = determine.axis(conf, dataset, "y");
         expect(actual).toEqual([
           {
             show: true,
@@ -275,7 +275,7 @@ describe("determine.axis", () => {
         ],
       };
       it("can correctly determine the corresponding eCharts axes config", () => {
-        const actual = determine.axis(conf, dataset, "vertical");
+        const actual = determine.axis(conf, dataset, "y");
         expect(actual).toEqual([
           {
             show: true,

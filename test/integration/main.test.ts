@@ -8,7 +8,9 @@ describe("given block results and some configuration", () => {
       type: ChartType.LINE,
       features: {},
       xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
-      yAxis: [{ columns: [{ index: 1, type: ChartType.LINE, color: "#2f4b7c" }] }],
+      yAxis: [
+        { columns: [{ index: 1, type: ChartType.LINE, color: "#2f4b7c" }] },
+      ],
     };
     const res = {
       rows: [
@@ -35,7 +37,13 @@ describe("given block results and some configuration", () => {
         left: "center",
         top: "2%",
       },
-      grid: { show: false, containLabel: false, left: "12%", bottom: "12%", right: "9%" },
+      grid: {
+        show: false,
+        containLabel: false,
+        left: "12%",
+        bottom: "12%",
+        right: "9%",
+      },
       xAxis: [
         {
           type: "category",
@@ -101,6 +109,7 @@ describe("given block results and some configuration", () => {
           name: "amount",
         },
       ],
+      visualMap: null,
       backgroundColor: "#18181b",
       animation: true,
     });

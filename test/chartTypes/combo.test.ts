@@ -127,6 +127,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           name: "amount2",
         },
       ],
+      visualMap: null,
       backgroundColor: "#18181b",
       animation: true,
     });
@@ -277,6 +278,7 @@ describe("given a dataset with 1 categorical column and 2 value columns", () => 
           name: "amount2",
         },
       ],
+      visualMap: null,
       backgroundColor: "#18181b",
       animation: true,
     });

@@ -17,8 +17,9 @@ export const ecOptionFromDataset = (
     title: determine.title(conf),
     toolbox: determine.toolbox(conf),
     tooltip: determine.tooltip(conf),
-    xAxis: determine.axis(conf, dataset, "horizontal"),
-    yAxis: determine.axis(conf, dataset, "vertical"),
+    xAxis: determine.axis(conf, dataset, "x"),
+    yAxis: determine.axis(conf, dataset, "y"),
+    visualMap: determine.visualMap(conf, dataset),
   };
 };
 
