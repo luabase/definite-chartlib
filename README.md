@@ -9,21 +9,22 @@
 
 ## Supported Chart Types
 
-| Chart Type     | X-Axis Data Type | Y-Axis Data Type | Multiple Y-Axes | Z-Axis |
-| -------------- | :--------------: | :--------------: | :-------------: | :----: |
-| Pie            |   Categorical    |      Value       |        ❌        |   ❌    |
-| Line           |   Categorical    |      Value       |        ✅        |   ❌    |
-| Scatter        |      Value       |      Value       |        ❌        |   ❌    |
-| Vertical Bar   |   Categorical    |      Value       |        ❌        |   ❌    |
-| Horizontal Bar |      Value       |   Categorical    |        ❌        |   ❌    |
-| Grid Heatmap   |     Category     |     Category     |        ❌        |   ✅    |
+| Chart Type       | X-Axis Data Type | Y-Axis Data Type | Multiple Y-Axes | Z-Axis |
+| ---------------- | :--------------: | :--------------: | :-------------: | :----: |
+| Pie              |   Categorical    |      Value       |        ❌        |   ❌    |
+| Line             |   Categorical    |      Value       |        ✅        |   ❌    |
+| Scatter          |      Value       |      Value       |        ❌        |   ❌    |
+| Vertical Bar     |   Categorical    |      Value       |        ❌        |   ❌    |
+| Horizontal Bar   |      Value       |   Categorical    |        ❌        |   ❌    |
+| Grid Heatmap     |     Category     |     Category     |        ❌        |   ✅    |
+| Calendar Heatmap |     Category     |      Value       |        ❌        |   ❌    |
 
 ## Configuration Schema
 
 ```ts
 {
   name: string,
-  type: "bar" | "line" | "pie" | "scatter" | "heatmap", // combo is implicit
+  type: "bar" | "line" | "pie" | "scatter" | "heatmap" | "calendar", // combo is implicit
   features: {
     // common features (all chart types)
     title: boolean | undefined,
@@ -36,7 +37,7 @@
     // bar only
     stack: boolean | undefined,
     orientation: "vertical" | "horizontal" | undefined,
-    // heatmap only
+    // heatmaps only
     piecewise: boolean | undefined
   },
   xAxis: [
