@@ -2,7 +2,7 @@ import * as ec from "../../types/echarts";
 import { ChartConfig, ChartType } from "../../types";
 
 export const tooltip = (conf: ChartConfig): ec.ToolTip => {
-  if (![ChartType.PIE, ChartType.HEATMAP].includes(conf.type)) {
+  if (![ChartType.PIE, ChartType.HEATMAP, ChartType.CALENDAR].includes(conf.type)) {
     return {
       show: true,
       trigger: "axis",
