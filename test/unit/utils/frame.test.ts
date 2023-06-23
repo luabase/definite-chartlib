@@ -63,3 +63,16 @@ describe("formatValues", () => {
     ]);
   });
 });
+
+describe("select", () => {
+  it("will only return series matching given indices", () => {
+    const matrix = [
+      ["a", "b", "c"],
+      ["a", "b", "c"],
+    ];
+    expect(frame.select(matrix, [2, 0])).toEqual([
+      ["c", "a"],
+      ["c", "a"],
+    ]);
+  });
+});
