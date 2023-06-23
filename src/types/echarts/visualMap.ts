@@ -5,6 +5,7 @@ export default interface VisualMap {
   calculable: boolean;
   left: string;
   top: string;
+  orient: "horizontal" | "vertical";
   inRange: {
     color: string[];
   };
