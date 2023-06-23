@@ -1,7 +1,7 @@
 import * as ec from "../../types/echarts";
 import * as format from "../format";
 import { Axis, ChartConfig, ChartType } from "../../types";
-import { color } from "../../constants";
+import { color, error } from "../../constants";
 
 const getTargetAxes = (conf: ChartConfig, type: "x" | "y" | "z"): Axis[] => {
   switch (type) {
@@ -13,7 +13,7 @@ const getTargetAxes = (conf: ChartConfig, type: "x" | "y" | "z"): Axis[] => {
       if (conf.zAxis) {
         return conf.zAxis;
       } else {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
   }
 };

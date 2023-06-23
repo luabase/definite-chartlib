@@ -1,6 +1,6 @@
 import * as ec from "../../types/echarts";
 import { Axis, ChartConfig, ChartType } from "../../types";
-import { color } from "../../constants";
+import { color, error } from "../../constants";
 
 const getTypedAxes = (
   conf: ChartConfig
@@ -18,7 +18,7 @@ const getTypedAxes = (
           catAxis2: conf.yAxis,
         };
       } else {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
     default:
       return { valAxis: conf.yAxis, catAxis1: conf.xAxis };
@@ -97,7 +97,7 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
           break;
         case ChartType.HEATMAP:
           if (!catAxis2) {
-            throw "zAxis not found";
+            throw error.Z_AXIS_NOT_FOUND;
           }
           item.encode = {
             x: dataset.dimensions[catAxis1[0].columns[0].index],

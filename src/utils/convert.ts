@@ -1,6 +1,6 @@
-import { color } from "../constants";
 import { ChartType, ChartConfig } from "../types";
 import { Axis, Column } from "../types/config";
+import { color, error } from "../constants";
 import * as axes from "./axes";
 
 const resetFeatures = (conf: ChartConfig): ChartConfig => {
@@ -40,7 +40,7 @@ const toLine = (conf: ChartConfig): ChartConfig => {
     }
     case ChartType.HEATMAP: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, ChartType.LINE);
       delete conf.zAxis;
@@ -68,7 +68,7 @@ const toBar = (conf: ChartConfig): ChartConfig => {
     }
     case ChartType.HEATMAP: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, ChartType.BAR);
       delete conf.zAxis;
@@ -90,7 +90,7 @@ const toPie = (conf: ChartConfig): ChartConfig => {
   switch (from) {
     case ChartType.HEATMAP: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, ChartType.PIE);
       delete conf.zAxis;
@@ -137,7 +137,7 @@ const toScatter = (conf: ChartConfig): ChartConfig => {
   switch (from) {
     case ChartType.HEATMAP: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, ChartType.SCATTER);
       delete conf.zAxis;
