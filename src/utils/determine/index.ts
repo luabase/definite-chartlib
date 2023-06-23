@@ -1,5 +1,6 @@
 export * from "./animation";
 export * from "./axis";
+export * from "./calendar";
 export * from "./grid";
 export * from "./legend";
 export * from "./renderer";

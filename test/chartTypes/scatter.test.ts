@@ -121,6 +121,7 @@ describe("given a dataset with 2 value columns", () => {
         },
       ],
       visualMap: null,
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });

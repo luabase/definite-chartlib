@@ -110,6 +110,7 @@ describe("given block results and some configuration", () => {
         },
       ],
       visualMap: null,
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });

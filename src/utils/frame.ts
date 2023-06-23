@@ -24,3 +24,10 @@ export const formatValues = (frame: Frame): Frame => {
   });
   return transpose(transformed); // back to row-oriented
 };
+
+export const select = (frame: Frame, cols: number[]): Frame => {
+  const transposed = transpose(frame); // to column-oriented
+  const filtered: Frame = [];
+  cols.forEach((i) => filtered.push(transposed[i]));
+  return transpose(filtered); // back to row-oriented
+};

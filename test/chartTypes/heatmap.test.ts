@@ -128,6 +128,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
         max: 8,
         calculable: true,
         type: "continuous",
+        orient: "vertical",
         left: "right",
         top: "center",
         inRange: {
@@ -145,6 +146,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
           ],
         },
       },
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });
@@ -284,6 +286,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
         max: 11,
         calculable: true,
         type: "piecewise",
+        orient: "vertical",
         left: "right",
         top: "center",
         inRange: {
@@ -299,6 +302,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
           ],
         },
       },
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });

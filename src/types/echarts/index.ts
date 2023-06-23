@@ -1,4 +1,5 @@
 import Axis from "./axis";
+import Calendar from "./calendar";
 import DataSet from "./dataset";
 import Grid from "./grid";
 import Legend from "./legend";
@@ -10,6 +11,7 @@ import VisualMap from "./visualMap";
 
 export {
   Axis,
+  Calendar,
   DataSet,
   Grid,
   Legend,
@@ -31,6 +33,7 @@ export interface ECOption {
   toolbox: ToolBox;
   tooltip: ToolTip;
   visualMap: VisualMap | null;
+  calendar: Calendar[] | null;
   xAxis: Axis[];
   yAxis: Axis[];
 }

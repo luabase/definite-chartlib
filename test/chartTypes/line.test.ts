@@ -101,6 +101,7 @@ describe("given dataset with one categorical and one value column", () => {
         },
       ],
       visualMap: null,
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });
@@ -223,6 +224,7 @@ describe("given dataset with one categorical and two value columns", () => {
         },
       ],
       visualMap: null,
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });
@@ -359,6 +361,7 @@ describe("given dataset with one categorical and two value columns", () => {
         },
       ],
       visualMap: null,
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });

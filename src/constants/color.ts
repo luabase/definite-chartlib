@@ -11,6 +11,7 @@ export const LIME_800 = "#3f6212";
 export const LIME_900 = "#365314";
 
 // zinc
+export const ZINC_400 = "#a1a1aa"
 export const ZINC_500 = "#71717a";
 export const ZINC_800 = "#27272a";
 export const ZINC_900 = "#18181b";

@@ -1,6 +1,7 @@
 import * as ec from "../../types/echarts";
+import * as frame from "../frame";
 import { Axis, ChartConfig, ChartType } from "../../types";
-import { color } from "../../constants";
+import { color, error } from "../../constants";
 
 const getTypedAxes = (
   conf: ChartConfig
@@ -18,7 +19,7 @@ const getTypedAxes = (
           catAxis2: conf.yAxis,
         };
       } else {
-        throw "zAxis not found";
+        throw error.Z_AXIS_NOT_FOUND;
       }
     default:
       return { valAxis: conf.yAxis, catAxis1: conf.xAxis };
@@ -97,7 +98,7 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
           break;
         case ChartType.HEATMAP:
           if (!catAxis2) {
-            throw "zAxis not found";
+            throw error.Z_AXIS_NOT_FOUND;
           }
           item.encode = {
             x: dataset.dimensions[catAxis1[0].columns[0].index],
@@ -105,8 +106,28 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
             value: dataset.dimensions[col.index],
           };
           break;
+        case ChartType.CALENDAR: {
+          const transposed = frame.transpose(dataset.source);
+          const years = Array.from(
+            new Set(
+              transposed[0]
+                .map((t) => new Date(String(t)))
+                .map((d) => d.getUTCFullYear())
+                .sort()
+            )
+          );
+          years.forEach((_, i) => {
+            const itemCopy = { ...item };
+            itemCopy.type = ChartType.HEATMAP;
+            itemCopy.calendarIndex = i;
+            itemCopy.coordinateSystem = "calendar";
+            series.push(itemCopy);
+          });
+        }
       }
-      series.push(item);
+      if (conf.type !== ChartType.CALENDAR) {
+        series.push(item);
+      }
     });
   });
   return series;
