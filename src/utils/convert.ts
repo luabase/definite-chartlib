@@ -16,7 +16,7 @@ const convertAllColumnTypesInAxes = (axes: Axis[], to: ChartType) => {
   axes.forEach((axis) => {
     axis.columns.forEach((col) => {
       col.type = to;
-      if ([ChartType.HEATMAP, ChartType.PIE].includes(to)) {
+      if ([ChartType.CALENDAR, ChartType.HEATMAP, ChartType.PIE].includes(to)) {
         col.color = color.LIME_PALETTE;
       } else if (Array.isArray(col.color)) {
         col.color = color.LIME_200;
@@ -156,6 +156,33 @@ const toScatter = (conf: ChartConfig): ChartConfig => {
   }
 };
 
+const toCalendar = (conf: ChartConfig): ChartConfig => {
+  const from = conf.type;
+  conf.type = ChartType.CALENDAR;
+  const previousFeatures = conf.features;
+  conf = resetFeatures(conf);
+  switch (from) {
+    case ChartType.HEATMAP: {
+      if (!conf.zAxis) {
+        throw error.Z_AXIS_NOT_FOUND;
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, ChartType.CALENDAR);
+      delete conf.zAxis;
+      return conf;
+    }
+    default: {
+      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
+        conf = axes.swap(conf);
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(
+        [conf.yAxis[0]],
+        ChartType.CALENDAR
+      );
+      return conf;
+    }
+  }
+};
+
 export const config = (conf: ChartConfig, to: ChartType): ChartConfig => {
   console.debug(`Converting chart from ${conf.type} to ${to}`);
   switch (to) {
@@ -169,6 +196,8 @@ export const config = (conf: ChartConfig, to: ChartType): ChartConfig => {
       return toScatter(conf);
     case ChartType.HEATMAP:
       return toHeatmap(conf);
+    case ChartType.CALENDAR:
+      return toCalendar(conf);
     default:
       return conf;
   }
