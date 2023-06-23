@@ -1,4 +1,5 @@
 import * as ec from "../../types/echarts";
+import * as frame from "../frame";
 import { Axis, ChartConfig, ChartType } from "../../types";
 import { color, error } from "../../constants";
 
@@ -105,8 +106,28 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
             value: dataset.dimensions[col.index],
           };
           break;
+        case ChartType.CALENDAR: {
+          const transposed = frame.transpose(dataset.source);
+          const years = Array.from(
+            new Set(
+              transposed[0]
+                .map((t) => new Date(String(t)))
+                .map((d) => d.getUTCFullYear())
+                .sort()
+            )
+          );
+          years.forEach((_, i) => {
+            const itemCopy = { ...item };
+            itemCopy.type = ChartType.HEATMAP;
+            itemCopy.calendarIndex = i;
+            itemCopy.coordinateSystem = "calendar";
+            series.push(itemCopy);
+          });
+        }
       }
-      series.push(item);
+      if (conf.type !== ChartType.CALENDAR) {
+        series.push(item);
+      }
     });
   });
   return series;
