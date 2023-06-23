@@ -18,7 +18,7 @@ interface ConditionalConfig extends BaseConfig {
   ne?: Value;
 }
 
-interface FilterConfig extends BaseConfig {
+interface FilterConfig {
   and: ConditionalConfig[];
 }
 
