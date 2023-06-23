@@ -14,7 +14,7 @@ interface Encode {
 
 export default interface Series extends IStylable {
   type: string;
-  name?: string,
+  name?: string;
   encode?: Encode;
   color?: string | string[];
   xAxisIndex?: number;
@@ -26,4 +26,6 @@ export default interface Series extends IStylable {
   areaStyle?: object;
   itemStyle?: object;
   symbolSize?: number;
+  calendarIndex?: number;
+  coordinateSystem?: string;
 }
