@@ -23,7 +23,7 @@ export const ecOptionFromDataset = (
   return {
     animation: determine.animation(conf),
     backgroundColor: color.ZINC_900,
-    dataset: dataset,
+    dataset: conf.transforms ? [dataset, determine.transform(conf)] : dataset,
     grid: determine.grid(conf, dataset),
     legend: determine.legend(conf),
     series: determine.series(conf, dataset),
