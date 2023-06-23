@@ -13,6 +13,7 @@ export {
   Axis,
   Calendar,
   DataSet,
+  TransformDataSet,
   Grid,
   Legend,
   Series,
@@ -25,7 +26,7 @@ export {
 export interface ECOption {
   animation: boolean;
   backgroundColor: string;
-  dataset: DataSet | TransformDataSet;
+  dataset: DataSet | TransformDataSet | (DataSet | TransformDataSet)[];
   grid: Grid;
   legend: Legend;
   series: Series[];
