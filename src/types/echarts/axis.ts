@@ -1,15 +1,5 @@
 import { IShowable } from "./abstract";
-import { TextStyle } from "./elements";
-
-interface LineStyle {
-  width?: number;
-  type?: string;
-  color?: string;
-}
-
-interface SplitLine extends IShowable {
-  lineStyle?: LineStyle;
-}
+import { TextStyle, SplitLine } from "./elements";
 
 interface AxisLabel {
   interval?: number;
