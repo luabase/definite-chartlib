@@ -1,11 +1,24 @@
 import { color } from "./constants";
 import { dataset, determine, frame } from "./utils";
-import { ChartConfig, BlockResults, echarts as ec } from "./types";
+import { ChartConfig, BlockResults, echarts as ec, ChartType } from "./types";
+
+const useSelectedDimensionsOnly = (conf: ChartConfig, dataset: ec.DataSet) => {
+  const xIndex = conf.xAxis[0].columns[0].index;
+  const yIndex = conf.yAxis[0].columns[0].index;
+  dataset.dimensions = [dataset.dimensions[xIndex], dataset.dimensions[yIndex]];
+  dataset.source = frame.select(dataset.source, [xIndex, yIndex]);
+  conf.xAxis[0].columns[0].index = 0;
+  conf.yAxis[0].columns[0].index = 1;
+};
 
 export const ecOptionFromDataset = (
   conf: ChartConfig,
   dataset: ec.DataSet
 ): ec.ECOption => {
+  if (conf.type === ChartType.CALENDAR) {
+    // NOTE: standard encoding does not work for calendar coordinate system
+    useSelectedDimensionsOnly(conf, dataset);
+  }
   dataset.source = frame.formatValues(dataset.source);
   return {
     animation: determine.animation(conf),
