@@ -38,6 +38,9 @@ export const series = (conf: ChartConfig, dataset: ec.DataSet): ec.Series[] => {
       if (conf.features.labels ?? false) {
         item.label = { show: true };
       }
+      if (conf.transforms) {
+        item.datasetIndex = 1;
+      }
       switch (conf.type) {
         case ChartType.BAR:
           item.color = col.color ?? color.DARK_BLUE;
