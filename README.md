@@ -40,6 +40,25 @@
     // heatmaps only
     piecewise: boolean | undefined
   },
+  // optional transformations
+  transforms: {
+    filters: [
+      {
+        index: number,
+        type: "<" | "<=" | ">" | ">=" | "=" | "!="
+        value: string | number
+      },
+      ...
+    ],
+    sorts: [
+      {
+        index: number,
+        order: "asc" | "desc",
+        parser: "time" | undefined
+      },
+      ...
+    ]
+  },
   xAxis: [
     {
       columns: [
@@ -98,29 +117,29 @@ const blockResult = {
   rows: [
     {
       date: "2020-01-01",
-      total_users: 73,
-      purchasing_users: 12,
+      visitors_from_search: 73,
+      visitors_from_social: 12,
     },
     {
       date: "2020-01-02",
-      total_users: 84,
-      purchasing_users: 17,
+      visitors_from_search: 84,
+      visitors_from_social: 17,
     },
     {
       date: "2020-01-03",
-      total_users: 62,
-      purchasing_users: 8,
+      visitors_from_search: 62,
+      visitors_from_social: 8,
     },
   ],
   schema: [
     { name: "date", type: "string" },
-    { name: "total_users", type: "integer" },
-    { name: "purchasing_users", type: "integer" },
+    { name: "visitors_from_search", type: "integer" },
+    { name: "visitors_from_social", type: "integer" },
   ],
 };
 
 const chartConfig = {
-  name: "Daily Users",
+  name: "Visitor Attribution",
   type: "line",
   features: {},
   xAxis: [
