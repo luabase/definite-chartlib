@@ -59,7 +59,7 @@ export const axis = (
         .join(", ");
       name = name.length > 45 ? name.slice(0, 45) + "..." : name;
       const item: ec.Axis = {
-        show: conf.type !== ChartType.PIE,
+        show: ![ChartType.PIE, ChartType.CALENDAR].includes(conf.type),
         type: type,
         name: name,
         nameLocation: "center",
