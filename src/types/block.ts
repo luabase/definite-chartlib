@@ -17,5 +17,5 @@ export interface BlockDetails {
 
 export interface BlockResults {
   rows: Record<string, Value>[];
-  schema: { name: string; type: string }[];
+  schema: { name: string; type: string; sql_value_type?: string }[];
 }
