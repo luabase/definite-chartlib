@@ -140,6 +140,7 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         },
       ],
       visualMap: null,
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });

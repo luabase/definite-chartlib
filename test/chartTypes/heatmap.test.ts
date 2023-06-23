@@ -146,6 +146,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
           ],
         },
       },
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });
@@ -301,6 +302,7 @@ describe("given a dataset with 2 categorical and 1 value columns", () => {
           ],
         },
       },
+      calendar: null,
       backgroundColor: "#18181b",
       animation: true,
     });

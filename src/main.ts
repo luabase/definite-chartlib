@@ -20,6 +20,7 @@ export const ecOptionFromDataset = (
     xAxis: determine.axis(conf, dataset, "x"),
     yAxis: determine.axis(conf, dataset, "y"),
     visualMap: determine.visualMap(conf, dataset),
+    calendar: determine.calendar(conf, dataset),
   };
 };
 
