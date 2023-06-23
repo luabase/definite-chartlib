@@ -1,3 +1,4 @@
+import { Value } from "./alias";
 import { ChartType } from "./enums";
 
 export interface Column {
@@ -8,6 +9,19 @@ export interface Column {
 
 export interface Axis {
   columns: Column[];
+}
+
+export interface Transforms {
+  filters: {
+    index: number;
+    type: "<" | "<=" | ">" | ">=" | "=" | "!=";
+    value: Value;
+  }[];
+  sorts: {
+    index: number;
+    order: "asc" | "desc";
+    parser?: "time";
+  }[];
 }
 
 export interface ChartConfig {
@@ -25,6 +39,7 @@ export interface ChartConfig {
     orientation?: string;
     piecewise?: boolean;
   };
+  transforms?: Transforms;
   xAxis: Axis[];
   yAxis: Axis[];
   zAxis?: Axis[];
