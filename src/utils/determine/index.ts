@@ -8,4 +8,5 @@ export * from "./series";
 export * from "./title";
 export * from "./tooltip";
 export * from "./toolbox";
+export * from "./transform";
 export * from "./visualMap";
