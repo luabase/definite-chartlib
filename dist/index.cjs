@@ -766,12 +766,12 @@ var title = (conf) => {
 // src/utils/determine/tooltip.ts
 var tooltip = (conf) => {
   switch (conf.type) {
+    case "calendar" /* CALENDAR */:
     case "pie" /* PIE */:
       return {
         show: true,
         trigger: "item"
       };
-    case "calendar" /* CALENDAR */:
     case "heatmap" /* HEATMAP */:
       return {
         show: true,
