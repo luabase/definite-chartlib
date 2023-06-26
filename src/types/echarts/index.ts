@@ -1,6 +1,6 @@
 import Axis from "./axis";
 import Calendar from "./calendar";
-import DataSet, { TransformDataSet } from "./dataset";
+import DataSet from "./dataset";
 import Grid from "./grid";
 import Legend from "./legend";
 import Series from "./series";
@@ -13,7 +13,6 @@ export {
   Axis,
   Calendar,
   DataSet,
-  TransformDataSet,
   Grid,
   Legend,
   Series,
@@ -26,7 +25,7 @@ export {
 export interface ECOption {
   animation: boolean;
   backgroundColor: string;
-  dataset: DataSet | TransformDataSet | (DataSet | TransformDataSet)[];
+  dataset: DataSet;
   grid: Grid;
   legend: Legend;
   series: Series[];
