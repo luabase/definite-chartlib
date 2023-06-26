@@ -1,4 +1,4 @@
-import { Value } from "./alias";
+import { Value, FilterType, AggregateType, SortOrder } from "./alias";
 import { ChartType } from "./enums";
 
 export interface Column {
@@ -11,17 +11,29 @@ export interface Axis {
   columns: Column[];
 }
 
-export interface Transforms {
-  filters: {
-    index: number;
-    type: "<" | "<=" | ">" | ">=" | "=" | "!=";
-    value: Value;
-  }[];
-  sorts: {
-    index: number;
-    order: "asc" | "desc";
-    parser?: "time";
-  }[];
+interface FilterTransform {
+  index: number;
+  type: FilterType;
+  value: Value;
+  parser?: "datetime";
+}
+
+interface AggregateTransform {
+  index: number;
+  type: AggregateType;
+  groupBy: number;
+}
+
+interface SortTransform {
+  index: number;
+  order: SortOrder;
+  parser?: "datetime";
+}
+
+export interface TFConfig {
+  filter?: FilterTransform[];
+  aggregate?: AggregateTransform[];
+  sort?: SortTransform[];
 }
 
 export interface ChartConfig {
@@ -39,7 +51,7 @@ export interface ChartConfig {
     orientation?: string;
     piecewise?: boolean;
   };
-  transforms?: Transforms;
+  transform?: TFConfig;
   xAxis: Axis[];
   yAxis: Axis[];
   zAxis?: Axis[];
