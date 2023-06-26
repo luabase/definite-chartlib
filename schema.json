@@ -1,0 +1,285 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "ChartConfig",
+  "description": "Definite chart config",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Chart title"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["bar", "line", "pie", "scatter", "heatmap", "calendar"],
+      "description": "Chart type. Bar, line, and scatter are standard cartesian coordinate planes with x and y axes. Heatmaps are also cartesian coordinate planes but they will have a z-axis. Calendar charts will have a date axis (x axis) and a value axis (y axis). Pie charts will have labels (x axis) and values (y axis)"
+    },
+    "features": {
+      "type": "object",
+      "description": "Feature flag toggles for the chart",
+      "properties": {
+        "title": {
+          "type": "boolean",
+          "description": "Whether to show chart title. Default to true unless otherwise specified"
+        },
+        "legend": {
+          "type": "boolean",
+          "description": "Whether to show chart legend. Only show for bar and line charts"
+        },
+        "smooth": {
+          "type": "boolean",
+          "description": "Only available for line charts. Whether to show lines as smoothed."
+        },
+        "area": {
+          "type": "boolean",
+          "description": "Only available for line charts. Whether to area under lines."
+        },
+        "stack": {
+          "type": "boolean",
+          "description": "Only available for bar charts. Whether to show bars as stacked or not."
+        },
+        "orientation": {
+          "type": "boolean",
+          "description": "Only available for bar charts. If true then chart will be horizontal bar chart. Else will be vertical bar chart."
+        }
+      },
+      "required": ["title"]
+    },
+    "transform": {
+      "type": "object",
+      "description": "Transformations to perform on the data that you want to chart.",
+      "properties": {
+        "filter": {
+          "type": "array",
+          "description": "Filters to apply to the data you want to chart. Only add one item unless otherwise specified",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "description": "Index of column filter"
+              },
+              "type": {
+                "type": "string",
+                "description": "Filter condition to apply",
+                "enum": ["<", "<=", ">", ">=", "=", "!="]
+              },
+              "value": {
+                "type": "string",
+                "description": "The value to compare against"
+              },
+              "parser": {
+                "type": "string",
+                "description": "Only specify if the value being compared is a date or timestamp value",
+                "enum": ["datetime"]
+              }
+            },
+            "required": ["index", "type", "value"]
+          }
+        },
+        "aggregate": {
+          "type": "array",
+          "description": "Aggregates to apply to the data you want to chart. Only add one item.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "description": "Index of column to aggregate"
+              },
+              "type": {
+                "type": "string",
+                "description": "Aggregation to apply to the target column specified by the index. Use count if the data does not include numerical values.",
+                "enum": ["avg", "count", "sum"]
+              },
+              "groupBy": {
+                "type": "integer",
+                "description": "Index of the column to group the data by"
+              }
+            },
+            "required": ["index", "type", "groupBy"]
+          }
+        },
+        "sort": {
+          "type": "array",
+          "description": "What column to sort the data by. Only add one item.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "description": "Index of column to assign to sort"
+              },
+              "order": {
+                "type": "string",
+                "description": "Order of sort",
+                "enum": ["asc", "desc"]
+              },
+              "parser": {
+                "type": "string",
+                "description": "Only specify if the column being sorted has date or timestamp values",
+                "enum": ["datetime"]
+              }
+            },
+            "required": ["index", "order", "parser"]
+          }
+        }
+      }
+    },
+    "xAxis": {
+      "type": "array",
+      "description": "X-axis for bar, line, and scatter, heatmap charts. For pie charts this is the labels. For calendar this is the date column. Should only have one axis unless chart is horizontal bar.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "description": "Index of column to assign to this axis"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "bar",
+                    "line",
+                    "pie",
+                    "scatter",
+                    "heatmap",
+                    "calendar"
+                  ],
+                  "description": "This should be the same as the chart type"
+                },
+                "color": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "#f7fee7",
+                      "#ecfccb",
+                      "#d9f99d",
+                      "#bef264",
+                      "#a3e635",
+                      "#84cc16",
+                      "#65a30d",
+                      "#4d7c0f",
+                      "#3f6212",
+                      "#365314"
+                    ]
+                  },
+                  "description": "This will be ignored unless chart type is horizontal bar. Choose all items."
+                }
+              },
+              "required": ["index", "type", "color"]
+            }
+          }
+        },
+        "required": ["columns"]
+      }
+    },
+    "yAxis": {
+      "type": "array",
+      "description": "Y-axis for bar, line, and scatter, heatmap charts. For pie charts this is the values. For calendar this is the value column. For line and bar charts you can have more than one axis item",
+      "items": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "description": "Index of column to assign to this axis"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "bar",
+                    "line",
+                    "pie",
+                    "scatter",
+                    "heatmap",
+                    "calendar"
+                  ],
+                  "description": "This should be the same as the chart type unless you want a combo chart such as a line on a bar chart"
+                },
+                "color": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "#f7fee7",
+                      "#ecfccb",
+                      "#d9f99d",
+                      "#bef264",
+                      "#a3e635",
+                      "#84cc16",
+                      "#65a30d",
+                      "#4d7c0f",
+                      "#3f6212",
+                      "#365314"
+                    ]
+                  },
+                  "description": "Choose all items."
+                }
+              },
+              "required": ["index", "type", "color"]
+            }
+          }
+        },
+        "required": ["columns"]
+      }
+    },
+    "zAxis": {
+      "type": "array",
+      "description": "z-axis can only be used for heatmap charts. This axis will be the values used. Can only have one item.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "description": "Index of column to assign to this axis"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["heatmap"],
+                  "description": "Choose heatmap"
+                },
+                "color": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "#f7fee7",
+                      "#ecfccb",
+                      "#d9f99d",
+                      "#bef264",
+                      "#a3e635",
+                      "#84cc16",
+                      "#65a30d",
+                      "#4d7c0f",
+                      "#3f6212",
+                      "#365314"
+                    ]
+                  },
+                  "description": "Choose all items."
+                }
+              },
+              "required": ["index", "type", "color"]
+            }
+          }
+        },
+        "required": ["columns"]
+      }
+    }
+  },
+  "required": ["name", "type", "features", "xAxis", "yAxis"]
+}
