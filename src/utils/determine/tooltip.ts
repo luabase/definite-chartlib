@@ -3,12 +3,12 @@ import { ChartConfig, ChartType } from "../../types";
 
 export const tooltip = (conf: ChartConfig): ec.ToolTip => {
   switch (conf.type) {
+    case ChartType.CALENDAR:
     case ChartType.PIE:
       return {
         show: true,
         trigger: "item",
       };
-    case ChartType.CALENDAR:
     case ChartType.HEATMAP:
       return {
         show: true,
