@@ -95,6 +95,12 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         tooltip: {
           show: true,
           trigger: "item",
+          axisPointer: {
+            type: "cross",
+            crossStyle: {
+              color: "#999999",
+            },
+          },
         },
         toolbox: {
           show: false,
@@ -293,6 +299,12 @@ describe("given a dataset with 1 categorical and 1 value column", () => {
         tooltip: {
           show: true,
           trigger: "item",
+          axisPointer: {
+            type: "cross",
+            crossStyle: {
+              color: "#999999",
+            },
+          },
         },
         toolbox: {
           show: false,
