@@ -41,20 +41,28 @@
     piecewise: boolean | undefined
   },
   // optional transformations
-  transforms: {
-    filters: [
+  transform: {
+    filter: [
       {
         index: number,
-        type: "<" | "<=" | ">" | ">=" | "=" | "!="
+        type: "<" | "<=" | ">" | ">=" | "=" | "!=",
         value: string | number
       },
       ...
     ],
-    sorts: [
+    aggregate: [
+      {
+        index: number,
+        type: "avg" | "count" | "sum",
+        groupBy: index
+      },
+      ...
+    ],
+    sort: [
       {
         index: number,
         order: "asc" | "desc",
-        parser: "time" | undefined
+        parser: "datetime" | undefined
       },
       ...
     ]
