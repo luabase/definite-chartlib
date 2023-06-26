@@ -78,7 +78,7 @@
         },
         "aggregate": {
           "type": "array",
-          "description": "Aggregates to apply to the data you want to chart. Only add one item.",
+          "description": "Aggregates to apply to the data you want to chart. Only add one item. If aggregate is added then the available data will only be the group by column and the target column.",
           "items": {
             "type": "object",
             "properties": {
