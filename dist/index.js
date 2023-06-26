@@ -34,6 +34,7 @@ __export(color_exports, {
   PURPLE: () => PURPLE,
   TEAL: () => TEAL,
   YELLOW: () => YELLOW,
+  ZINC_400: () => ZINC_400,
   ZINC_500: () => ZINC_500,
   ZINC_800: () => ZINC_800,
   ZINC_900: () => ZINC_900
@@ -48,6 +49,7 @@ var LIME_600 = "#65a30d";
 var LIME_700 = "#4d7c0f";
 var LIME_800 = "#3f6212";
 var LIME_900 = "#365314";
+var ZINC_400 = "#a1a1aa";
 var ZINC_500 = "#71717a";
 var ZINC_800 = "#27272a";
 var ZINC_900 = "#18181b";
@@ -82,6 +84,13 @@ var COLOR_PALETTE = [
   YELLOW
 ];
 
+// src/constants/error.ts
+var error_exports = {};
+__export(error_exports, {
+  Z_AXIS_NOT_FOUND: () => Z_AXIS_NOT_FOUND
+});
+var Z_AXIS_NOT_FOUND = "zAxis not found in chart config";
+
 // src/utils/dataset.ts
 var dataset_exports = {};
 __export(dataset_exports, {
@@ -91,7 +100,12 @@ __export(dataset_exports, {
 // src/utils/frame.ts
 var frame_exports = {};
 __export(frame_exports, {
+  aggregate: () => aggregate,
+  filter: () => filter,
   formatValues: () => formatValues,
+  runTfPipeline: () => runTfPipeline,
+  select: () => select,
+  sort: () => sort,
   transpose: () => transpose
 });
 
@@ -233,6 +247,135 @@ var formatValues = (frame) => {
   });
   return transpose(transformed);
 };
+var filter = (frame, col, type, value, parser) => {
+  const transposed = transpose(frame);
+  const keep = [];
+  const filtered = [];
+  const series2 = transposed[col];
+  const convert = !parser ? (v) => Number(v) : (v) => Date.parse(String(v));
+  series2.forEach((v, i) => {
+    switch (type) {
+      case "<":
+        if (convert(v) < convert(value)) {
+          keep.push(i);
+        }
+        break;
+      case "<=":
+        if (convert(v) <= convert(value)) {
+          keep.push(i);
+        }
+        break;
+      case ">":
+        if (convert(v) > convert(value)) {
+          keep.push(i);
+        }
+        break;
+      case ">=":
+        if (convert(v) >= convert(value)) {
+          keep.push(i);
+        }
+        break;
+      case "=":
+        if (v === value) {
+          keep.push(i);
+        }
+        break;
+      case "!=":
+        if (v !== value) {
+          keep.push(i);
+        }
+        break;
+    }
+  });
+  frame.forEach((s, i) => {
+    if (keep.includes(i)) {
+      filtered.push(s);
+    }
+  });
+  return filtered;
+};
+var aggregate = (frame, col, type, groupBy) => {
+  const selected = select(frame, [groupBy, col]);
+  groupBy = 0;
+  col = 1;
+  const transposed = transpose(selected);
+  const map = /* @__PURE__ */ new Map();
+  transposed[groupBy].forEach((v) => {
+    if (!map.has(v)) {
+      map.set(
+        v,
+        transposed[col].filter((_, j) => transposed[groupBy][j] === v)
+      );
+    }
+  });
+  const aggregated = [];
+  for (const key of map.keys()) {
+    const values = map.get(key);
+    switch (type) {
+      case "avg": {
+        const avg = values?.reduce((acc, curr) => {
+          curr = Number(curr);
+          return acc + curr;
+        }, 0);
+        if (avg) {
+          aggregated.push([key, avg / (values?.length ?? 1)]);
+        }
+        break;
+      }
+      case "count": {
+        aggregated.push([key, values?.length ?? 0]);
+        break;
+      }
+      case "sum": {
+        const sum = values?.reduce((acc, curr) => {
+          curr = Number(curr);
+          return acc + curr;
+        }, 0);
+        if (sum) {
+          aggregated.push([key, sum]);
+        }
+        break;
+      }
+    }
+  }
+  return aggregated;
+};
+var select = (frame, cols) => {
+  const transposed = transpose(frame);
+  const selected = [];
+  cols.forEach((i) => selected.push(transposed[i]));
+  return transpose(selected);
+};
+var sort = (frame, col, order, parser) => {
+  const transposed = transpose(frame);
+  if (parser) {
+    transposed[col] = transposed[col].map((v) => Date.parse(String(v)));
+  }
+  let values = [...transposed[col]];
+  values = values.sort();
+  if (order === "desc") {
+    values = values.reverse();
+  }
+  const sorted = [];
+  values.forEach((v) => {
+    const ix = transposed[col].indexOf(v);
+    sorted.push(frame[ix]);
+    delete transposed[col][ix];
+  });
+  return sorted;
+};
+var runTfPipeline = (frame, conf) => {
+  (conf.filter ?? []).forEach((fil) => {
+    frame = filter(frame, fil.index, fil.type, fil.value, fil.parser);
+  });
+  (conf.aggregate ?? []).forEach((agg) => {
+    frame = aggregate(frame, agg.index, agg.type, agg.groupBy);
+  });
+  (conf.sort ?? []).forEach((s) => {
+    frame = sort(frame, s.index, s.order, s.parser);
+  });
+  return frame;
+};
 
 // src/utils/dataset.ts
 var fromBlockResult = (results) => {
@@ -251,6 +394,7 @@ var determine_exports = {};
 __export(determine_exports, {
   animation: () => animation,
   axis: () => axis,
+  calendar: () => calendar,
   grid: () => grid,
   legend: () => legend,
   renderer: () => renderer,
@@ -286,6 +430,7 @@ var ChartType = /* @__PURE__ */ ((ChartType2) => {
   ChartType2["PIE"] = "pie";
   ChartType2["SCATTER"] = "scatter";
   ChartType2["HEATMAP"] = "heatmap";
+  ChartType2["CALENDAR"] = "calendar";
   return ChartType2;
 })(ChartType || {});
 
@@ -300,7 +445,7 @@ var getTargetAxes = (conf, type) => {
       if (conf.zAxis) {
         return conf.zAxis;
       } else {
-        throw "zAxis not found";
+        throw error_exports.Z_AXIS_NOT_FOUND;
       }
   }
 };
@@ -335,7 +480,7 @@ var axis = (conf, dataset, axisType) => {
       let name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
       name = name.length > 45 ? name.slice(0, 45) + "..." : name;
       const item = {
-        show: conf.type !== "pie" /* PIE */,
+        show: !["pie" /* PIE */, "calendar" /* CALENDAR */].includes(conf.type),
         type,
         name,
         nameLocation: "center",
@@ -385,6 +530,41 @@ var axis = (conf, dataset, axisType) => {
   return axes;
 };
 
+// src/utils/determine/calendar.ts
+var calendar = (conf, dataset) => {
+  if (conf.type !== "calendar" /* CALENDAR */) {
+    return null;
+  }
+  const transposed = transpose(dataset.source);
+  const years = Array.from(
+    new Set(
+      transposed[0].map((t) => new Date(String(t))).map((d) => d.getUTCFullYear()).sort()
+    )
+  );
+  return years.map((year, i) => {
+    return {
+      top: i * 130 + 90,
+      right: 30,
+      cellSize: ["auto", 13],
+      range: String(year),
+      itemStyle: {
+        color: color_exports.ZINC_900,
+        borderColor: color_exports.ZINC_500,
+        borderWidth: 0.5
+      },
+      orient: "horizontal",
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: color_exports.ZINC_400,
+          width: 1,
+          type: "solid"
+        }
+      }
+    };
+  });
+};
+
 // src/utils/determine/grid.ts
 var grid = (conf, dataset) => {
   let grid2 = { show: false, containLabel: false };
@@ -409,7 +589,7 @@ var grid = (conf, dataset) => {
 // src/utils/determine/legend.ts
 var legend = (conf) => {
   return {
-    show: (conf.features.legend ?? false) && conf.type !== "heatmap" /* HEATMAP */,
+    show: (conf.features.legend ?? false) && !["heatmap" /* HEATMAP */, "calendar" /* CALENDAR */].includes(conf.type),
     type: "scroll",
     left: "center",
     top: conf.renderer === "svg" ? 10 : "2%"
@@ -432,7 +612,7 @@ var getTypedAxes = (conf) => {
           catAxis2: conf.yAxis
         };
       } else {
-        throw "zAxis not found";
+        throw error_exports.Z_AXIS_NOT_FOUND;
       }
     default:
       return { valAxis: conf.yAxis, catAxis1: conf.xAxis };
@@ -509,7 +689,7 @@ var series = (conf, dataset) => {
           break;
         case "heatmap" /* HEATMAP */:
           if (!catAxis2) {
-            throw "zAxis not found";
+            throw error_exports.Z_AXIS_NOT_FOUND;
           }
           item.encode = {
             x: dataset.dimensions[catAxis1[0].columns[0].index],
@@ -517,8 +697,25 @@ var series = (conf, dataset) => {
             value: dataset.dimensions[col.index]
           };
           break;
+        case "calendar" /* CALENDAR */: {
+          const transposed = transpose(dataset.source);
+          const years = Array.from(
+            new Set(
+              transposed[0].map((t) => new Date(String(t))).map((d) => d.getUTCFullYear()).sort()
+            )
+          );
+          years.forEach((_, i) => {
+            const itemCopy = { ...item };
+            itemCopy.type = "heatmap" /* HEATMAP */;
+            itemCopy.calendarIndex = i;
+            itemCopy.coordinateSystem = "calendar";
+            series2.push(itemCopy);
+          });
+        }
       }
-      series2.push(item);
+      if (conf.type !== "calendar" /* CALENDAR */) {
+        series2.push(item);
+      }
     });
   });
   return series2;
@@ -536,22 +733,35 @@ var title = (conf) => {
 
 // src/utils/determine/tooltip.ts
 var tooltip = (conf) => {
-  if (!["pie" /* PIE */, "heatmap" /* HEATMAP */].includes(conf.type)) {
-    return {
-      show: true,
-      trigger: "axis",
-      axisPointer: {
-        type: "cross",
-        crossStyle: {
-          color: "#999999"
+  switch (conf.type) {
+    case "pie" /* PIE */:
+      return {
+        show: true,
+        trigger: "item"
+      };
+    case "calendar" /* CALENDAR */:
+    case "heatmap" /* HEATMAP */:
+      return {
+        show: true,
+        trigger: "item",
+        axisPointer: {
+          type: "cross",
+          crossStyle: {
+            color: "#999999"
+          }
         }
-      }
-    };
-  } else {
-    return {
-      show: true,
-      trigger: "item"
-    };
+      };
+    default:
+      return {
+        show: true,
+        trigger: "axis",
+        axisPointer: {
+          type: "cross",
+          crossStyle: {
+            color: "#999999"
+          }
+        }
+      };
   }
 };
 
@@ -580,20 +790,28 @@ var toolbox = (conf) => {
 
 // src/utils/determine/visualMap.ts
 var visualMap = (conf, dataset) => {
-  if (conf.type !== "heatmap" /* HEATMAP */ || !conf.zAxis) {
+  if (!["heatmap" /* HEATMAP */, "calendar" /* CALENDAR */].includes(conf.type)) {
     return null;
   }
+  const valAxis = conf.type === "heatmap" /* HEATMAP */ ? conf.zAxis : conf.yAxis;
+  if (!valAxis) {
+    throw error_exports.Z_AXIS_NOT_FOUND;
+  }
   const transposed = transpose(dataset.source);
-  const series2 = transposed[conf.zAxis[0].columns[0].index];
+  const series2 = transposed[valAxis[0].columns[0].index].map((s) => Number(s));
   const min = Math.min(...series2);
   const max = Math.max(...series2);
+  if (!Array.isArray(valAxis[0].columns[0].color)) {
+    valAxis[0].columns[0].color = color_exports.LIME_PALETTE;
+  }
   return {
     inRange: {
-      color: conf.zAxis[0].columns[0].color
+      color: valAxis[0].columns[0].color
     },
-    left: "right",
-    top: "center",
+    left: conf.type === "heatmap" /* HEATMAP */ ? "right" : "center",
+    top: conf.type === "heatmap" /* HEATMAP */ ? "center" : 3,
     type: conf.features.piecewise ?? false ? "piecewise" : "continuous",
+    orient: conf.type === "heatmap" /* HEATMAP */ ? "vertical" : "horizontal",
     min,
     max,
     calculable: true
@@ -656,7 +874,7 @@ var convertAllColumnTypesInAxes = (axes, to) => {
   axes.forEach((axis2) => {
     axis2.columns.forEach((col) => {
       col.type = to;
-      if (["heatmap" /* HEATMAP */, "pie" /* PIE */].includes(to)) {
+      if (["calendar" /* CALENDAR */, "heatmap" /* HEATMAP */, "pie" /* PIE */].includes(to)) {
         col.color = color_exports.LIME_PALETTE;
       } else if (Array.isArray(col.color)) {
         col.color = color_exports.LIME_200;
@@ -679,7 +897,7 @@ var toLine = (conf) => {
     }
     case "heatmap" /* HEATMAP */: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error_exports.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "line" /* LINE */);
       delete conf.zAxis;
@@ -706,7 +924,7 @@ var toBar = (conf) => {
     }
     case "heatmap" /* HEATMAP */: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error_exports.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "bar" /* BAR */);
       delete conf.zAxis;
@@ -727,7 +945,7 @@ var toPie = (conf) => {
   switch (from) {
     case "heatmap" /* HEATMAP */: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error_exports.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "pie" /* PIE */);
       delete conf.zAxis;
@@ -772,7 +990,7 @@ var toScatter = (conf) => {
   switch (from) {
     case "heatmap" /* HEATMAP */: {
       if (!conf.zAxis) {
-        throw "zAxis not found";
+        throw error_exports.Z_AXIS_NOT_FOUND;
       }
       conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "scatter" /* SCATTER */);
       delete conf.zAxis;
@@ -785,6 +1003,32 @@ var toScatter = (conf) => {
       conf.yAxis = convertAllColumnTypesInAxes(
         [conf.yAxis[0]],
         "scatter" /* SCATTER */
+      );
+      return conf;
+    }
+  }
+};
+var toCalendar = (conf) => {
+  const from = conf.type;
+  conf.type = "calendar" /* CALENDAR */;
+  const previousFeatures = conf.features;
+  conf = resetFeatures(conf);
+  switch (from) {
+    case "heatmap" /* HEATMAP */: {
+      if (!conf.zAxis) {
+        throw error_exports.Z_AXIS_NOT_FOUND;
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "calendar" /* CALENDAR */);
+      delete conf.zAxis;
+      return conf;
+    }
+    default: {
+      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
+        conf = swap(conf);
+      }
+      conf.yAxis = convertAllColumnTypesInAxes(
+        [conf.yAxis[0]],
+        "calendar" /* CALENDAR */
       );
       return conf;
     }
@@ -803,14 +1047,30 @@ var config = (conf, to) => {
       return toScatter(conf);
     case "heatmap" /* HEATMAP */:
       return toHeatmap(conf);
+    case "calendar" /* CALENDAR */:
+      return toCalendar(conf);
     default:
       return conf;
   }
 };
 
 // src/main.ts
+var useSelectedDimensionsOnly = (conf, dataset) => {
+  const xIndex = conf.xAxis[0].columns[0].index;
+  const yIndex = conf.yAxis[0].columns[0].index;
+  dataset.dimensions = [dataset.dimensions[xIndex], dataset.dimensions[yIndex]];
+  dataset.source = frame_exports.select(dataset.source, [xIndex, yIndex]);
+  conf.xAxis[0].columns[0].index = 0;
+  conf.yAxis[0].columns[0].index = 1;
+};
 var ecOptionFromDataset = (conf, dataset) => {
+  if (conf.type === "calendar" /* CALENDAR */) {
+    useSelectedDimensionsOnly(conf, dataset);
+  }
   dataset.source = frame_exports.formatValues(dataset.source);
+  if (conf.transform) {
+    dataset.source = frame_exports.runTfPipeline(dataset.source, conf.transform);
+  }
   return {
     animation: determine_exports.animation(conf),
     backgroundColor: color_exports.ZINC_900,
@@ -823,7 +1083,8 @@ var ecOptionFromDataset = (conf, dataset) => {
     tooltip: determine_exports.tooltip(conf),
     xAxis: determine_exports.axis(conf, dataset, "x"),
     yAxis: determine_exports.axis(conf, dataset, "y"),
-    visualMap: determine_exports.visualMap(conf, dataset)
+    visualMap: determine_exports.visualMap(conf, dataset),
+    calendar: determine_exports.calendar(conf, dataset)
   };
 };
 var ecOptionFromBlockResult = (conf, res) => {
@@ -842,6 +1103,7 @@ export {
   src_default as default,
   determine_exports as determine,
   echarts_exports as echarts,
+  error_exports as error,
   format_exports as format,
   frame_exports as frame,
   legacy_exports as legacy

@@ -1,6 +1,9 @@
 type Value = number | string | null;
 type Series$1 = Value[];
 type Frame = Series$1[];
+type FilterType = "<" | "<=" | ">" | ">=" | "=" | "!=";
+type AggregateType = "avg" | "count" | "sum";
+type SortOrder = "asc" | "desc";
 
 interface LegacyAdditionalSeries {
     type?: string;
@@ -20,6 +23,7 @@ interface BlockResults {
     schema: {
         name: string;
         type: string;
+        sql_value_type?: string;
     }[];
 }
 
@@ -28,7 +32,8 @@ declare enum ChartType {
     LINE = "line",
     PIE = "pie",
     SCATTER = "scatter",
-    HEATMAP = "heatmap"
+    HEATMAP = "heatmap",
+    CALENDAR = "calendar"
 }
 
 interface Column {
@@ -38,6 +43,27 @@ interface Column {
 }
 interface Axis$1 {
     columns: Column[];
+}
+interface FilterTransform {
+    index: number;
+    type: FilterType;
+    value: Value;
+    parser?: "datetime";
+}
+interface AggregateTransform {
+    index: number;
+    type: AggregateType;
+    groupBy: number;
+}
+interface SortTransform {
+    index: number;
+    order: SortOrder;
+    parser?: "datetime";
+}
+interface TFConfig {
+    filter?: FilterTransform[];
+    aggregate?: AggregateTransform[];
+    sort?: SortTransform[];
 }
 interface ChartConfig {
     renderer?: "canvas" | "svg";
@@ -54,6 +80,7 @@ interface ChartConfig {
         orientation?: string;
         piecewise?: boolean;
     };
+    transform?: TFConfig;
     xAxis: Axis$1[];
     yAxis: Axis$1[];
     zAxis?: Axis$1[];
@@ -63,6 +90,14 @@ interface TextStyle {
     color?: string;
     fontWeight?: "normal" | "bold";
     fontSize?: number;
+}
+interface LineStyle {
+    width?: number;
+    type?: string;
+    color?: string;
+}
+interface SplitLine extends IShowable {
+    lineStyle?: LineStyle;
 }
 
 interface IShowable {
@@ -78,14 +113,6 @@ interface IStylable {
     textStyle?: TextStyle;
 }
 
-interface LineStyle {
-    width?: number;
-    type?: string;
-    color?: string;
-}
-interface SplitLine extends IShowable {
-    lineStyle?: LineStyle;
-}
 interface AxisLabel {
     interval?: number;
     rotate?: number;
@@ -99,6 +126,18 @@ interface Axis extends IShowable {
     nameGap?: number;
     splitLine?: SplitLine;
     axisLabel?: AxisLabel;
+}
+
+interface Calendar extends IAdjustable {
+    cellSize: (string | number)[];
+    range: string;
+    itemStyle: {
+        color: string;
+        borderColor: string;
+        borderWidth: number;
+    };
+    orient: string;
+    splitLine: SplitLine;
 }
 
 interface DataSet {
@@ -138,6 +177,8 @@ interface Series extends IStylable {
     areaStyle?: object;
     itemStyle?: object;
     symbolSize?: number;
+    calendarIndex?: number;
+    coordinateSystem?: string;
 }
 
 interface Title extends IShowable, IAdjustable, IStylable {
@@ -171,13 +212,12 @@ interface ToolTip extends IShowable {
     formatter?: string;
 }
 
-interface VisualMap {
+interface VisualMap extends IAdjustable {
     min: number;
     max: number;
     type: string;
     calculable: boolean;
-    left: string;
-    top: string;
+    orient: "horizontal" | "vertical";
     inRange: {
         color: string[];
     };
@@ -194,11 +234,13 @@ interface ECOption {
     toolbox: ToolBox;
     tooltip: ToolTip;
     visualMap: VisualMap | null;
+    calendar: Calendar[] | null;
     xAxis: Axis[];
     yAxis: Axis[];
 }
 
 type index$1_Axis = Axis;
+type index$1_Calendar = Calendar;
 type index$1_DataSet = DataSet;
 type index$1_ECOption = ECOption;
 type index$1_Grid = Grid;
@@ -211,6 +253,7 @@ type index$1_VisualMap = VisualMap;
 declare namespace index$1 {
   export {
     index$1_Axis as Axis,
+    index$1_Calendar as Calendar,
     index$1_DataSet as DataSet,
     index$1_ECOption as ECOption,
     index$1_Grid as Grid,
@@ -269,6 +312,8 @@ declare const animation: (conf: ChartConfig) => boolean;
 
 declare const axis: (conf: ChartConfig, dataset: DataSet, axisType: "x" | "y" | "z") => Axis[];
 
+declare const calendar: (conf: ChartConfig, dataset: DataSet) => Calendar[] | null;
+
 declare const grid: (conf: ChartConfig, dataset: DataSet) => Grid;
 
 declare const legend: (conf: ChartConfig) => Legend;
@@ -287,6 +332,7 @@ declare const visualMap: (conf: ChartConfig, dataset: DataSet) => VisualMap | nu
 
 declare const index_animation: typeof animation;
 declare const index_axis: typeof axis;
+declare const index_calendar: typeof calendar;
 declare const index_grid: typeof grid;
 declare const index_legend: typeof legend;
 declare const index_renderer: typeof renderer;
@@ -299,6 +345,7 @@ declare namespace index {
   export {
     index_animation as animation,
     index_axis as axis,
+    index_calendar as calendar,
     index_grid as grid,
     index_legend as legend,
     index_renderer as renderer,
@@ -312,12 +359,27 @@ declare namespace index {
 
 declare const transpose: (frame: Frame) => Frame;
 declare const formatValues: (frame: Frame) => Frame;
+declare const filter: (frame: Frame, col: number, type: FilterType, value: Value, parser?: "datetime") => Frame;
+declare const aggregate: (frame: Frame, col: number, type: AggregateType, groupBy: number) => Frame;
+declare const select: (frame: Frame, cols: number[]) => Frame;
+declare const sort: (frame: Frame, col: number, order: SortOrder, parser?: "datetime") => Frame;
+declare const runTfPipeline: (frame: Frame, conf: TFConfig) => Frame;
 
+declare const frame_aggregate: typeof aggregate;
+declare const frame_filter: typeof filter;
 declare const frame_formatValues: typeof formatValues;
+declare const frame_runTfPipeline: typeof runTfPipeline;
+declare const frame_select: typeof select;
+declare const frame_sort: typeof sort;
 declare const frame_transpose: typeof transpose;
 declare namespace frame {
   export {
+    frame_aggregate as aggregate,
+    frame_filter as filter,
     frame_formatValues as formatValues,
+    frame_runTfPipeline as runTfPipeline,
+    frame_select as select,
+    frame_sort as sort,
     frame_transpose as transpose,
   };
 }
@@ -377,6 +439,7 @@ declare const LIME_600 = "#65a30d";
 declare const LIME_700 = "#4d7c0f";
 declare const LIME_800 = "#3f6212";
 declare const LIME_900 = "#365314";
+declare const ZINC_400 = "#a1a1aa";
 declare const ZINC_500 = "#71717a";
 declare const ZINC_800 = "#27272a";
 declare const ZINC_900 = "#18181b";
@@ -411,6 +474,7 @@ declare const color_PINK: typeof PINK;
 declare const color_PURPLE: typeof PURPLE;
 declare const color_TEAL: typeof TEAL;
 declare const color_YELLOW: typeof YELLOW;
+declare const color_ZINC_400: typeof ZINC_400;
 declare const color_ZINC_500: typeof ZINC_500;
 declare const color_ZINC_800: typeof ZINC_800;
 declare const color_ZINC_900: typeof ZINC_900;
@@ -436,10 +500,20 @@ declare namespace color {
     color_PURPLE as PURPLE,
     color_TEAL as TEAL,
     color_YELLOW as YELLOW,
+    color_ZINC_400 as ZINC_400,
     color_ZINC_500 as ZINC_500,
     color_ZINC_800 as ZINC_800,
     color_ZINC_900 as ZINC_900,
   };
 }
 
-export { Axis$1 as Axis, BlockDetails, BlockResults, ChartConfig, ChartType, Column, Frame, LegacyAdditionalSeries, Series$1 as Series, Value, axes, color, convert, dataset, datetime, chartlib as default, index as determine, index$1 as echarts, format, frame, legacy };
+declare const Z_AXIS_NOT_FOUND = "zAxis not found in chart config";
+
+declare const error_Z_AXIS_NOT_FOUND: typeof Z_AXIS_NOT_FOUND;
+declare namespace error {
+  export {
+    error_Z_AXIS_NOT_FOUND as Z_AXIS_NOT_FOUND,
+  };
+}
+
+export { AggregateType, Axis$1 as Axis, BlockDetails, BlockResults, ChartConfig, ChartType, Column, FilterType, Frame, LegacyAdditionalSeries, Series$1 as Series, SortOrder, TFConfig, Value, axes, color, convert, dataset, datetime, chartlib as default, index as determine, index$1 as echarts, error, format, frame, legacy };
