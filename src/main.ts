@@ -16,10 +16,13 @@ export const ecOptionFromDataset = (
   dataset: ec.DataSet
 ): ec.ECOption => {
   if (conf.type === ChartType.CALENDAR) {
-    // NOTE: standard encoding does not work for calendar coordinate system
+    // NOTE: encoding does not work for calendar coordinate system
     useSelectedDimensionsOnly(conf, dataset);
   }
   dataset.source = frame.formatValues(dataset.source);
+  if (conf.transform) {
+    dataset.source = frame.runTfPipeline(dataset.source, conf.transform);
+  }
   return {
     animation: determine.animation(conf),
     backgroundColor: color.ZINC_900,

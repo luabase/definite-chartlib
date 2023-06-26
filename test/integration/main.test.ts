@@ -1,12 +1,29 @@
 import { describe, it, expect } from "vitest";
-import chartlib, { ChartType, format } from "../../src";
+import chartlib, { ChartType, ChartConfig, format } from "../../src";
 
 describe("given block results and some configuration", () => {
   it("can create bar chart", () => {
-    const conf = {
+    const conf: ChartConfig = {
       name: "My chart",
       type: ChartType.LINE,
       features: {},
+      transform: {
+        filter: [
+          {
+            index: 0,
+            type: "<",
+            value: "2020-01-03",
+            parser: "datetime",
+          },
+        ],
+        sort: [
+          {
+            index: 0,
+            order: "desc",
+            parser: "datetime",
+          },
+        ],
+      },
       xAxis: [{ columns: [{ index: 0, type: null, color: null }] }],
       yAxis: [
         { columns: [{ index: 1, type: ChartType.LINE, color: "#2f4b7c" }] },
@@ -95,9 +112,8 @@ describe("given block results and some configuration", () => {
       dataset: {
         dimensions: ["date", "amount"],
         source: [
-          ["2020-01-01", 3],
           ["2020-01-02", 4],
-          ["2020-01-03", 5],
+          ["2020-01-01", 3],
         ],
       },
       series: [
