@@ -28,5 +28,4 @@ export default interface Series extends IStylable {
   symbolSize?: number;
   calendarIndex?: number;
   coordinateSystem?: string;
-  datasetIndex?: number;
 }
