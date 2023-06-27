@@ -185,6 +185,7 @@ const toCalendar = (conf: ChartConfig): ChartConfig => {
 
 export const config = (conf: ChartConfig, to: ChartType): ChartConfig => {
   console.debug(`Converting chart from ${conf.type} to ${to}`);
+  delete conf.transform;
   switch (to) {
     case ChartType.LINE:
       return toLine(conf);

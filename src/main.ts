@@ -22,6 +22,30 @@ export const ecOptionFromDataset = (
   dataset.source = frame.formatValues(dataset.source);
   if (conf.transform) {
     dataset.source = frame.runTfPipeline(dataset.source, conf.transform);
+    if (conf.transform.aggregate) {
+      // NOTE: currently only expects 1 aggregate
+      const cols = [
+        conf.transform.aggregate[0].groupBy,
+        conf.transform.aggregate[0].index,
+      ];
+      const map = new Map<number, number>(); // from => to
+      map.set(cols[0], 0);
+      map.set(cols[1], 1);
+      dataset.dimensions = cols.map((c) => dataset.dimensions[c]);
+      // replace column indices with aggregated table
+      conf.xAxis.forEach((_, i) => {
+        conf.xAxis[i].columns.forEach((_, j) => {
+          conf.xAxis[i].columns[j].index =
+            map.get(conf.xAxis[i].columns[j].index) ?? 0;
+        });
+      });
+      conf.yAxis.forEach((_, i) => {
+        conf.yAxis[i].columns.forEach((_, j) => {
+          conf.yAxis[i].columns[j].index =
+            map.get(conf.yAxis[i].columns[j].index) ?? 0;
+        });
+      });
+    }
   }
   return {
     animation: determine.animation(conf),
