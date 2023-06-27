@@ -1068,6 +1068,7 @@ var toCalendar = (conf) => {
 };
 var config = (conf, to) => {
   console.debug(`Converting chart from ${conf.type} to ${to}`);
+  delete conf.transform;
   switch (to) {
     case "line" /* LINE */:
       return toLine(conf);
@@ -1102,6 +1103,26 @@ var ecOptionFromDataset = (conf, dataset) => {
   dataset.source = frame_exports.formatValues(dataset.source);
   if (conf.transform) {
     dataset.source = frame_exports.runTfPipeline(dataset.source, conf.transform);
+    if (conf.transform.aggregate) {
+      const cols = [
+        conf.transform.aggregate[0].groupBy,
+        conf.transform.aggregate[0].index
+      ];
+      const map = /* @__PURE__ */ new Map();
+      map.set(cols[0], 0);
+      map.set(cols[1], 1);
+      dataset.dimensions = cols.map((c) => dataset.dimensions[c]);
+      conf.xAxis.forEach((_, i) => {
+        conf.xAxis[i].columns.forEach((_2, j) => {
+          conf.xAxis[i].columns[j].index = map.get(conf.xAxis[i].columns[j].index) ?? 0;
+        });
+      });
+      conf.yAxis.forEach((_, i) => {
+        conf.yAxis[i].columns.forEach((_2, j) => {
+          conf.yAxis[i].columns[j].index = map.get(conf.yAxis[i].columns[j].index) ?? 0;
+        });
+      });
+    }
   }
   return {
     animation: determine_exports.animation(conf),
