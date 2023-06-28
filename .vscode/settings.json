@@ -2,19 +2,20 @@
   "cSpell.words": [
     "chartlib",
     "datetime",
+    "devcontainers",
     "echart",
-    "echarts",
-    "heatmaps",
-    "mharrisb",
-    "minimalized",
-    "noreply",
-    "Showable",
-    "splitline",
     "tsup"
   ],
   "editor.tabSize": 2,
   "typescript.inlayHints.parameterTypes.enabled": true,
   "typescript.inlayHints.parameterNames.enabled": "all",
   "workbench.colorTheme": "GitHub Dark",
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.profiles.linux": {
+    "zsh": {
+      "path": "/bin/zsh"
+    }
+  },
+  "cloudcode.autoDependencies": "off",
 }
