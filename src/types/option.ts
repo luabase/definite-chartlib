@@ -1,90 +1,65 @@
-export enum ChartType {
-  BAR = "bar",
-  CALENDAR = "calendar",
-  HEATMAP = "heatmap",
-  LINE = "line",
-  PIE = "pie",
-  SCATTER = "scatter",
-}
+import {
+  ChartType,
+  DataType,
+  AggregationType,
+  AxisType,
+  OrientationType,
+  BarStyleType,
+  LineStyleType,
+  ColorGroupingType,
+} from "./enums";
 
-export enum DataType {
-  CATEGORY = "category",
-  DATETIME = "datetime",
-  VALUE = "value",
-}
-
-export enum AggregationType {
-  AVG = "avg",
-  COUNT = "count",
-  DISTINCT = "distinct",
-  SUM = "sum",
-  MIN = "min",
-  MAX = "max",
-  NONE = "none",
-}
-
-export enum AxisType {
-  LEFT = "left",
-  RIGHT = "right",
-}
-
-export enum OrientationType {
-  VERTICAL = "vertical",
-  HORIZONTAL = "horizontal",
-}
-
-interface ColumnChoice {
+interface Indexable {
   index: number;
-  dataType: DataType;
 }
 
-export type Dimension = ColumnChoice;
+type ChartSpecificDimension<T extends ChartType> = T extends ChartType.LINE
+  ? { dataType: DataType.DATETIME }
+  : T extends ChartType.CALENDAR
+  ? { dataType: DataType.DATETIME }
+  : { dataType: Exclude<DataType, DataType.VALUE> };
 
-export interface Metric extends ColumnChoice {
-  color: string | string[];
-  aggregation: AggregationType;
-  axis?: AxisType;
-}
+export type Dimension<T extends ChartType> = Indexable &
+  ChartSpecificDimension<T>;
+
+type ChartSpecificMetric<T extends ChartType> = T extends ChartType.BAR
+  ? { chartType?: ChartType.BAR | ChartType.LINE; axis?: AxisType }
+  : T extends ChartType.LINE
+  ? { chartType?: ChartType.LINE | ChartType.BAR; axis?: AxisType }
+  : { chartType?: T };
+
+export type Metric<T extends ChartType> = Indexable &
+  ChartSpecificMetric<T> & {
+    dataType: DataType.VALUE;
+    color: string | string[];
+    aggregation: AggregationType;
+  };
 
 interface BaseStyleOptions {
   showTitle: boolean;
   showToolbox: boolean;
 }
 
-export interface BarChartStyleOptions extends BaseStyleOptions {
-  showLegend: boolean;
-  isStacked: boolean;
-  orientation: OrientationType;
-}
+type ExtraStyleOptions<T extends ChartType> = T extends ChartType.BAR
+  ? {
+      showLegend: boolean;
+      barStyle: BarStyleType;
+      orientation: OrientationType;
+    }
+  : T extends ChartType.LINE
+  ? { showLegend: boolean; lineStyle: LineStyleType; showArea: boolean }
+  : T extends ChartType.CALENDAR
+  ? { colorGrouping: ColorGroupingType }
+  : T extends ChartType.HEATMAP
+  ? { colorGrouping: ColorGroupingType }
+  : {};
 
-export interface HeatmapChartStyleOptions extends BaseStyleOptions {
-  isPiecewise: boolean;
-}
+export type StyleOptions<T extends ChartType> = BaseStyleOptions &
+  ExtraStyleOptions<T>;
 
-export type CalendarChartStyleOptions = HeatmapChartStyleOptions;
-
-export interface LineChartStyleOptions extends BaseStyleOptions {
-  showLegend: boolean;
-  isSmooth: boolean;
-  showArea: boolean;
-}
-
-export interface PieChartStyleOptions extends BaseStyleOptions {
-  showLegend: boolean;
-}
-
-export type ScatterChartStyleOptions = BaseStyleOptions;
-
-export interface ChartOptions {
-  version: string;
-  chartType: ChartType;
-  dimensions: Dimension[];
-  metrics: Metric[];
-  style:
-    | BarChartStyleOptions
-    | CalendarChartStyleOptions
-    | HeatmapChartStyleOptions
-    | LineChartStyleOptions
-    | PieChartStyleOptions
-    | ScatterChartStyleOptions;
+export interface ChartOptions<T extends ChartType> {
+  chartType: T;
+  style: StyleOptions<T>;
+  dimensions: Dimension<T>[];
+  metrics: Metric<T>[];
 }
