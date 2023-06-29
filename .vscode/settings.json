@@ -1,9 +1,12 @@
 {
   "cSpell.words": [
     "chartlib",
+    "dataframe",
     "datetime",
     "devcontainers",
     "echart",
+    "echarts",
+    "pageviews",
     "tsup"
   ],
   "editor.tabSize": 2,
@@ -18,4 +21,8 @@
     }
   },
   "cloudcode.autoDependencies": "off",
+  "editor.formatOnSave": true,
+  "markdown.extension.tableFormatter.normalizeIndentation": true,
+  "markdown.extension.tableFormatter.delimiterRowNoPadding": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
