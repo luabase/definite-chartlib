@@ -1,1 +1,1 @@
-export const Z_AXIS_NOT_FOUND = "zAxis not found in chart config";
+export const DIMENSIONS_NOT_SET = "At least one dimension must be configured";
