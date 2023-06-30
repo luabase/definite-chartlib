@@ -22,4 +22,13 @@ export class DataFrame {
       width: Object.keys(this.columns).length,
     };
   }
+
+  isEmpty(): boolean {
+    return this.shape.height === 0;
+  }
+
+  private transposed(): Array<Array<Option<number | string>>> {
+    if (this.isEmpty()) return this.data;
+    return this.data[0].map((_, i) => this.data.map((row) => row[i]));
+  }
 }
