@@ -51,8 +51,6 @@ The main functionality of this module is to generate an `ECOption` object from a
 
 See tests for more usage examples.
 
-### Create new chart
-
 ```ts
 import chart from "@definite/chartlib";
 
@@ -85,62 +83,5 @@ const conf = chart
   .addMetric({ index: 2, dataType: "value", color: "#ff3333" });
 
 console.log(conf.options);
-console.log(chart.plot(data, conf));
-```
-
-### Load chart from config
-
-```ts
-import chart from "@definite/chartlib";
-
-const data = [
-  {
-    date: "2020-01-01",
-    pageviews: 73,
-    clicks: 12,
-  },
-  {
-    date: "2020-01-02",
-    pageviews: 84,
-    clicks: 17,
-  },
-  {
-    date: "2020-01-03",
-    pageviews: 62,
-    clicks: 8,
-  },
-];
-
-const options = {
-  type: "line",
-  style: {
-    showTitle: true,
-    showLegend: true,
-    lineStyle: "smooth",
-  },
-  dimensions: [
-    {
-      index: 0,
-      dataType: "datetime",
-    },
-  ],
-  metrics: [
-    {
-      index: 1,
-      dataType: "value",
-      color: "#3377ff",
-      aggregation: "sum",
-    },
-    {
-      index: 2,
-      dataType: "value",
-      color: "#ff3333",
-      aggregation: "sum",
-    },
-  ],
-};
-
-const conf = chart.config.load(options);
-console.log(conf.options);
-console.log(chart.plot(data, conf));
+console.log(chart.compile(data, conf));
 ```
