@@ -1,6 +1,6 @@
-import { Frame } from "../alias";
+import { Option } from "../utility";
 
 export default interface DataSet {
   dimensions: string[];
-  source: Frame;
+  source: Array<Array<Option<number | string>>>;
 }
