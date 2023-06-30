@@ -7,6 +7,7 @@
     "echart",
     "echarts",
     "pageviews",
+    "Showable",
     "tsup"
   ],
   "editor.tabSize": 2,
