@@ -3,106 +3,42 @@
 [![Test](https://github.com/luabase/definite-chartlib/actions/workflows/test.yml/badge.svg)](https://github.com/luabase/definite-chartlib/actions/workflows/test.yml)
 [![Release](https://github.com/luabase/definite-chartlib/actions/workflows/release.yml/badge.svg)](https://github.com/luabase/definite-chartlib/actions/workflows/release.yml)
 
-## Supported Matrix
+## Chart Options Schema
 
-| Chart Type       | X-Axis Data Type | Y-Axis Data Type | Multiple Y-Axes | Z-Axis |
-| ---------------- | :--------------: | :--------------: | :-------------: | :----: |
-| Pie              |   Categorical    |      Value       |        ❌        |   ❌    |
-| Line             |   Categorical    |      Value       |        ✅        |   ❌    |
-| Scatter          |      Value       |      Value       |        ❌        |   ❌    |
-| Vertical Bar     |   Categorical    |      Value       |        ✅        |   ❌    |
-| Horizontal Bar   |      Value       |   Categorical    |        ✅        |   ❌    |
-| Grid Heatmap     |     Category     |     Category     |        ❌        |   ✅    |
-| Calendar Heatmap |     Category     |      Value       |        ❌        |   ❌    |
-
-## Configuration Schema
-
-📑 View full [JSON Schema](./schema.json)
+📑 View [JSON Schema](./schema.json)
 
 ```ts
 {
-  name: string,
-  type: "bar" | "line" | "pie" | "scatter" | "heatmap" | "calendar", // combo is implicit
-  features: {
-    // common features (all chart types)
-    title: boolean | undefined,
-    legend: boolean | undefined,
-    toolbox: boolean | undefined,
-    labels: boolean | undefined,
-    // line only
-    smooth: boolean | undefined,
-    area: boolean | undefined,
+  chartType: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
+  style: {
+    showTitle: boolean,
+    showToolbox: boolean,
+    // bar and line only
+    showLegend: boolean,
     // bar only
-    stack: boolean | undefined,
-    orientation: "vertical" | "horizontal" | undefined,
-    // heatmaps only
-    piecewise: boolean | undefined
-  },
-  // optional transformations
-  transform: {
-    filter: [
-      {
-        index: number,
-        type: "<" | "<=" | ">" | ">=" | "=" | "!=",
-        value: string | number,
-        parser: "datetime" | undefined
-      },
-      ...
-    ],
-    aggregate: [
-      {
-        index: number,
-        type: "avg" | "count" | "sum",
-        groupBy: number
-      },
-      ...
-    ],
-    sort: [
-      {
-        index: number,
-        order: "asc" | "desc",
-        parser: "datetime" | undefined
-      },
-      ...
-    ]
-  },
-  xAxis: [
+    barStyle: "grouped" | "stacked",
+    orientation: "vertical" | "horizontal",
+    // line only
+    lineStyle: "point" | "smooth",
+    showArea: boolean,
+    // calendar and heatmap
+    colorGrouping: "continuous" | "piecewise"
+  }
+  dimensions: [
     {
-      columns: [
-        {
-          index: number,
-          type: string | null,
-          color: string | string[] | null
-        },
-        ...
-      ]
+      index: number,
+      dataType: "category" | "datetime" | "value"
     },
     ...
   ],
-  yAxis: [
+  metrics: [
     {
-      columns: [
-        {
-          index: number,
-          type: string | null,
-          color: string | string[] | null
-        },
-        ...
-      ]
-    },
-    ...
-  ],
-  // only supported for select chart types
-  zAxis: [
-    {
-      columns: [
-        {
-          index: number,
-          type: string | null,
-          color: string | string[] | null
-        },
-        ...
-      ]
+      index: number,
+      dataType: "category" | "datetime" | "value",
+      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
+      color: string | string[],
+      aggregation: "none" | "avg" | "count" | "distinct" | "sum" | "min" | "max",
+      axis?: "left" | "right"
     },
     ...
   ]
@@ -113,148 +49,98 @@
 
 The main functionality of this module is to generate an `ECOption` object from a given set of information. Rendering charts is outside the scope of this module and should be done with Echarts.
 
-See tests for more configuration examples.
+See tests for more usage examples.
 
-### Create option from block results
-
-```typescript
-import chartlib from "@definite/chartlib"
-
-const blockResult = {
-  rows: [
-    {
-      date: "2020-01-01",
-      visitors_from_search: 73,
-      visitors_from_social: 12,
-    },
-    {
-      date: "2020-01-02",
-      visitors_from_search: 84,
-      visitors_from_social: 17,
-    },
-    {
-      date: "2020-01-03",
-      visitors_from_search: 62,
-      visitors_from_social: 8,
-    },
-  ],
-  schema: [
-    { name: "date", type: "string" },
-    { name: "visitors_from_search", type: "integer" },
-    { name: "visitors_from_social", type: "integer" },
-  ],
-};
-
-const chartConfig = {
-  name: "Visitor Attribution",
-  type: "line",
-  features: {},
-  xAxis: [
-    { 
-      columns: [
-        { index: 0, type: null, color: null }
-      ] 
-    }
-  ],
-  yAxis: [
-    { 
-      columns: [
-        { index: 1, type: "line", color: "#d45087" },
-        { index: 2, type: "line", color: "#2f4b7c" },
-      ] 
-    }
-  ],
-};
-
-const ecOption = chartlib.ecOptionFromBlockResult(chartConfig, blockResult);
-```
-
-## Transforms
-✨ **New in v0.7**
-
-Transforms allow you to further process the data for visualization. Supported transformations:
-
-| Type      | Description                                           |
-| --------- | ----------------------------------------------------- |
-| Filter    | Filter data on value comparison                       |
-| Aggregate | Group data by some column and aggregate target column |
-| Sort      | Sort the dataset by some column                       |
-
-While the [config schema](#configuration-schema) allows for multiple items in each transformation type, only one transformation per type is currently supported.
-
-### Chained Transforms
-
-Although only one of each type of transformation is currently supported, multiple transformation types can be combined. Order of execution is as follows and the subsequent transform operates on the output of the previous transform:
-
-Example transform config:
+### Create new chart
 
 ```ts
-{
-  transform: {
-    filter: [
-      {
-        index: 0,
-        type: "!=",
-        value: "b"
-      },
-    ],
-    aggregate: [
-      {
-        index: 1,
-        type: "sum",
-        groupBy: 0
-      },
-    ],
-    sort: [
-      {
-        index: 1,
-        order: "desc"
-      },
-    ]
+import chart from "@definite/chartlib";
+
+const data = [
+  {
+    date: "2020-01-01",
+    pageviews: 73,
+    clicks: 12,
   },
-}
+  {
+    date: "2020-01-02",
+    pageviews: 84,
+    clicks: 17,
+  },
+  {
+    date: "2020-01-03",
+    pageviews: 62,
+    clicks: 8,
+  },
+];
+
+const conf = chart
+  .config
+  .create("line")
+  .setStyleOption("showTitle", true)
+  .setStyleOption("showLegend", true)
+  .setStyleOption("lineStyle", "smooth")
+  .addDimension({ index: 0, dataType: "datetime" })
+  .addMetric({ index: 1, dataType: "value", color: "#3377ff" })
+  .addMetric({ index: 2, dataType: "value", color: "#ff3333" });
+
+console.log(conf.options);
+console.log(chart.plot(data, conf));
 ```
 
-Execution overview:
-```
-START
-+------+------+
-| col1 | col2 |
-+------+------+
-|  a   |   1  |
-|  a   |   2  |
-|  b   |   1  |
-|  b   |   2  |
-|  c   |   1  |
-|  c   |   3  |
-+------+------+
-       ⬇️
-FILTER col1 != b
-+------+------+
-| col1 | col2 |
-+------+------+
-|  a   |   1  |
-|  a   |   2  |
-|  c   |   1  |
-|  c   |   3  |
-+------+------+
-       ⬇️
-AGGREGATE SUM(col2) GROUP BY col1
-+------+------+
-| col1 | col2 |
-+------+------+
-|  a   |   3  |
-|  c   |   4  |
-+------+------+
-       ⬇️
-SORT col2 DESC
-+------+------+
-| col1 | col2 |
-+------+------+
-|  c   |   4  |
-|  a   |   3  |
-+------+------+
-END
-```
+### Load chart from config
 
-🚧 **WARNING**: Transforms API is new and subject to change. Aggregates have not been tested and validated against all chart types.
+```ts
+import chart from "@definite/chartlib";
+
+const data = [
+  {
+    date: "2020-01-01",
+    pageviews: 73,
+    clicks: 12,
+  },
+  {
+    date: "2020-01-02",
+    pageviews: 84,
+    clicks: 17,
+  },
+  {
+    date: "2020-01-03",
+    pageviews: 62,
+    clicks: 8,
+  },
+];
+
+const options = {
+  type: "line",
+  style: {
+    showTitle: true,
+    showLegend: true,
+    lineStyle: "smooth",
+  },
+  dimensions: [
+    {
+      index: 0,
+      dataType: "datetime",
+    },
+  ],
+  metrics: [
+    {
+      index: 1,
+      dataType: "value",
+      color: "#3377ff",
+      aggregation: "sum",
+    },
+    {
+      index: 2,
+      dataType: "value",
+      color: "#ff3333",
+      aggregation: "sum",
+    },
+  ],
+};
+
+const conf = chart.config.load(options);
+console.log(conf.options);
+console.log(chart.plot(data, conf));
+```
