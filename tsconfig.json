@@ -10,11 +10,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "typeRoots": ["./@types", "./node_modules/@types"],
-    "paths": {
-      "@definite/chartlib": ["./src"],
-      "@definite/chartlib/*": ["./src/*"]
-    }
+    "typeRoots": ["./@types", "./node_modules/@types"]
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
