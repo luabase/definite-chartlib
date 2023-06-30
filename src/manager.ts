@@ -1,5 +1,5 @@
 import {
-  ChartOptions,
+  ChartConfigOptions,
   ChartType,
   Dimension,
   Metric,
@@ -21,7 +21,7 @@ export class ChartConfigManager<T extends ChartType> {
     this.metrics = [];
   }
 
-  getOptions(): ChartOptions<T> {
+  getOptions(): ChartConfigOptions<T> {
     return {
       chartType: this.chartType,
       style: this.style,
