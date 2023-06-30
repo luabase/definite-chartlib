@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { determine } from "../../src";
+import * as determine from "../../src/determine";
 import { ChartConfigOptions } from "../../src/types";
 import { DataFrame } from "../../src/dataframe";
 import { categoryFormatter } from "../../src/formatters";
