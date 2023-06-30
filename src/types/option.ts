@@ -7,30 +7,30 @@ import {
   BarStyleType,
   LineStyleType,
   ColorGroupingType,
-} from "./enums";
+} from "./literals";
 
 interface Indexable {
   index: number;
 }
 
-type ChartSpecificDimension<T extends ChartType> = T extends ChartType.LINE
-  ? { dataType: DataType.DATETIME }
-  : T extends ChartType.CALENDAR
-  ? { dataType: DataType.DATETIME }
-  : { dataType: Exclude<DataType, DataType.VALUE> };
+type ChartSpecificDimension<T extends ChartType> = T extends "line"
+  ? { dataType: "datetime" }
+  : T extends "calendar"
+  ? { dataType: "datetime" }
+  : { dataType: Exclude<DataType, "value"> };
 
 export type Dimension<T extends ChartType> = Indexable &
   ChartSpecificDimension<T>;
 
-type ChartSpecificMetric<T extends ChartType> = T extends ChartType.BAR
-  ? { chartType?: ChartType.BAR | ChartType.LINE; axis?: AxisType }
-  : T extends ChartType.LINE
-  ? { chartType?: ChartType.LINE | ChartType.BAR; axis?: AxisType }
+type ChartSpecificMetric<T extends ChartType> = T extends "bar"
+  ? { chartType?: "bar" | "line"; axis?: AxisType }
+  : T extends "line"
+  ? { chartType?: "line" | "bar"; axis?: AxisType }
   : { chartType?: T };
 
 export type Metric<T extends ChartType> = Indexable &
   ChartSpecificMetric<T> & {
-    dataType: DataType.VALUE;
+    dataType: "value";
     color: string | string[];
     aggregation: AggregationType;
   };
@@ -40,24 +40,24 @@ interface BaseStyleOptions {
   showToolbox: boolean;
 }
 
-type ExtraStyleOptions<T extends ChartType> = T extends ChartType.BAR
+type ExtraStyleOptions<T extends ChartType> = T extends "bar"
   ? {
       showLegend: boolean;
       barStyle: BarStyleType;
       orientation: OrientationType;
     }
-  : T extends ChartType.LINE
+  : T extends "line"
   ? { showLegend: boolean; lineStyle: LineStyleType; showArea: boolean }
-  : T extends ChartType.CALENDAR
+  : T extends "calendar"
   ? { colorGrouping: ColorGroupingType }
-  : T extends ChartType.HEATMAP
+  : T extends "heatmap"
   ? { colorGrouping: ColorGroupingType }
   : {};
 
 export type StyleOptions<T extends ChartType> = BaseStyleOptions &
   ExtraStyleOptions<T>;
 
-export interface ChartOptions<T extends ChartType> {
+export interface ChartConfigOptions<T extends ChartType> {
   chartType: T;
   style: StyleOptions<T>;
   dimensions: Dimension<T>[];

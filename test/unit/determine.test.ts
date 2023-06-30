@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { determine } from "../../src";
-import { ChartOptions } from "../../src/types";
+import { ChartConfigOptions } from "../../src/types";
 import { DataFrame } from "../../src/dataframe";
 import { categoryFormatter } from "../../src/formatters";
 
 describe("determine.xAxis", () => {
   describe("given a bar chart type", () => {
-    const opts: ChartOptions<"bar"> = {
+    const opts: ChartConfigOptions<"bar"> = {
       chartType: "bar",
       style: {
         showTitle: true,
