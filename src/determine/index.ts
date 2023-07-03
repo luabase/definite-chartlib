@@ -1,1 +1,1 @@
-export * from "./xAxis";
+export * from "./axis";
