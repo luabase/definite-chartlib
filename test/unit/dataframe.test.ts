@@ -31,4 +31,16 @@ describe("DataFrame", () => {
     );
     expect(df.columns.get(0)).toEqual("a");
   });
+  it("can sum data", () => {
+    const df = new DataFrame([
+      { a: "foo", b: 1 },
+      { a: "foo", b: 2 },
+      { a: "bar", b: 3 },
+      { a: "bar", b: 4 },
+    ]);
+    expect(df.sum(1, 0).data).toEqual([
+      ["foo", 3],
+      ["bar", 7],
+    ]);
+  });
 });
