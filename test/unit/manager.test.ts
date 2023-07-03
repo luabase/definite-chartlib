@@ -3,9 +3,9 @@ import { Chart } from "../../src/manager";
 
 describe("Chart", () => {
   it("can set style option", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.setStyleOption("showTitle", false);
-    expect(barChartManager.getOptions()).toEqual({
+    const barChart = new Chart("bar");
+    barChart.setStyleOption("showTitle", false);
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: false,
@@ -18,12 +18,12 @@ describe("Chart", () => {
       metrics: [],
     });
     // @ts-expect-error
-    barChartManager.setStyleOption("foo", true);
+    barChart.setStyleOption("foo", true);
   });
   it("can add dimension", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.addDimension({ index: 0, dataType: "category" });
-    expect(barChartManager.getOptions()).toEqual({
+    const barChart = new Chart("bar");
+    barChart.addDimension({ index: 0, dataType: "category" });
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
@@ -37,10 +37,10 @@ describe("Chart", () => {
     });
   });
   it("can update dimension", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.addDimension({ index: 0, dataType: "category" });
-    barChartManager.updateDimension((d) => d.index === 0, "index", 1);
-    expect(barChartManager.getOptions()).toEqual({
+    const barChart = new Chart("bar");
+    barChart.addDimension({ index: 0, dataType: "category" });
+    barChart.updateDimension((d) => d.index === 0, "index", 1);
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
@@ -54,10 +54,10 @@ describe("Chart", () => {
     });
   });
   it("can delete dimension", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.addDimension({ index: 0, dataType: "category" });
-    barChartManager.deleteDimension((d) => d.index === 0);
-    expect(barChartManager.getOptions()).toEqual({
+    const barChart = new Chart("bar");
+    barChart.addDimension({ index: 0, dataType: "category" });
+    barChart.deleteDimension((d) => d.index === 0);
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
@@ -71,15 +71,15 @@ describe("Chart", () => {
     });
   });
   it("can add metric", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.addMetric({
+    const barChart = new Chart("bar");
+    barChart.addMetric({
       index: 0,
       dataType: "value",
       color: "#ffffff",
       aggregation: "sum",
       axis: "left",
     });
-    expect(barChartManager.getOptions()).toEqual({
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
@@ -101,16 +101,16 @@ describe("Chart", () => {
     });
   });
   it("can update metric", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.addMetric({
+    const barChart = new Chart("bar");
+    barChart.addMetric({
       index: 0,
       dataType: "value",
       color: "#ffffff",
       aggregation: "sum",
     });
-    barChartManager.updateMetric((m) => m.index === 0, "aggregation", "avg");
-    barChartManager.updateMetric((m) => m.index === 0, "color", "#000000");
-    expect(barChartManager.getOptions()).toEqual({
+    barChart.updateMetric((m) => m.index === 0, "aggregation", "avg");
+    barChart.updateMetric((m) => m.index === 0, "color", "#000000");
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
@@ -131,15 +131,15 @@ describe("Chart", () => {
     });
   });
   it("can delete metric", () => {
-    const barChartManager = new Chart("bar");
-    barChartManager.addMetric({
+    const barChart = new Chart("bar");
+    barChart.addMetric({
       index: 0,
       dataType: "value",
       color: "#ffffff",
       aggregation: "sum",
     });
-    barChartManager.deleteMetric((m) => m.index === 0);
-    expect(barChartManager.getOptions()).toEqual({
+    barChart.deleteMetric((m) => m.index === 0);
+    expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
