@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { ChartConfigManager } from "../../src/manager";
+import { Chart } from "../../src/manager";
 
-describe("ChartManager", () => {
+describe("Chart", () => {
   it("can set style option", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.setStyleOption("showTitle", false);
     expect(barChartManager.getOptions()).toEqual({
       chartType: "bar",
@@ -21,7 +21,7 @@ describe("ChartManager", () => {
     barChartManager.setStyleOption("foo", true);
   });
   it("can add dimension", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.addDimension({ index: 0, dataType: "category" });
     expect(barChartManager.getOptions()).toEqual({
       chartType: "bar",
@@ -37,7 +37,7 @@ describe("ChartManager", () => {
     });
   });
   it("can update dimension", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.addDimension({ index: 0, dataType: "category" });
     barChartManager.updateDimension((d) => d.index === 0, "index", 1);
     expect(barChartManager.getOptions()).toEqual({
@@ -54,7 +54,7 @@ describe("ChartManager", () => {
     });
   });
   it("can delete dimension", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.addDimension({ index: 0, dataType: "category" });
     barChartManager.deleteDimension((d) => d.index === 0);
     expect(barChartManager.getOptions()).toEqual({
@@ -71,7 +71,7 @@ describe("ChartManager", () => {
     });
   });
   it("can add metric", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.addMetric({
       index: 0,
       dataType: "value",
@@ -101,7 +101,7 @@ describe("ChartManager", () => {
     });
   });
   it("can update metric", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.addMetric({
       index: 0,
       dataType: "value",
@@ -131,7 +131,7 @@ describe("ChartManager", () => {
     });
   });
   it("can delete metric", () => {
-    const barChartManager = new ChartConfigManager("bar");
+    const barChartManager = new Chart("bar");
     barChartManager.addMetric({
       index: 0,
       dataType: "value",
