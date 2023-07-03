@@ -1,5 +1,9 @@
 import { ChartOptions, Dimension, Metric, StyleOptions } from "./types";
-import { ChartType, OrientationType } from "./types/literals";
+import {
+  ChartType,
+  ColorGroupingType,
+  OrientationType,
+} from "./types/literals";
 import { Predicate } from "./types/utility";
 import { defaultStyleOptions } from "./factory";
 
@@ -24,6 +28,10 @@ export class Chart<T extends ChartType> {
     return manager;
   }
 
+  isValid(): boolean {
+    return true;
+  }
+
   getOptions(): ChartOptions<T> {
     return {
       chartType: this.chartType,
@@ -45,9 +53,31 @@ export class Chart<T extends ChartType> {
     return !["pie", "calendar"].includes(this.chartType);
   }
 
-  getOrientation(): OrientationType | undefined {
+  getStyleShowTitle(): boolean {
+    return this.style.showTitle;
+  }
+
+  getStyleShowToolbox(): boolean {
+    return this.style.showToolbox;
+  }
+
+  getStyleShowLegend(): boolean {
+    if (["bar", "line"].includes(this.chartType)) {
+      return (<StyleOptions<"bar">>this.style).showLegend;
+    }
+    return false;
+  }
+
+  getStyleOrientation(): OrientationType | undefined {
     if (this.chartType === "bar") {
       return (<StyleOptions<"bar">>{ ...this.style }).orientation;
+    }
+    return undefined;
+  }
+
+  getStyleColorGrouping(): ColorGroupingType | undefined {
+    if (["heatmap", "calendar"].includes(this.chartType)) {
+      return (<StyleOptions<"heatmap">>this.style).colorGrouping;
     }
     return undefined;
   }
