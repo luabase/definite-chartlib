@@ -57,7 +57,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
 export type StyleOptions<T extends ChartType> = BaseStyleOptions &
   ExtraStyleOptions<T>;
 
-export interface ChartConfigOptions<T extends ChartType> {
+export interface ChartOptions<T extends ChartType> {
   chartType: T;
   style: StyleOptions<T>;
   dimensions: Dimension<T>[];
