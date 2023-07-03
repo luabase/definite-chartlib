@@ -1,14 +1,9 @@
-import {
-  ChartConfigOptions,
-  ChartType,
-  Dimension,
-  Metric,
-  StyleOptions,
-} from "./types";
+import { ChartOptions, Dimension, Metric, StyleOptions } from "./types";
+import { ChartType, OrientationType } from "./types/literals";
 import { Predicate } from "./types/utility";
 import { defaultStyleOptions } from "./factory";
 
-export class ChartConfigManager<T extends ChartType> {
+export class Chart<T extends ChartType> {
   private chartType: T;
   private style: StyleOptions<T>;
   private dimensions: Dimension<T>[];
@@ -21,7 +16,15 @@ export class ChartConfigManager<T extends ChartType> {
     this.metrics = [];
   }
 
-  getOptions(): ChartConfigOptions<T> {
+  static load<T extends ChartType>(opts: ChartOptions<T>) {
+    const manager = new Chart(opts.chartType);
+    manager.style = { ...manager.style, ...opts.style };
+    opts.dimensions.forEach((d) => manager.addDimension(d));
+    opts.metrics.forEach((m) => manager.addMetric(m));
+    return manager;
+  }
+
+  getOptions(): ChartOptions<T> {
     return {
       chartType: this.chartType,
       style: this.style,
@@ -30,15 +33,34 @@ export class ChartConfigManager<T extends ChartType> {
     };
   }
 
+  getChartType(): ChartType {
+    return this.chartType;
+  }
+
+  getDimensions(): Dimension<T>[] {
+    return this.dimensions;
+  }
+
+  isCartesian(): boolean {
+    return !["pie", "calendar"].includes(this.chartType);
+  }
+
+  getOrientation(): OrientationType | undefined {
+    if (this.chartType === "bar") {
+      return (<StyleOptions<"bar">>{ ...this.style }).orientation;
+    }
+    return undefined;
+  }
+
   setStyleOption(
     k: keyof StyleOptions<T>,
     v: StyleOptions<T>[typeof k]
-  ): ChartConfigManager<T> {
+  ): Chart<T> {
     this.style = <StyleOptions<T>>{ ...this.style, ...{ [k]: v } };
     return this;
   }
 
-  addDimension(dim: Dimension<T>): ChartConfigManager<T> {
+  addDimension(dim: Dimension<T>): Chart<T> {
     this.dimensions.push(dim);
     return this;
   }
@@ -47,7 +69,7 @@ export class ChartConfigManager<T extends ChartType> {
     where: Predicate<Dimension<T>>,
     k: keyof Dimension<T>,
     v: Dimension<T>[typeof k]
-  ): ChartConfigManager<T> {
+  ): Chart<T> {
     const dim = this.dimensions.find((d) => where(d));
     if (!dim) {
       return this;
@@ -57,21 +79,25 @@ export class ChartConfigManager<T extends ChartType> {
     return this;
   }
 
-  deleteDimension(where: Predicate<Dimension<T>>): ChartConfigManager<T> {
+  deleteDimension(where: Predicate<Dimension<T>>): Chart<T> {
     this.dimensions = this.dimensions.filter((d) => !where(d));
     return this;
   }
 
-  addMetric(metric: Metric<T>): ChartConfigManager<T> {
+  addMetric(metric: Metric<T>): Chart<T> {
     this.metrics.push(metric);
     return this;
+  }
+
+  getMetrics(): Metric<T>[] {
+    return this.metrics;
   }
 
   updateMetric(
     where: Predicate<Metric<T>>,
     k: keyof Metric<T>,
     v: Metric<T>[typeof k]
-  ): ChartConfigManager<T> {
+  ): Chart<T> {
     const metric = this.metrics.find((m) => where(m));
     if (!metric) {
       return this;
@@ -81,7 +107,7 @@ export class ChartConfigManager<T extends ChartType> {
     return this;
   }
 
-  deleteMetric(where: Predicate<Metric<T>>): ChartConfigManager<T> {
+  deleteMetric(where: Predicate<Metric<T>>): Chart<T> {
     this.metrics = this.metrics.filter((m) => !where(m));
     return this;
   }
