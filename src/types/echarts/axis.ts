@@ -10,9 +10,9 @@ interface AxisLabel {
 export default interface Axis extends IShowable {
   type: "value" | "category";
   name: string;
+  nameGap: number;
   nameLocation?: "start" | "center" | "end";
   nameTextStyle?: TextStyle;
-  nameGap?: number;
   splitLine?: SplitLine;
   axisLabel?: AxisLabel;
 }
