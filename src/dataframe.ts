@@ -27,6 +27,10 @@ export class DataFrame {
     return this.shape.height === 0;
   }
 
+  col(ix: number) {
+    return this.transposed()[ix];
+  }
+
   private transposed(): Array<Array<Option<number | string>>> {
     if (this.isEmpty()) return this.data;
     return this.data[0].map((_, i) => this.data.map((row) => row[i]));
