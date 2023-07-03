@@ -1,7 +1,7 @@
 import { TextStyle } from "./elements";
 
 export interface IShowable {
-  show: boolean;
+  show?: boolean;
 }
 
 export interface IAdjustable {
