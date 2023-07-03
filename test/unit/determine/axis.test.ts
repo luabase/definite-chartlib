@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import * as determine from "../../../src/determine";
-import { ChartOptions } from "../../../src/types";
 import { DataFrame } from "../../../src/dataframe";
 import { categoryFormatter, valueFormatter } from "../../../src/formatters";
 import { Chart } from "../../../src/manager";
@@ -45,6 +44,30 @@ describe("given a bar chart type", () => {
         },
       ]);
     });
+    it("can determine yAxis", () => {
+      expect(determine.axis(chart, df, "y")).toEqual([
+        {
+          type: "value",
+          show: true,
+          name: "value",
+          nameLocation: "center",
+          nameGap: 50,
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+        },
+      ]);
+    });
+
     describe("given a larger dataframe", () => {
       const df = new DataFrame([
         { type: "red", value: 30 },
@@ -107,6 +130,118 @@ describe("given a bar chart type", () => {
           nameTextStyle: {
             fontSize: 14,
           },
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+        },
+      ]);
+    });
+    it("can determine yAxis", () => {
+      expect(determine.axis(chart, df, "y")).toEqual([
+        {
+          type: "category",
+          show: true,
+          name: "type",
+          nameLocation: "center",
+          nameGap: 72,
+          nameTextStyle: { fontSize: 14 },
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 0,
+            formatter: categoryFormatter,
+          },
+        },
+      ]);
+    });
+  });
+  describe("given multiple yAxes", () => {
+    const chart = Chart.load({
+      chartType: "bar",
+      style: {
+        showTitle: true,
+        showToolbox: false,
+        showLegend: true,
+        barStyle: "grouped",
+        orientation: "vertical",
+      },
+      dimensions: [{ index: 0, dataType: "category" }],
+      metrics: [
+        {
+          index: 1,
+          dataType: "value",
+          color: "#ffffff",
+          aggregation: "sum",
+          axis: "left",
+        },
+        {
+          index: 2,
+          dataType: "value",
+          color: "#ffffff",
+          aggregation: "sum",
+          axis: "right",
+        },
+      ],
+    });
+    const df = new DataFrame([
+      { type: "blue", value1: 30, value2: 1 },
+      { type: "yellow", value1: 30, value2: 1 },
+      { type: "red", value1: 30, value2: 1 },
+    ]);
+    it("can determine xAxis", () => {
+      expect(determine.axis(chart, df, "x")).toEqual([
+        {
+          type: "category",
+          show: true,
+          name: "type",
+          nameLocation: "center",
+          nameGap: 30,
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 0,
+            formatter: categoryFormatter,
+          },
+        },
+      ]);
+    });
+    it("can determine yAxis", () => {
+      expect(determine.axis(chart, df, "y")).toEqual([
+        {
+          type: "value",
+          show: true,
+          name: "value1",
+          nameLocation: "center",
+          nameGap: 50,
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+        },
+        {
+          type: "value",
+          show: true,
+          name: "value2",
+          nameLocation: "center",
+          nameGap: 50,
+          nameTextStyle: {
+            fontSize: 14,
+          },
           splitLine: {
             lineStyle: {
               color: "#27272a",
@@ -156,6 +291,29 @@ describe("given a line chart type", () => {
       },
     ]);
   });
+  it("can determine yAxis", () => {
+    expect(determine.axis(chart, df, "y")).toEqual([
+      {
+        type: "value",
+        show: true,
+        name: "value",
+        nameLocation: "center",
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        splitLine: {
+          lineStyle: {
+            color: "#27272a",
+            type: "dashed",
+          },
+        },
+        axisLabel: {
+          formatter: valueFormatter,
+        },
+      },
+    ]);
+  });
 });
 
 describe("given a pie chart type", () => {
@@ -188,6 +346,29 @@ describe("given a pie chart type", () => {
       },
     ]);
   });
+  it("can determine yAxis", () => {
+    expect(determine.axis(chart, df, "y")).toEqual([
+      {
+        type: "value",
+        show: false,
+        name: "value",
+        nameLocation: "center",
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        splitLine: {
+          lineStyle: {
+            color: "#27272a",
+            type: "dashed",
+          },
+        },
+        axisLabel: {
+          formatter: valueFormatter,
+        },
+      },
+    ]);
+  });
 });
 
 describe("given a scatter chart type", () => {
@@ -215,6 +396,23 @@ describe("given a scatter chart type", () => {
         name: "height_cm",
         nameLocation: "center",
         nameGap: 30,
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        axisLabel: {
+          formatter: valueFormatter,
+        },
+      },
+    ]);
+  });
+  it("can determine yAxis", () => {
+    expect(determine.axis(chart, df, "y")).toEqual([
+      {
+        type: "value",
+        show: true,
+        name: "weight_kg",
+        nameLocation: "center",
+        nameGap: 50,
         nameTextStyle: {
           fontSize: 14,
         },
@@ -267,6 +465,26 @@ describe("given a heatmap chart type", () => {
       },
     ]);
   });
+  it("can determine yAxis", () => {
+    expect(determine.axis(chart, df, "y")).toEqual([
+      {
+        type: "category",
+        show: true,
+        name: "hour",
+        nameLocation: "center",
+        nameGap: 72,
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        splitLine: {
+          lineStyle: {
+            color: "#27272a",
+            type: "dashed",
+          },
+        },
+      },
+    ]);
+  });
 });
 
 describe("given a calendar chart type", () => {
@@ -279,7 +497,7 @@ describe("given a calendar chart type", () => {
     },
     dimensions: [{ index: 0, dataType: "datetime" }],
     metrics: [
-      { index: 2, dataType: "value", color: "#ffffff", aggregation: "sum" },
+      { index: 1, dataType: "value", color: "#ffffff", aggregation: "sum" },
     ],
   });
   const df = new DataFrame([
@@ -297,6 +515,29 @@ describe("given a calendar chart type", () => {
         nameGap: 30,
         nameTextStyle: {
           fontSize: 14,
+        },
+      },
+    ]);
+  });
+  it("can determine yAxis", () => {
+    expect(determine.axis(chart, df, "y")).toEqual([
+      {
+        type: "value",
+        show: false,
+        name: "value",
+        nameLocation: "center",
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 14,
+        },
+        splitLine: {
+          lineStyle: {
+            color: "#27272a",
+            type: "dashed",
+          },
+        },
+        axisLabel: {
+          formatter: valueFormatter,
         },
       },
     ]);
