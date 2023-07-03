@@ -52,7 +52,7 @@ The main functionality of this module is to generate an `ECOption` object from a
 See tests for more usage examples.
 
 ```ts
-import chart from "@definite/chartlib";
+import chartlib from "@definite/chartlib";
 
 const data = [
   {
@@ -72,8 +72,7 @@ const data = [
   },
 ];
 
-const conf = chart
-  .config
+const chart = chartlib
   .create("line")
   .setStyleOption("showTitle", true)
   .setStyleOption("showLegend", true)
@@ -82,6 +81,5 @@ const conf = chart
   .addMetric({ index: 1, dataType: "value", color: "#3377ff" })
   .addMetric({ index: 2, dataType: "value", color: "#ff3333" });
 
-console.log(conf.options);
-console.log(chart.compile(data, conf));
+chartlib.compile("My Chart Title", chart, data)
 ```
