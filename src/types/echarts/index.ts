@@ -25,7 +25,7 @@ export {
 export interface ECOption {
   animation: boolean;
   backgroundColor: string;
-  dataset: DataSet;
+  dataset: DataSet[];
   grid: Grid;
   legend: Legend;
   series: Series[];
