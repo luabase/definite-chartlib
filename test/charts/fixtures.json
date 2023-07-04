@@ -1,0 +1,71 @@
+{
+  "dailyUsersByMobileOS": [
+    {
+      "date": "2020-01-01",
+      "os": "iOS",
+      "users": 300
+    },
+    {
+      "date": "2020-01-02",
+      "os": "iOS",
+      "users": 310
+    },
+    {
+      "date": "2020-01-03",
+      "os": "iOS",
+      "users": 305
+    },
+    {
+      "date": "2020-01-03",
+      "os": "iOS",
+      "users": 305
+    },
+    {
+      "date": "2020-01-01",
+      "os": "Android",
+      "users": 500
+    },
+    {
+      "date": "2020-01-02",
+      "os": "Android",
+      "users": 497
+    },
+    {
+      "date": "2020-01-03",
+      "os": "Android",
+      "users": 550
+    },
+    {
+      "date": "2020-01-03",
+      "os": "Android",
+      "users": 580
+    }
+  ],
+  "clickStreamEvents": [
+    {
+      "date": "2020-01-01",
+      "event": "click",
+      "user_id": "123"
+    },
+    {
+      "date": "2020-01-01",
+      "event": "pageview",
+      "user_id": "123"
+    },
+    {
+      "date": "2020-01-02",
+      "event": "pageview",
+      "user_id": "123"
+    },
+    {
+      "date": "2020-01-02",
+      "event": "pageview",
+      "user_id": "456"
+    },
+    {
+      "date": "2020-01-02",
+      "event": "click",
+      "user_id": "456"
+    }
+  ]
+}

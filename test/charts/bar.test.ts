@@ -1,0 +1,440 @@
+import { describe, expect, it } from "vitest";
+
+import chartlib from "../../src";
+import { categoryFormatter, valueFormatter } from "../../src/formatters";
+import { color } from "../../src/constants";
+import * as fixtures from "./fixtures.json";
+
+describe("given 1 dimension and 1 aggregate metric", () => {
+  const data = fixtures["dailyUsersByMobileOS"];
+  const chart = chartlib
+    .create("bar")
+    .addDimension({ index: 1, dataType: "category" })
+    .addMetric({
+      index: 2,
+      dataType: "value",
+      color: color.LIME_200,
+      aggregation: "sum",
+    });
+  it("can compile to a vertical bar chart", () => {
+    expect(chartlib.compile("My chart", chart, data)).toEqual({
+      animation: true,
+      backgroundColor: "#18181b",
+      calendar: null,
+      dataset: [
+        {
+          dimensions: ["date", "os", "users"],
+          source: [
+            ["2020-01-01", "iOS", 300],
+            ["2020-01-02", "iOS", 310],
+            ["2020-01-03", "iOS", 305],
+            ["2020-01-04", "iOS", 305],
+            ["2020-01-01", "Android", 500],
+            ["2020-01-02", "Android", 497],
+            ["2020-01-03", "Android", 550],
+            ["2020-01-04", "Android", 580],
+          ],
+        },
+        {
+          dimensions: ["os", "users"],
+          source: [
+            ["iOS", 1220],
+            ["Android", 2127],
+          ],
+        },
+      ],
+      grid: {
+        bottom: "18%",
+        containLabel: false,
+        left: "12%",
+        right: "9%",
+        show: false,
+      },
+      legend: {
+        left: "center",
+        show: true,
+        top: "2%",
+      },
+      series: [
+        {
+          type: "bar",
+          color: "#d9f99d",
+          datasetIndex: 1,
+          encode: { x: "os", y: "users" },
+          name: "users",
+          yAxisIndex: 0,
+        },
+      ],
+      title: {
+        left: "auto",
+        show: true,
+        text: "My chart",
+        top: "2%",
+      },
+      toolbox: {
+        feature: {
+          dataView: {
+            readOnly: true,
+            show: true,
+          },
+          saveAsImage: {
+            show: true,
+            type: "png",
+          },
+        },
+        show: false,
+      },
+      tooltip: {
+        axisPointer: {
+          crossStyle: {
+            color: "#999999",
+          },
+          type: "cross",
+        },
+        show: true,
+        trigger: "axis",
+      },
+      visualMap: null,
+      xAxis: [
+        {
+          axisLabel: {
+            formatter: categoryFormatter,
+            interval: 0,
+            rotate: 30,
+          },
+          name: "os",
+          nameGap: 55,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          type: "category",
+        },
+      ],
+      yAxis: [
+        {
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+          name: "users",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          type: "value",
+        },
+      ],
+    });
+  });
+});
+
+describe("given 2 dimensions and 1 aggregate metric", () => {
+  const data = fixtures["dailyUsersByMobileOS"];
+  const chart = chartlib
+    .create("bar")
+    .addDimension({ index: 0, dataType: "datetime" })
+    .addDimension({ index: 1, dataType: "category" })
+    .addMetric({
+      index: 2,
+      dataType: "value",
+      color: [color.LIME_200, color.DARK_BLUE],
+      aggregation: "sum",
+    });
+  it("can compile to a vertical bar chart", () => {
+    expect(chartlib.compile("My chart", chart, data)).toEqual({
+      animation: true,
+      backgroundColor: "#18181b",
+      calendar: null,
+      dataset: [
+        {
+          dimensions: ["date", "os", "users"],
+          source: [
+            ["2020-01-01", "iOS", 300],
+            ["2020-01-02", "iOS", 310],
+            ["2020-01-03", "iOS", 305],
+            ["2020-01-04", "iOS", 305],
+            ["2020-01-01", "Android", 500],
+            ["2020-01-02", "Android", 497],
+            ["2020-01-03", "Android", 550],
+            ["2020-01-04", "Android", 580],
+          ],
+        },
+        {
+          dimensions: ["date", "users"],
+          source: [
+            ["2020-01-01", 300],
+            ["2020-01-02", 310],
+            ["2020-01-03", 305],
+            ["2020-01-04", 305],
+          ],
+        },
+        {
+          dimensions: ["date", "users"],
+          source: [
+            ["2020-01-01", 500],
+            ["2020-01-02", 497],
+            ["2020-01-03", 550],
+            ["2020-01-04", 580],
+          ],
+        },
+      ],
+      grid: {
+        bottom: "18%",
+        containLabel: false,
+        left: "12%",
+        right: "9%",
+        show: false,
+      },
+      legend: {
+        left: "center",
+        show: true,
+        top: "2%",
+      },
+      series: [
+        {
+          type: "bar",
+          color: "#d9f99d",
+          datasetIndex: 1,
+          encode: { x: "os", y: "users" },
+          name: "iOS",
+          yAxisIndex: 0,
+        },
+        {
+          type: "bar",
+          color: "#2f4b7c",
+          datasetIndex: 2,
+          encode: { x: "os", y: "users" },
+          name: "Android",
+          yAxisIndex: 0,
+        },
+      ],
+      title: {
+        left: "auto",
+        show: true,
+        text: "My chart",
+        top: "2%",
+      },
+      toolbox: {
+        feature: {
+          dataView: {
+            readOnly: true,
+            show: true,
+          },
+          saveAsImage: {
+            show: true,
+            type: "png",
+          },
+        },
+        show: false,
+      },
+      tooltip: {
+        axisPointer: {
+          crossStyle: {
+            color: "#999999",
+          },
+          type: "cross",
+        },
+        show: true,
+        trigger: "axis",
+      },
+      visualMap: null,
+      xAxis: [
+        {
+          axisLabel: {
+            formatter: categoryFormatter,
+            interval: 0,
+            rotate: 30,
+          },
+          name: "os",
+          nameGap: 55,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          type: "category",
+        },
+      ],
+      yAxis: [
+        {
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+          name: "users",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          type: "value",
+        },
+      ],
+    });
+  });
+});
+
+describe("given 1 dimension and 2 aggregate metrics", () => {
+  const data = fixtures["clickStreamEvents"];
+  const chart = chartlib
+    .create("bar")
+    .addDimension({ index: 0, dataType: "datetime" })
+    .addMetric({
+      index: 1,
+      dataType: "value",
+      color: color.LIME_200,
+      aggregation: "count",
+    })
+    .addMetric({
+      index: 2,
+      dataType: "value",
+      color: color.DARK_BLUE,
+      aggregation: "distinct",
+    });
+  it("can compile to a vertical bar chart", () => {
+    expect(chartlib.compile("My chart", chart, data)).toEqual({
+      animation: true,
+      backgroundColor: "#18181b",
+      calendar: null,
+      dataset: [
+        {
+          dimensions: ["date", "event", "user_id"],
+          source: [
+            ["2020-01-01", "click", "123"],
+            ["2020-01-01", "pageview", "123"],
+            ["2020-01-02", "pageview", "123"],
+            ["2020-01-02", "pageview", "456"],
+            ["2020-01-02", "click", "456"],
+          ],
+        },
+        {
+          dimensions: ["date", "event"],
+          source: [
+            ["2020-01-01", 2],
+            ["2020-01-02", 3],
+          ],
+        },
+        {
+          dimensions: ["date", "user_id"],
+          source: [
+            ["2020-01-01", 1],
+            ["2020-01-02", 2],
+          ],
+        },
+      ],
+      grid: {
+        bottom: "18%",
+        containLabel: false,
+        left: "12%",
+        right: "9%",
+        show: false,
+      },
+      legend: {
+        left: "center",
+        show: true,
+        top: "2%",
+      },
+      series: [
+        {
+          type: "bar",
+          color: "#d9f99d",
+          datasetIndex: 1,
+          encode: { x: "date", y: "event" },
+          name: "event (count)",
+          yAxisIndex: 0,
+        },
+        {
+          type: "bar",
+          color: "#2f4b7c",
+          datasetIndex: 2,
+          encode: { x: "date", y: "user_id" },
+          name: "user_id (distinct)",
+          yAxisIndex: 0,
+        },
+      ],
+      title: {
+        left: "auto",
+        show: true,
+        text: "My chart",
+        top: "2%",
+      },
+      toolbox: {
+        feature: {
+          dataView: {
+            readOnly: true,
+            show: true,
+          },
+          saveAsImage: {
+            show: true,
+            type: "png",
+          },
+        },
+        show: false,
+      },
+      tooltip: {
+        axisPointer: {
+          crossStyle: {
+            color: "#999999",
+          },
+          type: "cross",
+        },
+        show: true,
+        trigger: "axis",
+      },
+      visualMap: null,
+      xAxis: [
+        {
+          axisLabel: {
+            formatter: categoryFormatter,
+            interval: 0,
+            rotate: 30,
+          },
+          name: "os",
+          nameGap: 55,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          type: "category",
+        },
+      ],
+      yAxis: [
+        {
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+          name: "users",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          type: "value",
+        },
+      ],
+    });
+  });
+});
