@@ -1,1 +1,3 @@
-export * as utils from "./utils";
+import * as chartlib from "./main";
+
+export default chartlib;
