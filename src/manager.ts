@@ -28,8 +28,8 @@ export class Chart<T extends ChartType> {
     return manager;
   }
 
-  isValid(): boolean {
-    return true;
+  assertIsValid() {
+    return;
   }
 
   getOptions(): ChartOptions<T> {
