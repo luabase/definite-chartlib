@@ -1,11 +1,18 @@
-import { ChartOptions, Dimension, Metric, StyleOptions } from "./types";
 import {
+  ChartOptions,
   ChartType,
   ColorGroupingType,
+  Dimension,
+  Metric,
   OrientationType,
-} from "./types/literals";
-import { Predicate } from "./types/utility";
+  StyleOptions,
+  echarts,
+} from "./types";
+import { DataFrame } from "./dataframe";
+import { Option, Predicate } from "./types/utility";
+import { color } from "./constants";
 import { defaultStyleOptions } from "./factory";
+import * as determine from "./determine";
 
 export class Chart<T extends ChartType> {
   private chartType: T;
@@ -28,8 +35,64 @@ export class Chart<T extends ChartType> {
     return manager;
   }
 
-  assertIsValid() {
+  compile(
+    title: string,
+    data: Array<{ [key: string]: Option<number | string> }>
+  ): echarts.ECOption {
+    const df = new DataFrame(data);
+    const datasets = determine.datasets(this, df);
+    return {
+      animation: true,
+      backgroundColor: color.ZINC_900,
+      calendar: determine.calendar(this, df),
+      dataset: datasets,
+      grid: determine.grid(this, datasets),
+      legend: determine.legend(this),
+      series: determine.series(this, datasets),
+      title: determine.title(this, title),
+      toolbox: determine.toolbox(this),
+      tooltip: determine.tooltip(this),
+      visualMap: determine.visualMap(this, df),
+      xAxis: determine.axis(this, df, datasets, "x"),
+      yAxis: determine.axis(this, df, datasets, "y"),
+    };
+  }
+
+  assertIsValid(): void {
     return;
+  }
+
+  canAddDimension(): boolean {
+    // TODO
+    return true;
+  }
+
+  canAddMetric(): boolean {
+    // TODO
+    return true;
+  }
+
+  canAddAxis(): boolean {
+    // TODO
+    return true;
+  }
+
+  getGroupByDimension(): Dimension<T> | undefined {
+    if (["scatter", "heatmap"].includes(this.chartType)) {
+      return undefined;
+    } else {
+      return this.dimensions[0];
+    }
+  }
+
+  getBreakdownDimension(): Dimension<T> | undefined {
+    if (["bar", "line"].includes(this.chartType)) {
+      return this.dimensions[1];
+    } else if (this.chartType === "scatter") {
+      return this.dimensions[0];
+    } else {
+      return undefined;
+    }
   }
 
   getOptions(): ChartOptions<T> {
@@ -121,6 +184,10 @@ export class Chart<T extends ChartType> {
 
   getMetrics(): Metric<T>[] {
     return this.metrics;
+  }
+
+  getMetric(where: Predicate<Metric<T>>): Metric<T> | undefined {
+    return this.metrics.find((m) => where(m));
   }
 
   updateMetric(
