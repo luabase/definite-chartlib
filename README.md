@@ -81,5 +81,5 @@ const chart = chartlib
   .addMetric({ index: 1, dataType: "value", color: "#3377ff" })
   .addMetric({ index: 2, dataType: "value", color: "#ff3333" });
 
-chartlib.compile("My Chart Title", chart, data)
+chart.compile("My Chart Title", data) // dumps to ECOption
 ```
