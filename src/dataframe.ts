@@ -1,5 +1,6 @@
-import { echarts } from "./types";
-import { Option } from "./types/utility";
+import { AggregationType, echarts } from "./types";
+import { Option, Predicate } from "./types/utility";
+import * as utils from "./utils";
 
 type Value = Option<number | string>;
 type Series = Array<Value>;
@@ -9,6 +10,7 @@ export class DataFrame {
   data: Matrix;
   columns: Map<number, string>;
   shape: { height: number; width: number };
+
   constructor(rows: Array<{ [key: string]: Value }>) {
     this.data = [];
     this.columns = new Map();
@@ -43,32 +45,14 @@ export class DataFrame {
     return this.shape.height === 0;
   }
 
+  private transposed(): Matrix {
+    if (this.isEmpty()) return this.data;
+    return this.data[0].map((_, i) => this.data.map((row) => row[i]));
+  }
+
   col(ix: number) {
     return this.transposed()[ix];
   }
-
-  sum(col: number, groupBy: number): DataFrame {
-    const map = this.aggregateMap(col, groupBy);
-    const result: Matrix = [];
-    for (const [k, v] of map.entries()) {
-      const sum = v.reduce((acc: number, curr: Value) => acc + Number(curr), 0);
-      result.push([k, sum]);
-    }
-    return DataFrame.load(
-      result,
-      new Map<number, string>([
-        [0, this.columns.get(groupBy) ?? ""],
-        [1, this.columns.get(col) ?? ""],
-      ])
-    );
-  }
-
-  // TODO: avg
-  // TODO: count
-  // TODO: distinct
-  // TODO: min
-  // TODO: max
-  // TODO: join
 
   private aggregateMap(col: number, groupBy: number): Map<Value, Series> {
     const map = new Map<Value, Series>();
@@ -83,9 +67,55 @@ export class DataFrame {
     return map;
   }
 
-  private transposed(): Matrix {
-    if (this.isEmpty()) return this.data;
-    return this.data[0].map((_, i) => this.data.map((row) => row[i]));
+  filter(col: number, where: Predicate<Value>): DataFrame {
+    const filtered = this.data.filter((row) => where(row[col]));
+    return DataFrame.load(filtered, this.columns);
+  }
+
+  splitBy(col: number): DataFrame[] {
+    return Array.from(new Set(this.col(col))).map((v) =>
+      this.filter(col, (w) => w === v)
+    );
+  }
+
+  groupBy(
+    col: number,
+    by: number,
+    aggregation: Exclude<AggregationType, "none">
+  ): DataFrame {
+    const map = this.aggregateMap(col, by);
+    const result: Matrix = [];
+    for (const [k, v] of map.entries()) {
+      switch (aggregation) {
+        case "sum":
+          result.push([k, utils.array.sum(v)]);
+          break;
+        case "avg":
+          result.push([k, utils.array.sum(v) / v.length]);
+          break;
+        case "count":
+          result.push([k, v.length]);
+          break;
+        case "distinct":
+          result.push([k, Array.from(new Set(v)).length]);
+          break;
+        case "min":
+          result.push([k, Math.min(...v.map(Number))]);
+          break;
+        case "max":
+          result.push([k, Math.max(...v.map(Number))]);
+          break;
+        default:
+          throw new Error(`Invalid aggregation ${aggregation}`);
+      }
+    }
+    return DataFrame.load(
+      result,
+      new Map<number, string>([
+        [0, this.columns.get(by) ?? ""],
+        [1, this.columns.get(col) ?? ""],
+      ])
+    );
   }
 
   asDataset(): echarts.DataSet {
