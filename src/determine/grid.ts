@@ -1,11 +1,12 @@
-import { DataFrame } from "../dataframe";
 import { Chart } from "../manager";
 import { ChartType, echarts } from "../types";
+import * as utils from "../utils";
 
 export function grid<T extends ChartType>(
   chart: Chart<T>,
-  df: DataFrame
+  datasets: echarts.DataSet[]
 ): echarts.Grid {
+  const isLarge = utils.datasets.containsLargeData(datasets);
   let grid: echarts.Grid = {
     show: false,
     containLabel: false,
@@ -15,9 +16,9 @@ export function grid<T extends ChartType>(
   };
   if (chart.getChartType() === "bar") {
     if (chart.getStyleOrientation() === "vertical") {
-      grid.bottom = df.shape.height > 6 ? "18%" : "12%";
+      grid.bottom = isLarge ? "18%" : "12%";
     } else {
-      grid.bottom = df.shape.height > 6 ? "15%" : "18%";
+      grid.bottom = isLarge ? "15%" : "18%";
     }
   } else if (chart.getChartType() === "heatmap") {
     grid.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";

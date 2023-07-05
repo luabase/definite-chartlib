@@ -8,8 +8,10 @@ import * as utils from "../utils";
 export function axis<T extends ChartType>(
   chart: Chart<T>,
   df: DataFrame,
+  datasets: echarts.DataSet[],
   kind: "x" | "y"
 ): echarts.Axis[] {
+  const isLarge = utils.datasets.containsLargeData(datasets);
   let dim = kind === "x";
   dim = chart.getChartType() === "scatter" ? false : dim;
   dim = chart.getStyleOrientation() === "horizontal" ? !dim : dim;
@@ -25,10 +27,10 @@ export function axis<T extends ChartType>(
       nameGap: kind === "y" ? 72 : 30,
     };
     if (chart.getChartType() === "bar") {
-      item.nameGap = df.shape.height > 6 ? item.nameGap + 25 : item.nameGap;
+      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
       item.axisLabel = {
         interval: Math.floor((df.shape.height - 1) / 10),
-        rotate: df.shape.height > 6 ? 30 : 0,
+        rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter,
       };
     }
@@ -38,11 +40,12 @@ export function axis<T extends ChartType>(
     Array.from(map.keys())
       .sort() // ensures order is "left", "right"
       .forEach((k) => {
-        let v = <Metric<T>[]>map.get(k);
+        let metrics = <Metric<T>[]>map.get(k);
         if (chart.getChartType() === "scatter") {
-          v = kind === "x" ? [v[0]] : [v[1]];
+          metrics = kind === "x" ? [metrics[0]] : [metrics[1]];
         }
-        const name = v.map((v) => df.columns.get(v.index)).join(", ");
+        const name =
+          metrics.length > 1 ? "" : df.columns.get(metrics[0].index) ?? "";
         const item: echarts.Axis = {
           show: chart.isCartesian(),
           type: "value",
