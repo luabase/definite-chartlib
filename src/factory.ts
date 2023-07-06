@@ -18,7 +18,6 @@ export function defaultStyleOptions(
         showToolbox: false,
         showLegend: true,
         lineStyle: "point",
-        showArea: false,
       };
     case "pie":
     case "scatter":
