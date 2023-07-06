@@ -10,9 +10,7 @@ export function series<T extends ChartType>(
   const series: echarts.Series[] = [];
   const colors: string[] = [];
   datasets.slice(1).forEach((dataset) => {
-    if (!dataset.id) {
-      throw new Error("Dataset for series must include ID");
-    }
+    if (!dataset.id) throw new Error("Dataset for series must include ID");
     let [mix, t, dix, name] = dataset.id.split("::");
     const metric = chart.getMetric((m) => m.index === Number(mix));
     if (!metric) throw new Error("Metric not found");
@@ -45,6 +43,18 @@ export function series<T extends ChartType>(
       item.yAxisIndex = 0;
       item.textStyle = { color: color.ZINC_500 };
       item.radius = ["40%", "70%"];
+    } else if (chart.getChartType() === "scatter") {
+      const metrics = chart.getMetrics();
+      item.symbolSize = 15;
+      item.encode = {
+        x: dataset.dimensions[metrics[0].index],
+        y: dataset.dimensions[metrics[1].index],
+        tooltip: [
+          dataset.dimensions[chart.getGroupByDimension()?.index ?? 0],
+          dataset.dimensions[metrics[0].index],
+          dataset.dimensions[metrics[1].index],
+        ],
+      };
     } else {
       item.yAxisIndex = 0;
       item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
