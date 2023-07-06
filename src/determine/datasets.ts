@@ -27,9 +27,13 @@ export function datasets<T extends ChartType>(
         let name = !!splitBy
           ? df.col(splitBy.index)[0]
           : df.columns.get(metric.index);
-        name = ["count", "distinct"].includes(metric.aggregation)
-          ? `${name} (${metric.aggregation})`
-          : name;
+        const uniqueMetrics = new Set(chart.getMetrics().map((m) => m.index));
+        const totalMetrics = chart.getMetrics().length;
+        name =
+          ["count", "distinct"].includes(metric.aggregation) ||
+          (uniqueMetrics.size === 1 && totalMetrics > 1)
+            ? `${name} (${metric.aggregation})`
+            : name;
         const type = metric.chartType ?? chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
         datasets.push(dataset);

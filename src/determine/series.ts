@@ -12,7 +12,10 @@ export function series<T extends ChartType>(
   datasets.slice(1).forEach((dataset) => {
     if (!dataset.id) throw new Error("Dataset for series must include ID");
     let [mix, t, dix, name] = dataset.id.split("::");
-    const metric = chart.getMetric((m) => m.index === Number(mix));
+    const metric = chart.getMetric(
+      (m) =>
+        m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t
+    );
     if (!metric) throw new Error("Metric not found");
     const colorId = `${mix}-${metric.color}`;
     const c = colors.includes(colorId)
