@@ -23,6 +23,6 @@ export type OrientationType = "vertical" | "horizontal";
 
 export type BarStyleType = "grouped" | "stacked";
 
-export type LineStyleType = "point" | "smooth";
+export type LineStyleType = "point" | "area";
 
 export type ColorGroupingType = "continuous" | "piecewise";

@@ -19,8 +19,7 @@
     barStyle: "grouped" | "stacked",
     orientation: "vertical" | "horizontal",
     // line only
-    lineStyle: "point" | "smooth",
-    showArea: boolean,
+    lineStyle: "point" | "area",
     // calendar and heatmap
     colorGrouping: "continuous" | "piecewise"
   }

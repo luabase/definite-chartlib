@@ -13,9 +13,7 @@ interface Indexable {
   index: number;
 }
 
-type ChartSpecificDimension<T extends ChartType> = T extends "line"
-  ? { dataType: "datetime" }
-  : T extends "calendar"
+type ChartSpecificDimension<T extends ChartType> = T extends "calendar"
   ? { dataType: "datetime" }
   : { dataType: Exclude<DataType, "value"> };
 
@@ -47,7 +45,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
       orientation: OrientationType;
     }
   : T extends "line"
-  ? { showLegend: boolean; lineStyle: LineStyleType; showArea: boolean }
+  ? { showLegend: boolean; lineStyle: LineStyleType }
   : T extends "calendar"
   ? { colorGrouping: ColorGroupingType }
   : T extends "heatmap"
