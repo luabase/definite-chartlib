@@ -140,7 +140,7 @@ describe("DataFrame", () => {
       { a: "fizz", b: 3 },
       { a: "buzz", b: 4 },
     ]);
-    expect(df.asDataset()).toEqual({
+    expect(df.asDataSet()).toEqual({
       dimensions: ["a", "b"],
       source: [
         ["foo", 1],
