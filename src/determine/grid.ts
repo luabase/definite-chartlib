@@ -18,7 +18,7 @@ export function grid<T extends ChartType>(
     if (chart.getStyleOrientation() === "vertical") {
       grid.bottom = isLarge ? "18%" : "12%";
     } else {
-      grid.bottom = isLarge ? "15%" : "18%";
+      grid.left = isLarge ? "18%" : "15%";
     }
   } else if (chart.getChartType() === "heatmap") {
     grid.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
