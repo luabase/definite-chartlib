@@ -54,7 +54,7 @@ export class Chart<T extends ChartType> {
       title: determine.title(this, title),
       toolbox: determine.toolbox(this),
       tooltip: determine.tooltip(this),
-      visualMap: determine.visualMap(this, df),
+      visualMap: determine.visualMap(this, datasets),
       xAxis: determine.axis(this, df, datasets, "x"),
       yAxis: determine.axis(this, df, datasets, "y"),
     };

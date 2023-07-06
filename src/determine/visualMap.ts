@@ -5,11 +5,14 @@ import * as utils from "../utils";
 
 export function visualMap<T extends ChartType>(
   chart: Chart<T>,
-  df: DataFrame
+  datasets: echarts.DataSet[]
 ): echarts.VisualMap | null {
   if (!["heatmap", "calendar"].includes(chart.getChartType())) return null;
+  const dataset = datasets[1];
+  if (!dataset) throw new Error("dataset not found");
+  const df = DataFrame.fromDataSet(dataset);
   const metric = chart.getMetrics()[0];
-  const arr = df.col(metric.index).map((v) => Number(v));
+  const arr = df.col(1).map((v) => Number(v));
   const isHeatmap = chart.getChartType() === "heatmap";
   return {
     inRange: {
