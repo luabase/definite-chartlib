@@ -21,7 +21,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       color: color.LIGHT_PINK,
       aggregation: "avg",
     });
-  it("can compile to a vertical bar chart", () => {
+  it("can compile to combo chart", () => {
     expect(chart.compile("My chart", data["dailyUsersByMobileOS"])).toEqual({
       animation: true,
       backgroundColor: "#18181b",
