@@ -34,7 +34,7 @@ export function axis<T extends ChartType>(
         formatter: categoryFormatter,
       };
     }
-    axes.push(addCommonFeatures(item, kind));
+    axes.push(addCommonFeatures(chart.getChartType(), item, kind));
   } else {
     const map = getMapOfValueAxes(chart);
     Array.from(map.keys())
@@ -53,16 +53,20 @@ export function axis<T extends ChartType>(
           nameGap: kind === "x" ? 30 : 50,
           axisLabel: { formatter: valueFormatter },
         };
-        axes.push(addCommonFeatures(item, kind));
+        axes.push(addCommonFeatures(chart.getChartType(), item, kind));
       });
   }
   return axes;
 }
 
-function addCommonFeatures(item: echarts.Axis, kind: "x" | "y") {
+function addCommonFeatures(
+  chartType: ChartType,
+  item: echarts.Axis,
+  kind: "x" | "y"
+) {
   item.nameLocation = "center";
   item.nameTextStyle = { fontSize: 14 };
-  if (kind === "y") {
+  if (kind === "y" || chartType === "scatter") {
     item.splitLine = {
       lineStyle: { type: "dashed", color: color.ZINC_800 },
     };
