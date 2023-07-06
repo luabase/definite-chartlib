@@ -2,6 +2,7 @@ import { Chart } from "../manager";
 import { ChartType, echarts } from "../types";
 import { color } from "../constants";
 import * as utils from "../utils";
+import { DataFrame } from "../dataframe";
 
 export function series<T extends ChartType>(
   chart: Chart<T>,
@@ -58,6 +59,26 @@ export function series<T extends ChartType>(
           dataset.dimensions[metrics[1].index],
         ],
       };
+    } else if (chart.getChartType() === "calendar") {
+      const df = DataFrame.fromDataSet(dataset);
+      Array.from(
+        new Set(
+          df
+            .col(0)
+            .map((v) => new Date(String(v)))
+            .map((d) => d.getUTCFullYear())
+            .sort()
+        )
+      ).forEach((_, i) => {
+        series.push({
+          type: "heatmap",
+          coordinateSystem: "calendar",
+          name: name,
+          datasetIndex: 1,
+          calendarIndex: i,
+        });
+      });
+      return;
     } else {
       item.yAxisIndex = 0;
       item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
