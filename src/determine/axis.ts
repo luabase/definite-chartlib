@@ -24,7 +24,7 @@ export function axis<T extends ChartType>(
       show: chart.isCartesian(),
       type: "category",
       name: utils.string.truncate(name, 42),
-      nameGap: kind === "y" ? 72 : 30,
+      nameGap: kind === "y" ? 85 : 30,
     };
     if (chart.getChartType() === "bar") {
       item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
