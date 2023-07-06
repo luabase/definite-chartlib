@@ -22,14 +22,29 @@ export function series<T extends ChartType>(
       : metric.color;
     colors.push(colorId);
     t = t === "calendar" ? "heatmap" : t;
-    series.push({
+    const item: echarts.Series = {
       type: t,
       color: c,
       datasetIndex: Number(dix),
-      encode: { x: dataset.dimensions[0], y: dataset.dimensions[1] },
       name: name,
-      yAxisIndex: 0,
-    });
+    };
+    if (chart.getStyleOrientation() === "horizontal") {
+      item.xAxisIndex = 0;
+      item.encode = { x: dataset.dimensions[1], y: dataset.dimensions[0] };
+    } else {
+      item.yAxisIndex = 0;
+      item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
+    }
+    if (
+      chart.getStyleBarStyle() === "stacked" ||
+      chart.getStyleLineStyle() === "area"
+    ) {
+      item.stack = "total";
+      if (chart.getChartType() === "line") {
+        item.areaStyle = {};
+      }
+    }
+    series.push(item);
   });
   return series;
 }
