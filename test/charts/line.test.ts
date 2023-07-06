@@ -11,7 +11,6 @@ describe("given 1 dimension and 1 aggregate metric", () => {
     .addDimension({ index: 0, dataType: "datetime" })
     .addMetric({
       index: 2,
-      dataType: "value",
       color: color.LIME_200,
       aggregation: "sum",
     });
@@ -140,7 +139,6 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
     .addDimension({ index: 1, dataType: "category" })
     .addMetric({
       index: 2,
-      dataType: "value",
       color: color.LIME_200,
       aggregation: "sum",
     });
@@ -423,13 +421,11 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
     .addDimension({ index: 0, dataType: "datetime" })
     .addMetric({
       index: 1,
-      dataType: "value",
       color: color.LIME_200,
       aggregation: "count",
     })
     .addMetric({
       index: 2,
-      dataType: "value",
       color: color.DARK_BLUE,
       aggregation: "distinct",
     });

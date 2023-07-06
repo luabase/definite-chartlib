@@ -21,16 +21,30 @@ export type Dimension<T extends ChartType> = Indexable &
   ChartSpecificDimension<T>;
 
 type ChartSpecificMetric<T extends ChartType> = T extends "bar"
-  ? { chartType?: "bar" | "line"; axis?: AxisType }
+  ? {
+      chartType?: "bar" | "line";
+      axis?: AxisType;
+      aggregation: Exclude<AggregationType, "none">;
+    }
   : T extends "line"
-  ? { chartType?: "line" | "bar"; axis?: AxisType }
-  : { chartType?: T };
+  ? {
+      chartType?: "line" | "bar";
+      axis?: AxisType;
+      aggregation: Exclude<AggregationType, "none">;
+    }
+  : T extends "pie"
+  ? {
+      chartType?: "pie";
+      aggregation: Exclude<AggregationType, "none" | "min" | "max">;
+    }
+  : T extends "scatter"
+  ? { chartType?: "scatter"; aggregation: "none" }
+  : { chartType?: T; aggregation: AggregationType };
 
 export type Metric<T extends ChartType> = Indexable &
   ChartSpecificMetric<T> & {
-    dataType: "value";
     color: string | string[];
-    aggregation: AggregationType;
+    dataType?: "value";
   };
 
 interface BaseStyleOptions {

@@ -11,7 +11,6 @@ describe("given 1 dimension and 1 aggregate metric", () => {
     .addDimension({ index: 1, dataType: "category" })
     .addMetric({
       index: 2,
-      dataType: "value",
       color: color.LIME_PALETTE,
       aggregation: "sum",
     });
