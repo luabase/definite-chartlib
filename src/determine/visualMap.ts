@@ -12,7 +12,8 @@ export function visualMap<T extends ChartType>(
   if (!dataset) throw new Error("dataset not found");
   const df = DataFrame.fromDataSet(dataset);
   const metric = chart.getMetrics()[0];
-  const arr = df.col(1).map((v) => Number(v));
+  const ix = chart.getChartType() === "heatmap" ? metric.index : 1;
+  const arr = df.col(ix).map((v) => Number(v));
   const isHeatmap = chart.getChartType() === "heatmap";
   return {
     inRange: {

@@ -79,6 +79,15 @@ export function series<T extends ChartType>(
         });
       });
       return;
+    } else if (chart.getChartType() === "heatmap") {
+      delete item.color;
+      item.datasetIndex = 1;
+      item.encode = {
+        x: dataset.dimensions[0],
+        y: dataset.dimensions[1],
+        value: dataset.dimensions[2],
+      };
+      item.name = dataset.dimensions[2];
     } else {
       item.yAxisIndex = 0;
       item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };

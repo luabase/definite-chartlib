@@ -18,6 +18,11 @@ export function datasets<T extends ChartType>(
       const name = !!splitBy ? df.col(splitBy.index)[0] : "";
       dataset.id = `${firstMetric.index}::scatter::${datasets.length}::${name}`;
       datasets.push(dataset);
+    } else if (chart.getChartType() === "heatmap") {
+      const firstMetric = chart.getMetrics()[0];
+      const dataset = df.asDataSet();
+      dataset.id = `${firstMetric.index}::heatmap::${datasets.length}::`;
+      datasets.push(dataset);
     } else {
       chart.getMetrics().forEach((metric) => {
         if (metric.aggregation === "none") throw new Error("Cannot be none");

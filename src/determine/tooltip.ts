@@ -6,7 +6,7 @@ export function tooltip<T extends ChartType>(chart: Chart<T>): echarts.ToolTip {
     show: true,
     trigger: !["line", "bar"].includes(chart.getChartType()) ? "item" : "axis",
   };
-  if (!["pie", "calendar", "scatter"].includes(chart.getChartType())) {
+  if (["bar", "line"].includes(chart.getChartType())) {
     item.axisPointer = { type: "cross", crossStyle: { color: "#999999" } };
   }
   return item;
