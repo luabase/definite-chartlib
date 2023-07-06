@@ -39,7 +39,9 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar"
     }
   : T extends "scatter"
   ? { chartType?: "scatter"; aggregation: "none" }
-  : { chartType?: T; aggregation: AggregationType };
+  : T extends "heatmap"
+  ? { chartType?: "heatmap"; aggregation: "none" }
+  : { chartType?: "calendar"; aggregation: AggregationType };
 
 export type Metric<T extends ChartType> = Indexable &
   ChartSpecificMetric<T> & {
