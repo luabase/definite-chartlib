@@ -118,10 +118,17 @@ export class DataFrame {
     );
   }
 
-  asDataset(): echarts.DataSet {
+  asDataSet(): echarts.DataSet {
     return {
       dimensions: Array.from(this.columns.values()),
       source: this.data,
     };
+  }
+
+  static fromDataSet(dataset: echarts.DataSet): DataFrame {
+    return DataFrame.load(
+      dataset.source,
+      new Map<number, string>(dataset.dimensions.map((s, i) => [i, s]))
+    );
   }
 }
