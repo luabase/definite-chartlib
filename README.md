@@ -26,18 +26,18 @@
   dimensions: [
     {
       index: number,
-      dataType: "category" | "datetime" | "value"
+      dataType: "category" | "datetime"
     },
     ...
   ],
   metrics: [
     {
       index: number,
-      dataType: "category" | "datetime" | "value",
-      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
       color: string | string[],
       aggregation: "none" | "avg" | "count" | "distinct" | "sum" | "min" | "max",
       axis?: "left" | "right"
+      dataType?: "value",
+      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
     },
     ...
   ]
@@ -73,9 +73,7 @@ const data = [
 
 const chart = chartlib
   .create("line")
-  .setStyleOption("showTitle", true)
   .setStyleOption("showLegend", true)
-  .setStyleOption("lineStyle", "smooth")
   .addDimension({ index: 0, dataType: "datetime" })
   .addMetric({ index: 1, dataType: "value", color: "#3377ff" })
   .addMetric({ index: 2, dataType: "value", color: "#ff3333" });
