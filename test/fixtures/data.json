@@ -67,5 +67,47 @@
       "event": "click",
       "user_id": "456"
     }
-  ]
+  ],
+  "economicData": {
+    "2010": [
+      {
+        "state": "New York",
+        "year": 2010,
+        "gdp": 1223529700000,
+        "avg_income": 46566
+      },
+      {
+        "state": "California",
+        "year": 2010,
+        "gdp": 1954092700000,
+        "avg_income": 41773
+      },
+      {
+        "state": "Texas",
+        "year": 2010,
+        "gdp": 1245959400000,
+        "avg_income": 41614
+      }
+    ],
+    "2020": [
+      {
+        "state": "New York",
+        "year": 2020,
+        "gdp": 1740804700000,
+        "avg_income": 58675
+      },
+      {
+        "state": "California",
+        "year": 2020,
+        "gdp": 3020173700000,
+        "avg_income": 56973
+      },
+      {
+        "state": "Texas",
+        "year": 2020,
+        "gdp": 1789933400000,
+        "avg_income": 50822
+      }
+    ]
+  }
 }
