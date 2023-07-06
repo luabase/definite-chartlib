@@ -6,7 +6,7 @@ export function datasets<T extends ChartType>(
   chart: Chart<T>,
   df: DataFrame
 ): echarts.DataSet[] {
-  const datasets: echarts.DataSet[] = [df.asDataset()];
+  const datasets: echarts.DataSet[] = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
   const splitBy = chart.getBreakdownDimension();
   if (!groupBy) throw new Error("Group by dimension not found");
@@ -14,7 +14,7 @@ export function datasets<T extends ChartType>(
   dfs.forEach((df) => {
     if (chart.getChartType() === "scatter") {
       const firstMetric = chart.getMetrics()[0];
-      const dataset = df.asDataset();
+      const dataset = df.asDataSet();
       const name = !!splitBy ? df.col(splitBy.index)[0] : "";
       dataset.id = `${firstMetric.index}::scatter::${datasets.length}::${name}`;
       datasets.push(dataset);
@@ -23,7 +23,7 @@ export function datasets<T extends ChartType>(
         if (metric.aggregation === "none") throw new Error("Cannot be none");
         const dataset = df
           .groupBy(metric.index, groupBy?.index, metric.aggregation)
-          .asDataset();
+          .asDataSet();
         let name = !!splitBy
           ? df.col(splitBy.index)[0]
           : df.columns.get(metric.index);
