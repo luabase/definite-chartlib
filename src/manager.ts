@@ -80,18 +80,14 @@ export class Chart<T extends ChartType> {
   }
 
   getGroupByDimension(): Dimension<T> | undefined {
-    if (["scatter", "heatmap"].includes(this.chartType)) {
-      return undefined;
-    } else {
-      return this.dimensions[0];
-    }
+    return this.dimensions[0];
   }
 
   getBreakdownDimension(): Dimension<T> | undefined {
     if (["bar", "line"].includes(this.chartType)) {
       return this.dimensions[1];
     } else if (this.chartType === "scatter") {
-      return this.dimensions[0];
+      return this.dimensions[1];
     } else {
       return undefined;
     }
@@ -129,6 +125,8 @@ export class Chart<T extends ChartType> {
   getStyleShowLegend(): boolean {
     if (["bar", "line"].includes(this.chartType)) {
       return (<StyleOptions<"bar">>this.style).showLegend;
+    } else if (this.chartType === "scatter" && this.getBreakdownDimension()) {
+      return true;
     }
     return false;
   }
