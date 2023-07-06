@@ -1,8 +1,10 @@
 import {
+  BarStyleType,
   ChartOptions,
   ChartType,
   ColorGroupingType,
   Dimension,
+  LineStyleType,
   Metric,
   OrientationType,
   StyleOptions,
@@ -134,6 +136,20 @@ export class Chart<T extends ChartType> {
   getStyleOrientation(): OrientationType | undefined {
     if (this.chartType === "bar") {
       return (<StyleOptions<"bar">>{ ...this.style }).orientation;
+    }
+    return undefined;
+  }
+
+  getStyleBarStyle(): BarStyleType | undefined {
+    if (this.chartType === "bar") {
+      return (<StyleOptions<"bar">>{ ...this.style }).barStyle;
+    }
+    return undefined;
+  }
+
+  getStyleLineStyle(): LineStyleType | undefined {
+    if (this.chartType === "line") {
+      return (<StyleOptions<"line">>{ ...this.style }).lineStyle;
     }
     return undefined;
   }
