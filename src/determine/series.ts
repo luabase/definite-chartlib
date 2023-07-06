@@ -31,6 +31,20 @@ export function series<T extends ChartType>(
     if (chart.getStyleOrientation() === "horizontal") {
       item.xAxisIndex = 0;
       item.encode = { x: dataset.dimensions[1], y: dataset.dimensions[0] };
+    } else if (chart.getChartType() === "pie") {
+      item.encode = {
+        itemName: dataset.dimensions[0],
+        value: dataset.dimensions[1],
+      };
+      item.itemStyle = {
+        borderColor: color.ZINC_900,
+        borderRadius: 10,
+        borderWidth: 2,
+      };
+      item.label = { color: color.ZINC_500, show: true };
+      item.yAxisIndex = 0;
+      item.textStyle = { color: color.ZINC_500 };
+      item.radius = ["40%", "70%"];
     } else {
       item.yAxisIndex = 0;
       item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
