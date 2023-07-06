@@ -10,6 +10,7 @@ interface Encode {
   y?: string;
   itemName?: string;
   value?: string;
+  tooltip?: string[] | string;
 }
 
 export default interface Series extends IStylable {
