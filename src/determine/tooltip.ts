@@ -1,4 +1,4 @@
-import { Chart } from "../manager";
+import Chart from "../chart";
 import { ChartType, echarts } from "../types";
 
 export function tooltip<T extends ChartType>(chart: Chart<T>): echarts.ToolTip {

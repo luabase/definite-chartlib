@@ -1,5 +1,5 @@
 import { DataFrame } from "../dataframe";
-import { Chart } from "../manager";
+import Chart from "../chart";
 import { ChartType, echarts } from "../types";
 import * as utils from "../utils";
 

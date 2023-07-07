@@ -1,4 +1,4 @@
-import { Chart } from "./manager";
+import Chart from "./chart";
 import type { ChartOptions, ChartType } from "./types";
 
 export function create<T extends ChartType>(type: T): Chart<T> {

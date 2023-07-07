@@ -7,16 +7,16 @@ import {
   LineStyleType,
   Metric,
   OrientationType,
+  RowOriented,
   StyleOptions,
   echarts,
 } from "./types";
 import { DataFrame } from "./dataframe";
 import { Option, Predicate } from "./types/utility";
 import { color } from "./constants";
-import { defaultStyleOptions } from "./factory";
 import * as determine from "./determine";
 
-export class Chart<T extends ChartType> {
+export default class Chart<T extends ChartType> {
   private chartType: T;
   private style: StyleOptions<T>;
   private dimensions: Dimension<T>[];
@@ -24,12 +24,12 @@ export class Chart<T extends ChartType> {
 
   constructor(chartType: T) {
     this.chartType = chartType;
-    this.style = <StyleOptions<T>>defaultStyleOptions(this.chartType);
+    this.style = <StyleOptions<T>>Chart.defaultStyleOptions(this.chartType);
     this.dimensions = [];
     this.metrics = [];
   }
 
-  static load<T extends ChartType>(opts: ChartOptions<T>) {
+  static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T> {
     const manager = new Chart(opts.chartType);
     manager.style = { ...manager.style, ...opts.style };
     opts.dimensions.forEach((d) => manager.addDimension(d));
@@ -37,10 +37,42 @@ export class Chart<T extends ChartType> {
     return manager;
   }
 
-  compile(
-    title: string,
-    data: Array<{ [key: string]: Option<number | string> }>
-  ): echarts.ECOption {
+  static defaultStyleOptions(
+    chartType: ChartType
+  ): StyleOptions<typeof chartType> {
+    switch (chartType) {
+      case "bar":
+        return {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          barStyle: "grouped",
+          orientation: "vertical",
+        };
+      case "line":
+        return {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          lineStyle: "point",
+        };
+      case "pie":
+      case "scatter":
+        return {
+          showTitle: true,
+          showToolbox: false,
+        };
+      case "calendar":
+      case "heatmap":
+        return {
+          showTitle: true,
+          showToolbox: false,
+          colorGrouping: "continuous",
+        };
+    }
+  }
+
+  compile(title: string, data: RowOriented): echarts.ECOption {
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
     return {
@@ -58,10 +90,6 @@ export class Chart<T extends ChartType> {
       xAxis: determine.axis(this, df, datasets, "x"),
       yAxis: determine.axis(this, df, datasets, "y"),
     };
-  }
-
-  assertIsValid(): void {
-    return;
   }
 
   canAddDimension(): boolean {
