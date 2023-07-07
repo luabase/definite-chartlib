@@ -22,7 +22,7 @@
     lineStyle: "point" | "area",
     // calendar and heatmap
     colorGrouping: "continuous" | "piecewise"
-  }
+  },
   dimensions: [
     {
       index: number,
