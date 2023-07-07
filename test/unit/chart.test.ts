@@ -152,4 +152,31 @@ describe("Chart", () => {
       metrics: [],
     });
   });
+  it("can determine if can add a dimension", () => {
+    const barChart = new Chart("bar");
+    expect(barChart.canAddDimension()).toEqual(true);
+    barChart.addDimension({ index: 0, dataType: "category" });
+    expect(barChart.canAddDimension()).toEqual(true);
+    barChart.addDimension({ index: 1, dataType: "category" });
+    expect(barChart.canAddDimension()).toEqual(false);
+    barChart.deleteDimension((dim) => dim.index === 1);
+    barChart.addMetric({ index: 2, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddDimension()).toEqual(true);
+    barChart.addMetric({ index: 3, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddDimension()).toEqual(false);
+  });
+  it("can determine if user can add metric", () => {
+    const barChart = new Chart("bar");
+    expect(barChart.canAddMetric()).toEqual(true);
+    barChart.addDimension({ index: 0, dataType: "category" });
+    barChart.addMetric({ index: 2, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddMetric()).toEqual(true);
+    barChart.addDimension({ index: 1, dataType: "category" });
+    expect(barChart.canAddMetric()).toEqual(false);
+    barChart.deleteDimension((dim) => dim.index === 1);
+    barChart.addMetric({ index: 3, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddMetric()).toEqual(true);
+    barChart.addMetric({ index: 4, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddMetric()).toEqual(true);
+  });
 });

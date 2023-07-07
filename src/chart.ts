@@ -7,12 +7,13 @@ import {
   LineStyleType,
   Metric,
   OrientationType,
+  Predicate,
   RowOriented,
   StyleOptions,
   echarts,
 } from "./types";
+import { LegacyOptions } from "./types/legacy";
 import { DataFrame } from "./dataframe";
-import { Option, Predicate } from "./types/utility";
 import { color } from "./constants";
 import * as determine from "./determine";
 
@@ -35,6 +36,68 @@ export default class Chart<T extends ChartType> {
     opts.dimensions.forEach((d) => manager.addDimension(d));
     opts.metrics.forEach((m) => manager.addMetric(m));
     return manager;
+  }
+
+  static fromLegacy<T extends ChartType>(opts: LegacyOptions<T>) {
+    switch (opts.type) {
+      case "bar": {
+        const chart = new Chart("bar");
+        const orientation = opts.features.orientation ?? "vertical";
+        const dims =
+          orientation === "vertical"
+            ? opts.xAxis[0].columns
+            : opts.yAxis[0].columns;
+        const metrics =
+          orientation === "vertical"
+            ? opts.yAxis[0].columns
+            : opts.xAxis[0].columns;
+        dims.forEach((col) =>
+          chart.addDimension({ index: col.index, dataType: "category" })
+        );
+        metrics.forEach((col) =>
+          chart.addMetric({
+            index: col.index,
+            color: col.color ?? color.LIME_200,
+            chartType: col.type === "line" ? "line" : "bar",
+            aggregation: "sum",
+          })
+        );
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption("showLegend", opts.features.legend ?? false);
+        chart.setStyleOption(
+          "barStyle",
+          opts.features.stack ?? false ? "stacked" : "grouped"
+        );
+        chart.setStyleOption(
+          "orientation",
+          orientation === "vertical" ? "vertical" : "horizontal"
+        );
+        return chart;
+      }
+      case "line": {
+        const chart = new Chart("line");
+        opts.xAxis[0].columns.forEach((col) =>
+          chart.addDimension({ index: col.index, dataType: "category" })
+        );
+        opts.yAxis[0].columns.forEach((col) =>
+          chart.addMetric({
+            index: col.index,
+            color: col.color ?? color.LIME_200,
+            chartType: col.type === "line" ? "line" : "bar",
+            aggregation: "sum",
+          })
+        );
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption("showLegend", opts.features.legend ?? false);
+        chart.setStyleOption(
+          "lineStyle",
+          opts.features.area ?? false ? "area" : "point"
+        );
+        return chart;
+      }
+      default:
+        return new Chart(opts.type);
+    }
   }
 
   static defaultStyleOptions(
@@ -72,6 +135,122 @@ export default class Chart<T extends ChartType> {
     }
   }
 
+  convert(to: ChartType) {
+    const from = this.chartType;
+    if (to === from) return this;
+    switch (to) {
+      case "bar":
+        return this.toBarChart();
+      case "line":
+        return this.toLineChart();
+      case "pie":
+        return this.toPieChart();
+      case "scatter":
+        return this.toScatter();
+      case "heatmap":
+        return this.toHeatmap();
+      case "calendar":
+        return this.toCalendar();
+    }
+  }
+
+  private toBarChart(): Chart<"bar"> {
+    const chart = new Chart("bar");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    this.metrics.forEach((metric) =>
+      chart.addMetric({
+        index: metric.index,
+        color: metric.color,
+        aggregation: "sum",
+      })
+    );
+    return chart;
+  }
+
+  private toLineChart(): Chart<"line"> {
+    const chart = new Chart("line");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    this.metrics.forEach((metric) => {
+      chart.addMetric({
+        index: metric.index,
+        color: metric.color,
+        aggregation: "sum",
+      });
+    });
+    return chart;
+  }
+
+  private toPieChart(): Chart<"pie"> {
+    const chart = new Chart("pie");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: this.metrics[0].color,
+      aggregation: "sum",
+    });
+    return chart;
+  }
+
+  private toScatter(): Chart<"scatter"> {
+    const chart = new Chart("scatter");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    this.metrics.slice(0, 2).forEach((metric) =>
+      chart.addMetric({
+        index: metric.index,
+        color: metric.color,
+        aggregation: "none",
+      })
+    );
+    if (chart.getMetrics().length < 2) {
+      chart.addMetric(chart.getMetrics()[0]); // re-add same metric
+    }
+    return chart;
+  }
+
+  private toHeatmap(): Chart<"heatmap"> {
+    const chart = new Chart("heatmap");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    this.dimensions.slice(0, 2).forEach((dim) => {
+      chart.addDimension(dim);
+    });
+    if (chart.getDimensions().length < 2) {
+      chart.addDimension(chart.getDimensions()[0]); // re-add same dimension
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: this.metrics[0].color,
+      aggregation: "none",
+    });
+    return chart;
+  }
+
+  private toCalendar(): Chart<"calendar"> {
+    const chart = new Chart("calendar");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    const dim = this.dimensions.find((dim) => dim.dataType === "datetime");
+    if (dim) {
+      chart.addDimension({
+        index: dim.index,
+        dataType: "datetime",
+      });
+    } else {
+      chart.addDimension({
+        index: this.dimensions[0].index,
+        dataType: "datetime",
+      });
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: this.metrics[0].color,
+      aggregation: "sum",
+    });
+    return chart;
+  }
+
   compile(title: string, data: RowOriented): echarts.ECOption {
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
@@ -93,18 +272,20 @@ export default class Chart<T extends ChartType> {
   }
 
   canAddDimension(): boolean {
-    // TODO
-    return true;
+    return ["bar", "line"].includes(this.chartType)
+      ? this.dimensions.length < 2 && this.metrics.length < 2
+      : false;
   }
 
   canAddMetric(): boolean {
-    // TODO
-    return true;
+    return ["bar", "line"].includes(this.chartType)
+      ? this.dimensions.length < 2
+      : false;
   }
 
   canAddAxis(): boolean {
-    // TODO
-    return true;
+    // FIXME
+    throw new Error("Not implemented");
   }
 
   getGroupByDimension(): Dimension<T> | undefined {
