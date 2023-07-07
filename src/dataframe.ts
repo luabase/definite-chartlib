@@ -1,4 +1,4 @@
-import { AggregationType, echarts } from "./types";
+import { AggregationType, RowOriented, echarts } from "./types";
 import { Option, Predicate } from "./types/utility";
 import * as utils from "./utils";
 
@@ -11,7 +11,7 @@ export class DataFrame {
   columns: Map<number, string>;
   shape: { height: number; width: number };
 
-  constructor(rows: Array<{ [key: string]: Value }>) {
+  constructor(rows: RowOriented) {
     this.data = [];
     this.columns = new Map();
     rows.forEach((row, i) => {
