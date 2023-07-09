@@ -352,9 +352,9 @@ export default class Chart<T extends ChartType> {
 
   canAddMetric(): boolean {
     if (["bar", "line"].includes(this.chartType)) {
-      return true;
-    } else if (this.chartType === "scatter" && this.metrics.length < 2) {
-      return true;
+      return this.dimensions.length < 2;
+    } else if (this.chartType === "scatter") {
+      return this.metrics.length < 2;
     } else {
       return false;
     }
