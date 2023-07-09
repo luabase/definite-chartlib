@@ -249,3 +249,188 @@ describe("given a legacy area line chart config", () => {
     });
   });
 });
+
+describe("given a legacy pie chart config", () => {
+  const legacy: LegacyOptions<"pie"> = {
+    name: "",
+    type: "pie",
+    features: {},
+    xAxis: [
+      {
+        columns: [
+          {
+            index: 0,
+            color: null,
+            type: null,
+          },
+        ],
+      },
+    ],
+    yAxis: [
+      {
+        columns: [
+          {
+            index: 1,
+            color: ["#ffffff"],
+            type: "pie",
+          },
+        ],
+      },
+    ],
+  };
+  it("can load as chart object", () => {
+    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+      chartType: "pie",
+      style: {
+        showTitle: false,
+        showToolbox: false,
+      },
+      dimensions: [{ index: 0, dataType: "category" }],
+      metrics: [{ index: 1, color: ["#ffffff"], aggregation: "sum" }],
+    });
+  });
+});
+
+describe("given a legacy scatter chart config", () => {
+  const legacy: LegacyOptions<"scatter"> = {
+    name: "",
+    type: "scatter",
+    features: {},
+    xAxis: [
+      {
+        columns: [
+          {
+            index: 0,
+            color: "#ffffff",
+            type: "scatter",
+          },
+        ],
+      },
+    ],
+    yAxis: [
+      {
+        columns: [
+          {
+            index: 1,
+            color: "#ffffff",
+            type: "scatter",
+          },
+        ],
+      },
+    ],
+  };
+  it("can load as chart object", () => {
+    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+      chartType: "scatter",
+      style: {
+        showTitle: false,
+        showToolbox: false,
+      },
+      dimensions: [{ index: 0, dataType: "category" }],
+      metrics: [
+        { index: 0, color: "#ffffff", aggregation: "none" },
+        { index: 1, color: "#ffffff", aggregation: "none" },
+      ],
+    });
+  });
+});
+
+describe("given a legacy heatmap chart config", () => {
+  const legacy: LegacyOptions<"heatmap"> = {
+    name: "",
+    type: "heatmap",
+    features: {
+      piecewise: true,
+    },
+    xAxis: [
+      {
+        columns: [
+          {
+            index: 0,
+            color: null,
+            type: null,
+          },
+        ],
+      },
+    ],
+    yAxis: [
+      {
+        columns: [
+          {
+            index: 1,
+            color: null,
+            type: "heatmap",
+          },
+        ],
+      },
+    ],
+    zAxis: [
+      {
+        columns: [
+          {
+            index: 2,
+            color: ["#ffffff"],
+            type: "heatmap",
+          },
+        ],
+      },
+    ],
+  };
+  it("can load as chart object", () => {
+    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+      chartType: "heatmap",
+      style: {
+        showTitle: false,
+        showToolbox: false,
+        colorGrouping: "piecewise",
+      },
+      dimensions: [
+        { index: 0, dataType: "category" },
+        { index: 1, dataType: "category" },
+      ],
+      metrics: [{ index: 2, color: ["#ffffff"], aggregation: "none" }],
+    });
+  });
+});
+
+describe("given a legacy calendar chart config", () => {
+  const legacy: LegacyOptions<"calendar"> = {
+    name: "",
+    type: "calendar",
+    features: {},
+    xAxis: [
+      {
+        columns: [
+          {
+            index: 0,
+            color: null,
+            type: null,
+          },
+        ],
+      },
+    ],
+    yAxis: [
+      {
+        columns: [
+          {
+            index: 1,
+            color: ["#ffffff"],
+            type: "calendar",
+          },
+        ],
+      },
+    ],
+  };
+  it("can load as chart object", () => {
+    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+      chartType: "calendar",
+      style: {
+        showTitle: false,
+        showToolbox: false,
+        colorGrouping: "continuous",
+      },
+      dimensions: [{ index: 0, dataType: "datetime" }],
+      metrics: [{ index: 1, color: ["#ffffff"], aggregation: "sum" }],
+    });
+  });
+});

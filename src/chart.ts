@@ -95,8 +95,76 @@ export default class Chart<T extends ChartType> {
         );
         return chart;
       }
+      case "pie": {
+        const chart = new Chart("pie");
+        chart.addDimension({
+          index: opts.xAxis[0].columns[0].index,
+          dataType: "category",
+        });
+        chart.addMetric({
+          index: opts.yAxis[0].columns[0].index,
+          color: opts.yAxis[0].columns[0].color ?? color.LIME_PALETTE,
+          aggregation: "sum",
+        });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        return chart;
+      }
+      case "scatter": {
+        const chart = new Chart("scatter");
+        [...opts.xAxis[0].columns, ...opts.yAxis[0].columns].forEach((col) => {
+          chart.addMetric({
+            index: col.index,
+            color: col.color ?? color.LIME_200,
+            aggregation: "none",
+          });
+        });
+        chart.addDimension({ index: 0, dataType: "category" });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        return chart;
+      }
+      case "heatmap": {
+        if (!opts.zAxis) throw new Error("zAxis not found");
+        const chart = new Chart("heatmap");
+        chart.addDimension({
+          index: opts.xAxis[0].columns[0].index,
+          dataType: "category",
+        });
+        chart.addDimension({
+          index: opts.yAxis[0].columns[0].index,
+          dataType: "category",
+        });
+        chart.addMetric({
+          index: opts.zAxis[0].columns[0].index,
+          color: opts.zAxis[0].columns[0].color ?? color.LIME_PALETTE,
+          aggregation: "none",
+        });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption(
+          "colorGrouping",
+          opts.features.piecewise ?? false ? "piecewise" : "continuous"
+        );
+        return chart;
+      }
+      case "calendar": {
+        const chart = new Chart("calendar");
+        chart.addDimension({
+          index: opts.xAxis[0].columns[0].index,
+          dataType: "datetime",
+        });
+        chart.addMetric({
+          index: opts.yAxis[0].columns[0].index,
+          color: opts.yAxis[0].columns[0].color ?? color.LIME_PALETTE,
+          aggregation: "sum",
+        });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption(
+          "colorGrouping",
+          opts.features.piecewise ?? false ? "piecewise" : "continuous"
+        );
+        return chart;
+      }
       default:
-        return new Chart(opts.type);
+        throw new Error(`Type ${opts.type} is not supported`);
     }
   }
 
