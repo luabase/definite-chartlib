@@ -16,6 +16,7 @@ import { LegacyOptions } from "./types/legacy";
 import { DataFrame } from "./dataframe";
 import { color } from "./constants";
 import * as determine from "./determine";
+import * as utils from "./utils";
 
 export default class Chart<T extends ChartType> {
   private chartType: T;
@@ -203,7 +204,7 @@ export default class Chart<T extends ChartType> {
     }
   }
 
-  convert(to: ChartType) {
+  convertTo(to: ChartType) {
     const from = this.chartType;
     if (to === from) return this;
     switch (to) {
@@ -229,7 +230,7 @@ export default class Chart<T extends ChartType> {
     this.metrics.forEach((metric) =>
       chart.addMetric({
         index: metric.index,
-        color: metric.color,
+        color: utils.color.asSingleton(metric.color),
         aggregation: "sum",
       })
     );
@@ -243,7 +244,7 @@ export default class Chart<T extends ChartType> {
     this.metrics.forEach((metric) => {
       chart.addMetric({
         index: metric.index,
-        color: metric.color,
+        color: utils.color.asSingleton(metric.color),
         aggregation: "sum",
       });
     });
@@ -256,7 +257,7 @@ export default class Chart<T extends ChartType> {
     chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
-      color: this.metrics[0].color,
+      color: utils.color.asArray(this.metrics[0].color),
       aggregation: "sum",
     });
     return chart;
@@ -269,11 +270,11 @@ export default class Chart<T extends ChartType> {
     this.metrics.slice(0, 2).forEach((metric) =>
       chart.addMetric({
         index: metric.index,
-        color: metric.color,
+        color: utils.color.asSingleton(metric.color),
         aggregation: "none",
       })
     );
-    if (chart.getMetrics().length < 2) {
+    if (chart.canAddMetric()) {
       chart.addMetric(chart.getMetrics()[0]); // re-add same metric
     }
     return chart;
@@ -285,12 +286,12 @@ export default class Chart<T extends ChartType> {
     this.dimensions.slice(0, 2).forEach((dim) => {
       chart.addDimension(dim);
     });
-    if (chart.getDimensions().length < 2) {
+    if (chart.canAddDimension()) {
       chart.addDimension(chart.getDimensions()[0]); // re-add same dimension
     }
     chart.addMetric({
       index: this.metrics[0].index,
-      color: this.metrics[0].color,
+      color: utils.color.asArray(this.metrics[0].color),
       aggregation: "none",
     });
     return chart;
@@ -313,7 +314,7 @@ export default class Chart<T extends ChartType> {
     }
     chart.addMetric({
       index: this.metrics[0].index,
-      color: this.metrics[0].color,
+      color: utils.color.asArray(this.metrics[0].color),
       aggregation: "sum",
     });
     return chart;
@@ -340,15 +341,23 @@ export default class Chart<T extends ChartType> {
   }
 
   canAddDimension(): boolean {
-    return ["bar", "line"].includes(this.chartType)
-      ? this.dimensions.length < 2 && this.metrics.length < 2
-      : false;
+    if (["bar", "line"].includes(this.chartType)) {
+      return this.dimensions.length < 2 && this.metrics.length < 2;
+    } else if (this.chartType === "heatmap") {
+      return this.dimensions.length < 2;
+    } else {
+      return false;
+    }
   }
 
   canAddMetric(): boolean {
-    return ["bar", "line"].includes(this.chartType)
-      ? this.dimensions.length < 2
-      : false;
+    if (["bar", "line"].includes(this.chartType)) {
+      return true;
+    } else if (this.chartType === "scatter" && this.metrics.length < 2) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   canAddAxis(): boolean {
@@ -445,6 +454,7 @@ export default class Chart<T extends ChartType> {
   }
 
   addDimension(dim: Dimension<T>): Chart<T> {
+    if (!this.canAddDimension) throw new Error("Cannot add another dimension");
     this.dimensions.push(dim);
     return this;
   }
@@ -469,6 +479,7 @@ export default class Chart<T extends ChartType> {
   }
 
   addMetric(metric: Metric<T>): Chart<T> {
+    if (!this.canAddMetric) throw new Error("Cannot add another metric");
     this.metrics.push(metric);
     return this;
   }
