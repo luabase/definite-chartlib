@@ -73,9 +73,9 @@ export class DataFrame {
   }
 
   splitBy(col: number): DataFrame[] {
-    return Array.from(new Set(this.col(col))).map((v) =>
-      this.filter(col, (w) => w === v)
-    );
+    return utils.array
+      .removeDuplicates(this.col(col))
+      .map((v) => this.filter(col, (w) => w === v));
   }
 
   groupBy(
@@ -97,7 +97,7 @@ export class DataFrame {
           result.push([k, v.length]);
           break;
         case "distinct":
-          result.push([k, Array.from(new Set(v)).length]);
+          result.push([k, utils.array.removeDuplicates(v).length]);
           break;
         case "min":
           result.push([k, Math.min(...v.map(Number))]);
