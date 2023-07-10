@@ -45,9 +45,14 @@ export class DataFrame {
     return this.shape.height === 0;
   }
 
+  private static transpose(data: Matrix): Matrix {
+    if (data.length === 0) return data;
+    return data[0].map((_, i) => data.map((row) => row[i]));
+  }
+
   private transposed(): Matrix {
     if (this.isEmpty()) return this.data;
-    return this.data[0].map((_, i) => this.data.map((row) => row[i]));
+    return DataFrame.transpose(this.data);
   }
 
   col(ix: number) {
@@ -130,5 +135,12 @@ export class DataFrame {
       dataset.source,
       new Map<number, string>(dataset.dimensions.map((s, i) => [i, s]))
     );
+  }
+
+  map(col: number, fn: (v: Value) => Value): DataFrame {
+    const transposed = this.transposed();
+    transposed[col] = transposed[col].map(fn);
+    this.data = DataFrame.transpose(transposed); // back to row-oriented
+    return DataFrame.load(this.data, this.columns);
   }
 }
