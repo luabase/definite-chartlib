@@ -16,7 +16,7 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
     })
     .addMetric({
       index: 3,
-      color: color.LIME_200,
+      color: color.DARK_BLUE, // will be ignored for first color
       aggregation: "none",
     });
   it("can compile to scatter chart", () => {
