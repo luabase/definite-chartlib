@@ -5,7 +5,7 @@
 
 ## Chart Options Schema
 
-📑 View [JSON Schema](./schema.json)
+📑 [Spec](./schema.json)
 
 ```ts
 {
