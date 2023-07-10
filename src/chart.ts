@@ -337,16 +337,14 @@ export default class Chart<T extends ChartType> {
       toolbox: determine.toolbox(this),
       tooltip: determine.tooltip(this),
       visualMap: determine.visualMap(this, datasets),
-      xAxis: determine.axis(this, df, datasets, "x"),
-      yAxis: determine.axis(this, df, datasets, "y"),
+      xAxis: determine.axis(this, datasets, "x"),
+      yAxis: determine.axis(this, datasets, "y"),
     };
   }
 
   canAddDimension(): boolean {
-    if (["bar", "line"].includes(this.chartType)) {
+    if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
-    } else if (this.chartType === "heatmap") {
-      return this.dimensions.length < 2;
     } else {
       return false;
     }
@@ -372,13 +370,9 @@ export default class Chart<T extends ChartType> {
   }
 
   getBreakdownDimension(): Dimension<T> | undefined {
-    if (["bar", "line"].includes(this.chartType)) {
-      return this.dimensions[1];
-    } else if (this.chartType === "scatter") {
-      return this.dimensions[1];
-    } else {
-      return undefined;
-    }
+    return ["bar", "line", "scatter"].includes(this.chartType)
+      ? this.dimensions[1]
+      : undefined;
   }
 
   getOptions(): ChartOptions<T> {
