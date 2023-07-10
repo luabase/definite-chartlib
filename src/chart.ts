@@ -392,10 +392,6 @@ export default class Chart<T extends ChartType> {
     return this.chartType;
   }
 
-  getDimensions(): Dimension<T>[] {
-    return this.dimensions;
-  }
-
   isCartesian(): boolean {
     return !["pie", "calendar"].includes(this.chartType);
   }
@@ -457,6 +453,14 @@ export default class Chart<T extends ChartType> {
     if (!this.canAddDimension) throw new Error("Cannot add another dimension");
     this.dimensions.push(dim);
     return this;
+  }
+
+  getDimensions(): Dimension<T>[] {
+    return this.dimensions;
+  }
+
+  getDimension(where: Predicate<Dimension<T>>): Dimension<T> | undefined {
+    return this.dimensions.find((dim) => where(dim));
   }
 
   updateDimension(
