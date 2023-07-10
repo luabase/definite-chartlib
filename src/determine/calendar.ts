@@ -8,8 +8,8 @@ export function calendar<T extends ChartType>(
   df: DataFrame
 ): echarts.Calendar[] | null {
   if (chart.getChartType() !== "calendar") return null;
-  const dim = chart.getDimensions().find((d) => d.dataType === "datetime");
-  if (!dim) return null;
+  const dim = chart.getGroupByDimension();
+  if (!dim || dim.dataType === "category") return null;
   const years = Array.from(
     new Set(
       df
