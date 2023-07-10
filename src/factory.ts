@@ -20,13 +20,13 @@ export class AutoChartFactory {
     while (this.subsetQ.length > 0) {
       const subset = this.subsetQ.pop();
       if (subset) {
-        this.addAllPossibleCreateChartMessagesToQueue(subset);
+        this.addAllCreateChartMessagesToQueue(subset);
       }
     }
-    this.createQ = utils.array.removeDuplicates(this.createQ).reverse(); // best first
+    this.createQ = utils.array.removeDuplicates(this.createQ);
   }
 
-  private addAllPossibleCreateChartMessagesToQueue(opts: Array<ColumnOptions>) {
+  private addAllCreateChartMessagesToQueue(opts: Array<ColumnOptions>) {
     // NOTE: opts.length >= 2
     const dims = opts.filter((opt) =>
       ["category", "datetime"].includes(opt.dataType)
@@ -72,6 +72,7 @@ export class AutoChartFactory {
         }
       }
     } else if (dims.length === 2) {
+      // TODO: if metrics.length === 0, use count and distinct aggregations
       if (metrics.length === 1) {
         if (dims[0].dataType === "datetime") {
           this.createQ.push({
@@ -92,8 +93,8 @@ export class AutoChartFactory {
     }
   }
 
-  getPossibleChart(): Chart<ChartType> {
-    const msg = this.createQ.pop();
+  generateSingleChart(): Chart<ChartType> {
+    const msg = this.createQ.shift();
     if (!msg) throw new Error("Create chart queue is empty");
     const chart = new Chart(<ChartType>msg.type);
     msg.dimensions.forEach((opt) =>
@@ -118,10 +119,10 @@ export class AutoChartFactory {
     return chart;
   }
 
-  getAllPossibleCharts(): Array<Chart<ChartType>> {
+  generateAllCharts(): Array<Chart<ChartType>> {
     const charts: Array<Chart<ChartType>> = [];
     while (this.createQ.length > 0) {
-      charts.push(this.getPossibleChart());
+      charts.push(this.generateSingleChart());
     }
     return charts;
   }

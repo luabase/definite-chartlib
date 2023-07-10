@@ -16,7 +16,7 @@ describe("given a list of column options", () => {
   it("can provide a list of charts that can be created", () => {
     const factory = new AutoChartFactory(colOpts);
     const charts = factory
-      .getAllPossibleCharts()
+      .generateAllCharts()
       .map((chart) => chart.getOptions());
     expect(charts).toEqual([
       {
