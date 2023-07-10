@@ -16,31 +16,64 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __decorateClass = (decorators, target, key, kind) => {
+  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
+  for (var i = decorators.length - 1, decorator; i >= 0; i--)
+    if (decorator = decorators[i])
+      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
+  if (kind && result)
+    __defProp(target, key, result);
+  return result;
+};
 
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  ChartType: () => ChartType,
-  axes: () => axes_exports,
-  color: () => color_exports,
-  convert: () => convert_exports,
-  dataset: () => dataset_exports,
-  datetime: () => datetime_exports,
-  default: () => src_default,
-  determine: () => determine_exports,
-  echarts: () => echarts_exports,
-  error: () => error_exports,
-  format: () => format_exports,
-  frame: () => frame_exports,
-  legacy: () => legacy_exports
+  default: () => src_default
 });
 module.exports = __toCommonJS(src_exports);
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  ecOptionFromBlockResult: () => ecOptionFromBlockResult,
-  ecOptionFromDataset: () => ecOptionFromDataset
+  chartGenerator: () => chartGenerator,
+  create: () => create,
+  load: () => load
+});
+
+// src/utils/array.ts
+var array_exports = {};
+__export(array_exports, {
+  getAllSubsets: () => getAllSubsets,
+  removeDuplicates: () => removeDuplicates,
+  sum: () => sum,
+  unboundedReadItem: () => unboundedReadItem
+});
+function unboundedReadItem(arr, i) {
+  return arr[i % arr.length];
+}
+function sum(arr) {
+  return arr.reduce((acc, curr) => acc + Number(curr), 0);
+}
+function getAllSubsets(arr, n = 1) {
+  const subsets = [[]];
+  arr.forEach((item) => {
+    const last = subsets.length - 1;
+    for (let i = 0; i <= last; i++) {
+      subsets.push([...subsets[i], item]);
+    }
+  });
+  return subsets.sort((a, b) => a.length - b.length).filter((subset) => subset.length >= n);
+}
+function removeDuplicates(arr) {
+  return Array.from(new Set(arr));
+}
+
+// src/utils/color.ts
+var color_exports2 = {};
+__export(color_exports2, {
+  asArray: () => asArray,
+  asSingleton: () => asSingleton
 });
 
 // src/constants/color.ts
@@ -116,136 +149,80 @@ var COLOR_PALETTE = [
   YELLOW
 ];
 
-// src/constants/error.ts
-var error_exports = {};
-__export(error_exports, {
-  Z_AXIS_NOT_FOUND: () => Z_AXIS_NOT_FOUND
-});
-var Z_AXIS_NOT_FOUND = "zAxis not found in chart config";
-
-// src/utils/dataset.ts
-var dataset_exports = {};
-__export(dataset_exports, {
-  fromBlockResult: () => fromBlockResult
-});
-
-// src/utils/frame.ts
-var frame_exports = {};
-__export(frame_exports, {
-  aggregate: () => aggregate,
-  filter: () => filter,
-  formatValues: () => formatValues,
-  runTfPipeline: () => runTfPipeline,
-  select: () => select,
-  sort: () => sort,
-  transpose: () => transpose
-});
+// src/utils/color.ts
+function asArray(s) {
+  return Array.isArray(s) ? s : color_exports.LIME_PALETTE;
+}
+function asSingleton(s) {
+  return Array.isArray(s) ? s[0] : s;
+}
 
 // src/utils/datetime.ts
 var datetime_exports = {};
 __export(datetime_exports, {
+  getQuarter: () => getQuarter,
   isStartOrEndOfMonth: () => isStartOrEndOfMonth,
   isStartOrEndOfQuarter: () => isStartOrEndOfQuarter,
   isStartOrEndOfYear: () => isStartOrEndOfYear,
   strftime: () => strftime,
   toDateUTC: () => toDateUTC
 });
-var isDate = (v) => {
-  if (v instanceof Date)
-    return true;
-  if (typeof v === "number") {
-    if (v >= 1970 && v <= 9999) {
-      return true;
-    }
-  }
-  if (typeof v === "string") {
-    if (!isNaN(Date.parse(v)) && v.length >= 4 && v.length <= 10) {
-      return true;
-    }
-  }
-  return false;
-};
-var getQuarter = (d) => {
-  if (d.getUTCMonth() + 1 < 4)
-    return 1;
-  if (d.getUTCMonth() + 1 < 7)
-    return 2;
-  if (d.getUTCMonth() + 1 < 10)
-    return 3;
-  return 4;
-};
-var toDateUTC = (v) => {
-  const date = v instanceof Date ? v : new Date(Date.parse(String(v)));
+function toDateUTC(v) {
+  const date = new Date(v);
   return new Date(
     Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds()
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
     )
   );
-};
-var isStartOrEndOfYear = (v) => {
-  if (!isDate(v))
-    return false;
-  const date = toDateUTC(v);
-  if (date.getUTCMonth() === 0 && date.getUTCDate() === 1 || date.getUTCMonth() === 11 && date.getUTCDate() === 31) {
-    return true;
+}
+function getQuarter(d) {
+  const month = d.getUTCMonth() + 1;
+  if (month <= 3) {
+    return 1;
+  } else if (month <= 6) {
+    return 2;
+  } else if (month <= 9) {
+    return 3;
+  } else {
+    return 4;
   }
-  return false;
-};
-var isStartOrEndOfQuarter = (v) => {
-  if (!isDate(v))
-    return false;
-  const date = toDateUTC(v);
-  if (date.getUTCMonth() + 1 === 1 && date.getUTCDate() === 1 || // Jan 1
-  date.getUTCMonth() + 1 === 3 && date.getUTCDate() === 31 || // Mar 31
-  date.getUTCMonth() + 1 === 4 && date.getUTCDate() === 1 || // Apr 1
-  date.getUTCMonth() + 1 === 6 && date.getUTCDate() === 30 || // Jun 30
-  date.getUTCMonth() + 1 === 7 && date.getUTCDate() === 1 || // Jul 1
-  date.getUTCMonth() + 1 === 9 && date.getUTCDate() === 30 || // Sep 30
-  date.getUTCMonth() + 1 === 10 && date.getUTCDate() === 1 || // Oct 1
-  date.getUTCMonth() + 1 === 12 && date.getUTCDate() === 31) {
-    return true;
-  }
-  return false;
-};
-var isStartOrEndOfMonth = (v) => {
-  if (!isDate(v))
-    return false;
-  const date = toDateUTC(v);
-  if ([1, 3, 5, 7, 8, 10, 12].includes(date.getUTCMonth() + 1) && [1, 31].includes(date.getUTCDate()) || [4, 6, 9, 11].includes(date.getUTCMonth() + 1) && [1, 30].includes(date.getUTCDate()) || date.getUTCMonth() + 1 === 2 && [1, 28, 29].includes(date.getUTCDate())) {
-    return true;
-  }
-  return false;
-};
-var strftime = (v, fmt) => {
-  const date = toDateUTC(v);
-  const tokens = fmt.split("");
+}
+function isStartOrEndOfYear(d) {
+  return d.getUTCMonth() === 0 && d.getUTCDate() === 1 || d.getUTCMonth() === 11 && d.getUTCDate() === 31;
+}
+function isStartOrEndOfQuarter(d) {
+  return d.getUTCMonth() + 1 === 1 && d.getUTCDate() === 1 || // Jan 1
+  d.getUTCMonth() + 1 === 3 && d.getUTCDate() === 31 || // Mar 31
+  d.getUTCMonth() + 1 === 4 && d.getUTCDate() === 1 || // Apr 1
+  d.getUTCMonth() + 1 === 6 && d.getUTCDate() === 30 || // Jun 30
+  d.getUTCMonth() + 1 === 7 && d.getUTCDate() === 1 || // Jul 1
+  d.getUTCMonth() + 1 === 9 && d.getUTCDate() === 30 || // Sep 30
+  d.getUTCMonth() + 1 === 10 && d.getUTCDate() === 1 || // Oct 1
+  d.getUTCMonth() + 1 === 12 && d.getUTCDate() === 31;
+}
+function isStartOrEndOfMonth(d) {
+  return [1, 3, 5, 7, 8, 10, 12].includes(d.getUTCMonth() + 1) && [1, 31].includes(d.getUTCDate()) || [4, 6, 9, 11].includes(d.getUTCMonth() + 1) && [1, 30].includes(d.getUTCDate()) || d.getUTCMonth() + 1 === 2 && [1, 28, 29].includes(d.getUTCDate());
+}
+function strftime(d, fmt) {
   let str = "";
-  tokens.forEach((t) => {
+  fmt.split("").forEach((t) => {
     switch (t) {
       case "y":
-        str += String(date.getUTCFullYear());
+        str += d.getUTCFullYear();
         break;
       case "q":
-        str += String(getQuarter(date));
+        str += getQuarter(d);
         break;
       case "m":
-        if (date.getUTCMonth() + 1 > 9) {
-          str += String(date.getUTCMonth() + 1);
-        } else {
-          str += `0${String(date.getUTCMonth() + 1)}`;
-        }
+        str += d.getUTCMonth() + 1 > 9 ? d.getUTCMonth() + 1 : `0${d.getUTCMonth() + 1}`;
         break;
       case "d":
-        if (date.getUTCDate() > 9) {
-          str += String(date.getUTCDate());
-        } else {
-          str += `0${String(date.getUTCDate())}`;
-        }
+        str += d.getUTCDate() > 9 ? d.getUTCDate() : `0${d.getUTCDate()}`;
         break;
       default:
         str += t;
@@ -253,911 +230,1111 @@ var strftime = (v, fmt) => {
     }
   });
   return str;
-};
+}
 
-// src/utils/frame.ts
-var transpose = (frame) => {
-  if (frame.length === 0)
-    return frame;
-  return frame[0].map((_, i) => frame.map((row) => row[i]));
-};
-var formatValues = (frame) => {
-  const transposed = transpose(frame);
-  const transformed = [];
-  transposed.forEach((column, i) => {
-    if (column.every((v) => isStartOrEndOfYear(v))) {
-      transformed[i] = column.map((v) => strftime(v, "y"));
-    } else if (column.every(isStartOrEndOfQuarter)) {
-      transformed[i] = column.map((v) => strftime(v, "yQq"));
-    } else if (column.every(isStartOrEndOfMonth)) {
-      transformed[i] = column.map((v) => strftime(v, "y-m"));
-    } else if (column.every((v) => !isNaN(Number(v)))) {
-      transformed[i] = column.map((v) => Number(v));
-    } else {
-      transformed[i] = column;
-    }
-  });
-  return transpose(transformed);
-};
-var filter = (frame, col, type, value, parser) => {
-  const transposed = transpose(frame);
-  const keep = [];
-  const filtered = [];
-  const series2 = transposed[col];
-  const convert = !parser ? (v) => Number(v) : (v) => Date.parse(String(v));
-  series2.forEach((v, i) => {
-    switch (type) {
-      case "<":
-        if (convert(v) < convert(value)) {
-          keep.push(i);
-        }
-        break;
-      case "<=":
-        if (convert(v) <= convert(value)) {
-          keep.push(i);
-        }
-        break;
-      case ">":
-        if (convert(v) > convert(value)) {
-          keep.push(i);
-        }
-        break;
-      case ">=":
-        if (convert(v) >= convert(value)) {
-          keep.push(i);
-        }
-        break;
-      case "=":
-        if (v === value) {
-          keep.push(i);
-        }
-        break;
-      case "!=":
-        if (v !== value) {
-          keep.push(i);
-        }
-        break;
-    }
-  });
-  frame.forEach((s, i) => {
-    if (keep.includes(i)) {
-      filtered.push(s);
-    }
-  });
-  return filtered;
-};
-var aggregate = (frame, col, type, groupBy) => {
-  const selected = select(frame, [groupBy, col]);
-  groupBy = 0;
-  col = 1;
-  const transposed = transpose(selected);
-  const map = /* @__PURE__ */ new Map();
-  transposed[groupBy].forEach((v) => {
-    if (!map.has(v)) {
-      map.set(
-        v,
-        transposed[col].filter((_, j) => transposed[groupBy][j] === v)
-      );
-    }
-  });
-  const aggregated = [];
-  for (const key of map.keys()) {
-    const values = map.get(key);
-    switch (type) {
-      case "avg": {
-        const avg = values?.reduce((acc, curr) => {
-          curr = Number(curr);
-          return acc + curr;
-        }, 0);
-        if (avg) {
-          aggregated.push([key, avg / (values?.length ?? 1)]);
-        }
-        break;
-      }
-      case "count": {
-        aggregated.push([key, values?.length ?? 0]);
-        break;
-      }
-      case "sum": {
-        const sum = values?.reduce((acc, curr) => {
-          curr = Number(curr);
-          return acc + curr;
-        }, 0);
-        if (sum) {
-          aggregated.push([key, sum]);
-        }
-        break;
-      }
-    }
-  }
-  return aggregated;
-};
-var select = (frame, cols) => {
-  const transposed = transpose(frame);
-  const selected = [];
-  cols.forEach((i) => selected.push(transposed[i]));
-  return transpose(selected);
-};
-var sort = (frame, col, order, parser) => {
-  const transposed = transpose(frame);
-  if (parser) {
-    transposed[col] = transposed[col].map((v) => Date.parse(String(v)));
-  }
-  let values = [...transposed[col]];
-  values = values.sort();
-  if (order === "desc") {
-    values = values.reverse();
-  }
-  const sorted = [];
-  values.forEach((v) => {
-    const ix = transposed[col].indexOf(v);
-    sorted.push(frame[ix]);
-    delete transposed[col][ix];
-  });
-  return sorted;
-};
-var runTfPipeline = (frame, conf) => {
-  (conf.filter ?? []).forEach((fil) => {
-    frame = filter(frame, fil.index, fil.type, fil.value, fil.parser);
-  });
-  (conf.aggregate ?? []).forEach((agg) => {
-    frame = aggregate(frame, agg.index, agg.type, agg.groupBy);
-  });
-  (conf.sort ?? []).forEach((s) => {
-    frame = sort(frame, s.index, s.order, s.parser);
-  });
-  return frame;
-};
-
-// src/utils/dataset.ts
-var fromBlockResult = (results) => {
-  const dimensions = results.schema.map((col) => col.name);
-  const source = [];
-  results.rows.forEach((r, i) => {
-    const row = [];
-    Object.entries(r).map(([k, v]) => row[dimensions.indexOf(k)] = v);
-    source[i] = row;
-  });
-  return { dimensions, source: formatValues(source) };
-};
-
-// src/utils/determine/index.ts
-var determine_exports = {};
-__export(determine_exports, {
-  animation: () => animation,
-  axis: () => axis,
-  calendar: () => calendar,
-  grid: () => grid,
-  legend: () => legend,
-  renderer: () => renderer,
-  series: () => series,
-  title: () => title,
-  toolbox: () => toolbox,
-  tooltip: () => tooltip,
-  visualMap: () => visualMap
+// src/utils/string.ts
+var string_exports = {};
+__export(string_exports, {
+  truncate: () => truncate
 });
+function truncate(s, len) {
+  return s.length > len ? s.substring(0, len) + "..." : s;
+}
 
-// src/utils/determine/animation.ts
-var animation = (conf) => (conf.renderer ?? "canvas") === "canvas";
-
-// src/utils/format.ts
-var format_exports = {};
-__export(format_exports, {
-  categoricalValues: () => categoricalValues,
-  numericalValues: () => numericalValues
+// src/utils/datasets.ts
+var datasets_exports = {};
+__export(datasets_exports, {
+  containsLargeData: () => containsLargeData
 });
-var categoricalValues = (value) => String(value).length > 15 ? String(value).slice(0, 11) + "..." + String(value).slice(-4) : String(value);
-var numericalValues = (value) => Intl.NumberFormat("en-US", {
-  notation: "compact",
-  maximumFractionDigits: 1
-}).format(Number(value));
+function containsLargeData(datasets2) {
+  return datasets2[datasets2.length - 1].source.length > 10;
+}
 
-// src/types/echarts/index.ts
-var echarts_exports = {};
+// src/perf.ts
+function profile(target, name, descriptor) {
+  const original = descriptor.value;
+  descriptor.value = function(...args) {
+    const proto = typeof target === "function" ? target.prototype : target;
+    const startTime = Date.now();
+    const result = original.apply(this, args);
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    console.debug(`${proto.constructor.name}.${name} took ${duration}ms`);
+    return result;
+  };
+  return descriptor;
+}
 
-// src/types/enums.ts
-var ChartType = /* @__PURE__ */ ((ChartType2) => {
-  ChartType2["BAR"] = "bar";
-  ChartType2["LINE"] = "line";
-  ChartType2["PIE"] = "pie";
-  ChartType2["SCATTER"] = "scatter";
-  ChartType2["HEATMAP"] = "heatmap";
-  ChartType2["CALENDAR"] = "calendar";
-  return ChartType2;
-})(ChartType || {});
-
-// src/utils/determine/axis.ts
-var getTargetAxes = (conf, type) => {
-  switch (type) {
-    case "x":
-      return conf.xAxis;
-    case "y":
-      return conf.yAxis;
-    case "z":
-      if (conf.zAxis) {
-        return conf.zAxis;
-      } else {
-        throw error_exports.Z_AXIS_NOT_FOUND;
+// src/dataframe.ts
+var _DataFrame = class {
+  constructor(rows) {
+    this.data = [];
+    this.columns = /* @__PURE__ */ new Map();
+    rows.forEach((row, i) => {
+      if (i === 0) {
+        Object.keys(row).forEach((k, i2) => {
+          if (!this.columns.has(i2)) {
+            this.columns.set(i2, k);
+          }
+        });
       }
+      this.data.push(Object.values(row));
+    });
+    this.shape = {
+      height: this.data.length,
+      width: Object.keys(this.columns).length
+    };
   }
-};
-var getDataType = (conf, axisType) => {
-  switch (conf.type) {
-    case "pie" /* PIE */:
-    case "line" /* LINE */:
-      return axisType === "x" ? "category" : "value";
-    case "scatter" /* SCATTER */:
-      return "value";
-    case "heatmap" /* HEATMAP */:
-      return "category";
-    case "bar" /* BAR */:
-      switch (conf.features.orientation ?? "vertical") {
-        case "vertical":
-          return axisType === "x" ? "category" : "value";
-        case "horizontal":
-          return axisType === "x" ? "value" : "category";
+  static load(data, columns) {
+    const df = new _DataFrame([]);
+    df.data = data;
+    df.columns = columns;
+    df.shape = {
+      height: data.length,
+      width: Array.from(columns.keys()).length
+    };
+    return df;
+  }
+  isEmpty() {
+    return this.shape.height === 0;
+  }
+  static transpose(data) {
+    if (data.length === 0)
+      return data;
+    return data[0].map((_, i) => data.map((row) => row[i]));
+  }
+  transposed() {
+    if (this.isEmpty())
+      return this.data;
+    return _DataFrame.transpose(this.data);
+  }
+  col(ix) {
+    return this.transposed()[ix];
+  }
+  aggregateMap(col, groupBy) {
+    const map = /* @__PURE__ */ new Map();
+    this.col(groupBy).forEach((v) => {
+      if (!map.has(v)) {
+        map.set(
+          v,
+          this.col(col).filter((_, i) => this.col(groupBy)[i] === v)
+        );
+      }
+    });
+    return map;
+  }
+  asDataSet() {
+    return {
+      dimensions: Array.from(this.columns.values()),
+      source: this.data
+    };
+  }
+  static fromDataSet(dataset) {
+    return _DataFrame.load(
+      dataset.source,
+      new Map(dataset.dimensions.map((s, i) => [i, s]))
+    );
+  }
+  filter(col, where) {
+    const filtered = this.data.filter((row) => where(row[col]));
+    return _DataFrame.load(filtered, this.columns);
+  }
+  splitBy(col) {
+    return array_exports.removeDuplicates(this.col(col)).map((v) => this.filter(col, (w) => w === v));
+  }
+  groupBy(col, by, aggregation) {
+    const map = this.aggregateMap(col, by);
+    const result = [];
+    for (const [k, v] of map.entries()) {
+      switch (aggregation) {
+        case "sum":
+          result.push([k, array_exports.sum(v)]);
+          break;
+        case "avg":
+          result.push([k, array_exports.sum(v) / v.length]);
+          break;
+        case "count":
+          result.push([k, v.length]);
+          break;
+        case "distinct":
+          result.push([k, array_exports.removeDuplicates(v).length]);
+          break;
+        case "min":
+          result.push([k, Math.min(...v.map(Number))]);
+          break;
+        case "max":
+          result.push([k, Math.max(...v.map(Number))]);
+          break;
         default:
-          return "category";
+          throw new Error(`Invalid aggregation ${aggregation}`);
       }
-    default:
-      return "category";
-  }
-};
-var axis = (conf, dataset, axisType) => {
-  const axes = [];
-  const targetAxes = getTargetAxes(conf, axisType);
-  targetAxes.forEach((ax) => {
-    if (ax.columns.length > 0) {
-      const type = getDataType(conf, axisType);
-      let name = ax.columns.map((col) => dataset.dimensions[col.index]).join(", ");
-      name = name.length > 45 ? name.slice(0, 45) + "..." : name;
-      const item = {
-        show: !["pie" /* PIE */, "calendar" /* CALENDAR */].includes(conf.type),
-        type,
-        name,
-        nameLocation: "center",
-        nameGap: axisType === "x" ? 30 : 50,
-        nameTextStyle: {
-          fontSize: 14
-        }
-      };
-      if (axisType === "y" || conf.type === "scatter" /* SCATTER */) {
-        item.splitLine = {
-          show: true,
-          lineStyle: { width: 1, type: "dashed", color: color_exports.ZINC_800 }
-        };
-      }
-      if (type === "value") {
-        item.axisLabel = { formatter: numericalValues };
-      }
-      if (conf.type === "bar" /* BAR */) {
-        const orientation = conf.features.orientation ?? "vertical";
-        const isLargeSet = dataset.source.length > 6;
-        switch (axisType) {
-          case "x":
-            if (orientation === "vertical") {
-              item.axisLabel = {
-                interval: Math.floor((dataset.source.length - 1) / 10),
-                rotate: isLargeSet ? 30 : 0,
-                formatter: categoricalValues
-              };
-              item.nameGap = isLargeSet ? 55 : 30;
-            }
-            break;
-          case "y":
-            if (orientation === "horizontal") {
-              item.axisLabel = {
-                interval: Math.floor((dataset.source.length - 1) / 10),
-                rotate: isLargeSet ? 30 : 0,
-                formatter: categoricalValues
-              };
-              item.nameGap = isLargeSet ? 70 : 85;
-            }
-            break;
-        }
-      }
-      axes.push(item);
     }
-  });
-  return axes;
-};
-
-// src/utils/determine/calendar.ts
-var calendar = (conf, dataset) => {
-  if (conf.type !== "calendar" /* CALENDAR */) {
-    return null;
+    return _DataFrame.load(
+      result,
+      /* @__PURE__ */ new Map([
+        [0, this.columns.get(by) ?? ""],
+        [1, this.columns.get(col) ?? ""]
+      ])
+    );
   }
-  const transposed = transpose(dataset.source);
+  map(col, fn) {
+    const transposed = this.transposed();
+    transposed[col] = transposed[col].map(fn);
+    this.data = _DataFrame.transpose(transposed);
+    return _DataFrame.load(this.data, this.columns);
+  }
+};
+var DataFrame = _DataFrame;
+__decorateClass([
+  profile
+], DataFrame.prototype, "filter", 1);
+__decorateClass([
+  profile
+], DataFrame.prototype, "splitBy", 1);
+__decorateClass([
+  profile
+], DataFrame.prototype, "groupBy", 1);
+__decorateClass([
+  profile
+], DataFrame.prototype, "map", 1);
+
+// src/formatters.ts
+function categoryFormatter(value) {
+  return String(value).length > 15 ? String(value).slice(0, 11) + "..." + String(value).slice(-4) : String(value);
+}
+function valueFormatter(value) {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1
+  }).format(Number(value));
+}
+
+// src/determine/axis.ts
+function axis(chart, datasets2, kind) {
+  const df = DataFrame.fromDataSet(datasets2[0]);
+  const isLarge = datasets_exports.containsLargeData(datasets2);
+  const axes = [];
+  if (isDimensionalAxis(chart, kind)) {
+    const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
+    const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
+    const item = {
+      show: chart.isCartesian(),
+      type: "category",
+      name: string_exports.truncate(name, 42),
+      nameGap: kind === "y" ? 85 : 30
+    };
+    if (chart.getChartType() === "bar") {
+      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
+      item.axisLabel = {
+        interval: Math.floor((df.shape.height - 1) / 10),
+        rotate: isLarge ? 30 : 0,
+        formatter: categoryFormatter
+      };
+    }
+    axes.push(addCommonFeatures(chart.getChartType(), item, kind));
+  } else {
+    const map = getMapOfValueAxes(chart);
+    const keys = Array.from(map.keys());
+    keys.sort().forEach((k) => {
+      let metrics = map.get(k);
+      if (chart.getChartType() === "scatter") {
+        metrics = kind === "x" ? [metrics[0]] : [metrics[1]];
+      }
+      const name = metrics.length > 1 ? "" : df.columns.get(metrics[0].index) ?? "";
+      const item = {
+        show: chart.isCartesian(),
+        type: "value",
+        name: string_exports.truncate(name, 42),
+        nameGap: kind === "x" ? 30 : 50,
+        axisLabel: { formatter: valueFormatter }
+      };
+      axes.push(addCommonFeatures(chart.getChartType(), item, kind));
+    });
+  }
+  return axes;
+}
+function isDimensionalAxis(chart, kind) {
+  let dim = kind === "x";
+  if (chart.getChartType() === "heatmap") {
+    dim = true;
+  } else if (chart.getChartType() === "scatter") {
+    dim = false;
+  } else if (chart.getStyleOrientation() === "horizontal") {
+    dim = !dim;
+  }
+  return dim;
+}
+function addCommonFeatures(chartType, item, kind) {
+  item.nameLocation = "center";
+  item.nameTextStyle = { fontSize: 14 };
+  if (kind === "y" || chartType === "scatter") {
+    item.splitLine = {
+      lineStyle: { type: "dashed", color: color_exports.ZINC_800 }
+    };
+  }
+  return item;
+}
+function getMapOfValueAxes(chart) {
+  const map = /* @__PURE__ */ new Map();
+  if (["bar", "line"].includes(chart.getChartType())) {
+    return chart.getMetrics().reduce((acc, m) => {
+      const axis2 = m.axis ?? "left";
+      if (acc.has(axis2)) {
+        acc.get(axis2)?.push(m);
+      } else {
+        acc.set(axis2, [m]);
+      }
+      return acc;
+    }, map);
+  } else {
+    map.set("left", chart.getMetrics());
+  }
+  return map;
+}
+
+// src/determine/calendar.ts
+function calendar(chart, df) {
+  if (chart.getChartType() !== "calendar")
+    return null;
+  const dim = chart.getGroupByDimension();
+  if (!dim || dim.dataType === "category")
+    return null;
   const years = Array.from(
     new Set(
-      transposed[0].map((t) => new Date(String(t))).map((d) => d.getUTCFullYear()).sort()
+      df.col(dim.index).map((v) => new Date(String(v))).map((d) => d.getUTCFullYear()).sort()
     )
   );
-  return years.map((year, i) => {
+  return years.map((y, i) => {
     return {
       top: i * 130 + 90,
       right: 30,
       cellSize: ["auto", 13],
-      range: String(year),
+      range: String(y),
       itemStyle: {
         color: color_exports.ZINC_900,
         borderColor: color_exports.ZINC_500,
         borderWidth: 0.5
       },
       orient: "horizontal",
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: color_exports.ZINC_400,
-          width: 1,
-          type: "solid"
-        }
-      }
+      splitLine: { lineStyle: { color: color_exports.ZINC_400, type: "solid" } }
     };
   });
-};
+}
 
-// src/utils/determine/grid.ts
-var grid = (conf, dataset) => {
-  let grid2 = { show: false, containLabel: false };
-  if ((conf.renderer ?? "canvas") === "canvas") {
-    grid2 = { ...grid2, left: "12%", bottom: "12%", right: "9%" };
-    if (conf.type === "bar" /* BAR */) {
-      const orientation = conf.features.orientation ?? "vertical";
-      const isVertical = orientation === "vertical";
-      const isLargeSet = dataset.source.length > 6;
-      if (isVertical) {
-        grid2.bottom = isLargeSet ? "18%" : "12%";
-      } else {
-        grid2.left = isLargeSet ? "15%" : "18%";
-      }
-    } else if (conf.type === "heatmap" /* HEATMAP */) {
-      grid2.right = conf.features.piecewise ?? false ? "15%" : "11%";
+// src/determine/datasets.ts
+function datasets(chart, df) {
+  const datasets2 = [df.asDataSet()];
+  const groupBy = chart.getGroupByDimension();
+  const splitBy = chart.getBreakdownDimension();
+  if (!groupBy)
+    throw new Error("Group by dimension not found");
+  df = groupBy.dataType === "datetime" ? formatDateDF(df, groupBy.index) : df;
+  const dfs = !!splitBy ? df.splitBy(splitBy.index) : [df];
+  dfs.forEach((df2) => {
+    if (chart.getChartType() === "scatter") {
+      const firstMetric = chart.getMetrics()[0];
+      const dataset = df2.asDataSet();
+      const name = !!splitBy ? df2.col(splitBy.index)[0] : "";
+      dataset.id = `${firstMetric.index}::scatter::${datasets2.length}::${name}`;
+      datasets2.push(dataset);
+    } else if (chart.getChartType() === "heatmap") {
+      const firstMetric = chart.getMetrics()[0];
+      const dataset = df2.asDataSet();
+      dataset.id = `${firstMetric.index}::heatmap::${datasets2.length}::`;
+      datasets2.push(dataset);
+    } else {
+      chart.getMetrics().forEach((metric) => {
+        if (metric.aggregation === "none")
+          throw new Error("Cannot be none");
+        const dataset = df2.groupBy(metric.index, groupBy?.index, metric.aggregation).asDataSet();
+        let name = !!splitBy ? df2.col(splitBy.index)[0] : df2.columns.get(metric.index);
+        const uniqueMetrics = new Set(chart.getMetrics().map((m) => m.index));
+        const totalMetrics = chart.getMetrics().length;
+        name = ["count", "distinct"].includes(metric.aggregation) || uniqueMetrics.size === 1 && totalMetrics > 1 ? `${name} (${metric.aggregation})` : name;
+        const type = metric.chartType ?? chart.getChartType();
+        dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
+        datasets2.push(dataset);
+      });
     }
+  });
+  return datasets2;
+}
+function formatDateDF(df, index) {
+  let fmt = "";
+  const values = df.col(index);
+  const dates = values.map((v) => datetime_exports.toDateUTC(String(v)));
+  if (dates.every((d) => datetime_exports.isStartOrEndOfYear(d))) {
+    fmt = "y";
+  } else if (dates.every((d) => datetime_exports.isStartOrEndOfQuarter(d))) {
+    fmt = "yQq";
+  } else if (dates.every((d) => datetime_exports.isStartOrEndOfMonth(d))) {
+    fmt = "y-m";
+  } else {
+    fmt = "y-m-d";
+  }
+  return df.map(index, (v) => {
+    const d = datetime_exports.toDateUTC(String(v));
+    return datetime_exports.strftime(d, fmt);
+  });
+}
+
+// src/determine/grid.ts
+function grid(chart, datasets2) {
+  const isLarge = datasets_exports.containsLargeData(datasets2);
+  let grid2 = {
+    show: false,
+    containLabel: false,
+    left: "12%",
+    bottom: "12%",
+    right: "9%"
+  };
+  if (chart.getChartType() === "bar") {
+    if (chart.getStyleOrientation() === "vertical") {
+      grid2.bottom = isLarge ? "18%" : "12%";
+    } else {
+      grid2.left = isLarge ? "18%" : "15%";
+    }
+  } else if (chart.getChartType() === "heatmap") {
+    grid2.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
   }
   return grid2;
-};
+}
 
-// src/utils/determine/legend.ts
-var legend = (conf) => {
+// src/determine/legend.ts
+function legend(chart) {
   return {
-    show: (conf.features.legend ?? false) && !["heatmap" /* HEATMAP */, "calendar" /* CALENDAR */].includes(conf.type),
-    type: "scroll",
+    show: chart.getStyleShowLegend(),
     left: "center",
-    top: conf.renderer === "svg" ? 10 : "2%"
+    top: "2%"
   };
-};
+}
 
-// src/utils/determine/renderer.ts
-var renderer = (v) => v ?? "canvas";
-
-// src/utils/determine/series.ts
-var getTypedAxes = (conf) => {
-  switch (conf.type) {
-    case "bar" /* BAR */:
-      return (conf.features.orientation ?? "vertical") === "vertical" ? { valAxis: conf.yAxis, catAxis1: conf.xAxis } : { valAxis: conf.xAxis, catAxis1: conf.yAxis };
-    case "heatmap" /* HEATMAP */:
-      if (conf.zAxis) {
-        return {
-          valAxis: conf.zAxis,
-          catAxis1: conf.xAxis,
-          catAxis2: conf.yAxis
-        };
-      } else {
-        throw error_exports.Z_AXIS_NOT_FOUND;
+// src/determine/series.ts
+function series(chart, datasets2) {
+  const series2 = [];
+  const colors = [];
+  datasets2.slice(1).forEach((dataset) => {
+    if (!dataset.id)
+      throw new Error("Dataset for series must include ID");
+    let [mix, t, dix, name] = dataset.id.split("::");
+    const metric = chart.getMetric(
+      (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t
+    );
+    if (!metric)
+      throw new Error("Metric not found");
+    const colorId = `${mix}-${metric.color}`;
+    const c = colors.includes(colorId) ? array_exports.unboundedReadItem(color_exports.COLOR_PALETTE, Number(dix) - 1) : metric.color;
+    colors.push(colorId);
+    t = t === "calendar" ? "heatmap" : t;
+    const item = {
+      type: t,
+      color: c,
+      datasetIndex: Number(dix),
+      name
+    };
+    if (chart.getStyleOrientation() === "horizontal") {
+      item.xAxisIndex = 0;
+      item.encode = { x: dataset.dimensions[1], y: dataset.dimensions[0] };
+    } else if (chart.getChartType() === "pie") {
+      item.encode = {
+        itemName: dataset.dimensions[0],
+        value: dataset.dimensions[1]
+      };
+      item.itemStyle = {
+        borderColor: color_exports.ZINC_900,
+        borderRadius: 10,
+        borderWidth: 2
+      };
+      item.label = { color: color_exports.ZINC_500, show: true };
+      item.yAxisIndex = 0;
+      item.textStyle = { color: color_exports.ZINC_500 };
+      item.radius = ["40%", "70%"];
+    } else if (chart.getChartType() === "scatter") {
+      const metrics = chart.getMetrics();
+      item.symbolSize = 15;
+      item.encode = {
+        x: dataset.dimensions[metrics[0].index],
+        y: dataset.dimensions[metrics[1].index],
+        tooltip: [
+          dataset.dimensions[chart.getGroupByDimension()?.index ?? 0],
+          dataset.dimensions[metrics[0].index],
+          dataset.dimensions[metrics[1].index]
+        ]
+      };
+    } else if (chart.getChartType() === "calendar") {
+      const df = DataFrame.fromDataSet(dataset);
+      Array.from(
+        new Set(
+          df.col(0).map((v) => new Date(String(v))).map((d) => d.getUTCFullYear()).sort()
+        )
+      ).forEach((_, i) => {
+        series2.push({
+          type: "heatmap",
+          coordinateSystem: "calendar",
+          name,
+          datasetIndex: 1,
+          calendarIndex: i
+        });
+      });
+      return;
+    } else if (chart.getChartType() === "heatmap") {
+      delete item.color;
+      item.datasetIndex = 1;
+      item.encode = {
+        x: dataset.dimensions[0],
+        y: dataset.dimensions[1],
+        value: dataset.dimensions[2]
+      };
+      item.name = dataset.dimensions[2];
+    } else {
+      item.yAxisIndex = 0;
+      item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
+    }
+    if (chart.getStyleBarStyle() === "stacked" || chart.getStyleLineStyle() === "area") {
+      item.stack = "total";
+      if (chart.getChartType() === "line") {
+        item.areaStyle = {};
       }
-    default:
-      return { valAxis: conf.yAxis, catAxis1: conf.xAxis };
+    }
+    series2.push(item);
+  });
+  return series2;
+}
+
+// src/determine/title.ts
+function title(chart, s) {
+  return {
+    show: chart.getStyleShowTitle(),
+    text: string_exports.truncate(s, 42),
+    top: "2%",
+    left: "auto"
+  };
+}
+
+// src/determine/toolbox.ts
+function toolbox(chart) {
+  return {
+    show: chart.getStyleShowToolbox(),
+    feature: {
+      saveAsImage: {
+        show: true,
+        type: "png"
+      },
+      dataView: {
+        show: true,
+        readOnly: true
+      }
+    }
+  };
+}
+
+// src/determine/tooltip.ts
+function tooltip(chart) {
+  const item = {
+    show: true,
+    trigger: !["line", "bar"].includes(chart.getChartType()) ? "item" : "axis"
+  };
+  if (["bar", "line"].includes(chart.getChartType())) {
+    item.axisPointer = { type: "cross", crossStyle: { color: "#999999" } };
+  }
+  return item;
+}
+
+// src/determine/visualMap.ts
+function visualMap(chart, datasets2) {
+  if (!["heatmap", "calendar"].includes(chart.getChartType()))
+    return null;
+  const dataset = datasets2[1];
+  if (!dataset)
+    throw new Error("dataset not found");
+  const df = DataFrame.fromDataSet(dataset);
+  const metric = chart.getMetrics()[0];
+  const ix = chart.getChartType() === "heatmap" ? metric.index : 1;
+  const arr = df.col(ix).map((v) => Number(v));
+  const isHeatmap = chart.getChartType() === "heatmap";
+  return {
+    inRange: {
+      color: color_exports2.asArray(metric.color)
+    },
+    left: isHeatmap ? "right" : "center",
+    top: isHeatmap ? "center" : 3,
+    type: chart.getStyleColorGrouping() ?? "continuous",
+    orient: isHeatmap ? "vertical" : "horizontal",
+    min: Math.min(...arr),
+    max: Math.max(...arr),
+    calculable: true
+  };
+}
+
+// src/chart.ts
+var _Chart = class {
+  constructor(chartType) {
+    this.chartType = chartType;
+    this.style = _Chart.defaultStyleOptions(this.chartType);
+    this.dimensions = [];
+    this.metrics = [];
+  }
+  static load(opts) {
+    const manager = new _Chart(opts.chartType);
+    manager.style = { ...manager.style, ...opts.style };
+    opts.dimensions.forEach((d) => manager.addDimension(d));
+    opts.metrics.forEach((m) => manager.addMetric(m));
+    return manager;
+  }
+  static fromLegacy(opts) {
+    switch (opts.type) {
+      case "bar": {
+        const chart = new _Chart("bar");
+        const orientation = opts.features.orientation ?? "vertical";
+        const dims = orientation === "vertical" ? opts.xAxis[0].columns : opts.yAxis[0].columns;
+        const metrics = orientation === "vertical" ? opts.yAxis[0].columns : opts.xAxis[0].columns;
+        dims.forEach(
+          (col) => chart.addDimension({ index: col.index, dataType: "category" })
+        );
+        metrics.forEach(
+          (col) => chart.addMetric({
+            index: col.index,
+            color: col.color ?? color_exports.LIME_200,
+            chartType: col.type === "line" ? "line" : "bar",
+            aggregation: "sum"
+          })
+        );
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption("showLegend", opts.features.legend ?? false);
+        chart.setStyleOption(
+          "barStyle",
+          opts.features.stack ?? false ? "stacked" : "grouped"
+        );
+        chart.setStyleOption(
+          "orientation",
+          orientation === "vertical" ? "vertical" : "horizontal"
+        );
+        return chart;
+      }
+      case "line": {
+        const chart = new _Chart("line");
+        opts.xAxis[0].columns.forEach(
+          (col) => chart.addDimension({ index: col.index, dataType: "category" })
+        );
+        opts.yAxis[0].columns.forEach(
+          (col) => chart.addMetric({
+            index: col.index,
+            color: col.color ?? color_exports.LIME_200,
+            chartType: col.type === "line" ? "line" : "bar",
+            aggregation: "sum"
+          })
+        );
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption("showLegend", opts.features.legend ?? false);
+        chart.setStyleOption(
+          "lineStyle",
+          opts.features.area ?? false ? "area" : "point"
+        );
+        return chart;
+      }
+      case "pie": {
+        const chart = new _Chart("pie");
+        chart.addDimension({
+          index: opts.xAxis[0].columns[0].index,
+          dataType: "category"
+        });
+        chart.addMetric({
+          index: opts.yAxis[0].columns[0].index,
+          color: opts.yAxis[0].columns[0].color ?? color_exports.LIME_PALETTE,
+          aggregation: "sum"
+        });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        return chart;
+      }
+      case "scatter": {
+        const chart = new _Chart("scatter");
+        [...opts.xAxis[0].columns, ...opts.yAxis[0].columns].forEach((col) => {
+          chart.addMetric({
+            index: col.index,
+            color: col.color ?? color_exports.LIME_200,
+            aggregation: "none"
+          });
+        });
+        chart.addDimension({ index: 0, dataType: "category" });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        return chart;
+      }
+      case "heatmap": {
+        if (!opts.zAxis)
+          throw new Error("zAxis not found");
+        const chart = new _Chart("heatmap");
+        chart.addDimension({
+          index: opts.xAxis[0].columns[0].index,
+          dataType: "category"
+        });
+        chart.addDimension({
+          index: opts.yAxis[0].columns[0].index,
+          dataType: "category"
+        });
+        chart.addMetric({
+          index: opts.zAxis[0].columns[0].index,
+          color: opts.zAxis[0].columns[0].color ?? color_exports.LIME_PALETTE,
+          aggregation: "none"
+        });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption(
+          "colorGrouping",
+          opts.features.piecewise ?? false ? "piecewise" : "continuous"
+        );
+        return chart;
+      }
+      case "calendar": {
+        const chart = new _Chart("calendar");
+        chart.addDimension({
+          index: opts.xAxis[0].columns[0].index,
+          dataType: "datetime"
+        });
+        chart.addMetric({
+          index: opts.yAxis[0].columns[0].index,
+          color: opts.yAxis[0].columns[0].color ?? color_exports.LIME_PALETTE,
+          aggregation: "sum"
+        });
+        chart.setStyleOption("showTitle", opts.features.title ?? false);
+        chart.setStyleOption(
+          "colorGrouping",
+          opts.features.piecewise ?? false ? "piecewise" : "continuous"
+        );
+        return chart;
+      }
+      default:
+        throw new Error(`Type ${opts.type} is not supported`);
+    }
+  }
+  static defaultStyleOptions(chartType) {
+    switch (chartType) {
+      case "bar":
+        return {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          barStyle: "grouped",
+          orientation: "vertical"
+        };
+      case "line":
+        return {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          lineStyle: "point"
+        };
+      case "pie":
+      case "scatter":
+        return {
+          showTitle: true,
+          showToolbox: false
+        };
+      case "calendar":
+      case "heatmap":
+        return {
+          showTitle: true,
+          showToolbox: false,
+          colorGrouping: "continuous"
+        };
+    }
+  }
+  convertTo(to) {
+    const from = this.chartType;
+    if (to === from)
+      return this;
+    switch (to) {
+      case "bar":
+        return this.toBarChart();
+      case "line":
+        return this.toLineChart();
+      case "pie":
+        return this.toPieChart();
+      case "scatter":
+        return this.toScatter();
+      case "heatmap":
+        return this.toHeatmap();
+      case "calendar":
+        return this.toCalendar();
+    }
+  }
+  toBarChart() {
+    const chart = new _Chart("bar");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    this.metrics.forEach(
+      (metric) => chart.addMetric({
+        index: metric.index,
+        color: color_exports2.asSingleton(metric.color),
+        aggregation: "sum"
+      })
+    );
+    return chart;
+  }
+  toLineChart() {
+    const chart = new _Chart("line");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    this.metrics.forEach((metric) => {
+      chart.addMetric({
+        index: metric.index,
+        color: color_exports2.asSingleton(metric.color),
+        aggregation: "sum"
+      });
+    });
+    return chart;
+  }
+  toPieChart() {
+    const chart = new _Chart("pie");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color),
+      aggregation: "sum"
+    });
+    return chart;
+  }
+  toScatter() {
+    const chart = new _Chart("scatter");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    this.metrics.slice(0, 2).forEach(
+      (metric) => chart.addMetric({
+        index: metric.index,
+        color: color_exports2.asSingleton(metric.color),
+        aggregation: "none"
+      })
+    );
+    if (chart.canAddMetric()) {
+      chart.addMetric(chart.getMetrics()[0]);
+    }
+    return chart;
+  }
+  toHeatmap() {
+    const chart = new _Chart("heatmap");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    this.dimensions.slice(0, 2).forEach((dim) => {
+      chart.addDimension(dim);
+    });
+    if (chart.canAddDimension()) {
+      chart.addDimension(chart.getDimensions()[0]);
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color),
+      aggregation: "none"
+    });
+    return chart;
+  }
+  toCalendar() {
+    const chart = new _Chart("calendar");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    const dim = this.dimensions.find((dim2) => dim2.dataType === "datetime");
+    if (dim) {
+      chart.addDimension({
+        index: dim.index,
+        dataType: "datetime"
+      });
+    } else {
+      chart.addDimension({
+        index: this.dimensions[0].index,
+        dataType: "datetime"
+      });
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color),
+      aggregation: "sum"
+    });
+    return chart;
+  }
+  compile(title2, data) {
+    const df = new DataFrame(data);
+    const datasets2 = datasets(this, df);
+    return {
+      animation: true,
+      backgroundColor: color_exports.ZINC_900,
+      calendar: calendar(this, df),
+      dataset: datasets2,
+      grid: grid(this, datasets2),
+      legend: legend(this),
+      series: series(this, datasets2),
+      title: title(this, title2),
+      toolbox: toolbox(this),
+      tooltip: tooltip(this),
+      visualMap: visualMap(this, datasets2),
+      xAxis: axis(this, datasets2, "x"),
+      yAxis: axis(this, datasets2, "y")
+    };
+  }
+  canAddDimension() {
+    if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
+      return this.dimensions.length < 2 && this.metrics.length < 2;
+    } else {
+      return false;
+    }
+  }
+  canAddMetric() {
+    if (["bar", "line"].includes(this.chartType)) {
+      return this.dimensions.length < 2;
+    } else if (this.chartType === "scatter") {
+      return this.metrics.length < 2;
+    } else {
+      return false;
+    }
+  }
+  canAddAxis() {
+    throw new Error("Not implemented");
+  }
+  getGroupByDimension() {
+    return this.dimensions[0];
+  }
+  getBreakdownDimension() {
+    return ["bar", "line", "scatter"].includes(this.chartType) ? this.dimensions[1] : void 0;
+  }
+  getOptions() {
+    return {
+      chartType: this.chartType,
+      style: this.style,
+      dimensions: this.dimensions,
+      metrics: this.metrics
+    };
+  }
+  getChartType() {
+    return this.chartType;
+  }
+  isCartesian() {
+    return !["pie", "calendar"].includes(this.chartType);
+  }
+  getStyleShowTitle() {
+    return this.style.showTitle;
+  }
+  getStyleShowToolbox() {
+    return this.style.showToolbox;
+  }
+  getStyleShowLegend() {
+    if (["bar", "line"].includes(this.chartType)) {
+      return this.style.showLegend;
+    } else if (this.chartType === "scatter" && this.getBreakdownDimension()) {
+      return true;
+    }
+    return false;
+  }
+  getStyleOrientation() {
+    if (this.chartType === "bar") {
+      return { ...this.style }.orientation;
+    }
+    return void 0;
+  }
+  getStyleBarStyle() {
+    if (this.chartType === "bar") {
+      return { ...this.style }.barStyle;
+    }
+    return void 0;
+  }
+  getStyleLineStyle() {
+    if (this.chartType === "line") {
+      return { ...this.style }.lineStyle;
+    }
+    return void 0;
+  }
+  getStyleColorGrouping() {
+    if (["heatmap", "calendar"].includes(this.chartType)) {
+      return this.style.colorGrouping;
+    }
+    return void 0;
+  }
+  setStyleOption(k, v) {
+    this.style = { ...this.style, ...{ [k]: v } };
+    return this;
+  }
+  addDimension(dim) {
+    if (!this.canAddDimension)
+      throw new Error("Cannot add another dimension");
+    this.dimensions.push(dim);
+    return this;
+  }
+  getDimensions() {
+    return this.dimensions;
+  }
+  getDimension(where) {
+    return this.dimensions.find((dim) => where(dim));
+  }
+  updateDimension(where, k, v) {
+    const dim = this.dimensions.find((d) => where(d));
+    if (!dim) {
+      return this;
+    }
+    const ix = this.dimensions.indexOf(dim);
+    this.dimensions[ix] = { ...this.dimensions[ix], ...{ [k]: v } };
+    return this;
+  }
+  deleteDimension(where) {
+    this.dimensions = this.dimensions.filter((d) => !where(d));
+    return this;
+  }
+  addMetric(metric) {
+    if (!this.canAddMetric)
+      throw new Error("Cannot add another metric");
+    this.metrics.push(metric);
+    return this;
+  }
+  getMetrics() {
+    return this.metrics;
+  }
+  getMetric(where) {
+    return this.metrics.find((m) => where(m));
+  }
+  updateMetric(where, k, v) {
+    const metric = this.metrics.find((m) => where(m));
+    if (!metric) {
+      return this;
+    }
+    const ix = this.metrics.indexOf(metric);
+    this.metrics[ix] = { ...this.metrics[ix], ...{ [k]: v } };
+    return this;
+  }
+  deleteMetric(where) {
+    this.metrics = this.metrics.filter((m) => !where(m));
+    return this;
   }
 };
-var series = (conf, dataset) => {
-  const series2 = [];
-  const { valAxis, catAxis1, catAxis2 } = getTypedAxes(conf);
-  valAxis.forEach((axis2, index) => {
-    axis2.columns.forEach((col) => {
-      const item = {
-        type: col.type ?? conf.type,
-        name: dataset.dimensions[col.index]
-      };
-      if (conf.features.labels ?? false) {
-        item.label = { show: true };
+var Chart = _Chart;
+__decorateClass([
+  profile
+], Chart.prototype, "compile", 1);
+
+// src/factory.ts
+var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
+var AutoChartFactory = class {
+  constructor(opts) {
+    this.subsetQ = array_exports.getAllSubsets(opts, 2);
+    this.createQ = [];
+    while (this.subsetQ.length > 0) {
+      const subset = this.subsetQ.shift();
+      if (subset) {
+        this.addAllCreateChartMessagesToQueue(subset);
       }
-      switch (conf.type) {
-        case "bar" /* BAR */:
-          item.color = col.color ?? color_exports.DARK_BLUE;
-          if ((conf.features.orientation ?? "vertical") === "vertical") {
-            item.yAxisIndex = index;
-            item.encode = {
-              x: dataset.dimensions[catAxis1[0].columns[0].index],
-              y: dataset.dimensions[col.index]
-            };
-          } else {
-            item.xAxisIndex = index;
-            item.encode = {
-              y: dataset.dimensions[catAxis1[0].columns[0].index],
-              x: dataset.dimensions[col.index]
-            };
-          }
-          if (conf.features.stack ?? false) {
-            item.stack = "total";
-          }
-          break;
-        case "line" /* LINE */:
-          item.color = col.color ?? color_exports.DARK_BLUE;
-          item.yAxisIndex = index;
-          item.encode = {
-            x: dataset.dimensions[catAxis1[0].columns[0].index],
-            y: dataset.dimensions[col.index]
-          };
-          if (conf.features.area ?? false) {
-            item.areaStyle = {};
-          }
-          if (conf.features.smooth ?? false) {
-            item.smooth = true;
-          }
-          break;
-        case "pie" /* PIE */:
-          item.color = col.color ?? color_exports.LIME_PALETTE;
-          item.encode = { itemName: "", value: "" };
-          item.encode.itemName = dataset.dimensions[catAxis1[0].columns[0].index];
-          item.encode.value = dataset.dimensions[col.index];
-          item.textStyle = { color: color_exports.ZINC_500 };
-          item.label = { show: true, color: color_exports.ZINC_500 };
-          item.radius = ["40%", "70%"];
-          item.itemStyle = {
-            borderRadius: 10,
-            borderColor: color_exports.ZINC_900,
-            borderWidth: 2
-          };
-          break;
-        case "scatter" /* SCATTER */:
-          item.color = col.color ?? color_exports.DARK_BLUE;
-          item.yAxisIndex = index;
-          item.encode = {
-            x: dataset.dimensions[catAxis1[0].columns[0].index],
-            y: dataset.dimensions[col.index]
-          };
-          item.symbolSize = 15;
-          break;
-        case "heatmap" /* HEATMAP */:
-          if (!catAxis2) {
-            throw error_exports.Z_AXIS_NOT_FOUND;
-          }
-          item.encode = {
-            x: dataset.dimensions[catAxis1[0].columns[0].index],
-            y: dataset.dimensions[catAxis2[0].columns[0].index],
-            value: dataset.dimensions[col.index]
-          };
-          break;
-        case "calendar" /* CALENDAR */: {
-          const transposed = transpose(dataset.source);
-          const years = Array.from(
-            new Set(
-              transposed[0].map((t) => new Date(String(t))).map((d) => d.getUTCFullYear()).sort()
-            )
+    }
+    this.createQ = array_exports.removeDuplicates(this.createQ);
+  }
+  addAllCreateChartMessagesToQueue(opts) {
+    const dims = opts.filter(
+      (opt) => ["category", "datetime"].includes(opt.dataType)
+    );
+    if (dims.length < 1) {
+      return;
+    }
+    const metrics = opts.filter((opt) => opt.dataType === "value");
+    if (dims.length === 1) {
+      if (metrics.length === 1) {
+        if (dims[0].dataType === "category") {
+          ["bar", "pie"].forEach(
+            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
           );
-          years.forEach((_, i) => {
-            const itemCopy = { ...item };
-            itemCopy.type = "heatmap" /* HEATMAP */;
-            itemCopy.calendarIndex = i;
-            itemCopy.coordinateSystem = "calendar";
-            series2.push(itemCopy);
+        } else if (dims[0].dataType === "datetime") {
+          ["line", "calendar"].forEach(
+            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
+          );
+        }
+      } else if (metrics.length === 2) {
+        if (dims[0].dataType === "category") {
+          ["bar", "scatter"].forEach(
+            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
+          );
+        } else if (dims[0].dataType === "datetime") {
+          ["line", "scatter"].forEach(
+            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
+          );
+        }
+      } else {
+        if (dims[0].dataType === "category") {
+          this.createQ.push({
+            type: "bar",
+            dimensions: dims,
+            metrics
+          });
+        } else if (dims[0].dataType === "datetime") {
+          this.createQ.push({
+            type: "line",
+            dimensions: dims,
+            metrics
           });
         }
       }
-      if (conf.type !== "calendar" /* CALENDAR */) {
-        series2.push(item);
-      }
-    });
-  });
-  return series2;
-};
-
-// src/utils/determine/title.ts
-var title = (conf) => {
-  return {
-    show: conf.features.title ?? false,
-    text: conf.name,
-    top: conf.renderer === "svg" ? 10 : "2%",
-    left: conf.renderer === "svg" ? 10 : "auto"
-  };
-};
-
-// src/utils/determine/tooltip.ts
-var tooltip = (conf) => {
-  switch (conf.type) {
-    case "calendar" /* CALENDAR */:
-    case "pie" /* PIE */:
-      return {
-        show: true,
-        trigger: "item"
-      };
-    case "heatmap" /* HEATMAP */:
-      return {
-        show: true,
-        trigger: "item",
-        axisPointer: {
-          type: "cross",
-          crossStyle: {
-            color: "#999999"
-          }
+    } else if (dims.length === 2) {
+      if (metrics.length === 1) {
+        if (dims[0].dataType === "datetime" && dims[1].dataType === "category") {
+          ["line", "heatmap"].forEach(
+            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
+          );
+        } else if (dims[0].dataType === "category" && dims[1].dataType === "category") {
+          ["bar", "heatmap"].forEach(
+            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
+          );
+        } else if (dims[0].dataType === "category" && dims[1].dataType === "datetime") {
+          this.createQ.push({
+            type: "heatmap",
+            dimensions: dims,
+            metrics
+          });
+        } else {
+          return;
         }
-      };
-    default:
-      return {
-        show: true,
-        trigger: "axis",
-        axisPointer: {
-          type: "cross",
-          crossStyle: {
-            color: "#999999"
-          }
-        }
-      };
-  }
-};
-
-// src/utils/determine/toolbox.ts
-var toolbox = (conf) => {
-  if ((conf.renderer ?? "canvas") === "canvas" && (conf.features.toolbox ?? false)) {
-    return {
-      show: true,
-      feature: {
-        saveAsImage: {
-          show: true,
-          type: "png"
-        },
-        dataView: {
-          show: true,
-          readOnly: true
-        }
+      } else {
+        return;
       }
-    };
-  } else {
-    return {
-      show: false
-    };
+    } else {
+      return;
+    }
   }
-};
-
-// src/utils/determine/visualMap.ts
-var visualMap = (conf, dataset) => {
-  if (!["heatmap" /* HEATMAP */, "calendar" /* CALENDAR */].includes(conf.type)) {
-    return null;
-  }
-  const valAxis = conf.type === "heatmap" /* HEATMAP */ ? conf.zAxis : conf.yAxis;
-  if (!valAxis) {
-    throw error_exports.Z_AXIS_NOT_FOUND;
-  }
-  const transposed = transpose(dataset.source);
-  const series2 = transposed[valAxis[0].columns[0].index].map((s) => Number(s));
-  const min = Math.min(...series2);
-  const max = Math.max(...series2);
-  if (!Array.isArray(valAxis[0].columns[0].color)) {
-    valAxis[0].columns[0].color = color_exports.LIME_PALETTE;
-  }
-  return {
-    inRange: {
-      color: valAxis[0].columns[0].color
-    },
-    left: conf.type === "heatmap" /* HEATMAP */ ? "right" : "center",
-    top: conf.type === "heatmap" /* HEATMAP */ ? "center" : 3,
-    type: conf.features.piecewise ?? false ? "piecewise" : "continuous",
-    orient: conf.type === "heatmap" /* HEATMAP */ ? "vertical" : "horizontal",
-    min,
-    max,
-    calculable: true
-  };
-};
-
-// src/utils/legacy.ts
-var legacy_exports = {};
-__export(legacy_exports, {
-  toChartConfig: () => toChartConfig
-});
-var toChartConfig = (details, results) => {
-  const xix = results.schema.findIndex((v) => v.name === details.xAxis);
-  const yix = results.schema.findIndex((v) => v.name === details.yAxis);
-  const type = details.chartType ?? null;
-  const defaultColor = details.chartType === "pie" /* PIE */ ? color_exports.LIME_PALETTE : color_exports.LIME_200;
-  const yCols = [{ index: yix, type, color: defaultColor }];
-  (details.series ?? []).forEach((s) => {
-    yCols.push({
-      index: results.schema.findIndex((v) => v.name === s.column),
-      type: s.type ?? null,
-      color: s.color ?? color_exports.DARK_BLUE
+  generateSingleChart() {
+    const msg = this.createQ.shift();
+    if (!msg)
+      throw new Error("No more charts to generate");
+    const chart = new Chart(msg.type);
+    msg.dimensions.forEach(
+      (opt) => chart.addDimension({
+        index: opt.index,
+        dataType: opt.dataType
+      })
+    );
+    msg.metrics.forEach((opt, i) => {
+      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
+      const aggregation = ["scatter", "heatmap"].includes(msg.type) ? "none" : "sum";
+      chart.addMetric({
+        index: opt.index,
+        color: colorChoice,
+        aggregation
+      });
     });
-  });
-  return {
-    name: details.name,
-    type,
-    features: {},
-    xAxis: [{ columns: [{ index: xix, type: null, color: null }] }],
-    yAxis: [{ columns: yCols }]
-  };
-};
-
-// src/utils/axes.ts
-var axes_exports = {};
-__export(axes_exports, {
-  swap: () => swap
-});
-var swap = (conf) => {
-  const tmpAxis = conf.xAxis;
-  conf.xAxis = conf.yAxis;
-  conf.yAxis = tmpAxis;
-  return conf;
-};
-
-// src/utils/convert.ts
-var convert_exports = {};
-__export(convert_exports, {
-  config: () => config
-});
-var resetFeatures = (conf) => {
-  const tmpFeatures = conf.features;
-  conf.features = {};
-  conf.features.title = tmpFeatures.title ?? false;
-  conf.features.legend = tmpFeatures.legend ?? false;
-  return conf;
-};
-var convertAllColumnTypesInAxes = (axes, to) => {
-  const columns = [];
-  axes.forEach((axis2) => {
-    axis2.columns.forEach((col) => {
-      col.type = to;
-      if (["calendar" /* CALENDAR */, "heatmap" /* HEATMAP */, "pie" /* PIE */].includes(to)) {
-        col.color = color_exports.LIME_PALETTE;
-      } else if (Array.isArray(col.color)) {
-        col.color = color_exports.LIME_200;
-      }
-      columns.push(col);
-    });
-  });
-  return [{ columns }];
-};
-var toLine = (conf) => {
-  const from = conf.type;
-  conf.type = "line" /* LINE */;
-  const previousFeatures = conf.features;
-  conf = resetFeatures(conf);
-  switch (from) {
-    case "pie" /* PIE */: {
-      conf.yAxis[0].columns[0].type = "line" /* LINE */;
-      conf.yAxis[0].columns[0].color = color_exports.LIME_200;
-      return conf;
-    }
-    case "heatmap" /* HEATMAP */: {
-      if (!conf.zAxis) {
-        throw error_exports.Z_AXIS_NOT_FOUND;
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "line" /* LINE */);
-      delete conf.zAxis;
-      return conf;
-    }
-    default: {
-      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
-        conf = swap(conf);
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "line" /* LINE */);
-      return conf;
-    }
+    return chart;
   }
-};
-var toBar = (conf) => {
-  const from = conf.type;
-  conf.type = "bar" /* BAR */;
-  conf = resetFeatures(conf);
-  switch (from) {
-    case "pie" /* PIE */: {
-      conf.yAxis[0].columns[0].type = "bar" /* BAR */;
-      conf.yAxis[0].columns[0].color = color_exports.LIME_200;
-      return conf;
+  generateAllCharts() {
+    const charts = [];
+    while (this.createQ.length > 0) {
+      const chart = this.generateSingleChart();
+      charts.push(chart);
     }
-    case "heatmap" /* HEATMAP */: {
-      if (!conf.zAxis) {
-        throw error_exports.Z_AXIS_NOT_FOUND;
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "bar" /* BAR */);
-      delete conf.zAxis;
-      return conf;
-    }
-    default: {
-      conf.yAxis = convertAllColumnTypesInAxes(conf.yAxis, "bar" /* BAR */);
-      return conf;
-    }
-  }
-};
-var toPie = (conf) => {
-  const from = conf.type;
-  conf.type = "pie" /* PIE */;
-  const previousFeatures = conf.features;
-  conf = resetFeatures(conf);
-  conf.features.legend = false;
-  switch (from) {
-    case "heatmap" /* HEATMAP */: {
-      if (!conf.zAxis) {
-        throw error_exports.Z_AXIS_NOT_FOUND;
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "pie" /* PIE */);
-      delete conf.zAxis;
-      return conf;
-    }
-    default: {
-      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
-        conf = swap(conf);
-      }
-      conf.yAxis = convertAllColumnTypesInAxes([conf.yAxis[0]], "pie" /* PIE */);
-      return conf;
-    }
-  }
-};
-var toHeatmap = (conf) => {
-  const from = conf.type;
-  conf.type = "heatmap" /* HEATMAP */;
-  const previousFeatures = conf.features;
-  conf = resetFeatures(conf);
-  conf.features.labels = true;
-  switch (from) {
-    default: {
-      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
-        conf = swap(conf);
-      }
-      const xAxis = conf.xAxis;
-      conf.zAxis = convertAllColumnTypesInAxes(
-        [conf.yAxis[0]],
-        "heatmap" /* HEATMAP */
-      );
-      conf.xAxis = xAxis;
-      conf.yAxis = [...xAxis];
-      return conf;
-    }
-  }
-};
-var toScatter = (conf) => {
-  const from = conf.type;
-  conf.type = "scatter" /* SCATTER */;
-  const previousFeatures = conf.features;
-  conf = resetFeatures(conf);
-  switch (from) {
-    case "heatmap" /* HEATMAP */: {
-      if (!conf.zAxis) {
-        throw error_exports.Z_AXIS_NOT_FOUND;
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "scatter" /* SCATTER */);
-      delete conf.zAxis;
-      return conf;
-    }
-    default: {
-      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
-        conf = swap(conf);
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(
-        [conf.yAxis[0]],
-        "scatter" /* SCATTER */
-      );
-      return conf;
-    }
-  }
-};
-var toCalendar = (conf) => {
-  const from = conf.type;
-  conf.type = "calendar" /* CALENDAR */;
-  const previousFeatures = conf.features;
-  conf = resetFeatures(conf);
-  switch (from) {
-    case "heatmap" /* HEATMAP */: {
-      if (!conf.zAxis) {
-        throw error_exports.Z_AXIS_NOT_FOUND;
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(conf.zAxis, "calendar" /* CALENDAR */);
-      delete conf.zAxis;
-      return conf;
-    }
-    default: {
-      if ((previousFeatures.orientation ?? "vertical") === "horizontal") {
-        conf = swap(conf);
-      }
-      conf.yAxis = convertAllColumnTypesInAxes(
-        [conf.yAxis[0]],
-        "calendar" /* CALENDAR */
-      );
-      return conf;
-    }
-  }
-};
-var config = (conf, to) => {
-  console.debug(`Converting chart from ${conf.type} to ${to}`);
-  delete conf.transform;
-  switch (to) {
-    case "line" /* LINE */:
-      return toLine(conf);
-    case "bar" /* BAR */:
-      return toBar(conf);
-    case "pie" /* PIE */:
-      return toPie(conf);
-    case "scatter" /* SCATTER */:
-      return toScatter(conf);
-    case "heatmap" /* HEATMAP */:
-      return toHeatmap(conf);
-    case "calendar" /* CALENDAR */:
-      return toCalendar(conf);
-    default:
-      return conf;
+    return charts;
   }
 };
 
 // src/main.ts
-var useSelectedDimensionsOnly = (conf, dataset) => {
-  const xIndex = conf.xAxis[0].columns[0].index;
-  const yIndex = conf.yAxis[0].columns[0].index;
-  dataset.dimensions = [dataset.dimensions[xIndex], dataset.dimensions[yIndex]];
-  dataset.source = frame_exports.select(dataset.source, [xIndex, yIndex]);
-  conf.xAxis[0].columns[0].index = 0;
-  conf.yAxis[0].columns[0].index = 1;
-};
-var ecOptionFromDataset = (conf, dataset) => {
-  if (conf.type === "calendar" /* CALENDAR */) {
-    useSelectedDimensionsOnly(conf, dataset);
+function create(type) {
+  return new Chart(type);
+}
+function load(opts) {
+  return Chart.load(opts);
+}
+function* chartGenerator(columns) {
+  let i = 0;
+  const factory = new AutoChartFactory(columns);
+  const charts = factory.generateAllCharts();
+  while (true) {
+    yield array_exports.unboundedReadItem(charts, i);
+    i++;
   }
-  dataset.source = frame_exports.formatValues(dataset.source);
-  if (conf.transform) {
-    dataset.source = frame_exports.runTfPipeline(dataset.source, conf.transform);
-    if (conf.transform.aggregate) {
-      const cols = [
-        conf.transform.aggregate[0].groupBy,
-        conf.transform.aggregate[0].index
-      ];
-      const map = /* @__PURE__ */ new Map();
-      map.set(cols[0], 0);
-      map.set(cols[1], 1);
-      dataset.dimensions = cols.map((c) => dataset.dimensions[c]);
-      conf.xAxis.forEach((_, i) => {
-        conf.xAxis[i].columns.forEach((_2, j) => {
-          conf.xAxis[i].columns[j].index = map.get(conf.xAxis[i].columns[j].index) ?? 0;
-        });
-      });
-      conf.yAxis.forEach((_, i) => {
-        conf.yAxis[i].columns.forEach((_2, j) => {
-          conf.yAxis[i].columns[j].index = map.get(conf.yAxis[i].columns[j].index) ?? 0;
-        });
-      });
-    }
-  }
-  return {
-    animation: determine_exports.animation(conf),
-    backgroundColor: color_exports.ZINC_900,
-    dataset,
-    grid: determine_exports.grid(conf, dataset),
-    legend: determine_exports.legend(conf),
-    series: determine_exports.series(conf, dataset),
-    title: determine_exports.title(conf),
-    toolbox: determine_exports.toolbox(conf),
-    tooltip: determine_exports.tooltip(conf),
-    xAxis: determine_exports.axis(conf, dataset, "x"),
-    yAxis: determine_exports.axis(conf, dataset, "y"),
-    visualMap: determine_exports.visualMap(conf, dataset),
-    calendar: determine_exports.calendar(conf, dataset)
-  };
-};
-var ecOptionFromBlockResult = (conf, res) => {
-  return ecOptionFromDataset(conf, dataset_exports.fromBlockResult(res));
-};
+}
 
 // src/index.ts
 var src_default = main_exports;
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  ChartType,
-  axes,
-  color,
-  convert,
-  dataset,
-  datetime,
-  determine,
-  echarts,
-  error,
-  format,
-  frame,
-  legacy
-});
