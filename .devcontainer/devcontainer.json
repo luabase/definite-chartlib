@@ -9,22 +9,21 @@
   "customizations": {
     "vscode": {
       "extensions": [
-		"GitHub.codespaces",
-		"GitHub.github-vscode-theme",
-		"PKief.material-icon-theme",
-		"streetsidesoftware.code-spell-checker",
-		"dbaeumer.vscode-eslint",
-		"github.vscode-github-actions",
-		"GitHub.vscode-pull-request-github",
-		"eamodio.gitlens",
-		"ms-vscode.vscode-typescript-next",
-		"yzhang.markdown-all-in-one",
-		"esbenp.prettier-vscode",
-		"Gruntfuggly.todo-tree",
-		"ZixuanChen.vitest-explorer",
-		"GoogleCloudTools.cloudcode",
-		"GitHub.copilot"
-	]
+        "GitHub.codespaces",
+        "GitHub.github-vscode-theme",
+        "PKief.material-icon-theme",
+        "streetsidesoftware.code-spell-checker",
+        "dbaeumer.vscode-eslint",
+        "github.vscode-github-actions",
+        "GitHub.vscode-pull-request-github",
+        "eamodio.gitlens",
+        "ms-vscode.vscode-typescript-next",
+        "yzhang.markdown-all-in-one",
+        "esbenp.prettier-vscode",
+        "Gruntfuggly.todo-tree",
+        "ZixuanChen.vitest-explorer",
+        "GoogleCloudTools.cloudcode"
+      ]
     }
   }
 }
