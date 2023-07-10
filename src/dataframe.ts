@@ -1,6 +1,7 @@
 import { AggregationType, RowOriented, echarts } from "./types";
 import { Option, Predicate } from "./types/utility";
 import * as utils from "./utils";
+import { profile } from "./perf";
 
 type Value = Option<number | string>;
 type Series = Array<Value>;
@@ -72,17 +73,34 @@ export class DataFrame {
     return map;
   }
 
+  asDataSet(): echarts.DataSet {
+    return {
+      dimensions: Array.from(this.columns.values()),
+      source: this.data,
+    };
+  }
+
+  static fromDataSet(dataset: echarts.DataSet): DataFrame {
+    return DataFrame.load(
+      dataset.source,
+      new Map<number, string>(dataset.dimensions.map((s, i) => [i, s]))
+    );
+  }
+
+  @profile
   filter(col: number, where: Predicate<Value>): DataFrame {
     const filtered = this.data.filter((row) => where(row[col]));
     return DataFrame.load(filtered, this.columns);
   }
 
+  @profile
   splitBy(col: number): DataFrame[] {
     return utils.array
       .removeDuplicates(this.col(col))
       .map((v) => this.filter(col, (w) => w === v));
   }
 
+  @profile
   groupBy(
     col: number,
     by: number,
@@ -123,20 +141,7 @@ export class DataFrame {
     );
   }
 
-  asDataSet(): echarts.DataSet {
-    return {
-      dimensions: Array.from(this.columns.values()),
-      source: this.data,
-    };
-  }
-
-  static fromDataSet(dataset: echarts.DataSet): DataFrame {
-    return DataFrame.load(
-      dataset.source,
-      new Map<number, string>(dataset.dimensions.map((s, i) => [i, s]))
-    );
-  }
-
+  @profile
   map(col: number, fn: (v: Value) => Value): DataFrame {
     const transposed = this.transposed();
     transposed[col] = transposed[col].map(fn);

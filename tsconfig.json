@@ -11,7 +11,8 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "typeRoots": ["./@types", "./node_modules/@types"]
+    "typeRoots": ["./@types", "./node_modules/@types"],
+    "experimentalDecorators": true
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]

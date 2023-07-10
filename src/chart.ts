@@ -17,6 +17,7 @@ import { DataFrame } from "./dataframe";
 import { color } from "./constants";
 import * as determine from "./determine";
 import * as utils from "./utils";
+import { profile } from "./perf";
 
 export default class Chart<T extends ChartType> {
   private chartType: T;
@@ -320,6 +321,7 @@ export default class Chart<T extends ChartType> {
     return chart;
   }
 
+  @profile
   compile(title: string, data: RowOriented): echarts.ECOption {
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
