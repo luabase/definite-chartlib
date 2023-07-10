@@ -4,8 +4,6 @@ export function categoryFormatter(value: string | number): string {
     : String(value);
 }
 
-// TODO - datetime formatter
-
 export function valueFormatter(value: string | number): string {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
