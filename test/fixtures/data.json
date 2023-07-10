@@ -1,0 +1,145 @@
+{
+  "dailyUsersByMobileOS": [
+    {
+      "date": "2020-01-01",
+      "os": "iOS",
+      "users": 300
+    },
+    {
+      "date": "2020-01-02",
+      "os": "iOS",
+      "users": 310
+    },
+    {
+      "date": "2020-01-03",
+      "os": "iOS",
+      "users": 305
+    },
+    {
+      "date": "2020-01-03",
+      "os": "iOS",
+      "users": 305
+    },
+    {
+      "date": "2020-01-01",
+      "os": "Android",
+      "users": 500
+    },
+    {
+      "date": "2020-01-02",
+      "os": "Android",
+      "users": 497
+    },
+    {
+      "date": "2020-01-03",
+      "os": "Android",
+      "users": 550
+    },
+    {
+      "date": "2020-01-03",
+      "os": "Android",
+      "users": 580
+    }
+  ],
+  "clickStreamEvents": [
+    {
+      "date": "2020-01-01",
+      "event": "click",
+      "user_id": "123"
+    },
+    {
+      "date": "2020-01-01",
+      "event": "pageview",
+      "user_id": "123"
+    },
+    {
+      "date": "2020-01-02",
+      "event": "pageview",
+      "user_id": "123"
+    },
+    {
+      "date": "2020-01-02",
+      "event": "pageview",
+      "user_id": "456"
+    },
+    {
+      "date": "2020-01-02",
+      "event": "click",
+      "user_id": "456"
+    }
+  ],
+  "economicData": {
+    "2010": [
+      {
+        "state": "New York",
+        "year": 2010,
+        "gdp": 1223529700000,
+        "avg_income": 46566
+      },
+      {
+        "state": "California",
+        "year": 2010,
+        "gdp": 1954092700000,
+        "avg_income": 41773
+      },
+      {
+        "state": "Texas",
+        "year": 2010,
+        "gdp": 1245959400000,
+        "avg_income": 41614
+      }
+    ],
+    "2020": [
+      {
+        "state": "New York",
+        "year": 2020,
+        "gdp": 1740804700000,
+        "avg_income": 58675
+      },
+      {
+        "state": "California",
+        "year": 2020,
+        "gdp": 3020173700000,
+        "avg_income": 56973
+      },
+      {
+        "state": "Texas",
+        "year": 2020,
+        "gdp": 1789933400000,
+        "avg_income": 50822
+      }
+    ]
+  },
+  "heatmap": [
+    {
+      "date": "2020-01-01",
+      "hour": "1pm",
+      "value": 30
+    },
+    {
+      "date": "2020-01-01",
+      "hour": "2pm",
+      "value": 40
+    },
+    {
+      "date": "2020-01-01",
+      "hour": "3pm",
+      "value": 50
+    },
+    {
+      "date": "2020-01-02",
+      "hour": "1pm",
+      "value": 35
+    },
+    {
+      "date": "2020-01-02",
+      "hour": "2pm",
+      "value": 45
+    },
+    {
+      "date": "2020-01-02",
+      "hour": "3pm",
+      "value": 55
+    }
+  ]
+}

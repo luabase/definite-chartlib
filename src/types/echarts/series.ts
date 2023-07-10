@@ -10,6 +10,7 @@ interface Encode {
   y?: string;
   itemName?: string;
   value?: string;
+  tooltip?: string[] | string;
 }
 
 export default interface Series extends IStylable {
@@ -28,4 +29,5 @@ export default interface Series extends IStylable {
   symbolSize?: number;
   calendarIndex?: number;
   coordinateSystem?: string;
+  datasetIndex?: number;
 }

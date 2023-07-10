@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "rm -rf ./dist ./node_modules && pnpm install && tsup src/index.ts --dts --format esm,cjs",
+    "lint": "eslint --fix",
     "test": "vitest --reporter verbose",
     "test:ci": "vitest --no-watch"
   },

@@ -1,8 +1,5 @@
-export * as dataset from "./dataset";
+export * as array from "./array";
+export * as color from "./color";
 export * as datetime from "./datetime";
-export * as determine from "./determine";
-export * as frame from "./frame";
-export * as legacy from "./legacy";
-export * as axes from "./axes";
-export * as convert from "./convert";
-export * as format from "./format";
+export * as string from "./string";
+export * as datasets from "./datasets";

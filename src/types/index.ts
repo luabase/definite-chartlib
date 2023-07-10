@@ -1,5 +1,6 @@
-export * from "./alias";
-export * from "./block";
-export * from "./config";
 export * as echarts from "./echarts";
-export * from "./enums";
+
+export * from "./aliases";
+export * from "./literals";
+export * from "./option";
+export * from "./utility";
