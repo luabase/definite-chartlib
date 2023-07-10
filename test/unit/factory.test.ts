@@ -38,7 +38,7 @@ describe("given a list of column options", () => {
           showToolbox: false,
         },
         dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 4, color: color.LIME_200, aggregation: "sum" }],
+        metrics: [{ index: 4, color: color.LIME_PALETTE, aggregation: "sum" }],
       },
       {
         chartType: "bar",
@@ -59,7 +59,7 @@ describe("given a list of column options", () => {
           showToolbox: false,
         },
         dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 5, color: color.LIME_200, aggregation: "sum" }],
+        metrics: [{ index: 5, color: color.LIME_PALETTE, aggregation: "sum" }],
       },
       {
         chartType: "bar",
@@ -80,7 +80,7 @@ describe("given a list of column options", () => {
           showToolbox: false,
         },
         dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 6, color: color.LIME_200, aggregation: "sum" }],
+        metrics: [{ index: 6, color: color.LIME_PALETTE, aggregation: "sum" }],
       },
       {
         chartType: "bar",
