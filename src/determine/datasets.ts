@@ -11,9 +11,7 @@ export function datasets<T extends ChartType>(
   const groupBy = chart.getGroupByDimension();
   const splitBy = chart.getBreakdownDimension();
   if (!groupBy) throw new Error("Group by dimension not found");
-  if (groupBy.dataType === "datetime") {
-    df = formatDatetimeDataFrame(df, groupBy.index);
-  }
+  df = groupBy.dataType === "datetime" ? formatDateDF(df, groupBy.index) : df;
   const dfs = !!splitBy ? df.splitBy(splitBy.index) : [df];
   dfs.forEach((df) => {
     if (chart.getChartType() === "scatter") {
@@ -52,7 +50,7 @@ export function datasets<T extends ChartType>(
   return datasets;
 }
 
-function formatDatetimeDataFrame(df: DataFrame, index: number) {
+function formatDateDF(df: DataFrame, index: number) {
   let fmt = "";
   const values = df.col(index);
   const dates = values.map((v) => utils.datetime.toDateUTC(String(v)));
