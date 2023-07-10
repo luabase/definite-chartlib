@@ -1,21 +1,18 @@
 import Chart from "./chart";
+import { ChartType, DataType } from "./types";
 import { color } from "./constants";
-import { AggregationType, ChartType, DataType } from "./types";
 import * as utils from "./utils";
 
-type ColumnOptions = { index: number; dataType: string };
+export type ColumnOptions = { index: number; dataType: string };
 type CreateChartMessage = {
   type: string;
   dimensions: ColumnOptions[];
   metrics: ColumnOptions[];
 };
 
-interface IAutoChartFactory {
-  generateSingleChart(): Chart<ChartType>;
-  generateAllCharts(): Chart<ChartType>[];
-}
+const COLORS = [color.LIME_200, ...color.COLOR_PALETTE.slice(1)];
 
-export class AutoChartFactory implements IAutoChartFactory {
+export class AutoChartFactory {
   private subsetQ: Array<Array<ColumnOptions>>;
   private createQ: Array<CreateChartMessage>;
 
@@ -113,9 +110,9 @@ export class AutoChartFactory implements IAutoChartFactory {
     }
   }
 
-  generateSingleChart(): Chart<ChartType> {
+  private generateSingleChart(): Chart<ChartType> {
     const msg = this.createQ.shift();
-    if (!msg) throw new Error("Create chart queue is empty");
+    if (!msg) throw new Error("No more charts to generate");
     const chart = new Chart(<ChartType>msg.type);
     msg.dimensions.forEach((opt) =>
       chart.addDimension({
@@ -124,13 +121,15 @@ export class AutoChartFactory implements IAutoChartFactory {
       })
     );
     msg.metrics.forEach((opt, i) => {
-      const colorArray = [color.LIME_200, ...color.COLOR_PALETTE.slice(1)];
+      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type)
+        ? color.LIME_PALETTE
+        : utils.array.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap"].includes(msg.type)
         ? "none"
         : "sum";
       chart.addMetric({
         index: opt.index,
-        color: utils.array.unboundedReadItem(colorArray, i),
+        color: colorChoice,
         aggregation: aggregation,
       });
     });
@@ -140,7 +139,8 @@ export class AutoChartFactory implements IAutoChartFactory {
   generateAllCharts(): Array<Chart<ChartType>> {
     const charts: Array<Chart<ChartType>> = [];
     while (this.createQ.length > 0) {
-      charts.push(this.generateSingleChart());
+      const chart = this.generateSingleChart();
+      charts.push(chart);
     }
     return charts;
   }
