@@ -7,17 +7,13 @@ import * as utils from "../utils";
 
 export function axis<T extends ChartType>(
   chart: Chart<T>,
-  df: DataFrame,
   datasets: echarts.DataSet[],
   kind: "x" | "y"
 ): echarts.Axis[] {
+  const df = DataFrame.fromDataSet(datasets[0]);
   const isLarge = utils.datasets.containsLargeData(datasets);
-  let dim = kind === "x";
-  dim = chart.getChartType() === "scatter" ? false : dim;
-  dim = chart.getStyleOrientation() === "horizontal" ? !dim : dim;
-  dim = chart.getChartType() === "heatmap" ? true : dim;
   const axes: echarts.Axis[] = [];
-  if (dim) {
+  if (isDimensionalAxis(chart, kind)) {
     const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
     const item: echarts.Axis = {
@@ -37,7 +33,8 @@ export function axis<T extends ChartType>(
     axes.push(addCommonFeatures(chart.getChartType(), item, kind));
   } else {
     const map = getMapOfValueAxes(chart);
-    Array.from(map.keys())
+    const keys = Array.from(map.keys());
+    keys
       .sort() // ensures order is "left", "right"
       .forEach((k) => {
         let metrics = <Metric<T>[]>map.get(k);
@@ -57,6 +54,21 @@ export function axis<T extends ChartType>(
       });
   }
   return axes;
+}
+
+function isDimensionalAxis<T extends ChartType>(
+  chart: Chart<T>,
+  kind: "x" | "y"
+) {
+  let dim = kind === "x";
+  if (chart.getChartType() === "heatmap") {
+    dim = true;
+  } else if (chart.getChartType() === "scatter") {
+    dim = false;
+  } else if (chart.getStyleOrientation() === "horizontal") {
+    dim = !dim;
+  }
+  return dim;
 }
 
 function addCommonFeatures(
