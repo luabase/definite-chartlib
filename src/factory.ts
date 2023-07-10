@@ -10,7 +10,12 @@ type CreateChartMessage = {
   metrics: ColumnOptions[];
 };
 
-export class AutoChartFactory {
+interface IAutoChartFactory {
+  generateSingleChart(): Chart<ChartType>;
+  generateAllCharts(): Chart<ChartType>[];
+}
+
+export class AutoChartFactory implements IAutoChartFactory {
   private subsetQ: Array<Array<ColumnOptions>>;
   private createQ: Array<CreateChartMessage>;
 
@@ -18,7 +23,7 @@ export class AutoChartFactory {
     this.subsetQ = utils.array.getAllSubsets(opts, 2);
     this.createQ = [];
     while (this.subsetQ.length > 0) {
-      const subset = this.subsetQ.pop();
+      const subset = this.subsetQ.shift();
       if (subset) {
         this.addAllCreateChartMessagesToQueue(subset);
       }
@@ -32,7 +37,7 @@ export class AutoChartFactory {
       ["category", "datetime"].includes(opt.dataType)
     );
     if (dims.length < 1) {
-      return; // not valid combo
+      return; // not supported combo
     }
     const metrics = opts.filter((opt) => opt.dataType === "value");
     if (dims.length === 1) {
@@ -74,22 +79,37 @@ export class AutoChartFactory {
     } else if (dims.length === 2) {
       // TODO: if metrics.length === 0, use count and distinct aggregations
       if (metrics.length === 1) {
-        if (dims[0].dataType === "datetime") {
+        if (
+          dims[0].dataType === "datetime" &&
+          dims[1].dataType === "category"
+        ) {
+          ["line", "heatmap"].forEach((t) =>
+            this.createQ.push({ type: t, dimensions: dims, metrics: metrics })
+          );
+        } else if (
+          dims[0].dataType === "category" &&
+          dims[1].dataType === "category"
+        ) {
+          ["bar", "heatmap"].forEach((t) =>
+            this.createQ.push({ type: t, dimensions: dims, metrics: metrics })
+          );
+        } else if (
+          dims[0].dataType === "category" &&
+          dims[1].dataType === "datetime"
+        ) {
           this.createQ.push({
-            type: "line",
+            type: "heatmap",
             dimensions: dims,
             metrics: metrics,
           });
         } else {
-          ["bar", "heatmap"].forEach((t) =>
-            this.createQ.push({ type: t, dimensions: dims, metrics: metrics })
-          );
+          return; // not supported combo
         }
       } else {
-        return; // not valid combo
+        return; // not supported combo
       }
     } else {
-      return; // not valid combo
+      return; // not supported combo
     }
   }
 
@@ -104,10 +124,8 @@ export class AutoChartFactory {
       })
     );
     msg.metrics.forEach((opt, i) => {
-      const colorArray = [color.LIME_200, ...color.COLOR_PALETTE];
-      const aggregation: AggregationType = ["scatter", "heatmap"].includes(
-        msg.type
-      )
+      const colorArray = [color.LIME_200, ...color.COLOR_PALETTE.slice(1)];
+      const aggregation = ["scatter", "heatmap"].includes(msg.type)
         ? "none"
         : "sum";
       chart.addMetric({
