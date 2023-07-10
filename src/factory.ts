@@ -15,7 +15,7 @@ export class AutoChartFactory {
   private createQ: Array<CreateChartMessage>;
 
   constructor(opts: Array<ColumnOptions>) {
-    this.subsetQ = utils.array.allCombinations(opts, 2);
+    this.subsetQ = utils.array.getAllSubsets(opts, 2);
     this.createQ = [];
     while (this.subsetQ.length > 0) {
       const subset = this.subsetQ.pop();

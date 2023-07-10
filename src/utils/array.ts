@@ -6,17 +6,17 @@ export function sum<T>(arr: Array<T>): number {
   return arr.reduce((acc: number, curr: T) => acc + Number(curr), 0);
 }
 
-export function allCombinations<T>(
-  arr: Array<T>,
-  length: number = 1
-): Array<Array<T>> {
-  if (length < 1) throw new Error("Length must be at least 1");
-  const subsets = [];
-  for (let i = 0; i < arr.length - length + 1; i++) {
-    const subset = arr.slice(i, i + length);
-    subsets.push(subset);
-  }
-  return subsets;
+export function getAllSubsets<T>(arr: T[], n: number = 1): Array<Array<T>> {
+  const subsets: Array<Array<T>> = [[]];
+  arr.forEach((item) => {
+    const last = subsets.length - 1;
+    for (let i = 0; i <= last; i++) {
+      subsets.push([...subsets[i], item]);
+    }
+  });
+  return subsets
+    .sort((a, b) => a.length - b.length)
+    .filter((subset) => subset.length >= n);
 }
 
 export function removeDuplicates<T>(arr: Array<T>): Array<T> {
