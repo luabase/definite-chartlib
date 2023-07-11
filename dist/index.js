@@ -1317,8 +1317,12 @@ function* chartGenerator(columns) {
   }
 }
 
+// src/types/echarts/index.ts
+var echarts_exports = {};
+
 // src/index.ts
 var src_default = main_exports;
 export {
-  src_default as default
+  src_default as default,
+  echarts_exports as echarts
 };

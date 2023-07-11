@@ -158,6 +158,32 @@ interface ECOption {
     yAxis: Axis$1[];
 }
 
+type index_Calendar = Calendar;
+type index_DataSet = DataSet;
+type index_ECOption = ECOption;
+type index_Grid = Grid;
+type index_Legend = Legend;
+type index_Series = Series;
+type index_Title = Title;
+type index_ToolBox = ToolBox;
+type index_ToolTip = ToolTip;
+type index_VisualMap = VisualMap;
+declare namespace index {
+  export {
+    Axis$1 as Axis,
+    index_Calendar as Calendar,
+    index_DataSet as DataSet,
+    index_ECOption as ECOption,
+    index_Grid as Grid,
+    index_Legend as Legend,
+    index_Series as Series,
+    index_Title as Title,
+    index_ToolBox as ToolBox,
+    index_ToolTip as ToolTip,
+    index_VisualMap as VisualMap,
+  };
+}
+
 type RowOriented = Array<{
     [key: string]: Option<number | string>;
 }>;
@@ -322,4 +348,4 @@ declare namespace chartlib {
   };
 }
 
-export { chartlib as default };
+export { AggregationType, AxisType, BarStyleType, ChartOptions, ChartType, ColorGroupingType, DataType, Dimension, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, chartlib as default, index as echarts };
