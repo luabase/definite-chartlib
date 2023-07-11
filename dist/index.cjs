@@ -29,6 +29,7 @@ var __decorateClass = (decorators, target, key, kind) => {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+  Chart: () => Chart,
   default: () => src_default,
   echarts: () => echarts_exports
 });
@@ -1325,7 +1326,7 @@ function create(type) {
   return new Chart(type);
 }
 function load(opts) {
-  return Chart.load(opts);
+  return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
 function* chartGenerator(columns) {
   let i = 0;
@@ -1344,5 +1345,6 @@ var echarts_exports = {};
 var src_default = main_exports;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  Chart,
   echarts
 });

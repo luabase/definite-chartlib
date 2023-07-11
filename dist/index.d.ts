@@ -334,7 +334,7 @@ type ColumnOptions = {
 };
 
 declare function create<T extends ChartType>(type: T): Chart<T>;
-declare function load<T extends ChartType>(opts: ChartOptions<T>): Chart<T>;
+declare function load<T extends ChartType>(opts: ChartOptions<T> | LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<T>;
 declare function chartGenerator(columns: ColumnOptions[]): Generator<Chart<ChartType>, void, unknown>;
 
 declare const chartlib_chartGenerator: typeof chartGenerator;
@@ -348,4 +348,4 @@ declare namespace chartlib {
   };
 }
 
-export { AggregationType, AxisType, BarStyleType, ChartOptions, ChartType, ColorGroupingType, DataType, Dimension, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, chartlib as default, index as echarts };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, DataType, Dimension, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, chartlib as default, index as echarts };

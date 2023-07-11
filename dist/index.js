@@ -1305,7 +1305,7 @@ function create(type) {
   return new Chart(type);
 }
 function load(opts) {
-  return Chart.load(opts);
+  return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
 function* chartGenerator(columns) {
   let i = 0;
@@ -1323,6 +1323,7 @@ var echarts_exports = {};
 // src/index.ts
 var src_default = main_exports;
 export {
+  Chart,
   src_default as default,
   echarts_exports as echarts
 };
