@@ -49,10 +49,13 @@ describe("DataFrame", () => {
       { a: "foo", b: 2 },
       { a: "bar", b: 3 },
       { a: "bar", b: 4 },
+      { a: "bar", b: 4 },
+      { a: "bar", b: 5 },
+      { a: "bar", b: 3 },
     ]);
     expect(df.groupBy(1, 0, "avg").data).toEqual([
       ["foo", 1.5],
-      ["bar", 3.5],
+      ["bar", 3.8],
     ]);
   });
   it("can count data", () => {
