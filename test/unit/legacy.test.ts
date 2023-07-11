@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import Chart from "../../src/chart";
+import chartlib from "../../src";
 import { LegacyOptions } from "../../src/types/legacy";
 
 describe("given a legacy vertical bar chart config", () => {
@@ -31,7 +31,7 @@ describe("given a legacy vertical bar chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: false,
@@ -81,7 +81,7 @@ describe("given a legacy horizontal bar chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: true,
@@ -134,7 +134,7 @@ describe("given a legacy stacked bar chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "bar",
       style: {
         showTitle: false,
@@ -181,7 +181,7 @@ describe("given a legacy line chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "line",
       style: {
         showTitle: false,
@@ -233,7 +233,7 @@ describe("given a legacy area line chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "line",
       style: {
         showTitle: false,
@@ -279,7 +279,7 @@ describe("given a legacy pie chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "pie",
       style: {
         showTitle: false,
@@ -320,7 +320,7 @@ describe("given a legacy scatter chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "scatter",
       style: {
         showTitle: false,
@@ -377,7 +377,7 @@ describe("given a legacy heatmap chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "heatmap",
       style: {
         showTitle: false,
@@ -422,7 +422,7 @@ describe("given a legacy calendar chart config", () => {
     ],
   };
   it("can load as chart object", () => {
-    expect(Chart.fromLegacy(legacy).getOptions()).toEqual({
+    expect(chartlib.load(legacy).getOptions()).toEqual({
       chartType: "calendar",
       style: {
         showTitle: false,
