@@ -4,19 +4,15 @@ import type { ChartOptions, ChartType } from "./types";
 import { LegacyOptions } from "./types/legacy";
 import * as utils from "./utils";
 
-export function create<T extends ChartType>(type: T): Chart<T> {
+function create<T extends ChartType>(type: T) {
   return new Chart(type);
 }
 
-export function load<T extends ChartType>(opts: ChartOptions<T> | LegacyOptions<T>): Chart<T> {
-  if ("chartType" in opts) {
-    return Chart.load(opts);
-  } else {
-    return Chart.fromLegacy(opts); 
-  }
+function load<T extends ChartType>(opts: ChartOptions<T> | LegacyOptions<T>) {
+  return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
 
-export function* chartGenerator(columns: ColumnOptions[]) {
+function* chartGenerator(columns: ColumnOptions[]) {
   let i = 0;
   const factory = new AutoChartFactory(columns);
   const charts = factory.generateAllCharts();
@@ -25,3 +21,5 @@ export function* chartGenerator(columns: ColumnOptions[]) {
     i++;
   }
 }
+
+export { create, load, chartGenerator };
