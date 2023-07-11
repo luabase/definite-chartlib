@@ -60,19 +60,6 @@ export class DataFrame {
     return this.transposed()[ix];
   }
 
-  private aggregateMap(col: number, groupBy: number): Map<Value, Series> {
-    const map = new Map<Value, Series>();
-    this.col(groupBy).forEach((v) => {
-      if (!map.has(v)) {
-        map.set(
-          v,
-          this.col(col).filter((_, i) => this.col(groupBy)[i] === v)
-        );
-      }
-    });
-    return map;
-  }
-
   asDataSet(): echarts.DataSet {
     return {
       dimensions: Array.from(this.columns.values()),
@@ -100,40 +87,73 @@ export class DataFrame {
       .map((v) => this.filter(col, (w) => w === v));
   }
 
+  private aggregateValue(
+    prev: Value | undefined,
+    next: Value,
+    acc: number,
+    aggregation: AggregationType
+  ): number {
+    switch (aggregation) {
+      case "sum":
+      case "avg":
+        acc += Number(next);
+        return acc;
+      case "count":
+        acc++;
+        return acc;
+      case "distinct":
+        if (prev !== next) {
+          acc++;
+        }
+        return acc;
+      case "min":
+        if (!prev) {
+          acc = Number(next);
+        } else {
+          acc = Math.min(Number(prev), Number(next));
+        }
+        return acc;
+      case "max":
+        if (!prev) {
+          acc = Number(next);
+        } else {
+          acc = Math.max(Number(prev), Number(next));
+        }
+        return acc;
+      default:
+        throw new Error(`Invalid aggregation ${aggregation}`);
+    }
+  }
+
   @profile
   groupBy(
     col: number,
     by: number,
     aggregation: Exclude<AggregationType, "none">
   ): DataFrame {
-    const map = this.aggregateMap(col, by);
-    const result: Matrix = [];
-    for (const [k, v] of map.entries()) {
-      switch (aggregation) {
-        case "sum":
-          result.push([k, utils.array.sum(v)]);
-          break;
-        case "avg":
-          result.push([k, utils.array.sum(v) / v.length]);
-          break;
-        case "count":
-          result.push([k, v.length]);
-          break;
-        case "distinct":
-          result.push([k, utils.array.removeDuplicates(v).length]);
-          break;
-        case "min":
-          result.push([k, Math.min(...v.map(Number))]);
-          break;
-        case "max":
-          result.push([k, Math.max(...v.map(Number))]);
-          break;
-        default:
-          throw new Error(`Invalid aggregation ${aggregation}`);
+    const map = new Map<Value, { acc: number; seen: number }>();
+    for (let i = 0; i < this.data.length; i++) {
+      const k = this.data[i][by];
+      const v = this.data[i][col];
+      if (!map.has(k)) {
+        const acc = this.aggregateValue(undefined, v, 0, aggregation);
+        map.set(k, { acc, seen: 1 });
+      } else {
+        let { acc, seen } = map.get(k) || { acc: 0, seen: 0 };
+        acc = this.aggregateValue(this.data[i - 1][col], v, acc, aggregation);
+        seen++;
+        map.set(k, { acc, seen });
       }
     }
+
+    if (aggregation === "avg") {
+      for (const [k, v] of map.entries()) {
+        map.set(k, { acc: v.acc / v.seen, seen: v.seen });
+      }
+    }
+
     return DataFrame.load(
-      result,
+      Array.from(map.entries()).map(([k, v]) => [k, v.acc]),
       new Map<number, string>([
         [0, this.columns.get(by) ?? ""],
         [1, this.columns.get(col) ?? ""],
