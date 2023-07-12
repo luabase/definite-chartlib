@@ -141,5 +141,2172 @@
       "hour": "3pm",
       "value": 55
     }
+  ],
+  "filteredCitiBike": [
+    {
+      "DATE": "2023-01-01",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 10
+    },
+    {
+      "DATE": "2023-01-01",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 357
+    },
+    {
+      "DATE": "2023-01-01",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1313
+    },
+    {
+      "DATE": "2023-01-02",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-01-02",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 317
+    },
+    {
+      "DATE": "2023-01-02",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1404
+    },
+    {
+      "DATE": "2023-01-03",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1141
+    },
+    {
+      "DATE": "2023-01-03",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 339
+    },
+    {
+      "DATE": "2023-01-04",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-04",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1618
+    },
+    {
+      "DATE": "2023-01-04",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 409
+    },
+    {
+      "DATE": "2023-01-05",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 450
+    },
+    {
+      "DATE": "2023-01-05",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-05",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1646
+    },
+    {
+      "DATE": "2023-01-06",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 405
+    },
+    {
+      "DATE": "2023-01-06",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1499
+    },
+    {
+      "DATE": "2023-01-06",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-07",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1465
+    },
+    {
+      "DATE": "2023-01-07",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-07",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 477
+    },
+    {
+      "DATE": "2023-01-08",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-08",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 303
+    },
+    {
+      "DATE": "2023-01-08",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1220
+    },
+    {
+      "DATE": "2023-01-09",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 442
+    },
+    {
+      "DATE": "2023-01-09",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1425
+    },
+    {
+      "DATE": "2023-01-10",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-10",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1603
+    },
+    {
+      "DATE": "2023-01-10",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 469
+    },
+    {
+      "DATE": "2023-01-11",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1567
+    },
+    {
+      "DATE": "2023-01-11",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-11",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 500
+    },
+    {
+      "DATE": "2023-01-12",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-01-12",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 372
+    },
+    {
+      "DATE": "2023-01-12",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1088
+    },
+    {
+      "DATE": "2023-01-13",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-01-13",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1450
+    },
+    {
+      "DATE": "2023-01-13",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 466
+    },
+    {
+      "DATE": "2023-01-14",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-01-14",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1118
+    },
+    {
+      "DATE": "2023-01-14",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 369
+    },
+    {
+      "DATE": "2023-01-15",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-15",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 312
+    },
+    {
+      "DATE": "2023-01-15",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1026
+    },
+    {
+      "DATE": "2023-01-16",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 341
+    },
+    {
+      "DATE": "2023-01-16",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-01-16",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1327
+    },
+    {
+      "DATE": "2023-01-17",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-01-17",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 460
+    },
+    {
+      "DATE": "2023-01-17",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1535
+    },
+    {
+      "DATE": "2023-01-18",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1839
+    },
+    {
+      "DATE": "2023-01-18",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 514
+    },
+    {
+      "DATE": "2023-01-19",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 258
+    },
+    {
+      "DATE": "2023-01-19",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 881
+    },
+    {
+      "DATE": "2023-01-20",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1744
+    },
+    {
+      "DATE": "2023-01-20",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 422
+    },
+    {
+      "DATE": "2023-01-21",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 389
+    },
+    {
+      "DATE": "2023-01-21",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-01-21",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1583
+    },
+    {
+      "DATE": "2023-01-22",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 308
+    },
+    {
+      "DATE": "2023-01-22",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1088
+    },
+    {
+      "DATE": "2023-01-22",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-01-23",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1024
+    },
+    {
+      "DATE": "2023-01-23",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-01-23",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 231
+    },
+    {
+      "DATE": "2023-01-24",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-01-24",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 478
+    },
+    {
+      "DATE": "2023-01-24",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1774
+    },
+    {
+      "DATE": "2023-01-25",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 274
+    },
+    {
+      "DATE": "2023-01-25",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1058
+    },
+    {
+      "DATE": "2023-01-26",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-01-26",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 423
+    },
+    {
+      "DATE": "2023-01-26",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1510
+    },
+    {
+      "DATE": "2023-01-27",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1710
+    },
+    {
+      "DATE": "2023-01-27",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 425
+    },
+    {
+      "DATE": "2023-01-28",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1771
+    },
+    {
+      "DATE": "2023-01-28",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 378
+    },
+    {
+      "DATE": "2023-01-28",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 11
+    },
+    {
+      "DATE": "2023-01-29",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 8
+    },
+    {
+      "DATE": "2023-01-29",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1415
+    },
+    {
+      "DATE": "2023-01-29",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 326
+    },
+    {
+      "DATE": "2023-01-30",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1748
+    },
+    {
+      "DATE": "2023-01-30",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 405
+    },
+    {
+      "DATE": "2023-01-30",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-01-31",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-01-31",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1369
+    },
+    {
+      "DATE": "2023-01-31",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 397
+    },
+    {
+      "DATE": "2023-02-01",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 458
+    },
+    {
+      "DATE": "2023-02-01",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1399
+    },
+    {
+      "DATE": "2023-02-02",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1528
+    },
+    {
+      "DATE": "2023-02-02",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 435
+    },
+    {
+      "DATE": "2023-02-03",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 939
+    },
+    {
+      "DATE": "2023-02-03",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 201
+    },
+    {
+      "DATE": "2023-02-04",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 649
+    },
+    {
+      "DATE": "2023-02-04",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-02-04",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 171
+    },
+    {
+      "DATE": "2023-02-05",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-02-05",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 279
+    },
+    {
+      "DATE": "2023-02-05",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1201
+    },
+    {
+      "DATE": "2023-02-06",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 339
+    },
+    {
+      "DATE": "2023-02-06",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1586
+    },
+    {
+      "DATE": "2023-02-06",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-02-07",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1549
+    },
+    {
+      "DATE": "2023-02-07",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 412
+    },
+    {
+      "DATE": "2023-02-07",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-02-08",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1796
+    },
+    {
+      "DATE": "2023-02-08",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 446
+    },
+    {
+      "DATE": "2023-02-08",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-02-09",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-02-09",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 419
+    },
+    {
+      "DATE": "2023-02-09",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1731
+    },
+    {
+      "DATE": "2023-02-10",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-02-10",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1911
+    },
+    {
+      "DATE": "2023-02-10",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 508
+    },
+    {
+      "DATE": "2023-02-11",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-02-11",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 380
+    },
+    {
+      "DATE": "2023-02-11",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1499
+    },
+    {
+      "DATE": "2023-02-12",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 396
+    },
+    {
+      "DATE": "2023-02-12",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-02-12",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1436
+    },
+    {
+      "DATE": "2023-02-13",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 421
+    },
+    {
+      "DATE": "2023-02-13",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1726
+    },
+    {
+      "DATE": "2023-02-14",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1831
+    },
+    {
+      "DATE": "2023-02-14",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-02-14",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 515
+    },
+    {
+      "DATE": "2023-02-15",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-02-15",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1940
+    },
+    {
+      "DATE": "2023-02-15",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 639
+    },
+    {
+      "DATE": "2023-02-16",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 530
+    },
+    {
+      "DATE": "2023-02-16",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1667
+    },
+    {
+      "DATE": "2023-02-17",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1094
+    },
+    {
+      "DATE": "2023-02-17",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 327
+    },
+    {
+      "DATE": "2023-02-17",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-02-18",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1321
+    },
+    {
+      "DATE": "2023-02-18",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 331
+    },
+    {
+      "DATE": "2023-02-18",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-02-19",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-02-19",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1294
+    },
+    {
+      "DATE": "2023-02-19",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 344
+    },
+    {
+      "DATE": "2023-02-20",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 10
+    },
+    {
+      "DATE": "2023-02-20",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 566
+    },
+    {
+      "DATE": "2023-02-20",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1814
+    },
+    {
+      "DATE": "2023-02-21",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 400
+    },
+    {
+      "DATE": "2023-02-21",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-02-21",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1327
+    },
+    {
+      "DATE": "2023-02-22",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-02-22",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 425
+    },
+    {
+      "DATE": "2023-02-22",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1360
+    },
+    {
+      "DATE": "2023-02-23",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-02-23",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1571
+    },
+    {
+      "DATE": "2023-02-23",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 458
+    },
+    {
+      "DATE": "2023-02-24",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 414
+    },
+    {
+      "DATE": "2023-02-24",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-02-24",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1452
+    },
+    {
+      "DATE": "2023-02-25",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1001
+    },
+    {
+      "DATE": "2023-02-25",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-02-25",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 326
+    },
+    {
+      "DATE": "2023-02-26",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-02-26",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 344
+    },
+    {
+      "DATE": "2023-02-26",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1224
+    },
+    {
+      "DATE": "2023-02-27",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1375
+    },
+    {
+      "DATE": "2023-02-27",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 363
+    },
+    {
+      "DATE": "2023-02-28",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 228
+    },
+    {
+      "DATE": "2023-02-28",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 818
+    },
+    {
+      "DATE": "2023-03-01",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 424
+    },
+    {
+      "DATE": "2023-03-01",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-03-01",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1604
+    },
+    {
+      "DATE": "2023-03-02",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 407
+    },
+    {
+      "DATE": "2023-03-02",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-03-02",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1610
+    },
+    {
+      "DATE": "2023-03-03",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1422
+    },
+    {
+      "DATE": "2023-03-03",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-03-03",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 409
+    },
+    {
+      "DATE": "2023-03-04",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 329
+    },
+    {
+      "DATE": "2023-03-04",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1293
+    },
+    {
+      "DATE": "2023-03-05",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1497
+    },
+    {
+      "DATE": "2023-03-05",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 429
+    },
+    {
+      "DATE": "2023-03-05",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-03-06",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1676
+    },
+    {
+      "DATE": "2023-03-06",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 437
+    },
+    {
+      "DATE": "2023-03-06",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-03-07",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 450
+    },
+    {
+      "DATE": "2023-03-07",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-03-07",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1537
+    },
+    {
+      "DATE": "2023-03-08",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1675
+    },
+    {
+      "DATE": "2023-03-08",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 470
+    },
+    {
+      "DATE": "2023-03-09",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1635
+    },
+    {
+      "DATE": "2023-03-09",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 588
+    },
+    {
+      "DATE": "2023-03-09",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-03-10",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-03-10",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 398
+    },
+    {
+      "DATE": "2023-03-10",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1306
+    },
+    {
+      "DATE": "2023-03-11",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 297
+    },
+    {
+      "DATE": "2023-03-11",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1028
+    },
+    {
+      "DATE": "2023-03-11",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 8
+    },
+    {
+      "DATE": "2023-03-12",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-03-12",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1320
+    },
+    {
+      "DATE": "2023-03-12",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 401
+    },
+    {
+      "DATE": "2023-03-13",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 248
+    },
+    {
+      "DATE": "2023-03-13",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 778
+    },
+    {
+      "DATE": "2023-03-14",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 300
+    },
+    {
+      "DATE": "2023-03-14",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 876
+    },
+    {
+      "DATE": "2023-03-15",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 477
+    },
+    {
+      "DATE": "2023-03-15",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-03-15",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1471
+    },
+    {
+      "DATE": "2023-03-16",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 9
+    },
+    {
+      "DATE": "2023-03-16",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1959
+    },
+    {
+      "DATE": "2023-03-16",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 576
+    },
+    {
+      "DATE": "2023-03-17",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-03-17",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 592
+    },
+    {
+      "DATE": "2023-03-17",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1923
+    },
+    {
+      "DATE": "2023-03-18",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1835
+    },
+    {
+      "DATE": "2023-03-18",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 555
+    },
+    {
+      "DATE": "2023-03-18",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-03-19",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-03-19",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1050
+    },
+    {
+      "DATE": "2023-03-19",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 362
+    },
+    {
+      "DATE": "2023-03-20",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 426
+    },
+    {
+      "DATE": "2023-03-20",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 10
+    },
+    {
+      "DATE": "2023-03-20",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1704
+    },
+    {
+      "DATE": "2023-03-21",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 11
+    },
+    {
+      "DATE": "2023-03-21",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 551
+    },
+    {
+      "DATE": "2023-03-21",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2011
+    },
+    {
+      "DATE": "2023-03-22",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2060
+    },
+    {
+      "DATE": "2023-03-22",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 591
+    },
+    {
+      "DATE": "2023-03-22",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-03-23",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1645
+    },
+    {
+      "DATE": "2023-03-23",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-03-23",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 569
+    },
+    {
+      "DATE": "2023-03-24",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 611
+    },
+    {
+      "DATE": "2023-03-24",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1888
+    },
+    {
+      "DATE": "2023-03-24",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 9
+    },
+    {
+      "DATE": "2023-03-25",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 243
+    },
+    {
+      "DATE": "2023-03-25",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 915
+    },
+    {
+      "DATE": "2023-03-25",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-03-26",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 34
+    },
+    {
+      "DATE": "2023-03-26",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2214
+    },
+    {
+      "DATE": "2023-03-26",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 583
+    },
+    {
+      "DATE": "2023-03-27",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1364
+    },
+    {
+      "DATE": "2023-03-27",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 357
+    },
+    {
+      "DATE": "2023-03-27",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-03-28",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1860
+    },
+    {
+      "DATE": "2023-03-28",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 452
+    },
+    {
+      "DATE": "2023-03-28",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-03-29",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 446
+    },
+    {
+      "DATE": "2023-03-29",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-03-29",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1987
+    },
+    {
+      "DATE": "2023-03-30",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 493
+    },
+    {
+      "DATE": "2023-03-30",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1818
+    },
+    {
+      "DATE": "2023-03-30",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-03-31",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1953
+    },
+    {
+      "DATE": "2023-03-31",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 516
+    },
+    {
+      "DATE": "2023-03-31",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-04-01",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 425
+    },
+    {
+      "DATE": "2023-04-01",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 13
+    },
+    {
+      "DATE": "2023-04-01",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1743
+    },
+    {
+      "DATE": "2023-04-02",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1625
+    },
+    {
+      "DATE": "2023-04-02",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 392
+    },
+    {
+      "DATE": "2023-04-02",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 11
+    },
+    {
+      "DATE": "2023-04-03",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-04-03",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2008
+    },
+    {
+      "DATE": "2023-04-03",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 519
+    },
+    {
+      "DATE": "2023-04-04",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2466
+    },
+    {
+      "DATE": "2023-04-04",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-04-04",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 680
+    },
+    {
+      "DATE": "2023-04-05",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 548
+    },
+    {
+      "DATE": "2023-04-05",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-04-05",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1800
+    },
+    {
+      "DATE": "2023-04-06",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2162
+    },
+    {
+      "DATE": "2023-04-06",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-04-06",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 697
+    },
+    {
+      "DATE": "2023-04-07",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 582
+    },
+    {
+      "DATE": "2023-04-07",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1840
+    },
+    {
+      "DATE": "2023-04-07",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-04-08",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1683
+    },
+    {
+      "DATE": "2023-04-08",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 398
+    },
+    {
+      "DATE": "2023-04-08",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 14
+    },
+    {
+      "DATE": "2023-04-09",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 49
+    },
+    {
+      "DATE": "2023-04-09",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 373
+    },
+    {
+      "DATE": "2023-04-09",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1409
+    },
+    {
+      "DATE": "2023-04-10",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 572
+    },
+    {
+      "DATE": "2023-04-10",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 58
+    },
+    {
+      "DATE": "2023-04-10",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1988
+    },
+    {
+      "DATE": "2023-04-11",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2313
+    },
+    {
+      "DATE": "2023-04-11",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 25
+    },
+    {
+      "DATE": "2023-04-11",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 593
+    },
+    {
+      "DATE": "2023-04-12",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 724
+    },
+    {
+      "DATE": "2023-04-12",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2741
+    },
+    {
+      "DATE": "2023-04-12",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 22
+    },
+    {
+      "DATE": "2023-04-13",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 39
+    },
+    {
+      "DATE": "2023-04-13",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2614
+    },
+    {
+      "DATE": "2023-04-13",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 882
+    },
+    {
+      "DATE": "2023-04-14",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2799
+    },
+    {
+      "DATE": "2023-04-14",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 900
+    },
+    {
+      "DATE": "2023-04-14",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 41
+    },
+    {
+      "DATE": "2023-04-15",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 30
+    },
+    {
+      "DATE": "2023-04-15",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 691
+    },
+    {
+      "DATE": "2023-04-15",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2414
+    },
+    {
+      "DATE": "2023-04-16",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 42
+    },
+    {
+      "DATE": "2023-04-16",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 690
+    },
+    {
+      "DATE": "2023-04-16",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2457
+    },
+    {
+      "DATE": "2023-04-17",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 582
+    },
+    {
+      "DATE": "2023-04-17",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2076
+    },
+    {
+      "DATE": "2023-04-17",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-04-18",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2175
+    },
+    {
+      "DATE": "2023-04-18",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 671
+    },
+    {
+      "DATE": "2023-04-18",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-04-19",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2316
+    },
+    {
+      "DATE": "2023-04-19",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-04-19",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 738
+    },
+    {
+      "DATE": "2023-04-20",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2301
+    },
+    {
+      "DATE": "2023-04-20",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-04-20",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 820
+    },
+    {
+      "DATE": "2023-04-21",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2475
+    },
+    {
+      "DATE": "2023-04-21",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 15
+    },
+    {
+      "DATE": "2023-04-21",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 887
+    },
+    {
+      "DATE": "2023-04-22",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 698
+    },
+    {
+      "DATE": "2023-04-22",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2376
+    },
+    {
+      "DATE": "2023-04-22",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 21
+    },
+    {
+      "DATE": "2023-04-23",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 44
+    },
+    {
+      "DATE": "2023-04-23",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2512
+    },
+    {
+      "DATE": "2023-04-23",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 660
+    },
+    {
+      "DATE": "2023-04-24",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-04-24",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 572
+    },
+    {
+      "DATE": "2023-04-24",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2245
+    },
+    {
+      "DATE": "2023-04-25",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 666
+    },
+    {
+      "DATE": "2023-04-25",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-04-25",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2241
+    },
+    {
+      "DATE": "2023-04-26",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 7
+    },
+    {
+      "DATE": "2023-04-26",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 754
+    },
+    {
+      "DATE": "2023-04-26",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2255
+    },
+    {
+      "DATE": "2023-04-27",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-04-27",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 738
+    },
+    {
+      "DATE": "2023-04-27",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2183
+    },
+    {
+      "DATE": "2023-04-28",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 589
+    },
+    {
+      "DATE": "2023-04-28",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-04-28",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1813
+    },
+    {
+      "DATE": "2023-04-29",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 338
+    },
+    {
+      "DATE": "2023-04-29",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 112
+    },
+    {
+      "DATE": "2023-04-30",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 141
+    },
+    {
+      "DATE": "2023-04-30",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 520
+    },
+    {
+      "DATE": "2023-05-01",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 40
+    },
+    {
+      "DATE": "2023-05-01",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 121
+    },
+    {
+      "DATE": "2023-05-01",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-05-02",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 543
+    },
+    {
+      "DATE": "2023-05-02",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1932
+    },
+    {
+      "DATE": "2023-05-02",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 4
+    },
+    {
+      "DATE": "2023-05-03",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 605
+    },
+    {
+      "DATE": "2023-05-03",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 1
+    },
+    {
+      "DATE": "2023-05-03",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2055
+    },
+    {
+      "DATE": "2023-05-04",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-05-04",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1992
+    },
+    {
+      "DATE": "2023-05-04",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 581
+    },
+    {
+      "DATE": "2023-05-05",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 3
+    },
+    {
+      "DATE": "2023-05-05",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 763
+    },
+    {
+      "DATE": "2023-05-05",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2248
+    },
+    {
+      "DATE": "2023-05-06",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2719
+    },
+    {
+      "DATE": "2023-05-06",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 40
+    },
+    {
+      "DATE": "2023-05-06",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 795
+    },
+    {
+      "DATE": "2023-05-07",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 902
+    },
+    {
+      "DATE": "2023-05-07",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2723
+    },
+    {
+      "DATE": "2023-05-07",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 63
+    },
+    {
+      "DATE": "2023-05-08",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 10
+    },
+    {
+      "DATE": "2023-05-08",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2206
+    },
+    {
+      "DATE": "2023-05-08",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 736
+    },
+    {
+      "DATE": "2023-05-09",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 744
+    },
+    {
+      "DATE": "2023-05-09",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-05-09",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2232
+    },
+    {
+      "DATE": "2023-05-10",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 863
+    },
+    {
+      "DATE": "2023-05-10",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2398
+    },
+    {
+      "DATE": "2023-05-10",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 8
+    },
+    {
+      "DATE": "2023-05-11",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2643
+    },
+    {
+      "DATE": "2023-05-11",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 852
+    },
+    {
+      "DATE": "2023-05-11",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 8
+    },
+    {
+      "DATE": "2023-05-12",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 17
+    },
+    {
+      "DATE": "2023-05-12",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 748
+    },
+    {
+      "DATE": "2023-05-12",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 3206
+    },
+    {
+      "DATE": "2023-05-13",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2781
+    },
+    {
+      "DATE": "2023-05-13",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 22
+    },
+    {
+      "DATE": "2023-05-13",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 708
+    },
+    {
+      "DATE": "2023-05-14",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 541
+    },
+    {
+      "DATE": "2023-05-14",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 35
+    },
+    {
+      "DATE": "2023-05-14",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2385
+    },
+    {
+      "DATE": "2023-05-15",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2631
+    },
+    {
+      "DATE": "2023-05-15",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 591
+    },
+    {
+      "DATE": "2023-05-15",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 9
+    },
+    {
+      "DATE": "2023-05-16",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 15
+    },
+    {
+      "DATE": "2023-05-16",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 531
+    },
+    {
+      "DATE": "2023-05-16",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2734
+    },
+    {
+      "DATE": "2023-05-17",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2702
+    },
+    {
+      "DATE": "2023-05-17",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 492
+    },
+    {
+      "DATE": "2023-05-17",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 11
+    },
+    {
+      "DATE": "2023-05-18",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2716
+    },
+    {
+      "DATE": "2023-05-18",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 459
+    },
+    {
+      "DATE": "2023-05-18",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 10
+    },
+    {
+      "DATE": "2023-05-19",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 584
+    },
+    {
+      "DATE": "2023-05-19",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-05-19",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2774
+    },
+    {
+      "DATE": "2023-05-20",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 6
+    },
+    {
+      "DATE": "2023-05-20",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 1026
+    },
+    {
+      "DATE": "2023-05-20",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 164
+    },
+    {
+      "DATE": "2023-05-21",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2866
+    },
+    {
+      "DATE": "2023-05-21",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 419
+    },
+    {
+      "DATE": "2023-05-21",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 33
+    },
+    {
+      "DATE": "2023-05-22",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 488
+    },
+    {
+      "DATE": "2023-05-22",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2698
+    },
+    {
+      "DATE": "2023-05-22",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 8
+    },
+    {
+      "DATE": "2023-05-23",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 17
+    },
+    {
+      "DATE": "2023-05-23",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2785
+    },
+    {
+      "DATE": "2023-05-23",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 520
+    },
+    {
+      "DATE": "2023-05-24",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 459
+    },
+    {
+      "DATE": "2023-05-24",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 5
+    },
+    {
+      "DATE": "2023-05-24",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2654
+    },
+    {
+      "DATE": "2023-05-25",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 12
+    },
+    {
+      "DATE": "2023-05-25",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2775
+    },
+    {
+      "DATE": "2023-05-25",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 475
+    },
+    {
+      "DATE": "2023-05-26",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 29
+    },
+    {
+      "DATE": "2023-05-26",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2747
+    },
+    {
+      "DATE": "2023-05-26",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 557
+    },
+    {
+      "DATE": "2023-05-27",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2411
+    },
+    {
+      "DATE": "2023-05-27",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 76
+    },
+    {
+      "DATE": "2023-05-27",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 490
+    },
+    {
+      "DATE": "2023-05-28",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 57
+    },
+    {
+      "DATE": "2023-05-28",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2288
+    },
+    {
+      "DATE": "2023-05-28",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 427
+    },
+    {
+      "DATE": "2023-05-29",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2629
+    },
+    {
+      "DATE": "2023-05-29",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 386
+    },
+    {
+      "DATE": "2023-05-29",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 68
+    },
+    {
+      "DATE": "2023-05-30",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2617
+    },
+    {
+      "DATE": "2023-05-30",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 375
+    },
+    {
+      "DATE": "2023-05-30",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 2
+    },
+    {
+      "DATE": "2023-05-31",
+      "RIDEABLE_TYPE": "docked_bike",
+      "NUM_RIDES": 17
+    },
+    {
+      "DATE": "2023-05-31",
+      "RIDEABLE_TYPE": "electric_bike",
+      "NUM_RIDES": 520
+    },
+    {
+      "DATE": "2023-05-31",
+      "RIDEABLE_TYPE": "classic_bike",
+      "NUM_RIDES": 2772
+    }
   ]
 }
