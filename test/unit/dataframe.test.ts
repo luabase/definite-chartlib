@@ -118,24 +118,6 @@ describe("DataFrame", () => {
       ["bar", 4],
     ]);
   });
-  it("can split by column data", () => {
-    const df = new DataFrame([
-      { a: "foo", b: 1 },
-      { a: "foo", b: 2 },
-      { a: "bar", b: 3 },
-      { a: "bar", b: 4 },
-    ]);
-    expect(df.splitBy(0).map((df) => df.data)).toEqual([
-      [
-        ["foo", 1],
-        ["foo", 2],
-      ],
-      [
-        ["bar", 3],
-        ["bar", 4],
-      ],
-    ]);
-  });
   it("can be exported as ECDataset", () => {
     const df = new DataFrame([
       { a: "foo", b: 1 },
@@ -152,5 +134,74 @@ describe("DataFrame", () => {
         ["buzz", 4],
       ],
     });
+  });
+  it("can pivot the dataframe", () => {
+    const df = new DataFrame([
+      { date: "2020-01-01", cat: "blue", val: 1 },
+      { date: "2020-01-01", cat: "red", val: 3 },
+      { date: "2020-01-01", cat: "red", val: 2 },
+      { date: "2020-01-01", cat: "red", val: 1 },
+      { date: "2020-01-02", cat: "blue", val: 1 },
+      { date: "2020-01-03", cat: "blue", val: 1 },
+      { date: "2020-01-03", cat: "blue", val: 2 },
+      { date: "2020-01-03", cat: "red", val: 4 },
+      { date: "2020-01-04", cat: "blue", val: 1 },
+      { date: "2020-01-05", cat: "blue", val: 1 },
+      { date: "2020-01-05", cat: "red", val: 2 },
+    ]);
+    expect(df.pivot(0, 1, 2, "sum").data).toEqual([
+      ["2020-01-01", 1, 6],
+      ["2020-01-02", 1, null],
+      ["2020-01-03", 3, 4],
+      ["2020-01-04", 1, null],
+      ["2020-01-05", 1, 2],
+    ]);
+    expect(df.pivot(0, 1, 2, "avg").data).toEqual([
+      ["2020-01-01", 1, 2],
+      ["2020-01-02", 1, null],
+      ["2020-01-03", 1.5, 4],
+      ["2020-01-04", 1, null],
+      ["2020-01-05", 1, 2],
+    ]);
+    expect(df.pivot(0, 1, 2, "min").data).toEqual([
+      ["2020-01-01", 1, 1],
+      ["2020-01-02", 1, null],
+      ["2020-01-03", 1, 4],
+      ["2020-01-04", 1, null],
+      ["2020-01-05", 1, 2],
+    ]);
+    expect(df.pivot(0, 1, 2, "max").data).toEqual([
+      ["2020-01-01", 1, 3],
+      ["2020-01-02", 1, null],
+      ["2020-01-03", 2, 4],
+      ["2020-01-04", 1, null],
+      ["2020-01-05", 1, 2],
+    ]);
+    expect(df.pivot(0, 1, 2, "count").data).toEqual([
+      ["2020-01-01", 1, 3],
+      ["2020-01-02", 1, null],
+      ["2020-01-03", 2, 1],
+      ["2020-01-04", 1, null],
+      ["2020-01-05", 1, 1],
+    ]);
+    expect(df.pivot(0, 1, 2, "distinct").data).toEqual([
+      ["2020-01-01", 1, 3],
+      ["2020-01-02", 1, null],
+      ["2020-01-03", 2, 1],
+      ["2020-01-04", 1, null],
+      ["2020-01-05", 1, 1],
+    ]);
+  });
+  it("can select subset of columns", () => {
+    const df = new DataFrame([
+      { a: 1, b: 2, c: 3 },
+      { a: 1, b: 2, c: 3 },
+      { a: 1, b: 2, c: 3 },
+    ]);
+    expect(df.select([0, 2]).data).toEqual([
+      [1, 3],
+      [1, 3],
+      [1, 3],
+    ]);
   });
 });

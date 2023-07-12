@@ -42,17 +42,13 @@ export class DataFrame {
     return df;
   }
 
-  isEmpty(): boolean {
-    return this.shape.height === 0;
-  }
-
-  private static transpose(data: Matrix): Matrix {
+  static transpose(data: Matrix): Matrix {
     if (data.length === 0) return data;
     return data[0].map((_, i) => data.map((row) => row[i]));
   }
 
   private transposed(): Matrix {
-    if (this.isEmpty()) return this.data;
+    if (this.shape.height === 0) return this.data;
     return DataFrame.transpose(this.data);
   }
 
@@ -80,13 +76,6 @@ export class DataFrame {
     return DataFrame.load(filtered, this.columns);
   }
 
-  @profile
-  splitBy(col: number): DataFrame[] {
-    return utils.array
-      .removeDuplicates(this.col(col))
-      .map((v) => this.filter(col, (w) => w === v));
-  }
-
   private aggregateValue(
     prev: Value | undefined,
     next: Value,
@@ -110,14 +99,14 @@ export class DataFrame {
         if (!prev) {
           acc = Number(next);
         } else {
-          acc = Math.min(Number(prev), Number(next));
+          acc = Math.min(acc, Number(next));
         }
         return acc;
       case "max":
         if (!prev) {
           acc = Number(next);
         } else {
-          acc = Math.max(Number(prev), Number(next));
+          acc = Math.max(acc, Number(next));
         }
         return acc;
       default:
@@ -167,5 +156,81 @@ export class DataFrame {
     transposed[col] = transposed[col].map(fn);
     this.data = DataFrame.transpose(transposed); // back to row-oriented
     return DataFrame.load(this.data, this.columns);
+  }
+
+  @profile
+  pivot(
+    index: number,
+    columns: number,
+    values: number,
+    aggregation: AggregationType
+  ): DataFrame {
+    const map = new Map<Value, Map<Value, { acc: number; seen: number }>>();
+    for (let i = 0; i < this.data.length; i++) {
+      const row = this.data[i];
+      const k = row[index];
+      const cat = row[columns];
+      const val = row[values];
+      if (!map.has(k)) {
+        const innerMap = new Map<Value, { acc: number; seen: number }>();
+        const acc = this.aggregateValue(undefined, val, 0, aggregation);
+        innerMap.set(cat, { acc, seen: 1 });
+        map.set(k, innerMap);
+      } else {
+        const innerMap = map.get(k)!;
+        if (!innerMap.has(cat)) {
+          const acc = this.aggregateValue(undefined, val, 0, aggregation);
+          innerMap.set(cat, { acc, seen: 1 });
+        } else {
+          let { acc, seen } = innerMap.get(cat) || { acc: 0, seen: 0 };
+          acc = this.aggregateValue(
+            this.data[i - 1][values],
+            val,
+            acc,
+            aggregation
+          );
+          seen++;
+          innerMap.set(cat, { acc, seen });
+        }
+        map.set(k, innerMap);
+      }
+    }
+    const data: Matrix = [];
+    const cols = new Map<number, string>([[0, this.columns.get(index) ?? ""]]);
+    utils.array
+      .removeDuplicates(this.col(columns))
+      .map(String)
+      .forEach((v, i) => {
+        cols.set(i + 1, v);
+      });
+    for (const [outerK, innerMap] of map.entries()) {
+      const row = [outerK];
+      for (let i = 0; i < cols.size - 1; i++) {
+        row.push(null);
+      }
+      for (const [innerK, v] of innerMap.entries()) {
+        const ix = utils.map.getKeyByValue(cols, innerK)!;
+        let { acc, seen } = v;
+        if (aggregation === "avg") {
+          acc = acc / seen;
+        }
+        row[ix] = acc;
+      }
+      data.push(row);
+    }
+    return DataFrame.load(data, cols);
+  }
+
+  @profile
+  select(cols: number[]): DataFrame {
+    let data = this.transposed().filter((_, i) => cols.includes(i));
+    data = DataFrame.transpose(data);
+    const columns = new Map<number, string>();
+    this.columns.forEach((v, k) => {
+      if (cols.includes(k)) {
+        columns.set(columns.size, v);
+      }
+    });
+    return DataFrame.load(data, columns);
   }
 }
