@@ -459,17 +459,14 @@ export default class Chart<T extends ChartType> {
     return this.dimensions.find((dim) => where(dim));
   }
 
-  updateDimension(
-    where: Predicate<Dimension<T>>,
-    k: keyof Dimension<T>,
-    v: Dimension<T>[typeof k]
-  ): Chart<T> {
+  setDimension(where: Predicate<Dimension<T>>, v: Dimension<T>): Chart<T> {
     const dim = this.dimensions.find((d) => where(d));
     if (!dim) {
+      console.warn("Could not update dimension. Predicate returned 0 results");
       return this;
     }
     const ix = this.dimensions.indexOf(dim);
-    this.dimensions[ix] = { ...this.dimensions[ix], ...{ [k]: v } };
+    this.dimensions[ix] = v;
     return this;
   }
 
@@ -492,17 +489,14 @@ export default class Chart<T extends ChartType> {
     return this.metrics.find((m) => where(m));
   }
 
-  updateMetric(
-    where: Predicate<Metric<T>>,
-    k: keyof Metric<T>,
-    v: Metric<T>[typeof k]
-  ): Chart<T> {
+  setMetric(where: Predicate<Metric<T>>, v: Metric<T>): Chart<T> {
     const metric = this.metrics.find((m) => where(m));
     if (!metric) {
+      console.warn("Could not update metric. Predicate returned 0 results");
       return this;
     }
     const ix = this.metrics.indexOf(metric);
-    this.metrics[ix] = { ...this.metrics[ix], ...{ [k]: v } };
+    this.metrics[ix] = v;
     return this;
   }
 

@@ -39,7 +39,10 @@ describe("Chart", () => {
   it("can update dimension", () => {
     const barChart = new Chart("bar");
     barChart.addDimension({ index: 0, dataType: "category" });
-    barChart.updateDimension((d) => d.index === 0, "index", 1);
+    barChart.setDimension((d) => d.index === 0, {
+      index: 1,
+      dataType: "category",
+    });
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
@@ -104,12 +107,14 @@ describe("Chart", () => {
     const barChart = new Chart("bar");
     barChart.addMetric({
       index: 0,
-      dataType: "value",
       color: "#ffffff",
       aggregation: "sum",
     });
-    barChart.updateMetric((m) => m.index === 0, "aggregation", "avg");
-    barChart.updateMetric((m) => m.index === 0, "color", "#000000");
+    barChart.setMetric((m) => m.index === 0, {
+      index: 0,
+      color: "#000000",
+      aggregation: "avg",
+    });
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
@@ -123,7 +128,6 @@ describe("Chart", () => {
       metrics: [
         {
           index: 0,
-          dataType: "value",
           color: "#000000",
           aggregation: "avg",
         },
