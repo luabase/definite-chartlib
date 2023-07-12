@@ -163,7 +163,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         },
         {
           id: "2::line::1::iOS",
-          dimensions: ["date", "users"],
+          dimensions: ["date", "iOS"],
           source: [
             ["2020-01-01", 300],
             ["2020-01-02", 310],
@@ -172,7 +172,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         },
         {
           id: "2::line::2::Android",
-          dimensions: ["date", "users"],
+          dimensions: ["date", "Android"],
           source: [
             ["2020-01-01", 500],
             ["2020-01-02", 497],
@@ -197,7 +197,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           type: "line",
           color: "#d9f99d",
           datasetIndex: 1,
-          encode: { x: "date", y: "users" },
+          encode: { x: "date", y: "iOS" },
           name: "iOS",
           yAxisIndex: 0,
         },
@@ -205,7 +205,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           type: "line",
           color: "#2f4b7c",
           datasetIndex: 2,
-          encode: { x: "date", y: "users" },
+          encode: { x: "date", y: "Android" },
           name: "Android",
           yAxisIndex: 0,
         },
@@ -297,7 +297,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         },
         {
           id: "2::line::1::iOS",
-          dimensions: ["date", "users"],
+          dimensions: ["date", "iOS"],
           source: [
             ["2020-01-01", 300],
             ["2020-01-02", 310],
@@ -306,7 +306,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         },
         {
           id: "2::line::2::Android",
-          dimensions: ["date", "users"],
+          dimensions: ["date", "Android"],
           source: [
             ["2020-01-01", 500],
             ["2020-01-02", 497],
@@ -331,7 +331,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           type: "line",
           color: "#d9f99d",
           datasetIndex: 1,
-          encode: { x: "date", y: "users" },
+          encode: { x: "date", y: "iOS" },
           name: "iOS",
           yAxisIndex: 0,
           areaStyle: {},
@@ -341,7 +341,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           type: "line",
           color: "#2f4b7c",
           datasetIndex: 2,
-          encode: { x: "date", y: "users" },
+          encode: { x: "date", y: "Android" },
           name: "Android",
           yAxisIndex: 0,
           areaStyle: {},

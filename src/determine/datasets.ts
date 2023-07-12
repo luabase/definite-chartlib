@@ -9,48 +9,78 @@ export function datasets<T extends ChartType>(
 ): echarts.DataSet[] {
   const datasets: echarts.DataSet[] = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
-  const splitBy = chart.getBreakdownDimension();
   if (!groupBy) throw new Error("Group by dimension not found");
-  df = groupBy.dataType === "datetime" ? formatDateDF(df, groupBy.index) : df;
-  const dfs = !!splitBy ? df.splitBy(splitBy.index) : [df];
-  dfs.forEach((df) => {
+  const splitBy = chart.getBreakdownDimension();
+  if (groupBy.dataType === "datetime") {
+    df = formatDateTimeIndexForDF(df, groupBy.index);
+  }
+  const dfs: DataFrame[] = [];
+  if (splitBy) {
     if (chart.getChartType() === "scatter") {
-      const firstMetric = chart.getMetrics()[0];
+      dfs.push(
+        ...utils.array
+          .removeDuplicates(df.col(splitBy.index))
+          .map((v) => df.filter(splitBy.index, (w) => w === v))
+      );
+    } else {
+      const pivoted = df.pivot(
+        groupBy.index,
+        splitBy.index,
+        chart.getMetrics()[0].index,
+        chart.getMetrics()[0].aggregation
+      );
+      for (const k of pivoted.columns.keys()) {
+        if (k !== 0) {
+          dfs.push(pivoted.select([0, k]));
+        }
+      }
+    }
+  } else {
+    dfs.push(df);
+  }
+  dfs.forEach((df) => {
+    if (["scatter", "heatmap"].includes(chart.getChartType())) {
+      const metric = chart.getMetrics()[0];
       const dataset = df.asDataSet();
       const name = !!splitBy ? df.col(splitBy.index)[0] : "";
-      dataset.id = `${firstMetric.index}::scatter::${datasets.length}::${name}`;
-      datasets.push(dataset);
-    } else if (chart.getChartType() === "heatmap") {
-      const firstMetric = chart.getMetrics()[0];
-      const dataset = df.asDataSet();
-      dataset.id = `${firstMetric.index}::heatmap::${datasets.length}::`;
+      const type = chart.getChartType();
+      dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
       datasets.push(dataset);
     } else {
-      chart.getMetrics().forEach((metric) => {
-        if (metric.aggregation === "none") throw new Error("Cannot be none");
-        const dataset = df
-          .groupBy(metric.index, groupBy?.index, metric.aggregation)
-          .asDataSet();
-        let name = !!splitBy
-          ? df.col(splitBy.index)[0]
-          : df.columns.get(metric.index);
-        const uniqueMetrics = new Set(chart.getMetrics().map((m) => m.index));
-        const totalMetrics = chart.getMetrics().length;
-        name =
-          ["count", "distinct"].includes(metric.aggregation) ||
-          (uniqueMetrics.size === 1 && totalMetrics > 1)
-            ? `${name} (${metric.aggregation})`
-            : name;
-        const type = metric.chartType ?? chart.getChartType();
+      if (!!splitBy) {
+        const metric = chart.getMetrics()[0];
+        const dataset = df.asDataSet();
+        const name = df.columns.get(1);
+        const type = chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
         datasets.push(dataset);
-      });
+      } else {
+        chart.getMetrics().forEach((metric) => {
+          if (metric.aggregation === "none") throw new Error("Cannot be none");
+          const dataset = df
+            .groupBy(metric.index, groupBy?.index, metric.aggregation)
+            .asDataSet();
+          let name = df.columns.get(metric.index);
+          const uniqueMetricIndices = utils.array.removeDuplicates(
+            chart.getMetrics().map((m) => m.index)
+          ).length;
+          const totalMetrics = chart.getMetrics().length;
+          name =
+            ["count", "distinct"].includes(metric.aggregation) ||
+            (uniqueMetricIndices === 1 && totalMetrics > 1)
+              ? `${name} (${metric.aggregation})`
+              : name;
+          const type = metric.chartType ?? chart.getChartType();
+          dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
+          datasets.push(dataset);
+        });
+      }
     }
   });
   return datasets;
 }
 
-function formatDateDF(df: DataFrame, index: number) {
+function formatDateTimeIndexForDF(df: DataFrame, index: number) {
   let fmt = "";
   const values = df.col(index);
   const dates = values.map((v) => utils.datetime.toDateUTC(String(v)));
