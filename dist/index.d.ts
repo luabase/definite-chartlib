@@ -319,12 +319,12 @@ declare class Chart<T extends ChartType> {
     addDimension(dim: Dimension<T>): Chart<T>;
     getDimensions(): Dimension<T>[];
     getDimension(where: Predicate<Dimension<T>>): Dimension<T> | undefined;
-    updateDimension(where: Predicate<Dimension<T>>, k: keyof Dimension<T>, v: Dimension<T>[typeof k]): Chart<T>;
+    setDimension(where: Predicate<Dimension<T>>, v: Dimension<T>): Chart<T>;
     deleteDimension(where: Predicate<Dimension<T>>): Chart<T>;
     addMetric(metric: Metric<T>): Chart<T>;
     getMetrics(): Metric<T>[];
     getMetric(where: Predicate<Metric<T>>): Metric<T> | undefined;
-    updateMetric(where: Predicate<Metric<T>>, k: keyof Metric<T>, v: Metric<T>[typeof k]): Chart<T>;
+    setMetric(where: Predicate<Metric<T>>, v: Metric<T>): Chart<T>;
     deleteMetric(where: Predicate<Metric<T>>): Chart<T>;
 }
 
