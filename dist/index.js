@@ -494,7 +494,7 @@ function axis(chart, datasets2, kind) {
     if (chart.getChartType() === "bar") {
       item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
       item.axisLabel = {
-        interval: Math.floor((df.shape.height - 1) / 10),
+        interval: isLarge ? Math.floor((df.shape.height - 1) / 10) : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter
       };
