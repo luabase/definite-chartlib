@@ -159,6 +159,15 @@ function asSingleton(s) {
   return Array.isArray(s) ? s[0] : s;
 }
 
+// src/utils/datasets.ts
+var datasets_exports = {};
+__export(datasets_exports, {
+  containsLargeData: () => containsLargeData
+});
+function containsLargeData(datasets2) {
+  return datasets2[datasets2.length - 1].source.length > 10;
+}
+
 // src/utils/datetime.ts
 var datetime_exports = {};
 __export(datetime_exports, {
@@ -234,6 +243,19 @@ function strftime(d, fmt) {
   return str;
 }
 
+// src/utils/map.ts
+var map_exports = {};
+__export(map_exports, {
+  getKeyByValue: () => getKeyByValue
+});
+function getKeyByValue(m, v) {
+  for (let [key, value] of m.entries()) {
+    if (value === v)
+      return key;
+  }
+  return void 0;
+}
+
 // src/utils/string.ts
 var string_exports = {};
 __export(string_exports, {
@@ -241,15 +263,6 @@ __export(string_exports, {
 });
 function truncate(s, len) {
   return s.length > len ? s.substring(0, len) + "..." : s;
-}
-
-// src/utils/datasets.ts
-var datasets_exports = {};
-__export(datasets_exports, {
-  containsLargeData: () => containsLargeData
-});
-function containsLargeData(datasets2) {
-  return datasets2[datasets2.length - 1].source.length > 10;
 }
 
 // src/perf.ts
@@ -297,16 +310,13 @@ var _DataFrame = class {
     };
     return df;
   }
-  isEmpty() {
-    return this.shape.height === 0;
-  }
   static transpose(data) {
     if (data.length === 0)
       return data;
     return data[0].map((_, i) => data.map((row) => row[i]));
   }
   transposed() {
-    if (this.isEmpty())
+    if (this.shape.height === 0)
       return this.data;
     return _DataFrame.transpose(this.data);
   }
@@ -329,9 +339,6 @@ var _DataFrame = class {
     const filtered = this.data.filter((row) => where(row[col]));
     return _DataFrame.load(filtered, this.columns);
   }
-  splitBy(col) {
-    return array_exports.removeDuplicates(this.col(col)).map((v) => this.filter(col, (w) => w === v));
-  }
   aggregateValue(prev, next, acc, aggregation) {
     switch (aggregation) {
       case "sum":
@@ -350,14 +357,14 @@ var _DataFrame = class {
         if (!prev) {
           acc = Number(next);
         } else {
-          acc = Math.min(Number(prev), Number(next));
+          acc = Math.min(acc, Number(next));
         }
         return acc;
       case "max":
         if (!prev) {
           acc = Number(next);
         } else {
-          acc = Math.max(Number(prev), Number(next));
+          acc = Math.max(acc, Number(next));
         }
         return acc;
       default:
@@ -398,6 +405,70 @@ var _DataFrame = class {
     this.data = _DataFrame.transpose(transposed);
     return _DataFrame.load(this.data, this.columns);
   }
+  pivot(index, columns, values, aggregation) {
+    const map = /* @__PURE__ */ new Map();
+    for (let i = 0; i < this.data.length; i++) {
+      const row = this.data[i];
+      const k = row[index];
+      const cat = row[columns];
+      const val = row[values];
+      if (!map.has(k)) {
+        const innerMap = /* @__PURE__ */ new Map();
+        const acc = this.aggregateValue(void 0, val, 0, aggregation);
+        innerMap.set(cat, { acc, seen: 1 });
+        map.set(k, innerMap);
+      } else {
+        const innerMap = map.get(k);
+        if (!innerMap.has(cat)) {
+          const acc = this.aggregateValue(void 0, val, 0, aggregation);
+          innerMap.set(cat, { acc, seen: 1 });
+        } else {
+          let { acc, seen } = innerMap.get(cat) || { acc: 0, seen: 0 };
+          acc = this.aggregateValue(
+            this.data[i - 1][values],
+            val,
+            acc,
+            aggregation
+          );
+          seen++;
+          innerMap.set(cat, { acc, seen });
+        }
+        map.set(k, innerMap);
+      }
+    }
+    const data = [];
+    const cols = /* @__PURE__ */ new Map([[0, this.columns.get(index) ?? ""]]);
+    array_exports.removeDuplicates(this.col(columns)).map(String).forEach((v, i) => {
+      cols.set(i + 1, v);
+    });
+    for (const [outerK, innerMap] of map.entries()) {
+      const row = [outerK];
+      for (let i = 0; i < cols.size - 1; i++) {
+        row.push(null);
+      }
+      for (const [innerK, v] of innerMap.entries()) {
+        const ix = map_exports.getKeyByValue(cols, innerK);
+        let { acc, seen } = v;
+        if (aggregation === "avg") {
+          acc = acc / seen;
+        }
+        row[ix] = acc;
+      }
+      data.push(row);
+    }
+    return _DataFrame.load(data, cols);
+  }
+  select(cols) {
+    let data = this.transposed().filter((_, i) => cols.includes(i));
+    data = _DataFrame.transpose(data);
+    const columns = /* @__PURE__ */ new Map();
+    this.columns.forEach((v, k) => {
+      if (cols.includes(k)) {
+        columns.set(columns.size, v);
+      }
+    });
+    return _DataFrame.load(data, columns);
+  }
 };
 var DataFrame = _DataFrame;
 __decorateClass([
@@ -405,13 +476,16 @@ __decorateClass([
 ], DataFrame.prototype, "filter", 1);
 __decorateClass([
   profile
-], DataFrame.prototype, "splitBy", 1);
-__decorateClass([
-  profile
 ], DataFrame.prototype, "groupBy", 1);
 __decorateClass([
   profile
 ], DataFrame.prototype, "map", 1);
+__decorateClass([
+  profile
+], DataFrame.prototype, "pivot", 1);
+__decorateClass([
+  profile
+], DataFrame.prototype, "select", 1);
 
 // src/formatters.ts
 function categoryFormatter(value) {
@@ -540,41 +614,71 @@ function calendar(chart, df) {
 function datasets(chart, df) {
   const datasets2 = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
-  const splitBy = chart.getBreakdownDimension();
   if (!groupBy)
     throw new Error("Group by dimension not found");
-  df = groupBy.dataType === "datetime" ? formatDateDF(df, groupBy.index) : df;
-  const dfs = !!splitBy ? df.splitBy(splitBy.index) : [df];
-  dfs.forEach((df2) => {
+  const splitBy = chart.getBreakdownDimension();
+  if (groupBy.dataType === "datetime") {
+    df = formatDateTimeIndexForDF(df, groupBy.index);
+  }
+  const dfs = [];
+  if (splitBy) {
     if (chart.getChartType() === "scatter") {
-      const firstMetric = chart.getMetrics()[0];
+      dfs.push(
+        ...array_exports.removeDuplicates(df.col(splitBy.index)).map((v) => df.filter(splitBy.index, (w) => w === v))
+      );
+    } else {
+      const pivoted = df.pivot(
+        groupBy.index,
+        splitBy.index,
+        chart.getMetrics()[0].index,
+        chart.getMetrics()[0].aggregation
+      );
+      for (const k of pivoted.columns.keys()) {
+        if (k !== 0) {
+          dfs.push(pivoted.select([0, k]));
+        }
+      }
+    }
+  } else {
+    dfs.push(df);
+  }
+  dfs.forEach((df2) => {
+    if (["scatter", "heatmap"].includes(chart.getChartType())) {
+      const metric = chart.getMetrics()[0];
       const dataset = df2.asDataSet();
       const name = !!splitBy ? df2.col(splitBy.index)[0] : "";
-      dataset.id = `${firstMetric.index}::scatter::${datasets2.length}::${name}`;
-      datasets2.push(dataset);
-    } else if (chart.getChartType() === "heatmap") {
-      const firstMetric = chart.getMetrics()[0];
-      const dataset = df2.asDataSet();
-      dataset.id = `${firstMetric.index}::heatmap::${datasets2.length}::`;
+      const type = chart.getChartType();
+      dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
       datasets2.push(dataset);
     } else {
-      chart.getMetrics().forEach((metric) => {
-        if (metric.aggregation === "none")
-          throw new Error("Cannot be none");
-        const dataset = df2.groupBy(metric.index, groupBy?.index, metric.aggregation).asDataSet();
-        let name = !!splitBy ? df2.col(splitBy.index)[0] : df2.columns.get(metric.index);
-        const uniqueMetrics = new Set(chart.getMetrics().map((m) => m.index));
-        const totalMetrics = chart.getMetrics().length;
-        name = ["count", "distinct"].includes(metric.aggregation) || uniqueMetrics.size === 1 && totalMetrics > 1 ? `${name} (${metric.aggregation})` : name;
-        const type = metric.chartType ?? chart.getChartType();
+      if (!!splitBy) {
+        const metric = chart.getMetrics()[0];
+        const dataset = df2.asDataSet();
+        const name = df2.columns.get(1);
+        const type = chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
         datasets2.push(dataset);
-      });
+      } else {
+        chart.getMetrics().forEach((metric) => {
+          if (metric.aggregation === "none")
+            throw new Error("Cannot be none");
+          const dataset = df2.groupBy(metric.index, groupBy?.index, metric.aggregation).asDataSet();
+          let name = df2.columns.get(metric.index);
+          const uniqueMetricIndices = array_exports.removeDuplicates(
+            chart.getMetrics().map((m) => m.index)
+          ).length;
+          const totalMetrics = chart.getMetrics().length;
+          name = ["count", "distinct"].includes(metric.aggregation) || uniqueMetricIndices === 1 && totalMetrics > 1 ? `${name} (${metric.aggregation})` : name;
+          const type = metric.chartType ?? chart.getChartType();
+          dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
+          datasets2.push(dataset);
+        });
+      }
     }
   });
   return datasets2;
 }
-function formatDateDF(df, index) {
+function formatDateTimeIndexForDF(df, index) {
   let fmt = "";
   const values = df.col(index);
   const dates = values.map((v) => datetime_exports.toDateUTC(String(v)));
