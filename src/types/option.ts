@@ -14,7 +14,7 @@ interface Indexable {
 }
 
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar"
-  ? { dataType: "datetime" }
+  ? { dataType: Exclude<DataType, "value"> }
   : { dataType: Exclude<DataType, "value"> };
 
 export type Dimension<T extends ChartType> = Indexable &
