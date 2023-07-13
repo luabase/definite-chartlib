@@ -30,6 +30,7 @@ var __decorateClass = (decorators, target, key, kind) => {
 var src_exports = {};
 __export(src_exports, {
   Chart: () => Chart,
+  color: () => color_exports,
   default: () => src_default,
   echarts: () => echarts_exports
 });
@@ -1465,5 +1466,6 @@ var src_default = main_exports;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Chart,
+  color,
   echarts
 });

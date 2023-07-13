@@ -1443,6 +1443,7 @@ var echarts_exports = {};
 var src_default = main_exports;
 export {
   Chart,
+  color_exports as color,
   src_default as default,
   echarts_exports as echarts
 };

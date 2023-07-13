@@ -188,6 +188,84 @@ type RowOriented = Array<{
     [key: string]: Option<number | string>;
 }>;
 
+declare const LIME_50 = "#f7fee7";
+declare const LIME_100 = "#ecfccb";
+declare const LIME_200 = "#d9f99d";
+declare const LIME_300 = "#bef264";
+declare const LIME_400 = "#a3e635";
+declare const LIME_500 = "#84cc16";
+declare const LIME_600 = "#65a30d";
+declare const LIME_700 = "#4d7c0f";
+declare const LIME_800 = "#3f6212";
+declare const LIME_900 = "#365314";
+declare const ZINC_400 = "#a1a1aa";
+declare const ZINC_500 = "#71717a";
+declare const ZINC_800 = "#27272a";
+declare const ZINC_900 = "#18181b";
+declare const TEAL = "#003f5c";
+declare const DARK_BLUE = "#2f4b7c";
+declare const DARK_PURPLE = "#665191";
+declare const PURPLE = "#a05195";
+declare const PINK = "#d45087";
+declare const LIGHT_PINK = "#f95d6a";
+declare const ORANGE = "#ff7c43";
+declare const YELLOW = "#ffa600";
+declare const LIME_PALETTE: string[];
+declare const COLOR_PALETTE: string[];
+
+declare const color_COLOR_PALETTE: typeof COLOR_PALETTE;
+declare const color_DARK_BLUE: typeof DARK_BLUE;
+declare const color_DARK_PURPLE: typeof DARK_PURPLE;
+declare const color_LIGHT_PINK: typeof LIGHT_PINK;
+declare const color_LIME_100: typeof LIME_100;
+declare const color_LIME_200: typeof LIME_200;
+declare const color_LIME_300: typeof LIME_300;
+declare const color_LIME_400: typeof LIME_400;
+declare const color_LIME_50: typeof LIME_50;
+declare const color_LIME_500: typeof LIME_500;
+declare const color_LIME_600: typeof LIME_600;
+declare const color_LIME_700: typeof LIME_700;
+declare const color_LIME_800: typeof LIME_800;
+declare const color_LIME_900: typeof LIME_900;
+declare const color_LIME_PALETTE: typeof LIME_PALETTE;
+declare const color_ORANGE: typeof ORANGE;
+declare const color_PINK: typeof PINK;
+declare const color_PURPLE: typeof PURPLE;
+declare const color_TEAL: typeof TEAL;
+declare const color_YELLOW: typeof YELLOW;
+declare const color_ZINC_400: typeof ZINC_400;
+declare const color_ZINC_500: typeof ZINC_500;
+declare const color_ZINC_800: typeof ZINC_800;
+declare const color_ZINC_900: typeof ZINC_900;
+declare namespace color {
+  export {
+    color_COLOR_PALETTE as COLOR_PALETTE,
+    color_DARK_BLUE as DARK_BLUE,
+    color_DARK_PURPLE as DARK_PURPLE,
+    color_LIGHT_PINK as LIGHT_PINK,
+    color_LIME_100 as LIME_100,
+    color_LIME_200 as LIME_200,
+    color_LIME_300 as LIME_300,
+    color_LIME_400 as LIME_400,
+    color_LIME_50 as LIME_50,
+    color_LIME_500 as LIME_500,
+    color_LIME_600 as LIME_600,
+    color_LIME_700 as LIME_700,
+    color_LIME_800 as LIME_800,
+    color_LIME_900 as LIME_900,
+    color_LIME_PALETTE as LIME_PALETTE,
+    color_ORANGE as ORANGE,
+    color_PINK as PINK,
+    color_PURPLE as PURPLE,
+    color_TEAL as TEAL,
+    color_YELLOW as YELLOW,
+    color_ZINC_400 as ZINC_400,
+    color_ZINC_500 as ZINC_500,
+    color_ZINC_800 as ZINC_800,
+    color_ZINC_900 as ZINC_900,
+  };
+}
+
 type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter";
 type DataType = "category" | "datetime" | "value";
 type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "none";
@@ -348,4 +426,4 @@ declare namespace chartlib {
   };
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, DataType, Dimension, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, chartlib as default, index as echarts };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, DataType, Dimension, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, chartlib as default, index as echarts };
