@@ -40,9 +40,15 @@ describe("given a legacy vertical bar chart config", () => {
         barStyle: "grouped",
         orientation: "vertical",
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [
-        { index: 1, color: "#ffffff", chartType: "bar", aggregation: "sum" },
+        {
+          id: 0,
+          index: 1,
+          color: "#ffffff",
+          chartType: "bar",
+          aggregation: "sum",
+        },
       ],
     });
   });
@@ -90,9 +96,15 @@ describe("given a legacy horizontal bar chart config", () => {
         barStyle: "grouped",
         orientation: "horizontal",
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [
-        { index: 1, color: "#ffffff", chartType: "bar", aggregation: "sum" },
+        {
+          id: 0,
+          index: 1,
+          color: "#ffffff",
+          chartType: "bar",
+          aggregation: "sum",
+        },
       ],
     });
   });
@@ -143,10 +155,22 @@ describe("given a legacy stacked bar chart config", () => {
         barStyle: "stacked",
         orientation: "vertical",
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [
-        { index: 1, color: "#ffffff", chartType: "bar", aggregation: "sum" },
-        { index: 2, color: "#ffffff", chartType: "bar", aggregation: "sum" },
+        {
+          id: 0,
+          index: 1,
+          color: "#ffffff",
+          chartType: "bar",
+          aggregation: "sum",
+        },
+        {
+          id: 1,
+          index: 2,
+          color: "#ffffff",
+          chartType: "bar",
+          aggregation: "sum",
+        },
       ],
     });
   });
@@ -189,9 +213,15 @@ describe("given a legacy line chart config", () => {
         showLegend: false,
         lineStyle: "point",
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [
-        { index: 1, color: "#ffffff", chartType: "line", aggregation: "sum" },
+        {
+          id: 0,
+          index: 1,
+          color: "#ffffff",
+          chartType: "line",
+          aggregation: "sum",
+        },
       ],
     });
   });
@@ -241,10 +271,22 @@ describe("given a legacy area line chart config", () => {
         showLegend: false,
         lineStyle: "area",
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [
-        { index: 1, color: "#ffffff", chartType: "line", aggregation: "sum" },
-        { index: 2, color: "#ffffff", chartType: "line", aggregation: "sum" },
+        {
+          id: 0,
+          index: 1,
+          color: "#ffffff",
+          chartType: "line",
+          aggregation: "sum",
+        },
+        {
+          id: 1,
+          index: 2,
+          color: "#ffffff",
+          chartType: "line",
+          aggregation: "sum",
+        },
       ],
     });
   });
@@ -285,8 +327,8 @@ describe("given a legacy pie chart config", () => {
         showTitle: false,
         showToolbox: false,
       },
-      dimensions: [{ index: 0, dataType: "category" }],
-      metrics: [{ index: 1, color: ["#ffffff"], aggregation: "sum" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
+      metrics: [{ id: 0, index: 1, color: ["#ffffff"], aggregation: "sum" }],
     });
   });
 });
@@ -326,10 +368,10 @@ describe("given a legacy scatter chart config", () => {
         showTitle: false,
         showToolbox: false,
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [
-        { index: 0, color: "#ffffff", aggregation: "none" },
-        { index: 1, color: "#ffffff", aggregation: "none" },
+        { id: 0, index: 0, color: "#ffffff", aggregation: "none" },
+        { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
       ],
     });
   });
@@ -385,10 +427,10 @@ describe("given a legacy heatmap chart config", () => {
         colorGrouping: "piecewise",
       },
       dimensions: [
-        { index: 0, dataType: "category" },
-        { index: 1, dataType: "category" },
+        { id: 0, index: 0, dataType: "category" },
+        { id: 1, index: 1, dataType: "category" },
       ],
-      metrics: [{ index: 2, color: ["#ffffff"], aggregation: "none" }],
+      metrics: [{ id: 0, index: 2, color: ["#ffffff"], aggregation: "none" }],
     });
   });
 });
@@ -429,8 +471,8 @@ describe("given a legacy calendar chart config", () => {
         showToolbox: false,
         colorGrouping: "continuous",
       },
-      dimensions: [{ index: 0, dataType: "datetime" }],
-      metrics: [{ index: 1, color: ["#ffffff"], aggregation: "sum" }],
+      dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+      metrics: [{ id: 0, index: 1, color: ["#ffffff"], aggregation: "sum" }],
     });
   });
 });

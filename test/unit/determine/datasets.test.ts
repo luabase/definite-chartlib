@@ -33,7 +33,7 @@ describe("given a line chart and a dataframe with a datetime column of all year 
         ],
       },
       {
-        id: "1::line::1::value",
+        id: "1::line::1::value::0",
         dimensions: ["date", "value"],
         source: [
           ["2020", 1],
@@ -80,7 +80,7 @@ describe("given a line chart and a dataframe with a datetime column of all quart
         ],
       },
       {
-        id: "1::line::1::value",
+        id: "1::line::1::value::0",
         dimensions: ["date", "value"],
         source: [
           ["2020Q1", 1],
@@ -128,7 +128,7 @@ describe("given a line chart and a dataframe with a datetime column of all month
         ],
       },
       {
-        id: "1::line::1::value",
+        id: "1::line::1::value::0",
         dimensions: ["date", "value"],
         source: [
           ["2020-01", 1],
@@ -176,7 +176,7 @@ describe("given a line chart and a dataframe with a datetime column of non-speci
         ],
       },
       {
-        id: "1::line::1::value",
+        id: "1::line::1::value::0",
         dimensions: ["date", "value"],
         source: [
           ["2020-01-01", 1],

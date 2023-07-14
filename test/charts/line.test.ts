@@ -34,7 +34,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::line::1::users",
+          id: "2::line::1::users::0",
           dimensions: ["date", "users"],
           source: [
             ["2020-01-01", 800],
@@ -162,7 +162,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::line::1::iOS",
+          id: "2::line::1::iOS::0",
           dimensions: ["date", "iOS"],
           source: [
             ["2020-01-01", 300],
@@ -171,7 +171,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::line::2::Android",
+          id: "2::line::2::Android::0",
           dimensions: ["date", "Android"],
           source: [
             ["2020-01-01", 500],
@@ -296,7 +296,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::line::1::iOS",
+          id: "2::line::1::iOS::0",
           dimensions: ["date", "iOS"],
           source: [
             ["2020-01-01", 300],
@@ -305,7 +305,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::line::2::Android",
+          id: "2::line::2::Android::0",
           dimensions: ["date", "Android"],
           source: [
             ["2020-01-01", 500],
@@ -446,7 +446,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
           ],
         },
         {
-          id: "1::line::1::event (count)",
+          id: "1::line::1::event (count)::0",
           dimensions: ["date", "event"],
           source: [
             ["2020-01-01", 2],
@@ -454,7 +454,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
           ],
         },
         {
-          id: "2::line::2::user_id (distinct)",
+          id: "2::line::2::user_id (distinct)::1",
           dimensions: ["date", "user_id"],
           source: [
             ["2020-01-01", 1],
@@ -575,7 +575,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
           ],
         },
         {
-          id: "1::line::1::event (count)",
+          id: "1::line::1::event (count)::0",
           dimensions: ["date", "event"],
           source: [
             ["2020-01-01", 2],
@@ -583,7 +583,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
           ],
         },
         {
-          id: "2::line::2::user_id (distinct)",
+          id: "2::line::2::user_id (distinct)::1",
           dimensions: ["date", "user_id"],
           source: [
             ["2020-01-01", 1],

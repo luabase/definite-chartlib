@@ -34,7 +34,7 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
           ],
         },
         {
-          id: "2::scatter::1::",
+          id: "2::scatter::1::::0",
           dimensions: ["state", "year", "gdp", "avg_income"],
           source: [
             ["New York", 2010, 1223529700000, 46566],
@@ -177,7 +177,7 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
           ],
         },
         {
-          id: "2::scatter::1::2010",
+          id: "2::scatter::1::2010::0",
           dimensions: ["state", "year", "gdp", "avg_income"],
           source: [
             ["New York", 2010, 1223529700000, 46566],
@@ -186,7 +186,7 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
           ],
         },
         {
-          id: "2::scatter::2::2020",
+          id: "2::scatter::2::2020::0",
           dimensions: ["state", "year", "gdp", "avg_income"],
           source: [
             ["New York", 2020, 1740804700000, 58675],

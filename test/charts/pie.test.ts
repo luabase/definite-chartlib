@@ -34,7 +34,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::pie::1::users",
+          id: "2::pie::1::users::0",
           dimensions: ["os", "users"],
           source: [
             ["iOS", 1220],

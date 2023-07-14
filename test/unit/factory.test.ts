@@ -28,73 +28,85 @@ describe("given a list of column options", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 4, color: color.LIME_200, aggregation: "sum" }],
-      },
-      {
-        chartType: "pie",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-        },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 4, color: color.LIME_PALETTE, aggregation: "sum" }],
-      },
-      {
-        chartType: "bar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          barStyle: "grouped",
-          orientation: "vertical",
-        },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 5, color: color.LIME_200, aggregation: "sum" }],
-      },
-      {
-        chartType: "pie",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-        },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 5, color: color.LIME_PALETTE, aggregation: "sum" }],
-      },
-      {
-        chartType: "bar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          barStyle: "grouped",
-          orientation: "vertical",
-        },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 6, color: color.LIME_200, aggregation: "sum" }],
-      },
-      {
-        chartType: "pie",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-        },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 6, color: color.LIME_PALETTE, aggregation: "sum" }],
-      },
-      {
-        chartType: "bar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          barStyle: "grouped",
-          orientation: "vertical",
-        },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 4, color: color.LIME_200, aggregation: "sum" },
-          { index: 5, color: color.DARK_BLUE, aggregation: "sum" },
+          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
+        ],
+      },
+      {
+        chartType: "pie",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 4, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      },
+      {
+        chartType: "bar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          barStyle: "grouped",
+          orientation: "vertical",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 5, color: color.LIME_200, aggregation: "sum" },
+        ],
+      },
+      {
+        chartType: "pie",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 5, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      },
+      {
+        chartType: "bar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          barStyle: "grouped",
+          orientation: "vertical",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 6, color: color.LIME_200, aggregation: "sum" },
+        ],
+      },
+      {
+        chartType: "pie",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 6, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      },
+      {
+        chartType: "bar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          barStyle: "grouped",
+          orientation: "vertical",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
+          { id: 1, index: 5, color: color.DARK_BLUE, aggregation: "sum" },
         ],
       },
       {
@@ -103,10 +115,10 @@ describe("given a list of column options", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 4, color: color.LIME_200, aggregation: "none" },
-          { index: 5, color: color.DARK_BLUE, aggregation: "none" },
+          { id: 0, index: 4, color: color.LIME_200, aggregation: "none" },
+          { id: 1, index: 5, color: color.DARK_BLUE, aggregation: "none" },
         ],
       },
       {
@@ -118,10 +130,10 @@ describe("given a list of column options", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 4, color: color.LIME_200, aggregation: "sum" },
-          { index: 6, color: color.DARK_BLUE, aggregation: "sum" },
+          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
+          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "sum" },
         ],
       },
       {
@@ -130,10 +142,10 @@ describe("given a list of column options", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 4, color: color.LIME_200, aggregation: "none" },
-          { index: 6, color: color.DARK_BLUE, aggregation: "none" },
+          { id: 0, index: 4, color: color.LIME_200, aggregation: "none" },
+          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "none" },
         ],
       },
       {
@@ -145,10 +157,10 @@ describe("given a list of column options", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 5, color: color.LIME_200, aggregation: "sum" },
-          { index: 6, color: color.DARK_BLUE, aggregation: "sum" },
+          { id: 0, index: 5, color: color.LIME_200, aggregation: "sum" },
+          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "sum" },
         ],
       },
       {
@@ -157,10 +169,10 @@ describe("given a list of column options", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 5, color: color.LIME_200, aggregation: "none" },
-          { index: 6, color: color.DARK_BLUE, aggregation: "none" },
+          { id: 0, index: 5, color: color.LIME_200, aggregation: "none" },
+          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "none" },
         ],
       },
       {
@@ -172,11 +184,11 @@ describe("given a list of column options", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 4, color: color.LIME_200, aggregation: "sum" },
-          { index: 5, color: color.DARK_BLUE, aggregation: "sum" },
-          { index: 6, color: color.DARK_PURPLE, aggregation: "sum" },
+          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
+          { id: 1, index: 5, color: color.DARK_BLUE, aggregation: "sum" },
+          { id: 2, index: 6, color: color.DARK_PURPLE, aggregation: "sum" },
         ],
       },
     ]);

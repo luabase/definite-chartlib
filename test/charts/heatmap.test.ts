@@ -33,7 +33,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         },
         {
           dimensions: ["date", "hour", "value"],
-          id: "2::heatmap::1::",
+          id: "2::heatmap::1::::0",
           source: [
             ["2020-01-01", "1pm", 30],
             ["2020-01-01", "2pm", 40],

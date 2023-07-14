@@ -24,8 +24,10 @@ describe("given an array of column metadata", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_200, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "sum" },
+        ],
       });
     });
   });

@@ -32,7 +32,7 @@ describe("Chart", () => {
         barStyle: "grouped",
         orientation: "vertical",
       },
-      dimensions: [{ index: 0, dataType: "category" }],
+      dimensions: [{ id: 0, index: 0, dataType: "category" }],
       metrics: [],
     });
   });
@@ -94,6 +94,7 @@ describe("Chart", () => {
       dimensions: [],
       metrics: [
         {
+          id: 0,
           index: 0,
           dataType: "value",
           color: "#ffffff",

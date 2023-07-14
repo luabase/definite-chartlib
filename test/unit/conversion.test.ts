@@ -16,8 +16,8 @@ describe("given a bar chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -27,9 +27,10 @@ describe("given a bar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
           {
+            id: 0,
             index: 1,
             color: color.LIME_PALETTE,
             aggregation: "sum",
@@ -44,10 +45,10 @@ describe("given a bar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -60,10 +61,12 @@ describe("given a bar chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "category" },
-          { index: 0, dataType: "category" },
+          { id: 0, index: 0, dataType: "category" },
+          { id: 1, index: 0, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -74,8 +77,10 @@ describe("given a bar chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -93,10 +98,10 @@ describe("given a bar chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "sum" },
-          { index: 2, color: "#ffffff", aggregation: "sum" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "sum" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "sum" },
         ],
       });
     });
@@ -107,8 +112,10 @@ describe("given a bar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -118,10 +125,10 @@ describe("given a bar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 2, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -134,10 +141,12 @@ describe("given a bar chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "category" },
-          { index: 0, dataType: "category" },
+          { id: 0, index: 0, dataType: "category" },
+          { id: 1, index: 0, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -148,8 +157,10 @@ describe("given a bar chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -167,8 +178,8 @@ describe("given a bar chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -178,8 +189,10 @@ describe("given a bar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -189,10 +202,10 @@ describe("given a bar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -205,10 +218,12 @@ describe("given a bar chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "category" },
-          { index: 2, dataType: "category" },
+          { id: 0, index: 0, dataType: "category" },
+          { id: 1, index: 2, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -219,8 +234,10 @@ describe("given a bar chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -241,8 +258,8 @@ describe("given a line chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -252,8 +269,10 @@ describe("given a line chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -263,10 +282,10 @@ describe("given a line chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -279,10 +298,12 @@ describe("given a line chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "datetime" },
-          { index: 0, dataType: "datetime" },
+          { id: 0, index: 0, dataType: "datetime" },
+          { id: 1, index: 0, dataType: "datetime" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -293,8 +314,10 @@ describe("given a line chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -313,10 +336,10 @@ describe("given a line chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "sum" },
-          { index: 2, color: "#ffffff", aggregation: "sum" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "sum" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "sum" },
         ],
       });
     });
@@ -327,8 +350,10 @@ describe("given a line chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -338,10 +363,10 @@ describe("given a line chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 2, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -354,10 +379,12 @@ describe("given a line chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "datetime" },
-          { index: 0, dataType: "datetime" },
+          { id: 0, index: 0, dataType: "datetime" },
+          { id: 1, index: 0, dataType: "datetime" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -368,8 +395,10 @@ describe("given a line chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -388,8 +417,8 @@ describe("given a line chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -399,8 +428,10 @@ describe("given a line chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -410,10 +441,10 @@ describe("given a line chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -426,10 +457,12 @@ describe("given a line chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "datetime" },
-          { index: 1, dataType: "category" },
+          { id: 0, index: 0, dataType: "datetime" },
+          { id: 1, index: 1, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -440,8 +473,10 @@ describe("given a line chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -462,8 +497,8 @@ describe("given a pie chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to line chart", () => {
@@ -475,8 +510,8 @@ describe("given a pie chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to scatter chart", () => {
@@ -486,10 +521,10 @@ describe("given a pie chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -502,10 +537,12 @@ describe("given a pie chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "category" },
-          { index: 0, dataType: "category" },
+          { id: 0, index: 0, dataType: "category" },
+          { id: 1, index: 0, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -516,8 +553,10 @@ describe("given a pie chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -539,10 +578,10 @@ describe("given a scatter chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "sum" },
-          { index: 2, color: "#ffffff", aggregation: "sum" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "sum" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "sum" },
         ],
       });
     });
@@ -555,10 +594,10 @@ describe("given a scatter chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "sum" },
-          { index: 2, color: "#ffffff", aggregation: "sum" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "sum" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "sum" },
         ],
       });
     });
@@ -569,8 +608,10 @@ describe("given a scatter chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to heatmap chart", () => {
@@ -582,10 +623,12 @@ describe("given a scatter chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "category" },
-          { index: 0, dataType: "category" },
+          { id: 0, index: 0, dataType: "category" },
+          { id: 1, index: 0, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -596,8 +639,10 @@ describe("given a scatter chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -619,8 +664,8 @@ describe("given a heatmap chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to line chart", () => {
@@ -632,8 +677,8 @@ describe("given a heatmap chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -643,8 +688,8 @@ describe("given a heatmap chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
-        metrics: [{ index: 1, color: ["#ffffff"], aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+        metrics: [{ id: 0, index: 1, color: ["#ffffff"], aggregation: "sum" }],
       });
     });
     it("can convert to scatter chart", () => {
@@ -654,10 +699,10 @@ describe("given a heatmap chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "category" }],
+        dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -669,8 +714,8 @@ describe("given a heatmap chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: ["#ffffff"], aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [{ id: 0, index: 1, color: ["#ffffff"], aggregation: "sum" }],
       });
     });
   });
@@ -691,8 +736,8 @@ describe("given a calendar chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to line chart", () => {
@@ -704,8 +749,8 @@ describe("given a calendar chart", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -715,8 +760,10 @@ describe("given a calendar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -726,10 +773,10 @@ describe("given a calendar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -742,10 +789,12 @@ describe("given a calendar chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "datetime" },
-          { index: 0, dataType: "datetime" },
+          { id: 0, index: 0, dataType: "datetime" },
+          { id: 1, index: 0, dataType: "datetime" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
   });
@@ -764,10 +813,10 @@ describe("given a calendar chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "sum" },
-          { index: 2, color: "#ffffff", aggregation: "sum" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "sum" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "sum" },
         ],
       });
     });
@@ -778,8 +827,10 @@ describe("given a calendar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -789,10 +840,10 @@ describe("given a calendar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 2, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 2, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -805,10 +856,12 @@ describe("given a calendar chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "datetime" },
-          { index: 0, dataType: "datetime" },
+          { id: 0, index: 0, dataType: "datetime" },
+          { id: 1, index: 0, dataType: "datetime" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -819,8 +872,10 @@ describe("given a calendar chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });
@@ -839,8 +894,8 @@ describe("given a calendar chart", () => {
           barStyle: "grouped",
           orientation: "vertical",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: "#ffffff", aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [{ id: 0, index: 1, color: "#ffffff", aggregation: "sum" }],
       });
     });
     it("can convert to pie chart", () => {
@@ -850,8 +905,10 @@ describe("given a calendar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
     it("can convert to scatter chart", () => {
@@ -861,10 +918,10 @@ describe("given a calendar chart", () => {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: "#ffffff", aggregation: "none" },
-          { index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 0, index: 1, color: "#ffffff", aggregation: "none" },
+          { id: 1, index: 1, color: "#ffffff", aggregation: "none" },
         ],
       });
     });
@@ -877,10 +934,12 @@ describe("given a calendar chart", () => {
           colorGrouping: "continuous",
         },
         dimensions: [
-          { index: 0, dataType: "datetime" },
-          { index: 1, dataType: "category" },
+          { id: 0, index: 0, dataType: "datetime" },
+          { id: 1, index: 1, dataType: "category" },
         ],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "none" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+        ],
       });
     });
     it("can convert to calendar chart", () => {
@@ -891,8 +950,10 @@ describe("given a calendar chart", () => {
           showToolbox: false,
           colorGrouping: "continuous",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
       });
     });
   });

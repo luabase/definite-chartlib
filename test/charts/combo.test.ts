@@ -41,7 +41,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
           ],
         },
         {
-          id: "2::bar::1::users (sum)",
+          id: "2::bar::1::users (sum)::0",
           dimensions: ["date", "users"],
           source: [
             ["2020-01-01", 800],
@@ -50,7 +50,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
           ],
         },
         {
-          id: "2::line::2::users (avg)",
+          id: "2::line::2::users (avg)::1",
           dimensions: ["date", "users"],
           source: [
             ["2020-01-01", 400],

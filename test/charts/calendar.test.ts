@@ -53,7 +53,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
           ],
         },
         {
-          id: "2::calendar::1::users",
+          id: "2::calendar::1::users::0",
           dimensions: ["date", "users"],
           source: [
             ["2020-01-01", 800],

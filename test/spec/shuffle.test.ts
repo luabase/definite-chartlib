@@ -20,7 +20,7 @@ describe("given an array of column metadata", () => {
   describe("when passed to chart generator", () => {
     const generator = chartlib.chartGenerator(data);
     it("can infinitely shuffle through all chart options", () => {
-      expect(generator.next().value).toEqual({
+      expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
           showTitle: true,
@@ -28,68 +28,76 @@ describe("given an array of column metadata", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_200, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "calendar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          colorGrouping: "continuous",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "line",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          lineStyle: "point",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 2, color: color.LIME_200, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "calendar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          colorGrouping: "continuous",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 2, color: color.LIME_PALETTE, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "line",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          lineStyle: "point",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: color.LIME_200, aggregation: "sum" },
-          { index: 2, color: color.DARK_BLUE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "sum" },
         ],
       });
-      expect(generator.next().value).toEqual({
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "calendar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          colorGrouping: "continuous",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "line",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          lineStyle: "point",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 2, color: color.LIME_200, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "calendar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          colorGrouping: "continuous",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 2, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "line",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          lineStyle: "point",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "sum" },
+          { id: 1, index: 2, color: color.DARK_BLUE, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
         chartType: "scatter",
         style: {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: color.LIME_200, aggregation: "none" },
-          { index: 2, color: color.DARK_BLUE, aggregation: "none" },
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "none" },
+          { id: 1, index: 2, color: color.DARK_BLUE, aggregation: "none" },
         ],
       });
       // will revolve back to the beginning of the options
-      expect(generator.next().value).toEqual({
+      expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
           showTitle: true,
@@ -97,64 +105,72 @@ describe("given an array of column metadata", () => {
           showLegend: true,
           lineStyle: "point",
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_200, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "calendar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          colorGrouping: "continuous",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 1, color: color.LIME_PALETTE, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "line",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          lineStyle: "point",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 2, color: color.LIME_200, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "calendar",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          colorGrouping: "continuous",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
-        metrics: [{ index: 2, color: color.LIME_PALETTE, aggregation: "sum" }],
-      });
-      expect(generator.next().value).toEqual({
-        chartType: "line",
-        style: {
-          showTitle: true,
-          showToolbox: false,
-          showLegend: true,
-          lineStyle: "point",
-        },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: color.LIME_200, aggregation: "sum" },
-          { index: 2, color: color.DARK_BLUE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "sum" },
         ],
       });
-      expect(generator.next().value).toEqual({
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "calendar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          colorGrouping: "continuous",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "line",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          lineStyle: "point",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 2, color: color.LIME_200, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "calendar",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          colorGrouping: "continuous",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 2, color: color.LIME_PALETTE, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
+        chartType: "line",
+        style: {
+          showTitle: true,
+          showToolbox: false,
+          showLegend: true,
+          lineStyle: "point",
+        },
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
+        metrics: [
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "sum" },
+          { id: 1, index: 2, color: color.DARK_BLUE, aggregation: "sum" },
+        ],
+      });
+      expect(generator.next().value?.getOptions()).toEqual({
         chartType: "scatter",
         style: {
           showTitle: true,
           showToolbox: false,
         },
-        dimensions: [{ index: 0, dataType: "datetime" }],
+        dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { index: 1, color: color.LIME_200, aggregation: "none" },
-          { index: 2, color: color.DARK_BLUE, aggregation: "none" },
+          { id: 0, index: 1, color: color.LIME_200, aggregation: "none" },
+          { id: 1, index: 2, color: color.DARK_BLUE, aggregation: "none" },
         ],
       });
     });
