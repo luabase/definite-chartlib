@@ -102,6 +102,9 @@ export function series<T extends ChartType>(
       if (chart.getChartType() === "line") {
         item.areaStyle = {};
       }
+      if (chart.getChartType() === "bar" && t === "line") {
+        item.stack = "";
+      }
     }
     series.push(item);
   });
