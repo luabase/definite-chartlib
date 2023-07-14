@@ -83,14 +83,13 @@ __export(color_exports2, {
 var color_exports = {};
 __export(color_exports, {
   COLOR_PALETTE: () => COLOR_PALETTE,
+  COMBINED_PALETTE: () => COMBINED_PALETTE,
   DARK_BLUE: () => DARK_BLUE,
   DARK_PURPLE: () => DARK_PURPLE,
   LIGHT_PINK: () => LIGHT_PINK,
-  LIME_100: () => LIME_100,
   LIME_200: () => LIME_200,
   LIME_300: () => LIME_300,
   LIME_400: () => LIME_400,
-  LIME_50: () => LIME_50,
   LIME_500: () => LIME_500,
   LIME_600: () => LIME_600,
   LIME_700: () => LIME_700,
@@ -107,8 +106,6 @@ __export(color_exports, {
   ZINC_800: () => ZINC_800,
   ZINC_900: () => ZINC_900
 });
-var LIME_50 = "#f7fee7";
-var LIME_100 = "#ecfccb";
 var LIME_200 = "#d9f99d";
 var LIME_300 = "#bef264";
 var LIME_400 = "#a3e635";
@@ -130,8 +127,6 @@ var LIGHT_PINK = "#f95d6a";
 var ORANGE = "#ff7c43";
 var YELLOW = "#ffa600";
 var LIME_PALETTE = [
-  LIME_50,
-  LIME_100,
   LIME_200,
   LIME_300,
   LIME_400,
@@ -151,6 +146,7 @@ var COLOR_PALETTE = [
   ORANGE,
   YELLOW
 ];
+var COMBINED_PALETTE = [...LIME_PALETTE, ...COLOR_PALETTE];
 
 // src/utils/color.ts
 function asArray(s) {

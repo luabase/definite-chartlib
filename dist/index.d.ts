@@ -188,8 +188,6 @@ type RowOriented = Array<{
     [key: string]: Option<number | string>;
 }>;
 
-declare const LIME_50 = "#f7fee7";
-declare const LIME_100 = "#ecfccb";
 declare const LIME_200 = "#d9f99d";
 declare const LIME_300 = "#bef264";
 declare const LIME_400 = "#a3e635";
@@ -212,16 +210,16 @@ declare const ORANGE = "#ff7c43";
 declare const YELLOW = "#ffa600";
 declare const LIME_PALETTE: string[];
 declare const COLOR_PALETTE: string[];
+declare const COMBINED_PALETTE: string[];
 
 declare const color_COLOR_PALETTE: typeof COLOR_PALETTE;
+declare const color_COMBINED_PALETTE: typeof COMBINED_PALETTE;
 declare const color_DARK_BLUE: typeof DARK_BLUE;
 declare const color_DARK_PURPLE: typeof DARK_PURPLE;
 declare const color_LIGHT_PINK: typeof LIGHT_PINK;
-declare const color_LIME_100: typeof LIME_100;
 declare const color_LIME_200: typeof LIME_200;
 declare const color_LIME_300: typeof LIME_300;
 declare const color_LIME_400: typeof LIME_400;
-declare const color_LIME_50: typeof LIME_50;
 declare const color_LIME_500: typeof LIME_500;
 declare const color_LIME_600: typeof LIME_600;
 declare const color_LIME_700: typeof LIME_700;
@@ -240,14 +238,13 @@ declare const color_ZINC_900: typeof ZINC_900;
 declare namespace color {
   export {
     color_COLOR_PALETTE as COLOR_PALETTE,
+    color_COMBINED_PALETTE as COMBINED_PALETTE,
     color_DARK_BLUE as DARK_BLUE,
     color_DARK_PURPLE as DARK_PURPLE,
     color_LIGHT_PINK as LIGHT_PINK,
-    color_LIME_100 as LIME_100,
     color_LIME_200 as LIME_200,
     color_LIME_300 as LIME_300,
     color_LIME_400 as LIME_400,
-    color_LIME_50 as LIME_50,
     color_LIME_500 as LIME_500,
     color_LIME_600 as LIME_600,
     color_LIME_700 as LIME_700,
