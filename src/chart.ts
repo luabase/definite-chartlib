@@ -276,7 +276,7 @@ export default class Chart<T extends ChartType> {
       })
     );
     if (chart.canAddMetric()) {
-      chart.addMetric(chart.getMetrics()[0]); // re-add same metric
+      chart.addMetric({ ...chart.getMetrics()[0], id: 1 }); // re-add same metric
     }
     return chart;
   }
@@ -288,7 +288,7 @@ export default class Chart<T extends ChartType> {
       chart.addDimension(dim);
     });
     if (chart.canAddDimension()) {
-      chart.addDimension(chart.getDimensions()[0]); // re-add same dimension
+      chart.addDimension({ ...chart.getDimensions()[0], id: 1 }); // re-add same dimension
     }
     chart.addMetric({
       index: this.metrics[0].index,
@@ -343,7 +343,9 @@ export default class Chart<T extends ChartType> {
   }
 
   canAddDimension(): boolean {
-    if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
+    if (this.dimensions.length < 1) {
+      return true;
+    } else if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
     } else {
       return false;
@@ -351,7 +353,9 @@ export default class Chart<T extends ChartType> {
   }
 
   canAddMetric(): boolean {
-    if (["bar", "line"].includes(this.chartType)) {
+    if (this.metrics.length < 1) {
+      return true;
+    } else if (["bar", "line"].includes(this.chartType)) {
       return this.dimensions.length < 2;
     } else if (this.chartType === "scatter") {
       return this.metrics.length < 2;
@@ -446,7 +450,11 @@ export default class Chart<T extends ChartType> {
   }
 
   addDimension(dim: Dimension<T>): Chart<T> {
-    if (!this.canAddDimension) throw new Error("Cannot add another dimension");
+    if (!this.canAddDimension())
+      throw new Error("Cannot add another dimension");
+    if (dim.id === undefined) {
+      dim.id = this.dimensions.length;
+    }
     this.dimensions.push(dim);
     return this;
   }
@@ -476,7 +484,10 @@ export default class Chart<T extends ChartType> {
   }
 
   addMetric(metric: Metric<T>): Chart<T> {
-    if (!this.canAddMetric) throw new Error("Cannot add another metric");
+    if (!this.canAddMetric()) throw new Error("Cannot add another metric");
+    if (metric.id === undefined) {
+      metric.id = this.metrics.length;
+    }
     this.metrics.push(metric);
     return this;
   }
