@@ -59,8 +59,6 @@ describe("given 1 dimension and 1 aggregate metric", () => {
           type: "pie",
           radius: ["40%", "70%"],
           color: [
-            "#f7fee7",
-            "#ecfccb",
             "#d9f99d",
             "#bef264",
             "#a3e635",
