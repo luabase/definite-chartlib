@@ -13,11 +13,16 @@ interface Indexable {
   index: number;
 }
 
+interface Identifiable {
+  id?: number;
+}
+
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar"
   ? { dataType: Exclude<DataType, "value"> }
   : { dataType: Exclude<DataType, "value"> };
 
-export type Dimension<T extends ChartType> = Indexable &
+export type Dimension<T extends ChartType> = Identifiable &
+  Indexable &
   ChartSpecificDimension<T>;
 
 type ChartSpecificMetric<T extends ChartType> = T extends "bar"
@@ -43,7 +48,8 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar"
   ? { chartType?: "heatmap"; aggregation: "none" }
   : { chartType?: "calendar"; aggregation: AggregationType };
 
-export type Metric<T extends ChartType> = Indexable &
+export type Metric<T extends ChartType> = Identifiable &
+  Indexable &
   ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
