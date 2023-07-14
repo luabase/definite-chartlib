@@ -5,7 +5,7 @@
     "ghcr.io/devcontainers-contrib/features/pnpm": {},
     "ghcr.io/devcontainers-contrib/features/zsh-plugins": {}
   },
-  "postCreateCommand": "pnpm i && pnpm test:ci",
+  "postCreateCommand": "pnpm i",
   "customizations": {
     "vscode": {
       "extensions": [
