@@ -793,6 +793,9 @@ function series(chart, datasets2) {
       if (chart.getChartType() === "line") {
         item.areaStyle = {};
       }
+      if (chart.getChartType() === "bar" && t === "line") {
+        item.stack = "";
+      }
     }
     series2.push(item);
   });
