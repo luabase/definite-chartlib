@@ -278,12 +278,15 @@ type ColorGroupingType = "continuous" | "piecewise";
 interface Indexable {
     index: number;
 }
+interface Identifiable {
+    id?: number;
+}
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar" ? {
     dataType: Exclude<DataType, "value">;
 } : {
     dataType: Exclude<DataType, "value">;
 };
-type Dimension<T extends ChartType> = Indexable & ChartSpecificDimension<T>;
+type Dimension<T extends ChartType> = Identifiable & Indexable & ChartSpecificDimension<T>;
 type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
     chartType?: "bar" | "line";
     axis?: AxisType;
@@ -305,7 +308,7 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
     chartType?: "calendar";
     aggregation: AggregationType;
 };
-type Metric<T extends ChartType> = Indexable & ChartSpecificMetric<T> & {
+type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
 };

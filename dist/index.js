@@ -627,7 +627,7 @@ function datasets(chart, df) {
       const dataset = df2.asDataSet();
       const name = !!splitBy ? df2.col(splitBy.index)[0] : "";
       const type = chart.getChartType();
-      dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
+      dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
       datasets2.push(dataset);
     } else {
       if (!!splitBy) {
@@ -635,7 +635,7 @@ function datasets(chart, df) {
         const dataset = df2.asDataSet();
         const name = df2.columns.get(1);
         const type = chart.getChartType();
-        dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
+        dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
         datasets2.push(dataset);
       } else {
         chart.getMetrics().forEach((metric) => {
@@ -649,7 +649,7 @@ function datasets(chart, df) {
           const totalMetrics = chart.getMetrics().length;
           name = ["count", "distinct"].includes(metric.aggregation) || uniqueMetricIndices === 1 && totalMetrics > 1 ? `${name} (${metric.aggregation})` : name;
           const type = metric.chartType ?? chart.getChartType();
-          dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}`;
+          dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
           datasets2.push(dataset);
         });
       }
@@ -714,13 +714,13 @@ function series(chart, datasets2) {
   datasets2.slice(1).forEach((dataset) => {
     if (!dataset.id)
       throw new Error("Dataset for series must include ID");
-    let [mix, t, dix, name] = dataset.id.split("::");
+    let [mix, t, dix, name, mid] = dataset.id.split("::");
     const metric = chart.getMetric(
-      (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t
+      (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t && m.id === Number(mid)
     );
     if (!metric)
       throw new Error("Metric not found");
-    const colorId = `${mix}-${metric.color}`;
+    const colorId = `${mid}-${metric.color}`;
     const c = colors.includes(colorId) ? array_exports.unboundedReadItem(color_exports.COLOR_PALETTE, Number(dix) - 1) : metric.color;
     colors.push(colorId);
     t = t === "calendar" ? "heatmap" : t;
@@ -1103,7 +1103,7 @@ var _Chart = class {
       })
     );
     if (chart.canAddMetric()) {
-      chart.addMetric(chart.getMetrics()[0]);
+      chart.addMetric({ ...chart.getMetrics()[0], id: 1 });
     }
     return chart;
   }
@@ -1114,7 +1114,7 @@ var _Chart = class {
       chart.addDimension(dim);
     });
     if (chart.canAddDimension()) {
-      chart.addDimension(chart.getDimensions()[0]);
+      chart.addDimension({ ...chart.getDimensions()[0], id: 1 });
     }
     chart.addMetric({
       index: this.metrics[0].index,
@@ -1165,14 +1165,18 @@ var _Chart = class {
     };
   }
   canAddDimension() {
-    if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
+    if (this.dimensions.length < 1) {
+      return true;
+    } else if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
     } else {
       return false;
     }
   }
   canAddMetric() {
-    if (["bar", "line"].includes(this.chartType)) {
+    if (this.metrics.length < 1) {
+      return true;
+    } else if (["bar", "line"].includes(this.chartType)) {
       return this.dimensions.length < 2;
     } else if (this.chartType === "scatter") {
       return this.metrics.length < 2;
@@ -1246,8 +1250,11 @@ var _Chart = class {
     return this;
   }
   addDimension(dim) {
-    if (!this.canAddDimension)
+    if (!this.canAddDimension())
       throw new Error("Cannot add another dimension");
+    if (dim.id === void 0) {
+      dim.id = this.dimensions.length;
+    }
     this.dimensions.push(dim);
     return this;
   }
@@ -1272,8 +1279,11 @@ var _Chart = class {
     return this;
   }
   addMetric(metric) {
-    if (!this.canAddMetric)
+    if (!this.canAddMetric())
       throw new Error("Cannot add another metric");
+    if (metric.id === void 0) {
+      metric.id = this.metrics.length;
+    }
     this.metrics.push(metric);
     return this;
   }
