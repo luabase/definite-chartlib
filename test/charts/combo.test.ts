@@ -8,6 +8,7 @@ import { color } from "../../src/constants";
 describe("given 1 dimension and 2 aggregate metrics", () => {
   const chart = chartlib
     .create("bar")
+    .setStyleOption("barStyle", "stacked")
     .addDimension({ index: 0, dataType: "datetime" })
     .addMetric({
       index: 2,
@@ -79,6 +80,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
           encode: { x: "date", y: "users" },
           name: "users (sum)",
           yAxisIndex: 0,
+          stack: "total",
         },
         {
           type: "line",
@@ -87,6 +89,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
           encode: { x: "date", y: "users" },
           name: "users (avg)",
           yAxisIndex: 0,
+          stack: "",
         },
       ],
       title: {
