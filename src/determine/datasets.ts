@@ -44,7 +44,7 @@ export function datasets<T extends ChartType>(
       const dataset = df.asDataSet();
       const name = !!splitBy ? df.col(splitBy.index)[0] : "";
       const type = chart.getChartType();
-      dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
+      dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
       datasets.push(dataset);
     } else {
       if (!!splitBy) {
@@ -52,7 +52,7 @@ export function datasets<T extends ChartType>(
         const dataset = df.asDataSet();
         const name = df.columns.get(1);
         const type = chart.getChartType();
-        dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
+        dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
         datasets.push(dataset);
       } else {
         chart.getMetrics().forEach((metric) => {
@@ -71,7 +71,7 @@ export function datasets<T extends ChartType>(
               ? `${name} (${metric.aggregation})`
               : name;
           const type = metric.chartType ?? chart.getChartType();
-          dataset.id = `${metric.index}::${type}::${datasets.length}::${name}`;
+          dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
           datasets.push(dataset);
         });
       }
