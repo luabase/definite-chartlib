@@ -1,0 +1,61 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "chartlib-http",
+    "dateExported": "2023-07-17T15:42:39.618Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "4aa34197-bda1-43d3-84b8-845d3debf0f7",
+            "colId": "135db524-5a3f-4965-9c3b-cd53380dde30",
+            "containerId": "",
+            "name": "GET schema",
+            "url": "http://127.0.0.1:8080/schema",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-07-17T14:27:23.364Z",
+            "modified": "2023-07-17T14:27:23.364Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a83f3efe-1555-46c7-93fa-303b4e4838cd",
+            "colId": "135db524-5a3f-4965-9c3b-cd53380dde30",
+            "containerId": "",
+            "name": "POST factory",
+            "url": "http://127.0.0.1:8080/factory",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-17T15:10:11.271Z",
+            "modified": "2023-07-17T15:42:09.816Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"limit\": 1,\n  \"allow\": [\"bar\", \"line\"],\n  \"options\": [\n    { \"index\": 0, \"dataType\": \"datetime\" },\n    { \"index\": 1, \"dataType\": \"category\" },\n    { \"index\": 2, \"dataType\": \"value\" }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "86fc2bd4-cd0a-4c93-b4c6-a29e5ceaf330",
+            "colId": "135db524-5a3f-4965-9c3b-cd53380dde30",
+            "containerId": "",
+            "name": "POST render",
+            "url": "http://127.0.0.1:8080/render",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-07-17T15:36:16.077Z",
+            "modified": "2023-07-17T15:36:16.077Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"My chart\",\n  \"chartConfig\": {\n    \"chartType\": \"line\",\n    \"style\": {\n      \"showTitle\": true,\n      \"showToolbox\": false,\n      \"showLegend\": true,\n      \"lineStyle\": \"point\"\n    },\n    \"dimensions\": [\n      {\n        \"index\": 0,\n        \"dataType\": \"datetime\",\n        \"id\": 0\n      },\n      {\n        \"index\": 1,\n        \"dataType\": \"category\",\n        \"id\": 1\n      }\n    ],\n    \"metrics\": [\n      {\n        \"index\": 2,\n        \"color\": \"#d9f99d\",\n        \"aggregation\": \"sum\",\n        \"id\": 0\n      }\n    ]\n  },\n  \"data\": [\n    {\n      \"date\": \"2020-01-01\",\n      \"cat\": \"foo\",\n      \"value\": 30\n    },\n    {\n      \"date\": \"2020-01-01\",\n      \"cat\": \"bar\",\n      \"value\": 20\n    },\n    {\n      \"date\": \"2020-01-02\",\n      \"cat\": \"foo\",\n      \"value\": 40\n    },\n    {\n      \"date\": \"2020-01-02\",\n      \"cat\": \"bar\",\n      \"value\": 25\n    },\n    {\n      \"date\": \"2020-01-03\",\n      \"cat\": \"foo\",\n      \"value\": 35\n    },\n    {\n      \"date\": \"2020-01-03\",\n      \"cat\": \"bar\",\n      \"value\": 30\n    },\n    {\n      \"date\": \"2020-01-04\",\n      \"cat\": \"foo\",\n      \"value\": 40\n    },\n    {\n      \"date\": \"2020-01-04\",\n      \"cat\": \"bar\",\n      \"value\": 35\n    },\n    {\n      \"date\": \"2020-01-05\",\n      \"cat\": \"foo\",\n      \"value\": 45\n    },\n    {\n      \"date\": \"2020-01-05\",\n      \"cat\": \"bar\",\n      \"value\": 40\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
