@@ -34,9 +34,10 @@ app.post("/factory", (req, res) => {
   let { limit, allow, options } = req.body;
   limit = Math.min(limit, 10);
   let counter = 0;
+  let safety = 0;
   const generator = chartlib.chartGenerator(options);
   const data = [];
-  while (counter < limit) {
+  while (counter < limit && safety < 25) {
     const { value } = generator.next();
     console.log("Generated chart with type", value.getChartType());
     if (allow.includes(value.getChartType())) {
@@ -46,6 +47,7 @@ app.post("/factory", (req, res) => {
     } else {
       console.log("Skipping chart (not allowed)");
     }
+    safety++;
   }
   const charts = Array.from(new Set(data.map((chart) => chart.getOptions())));
   res.send(charts);
