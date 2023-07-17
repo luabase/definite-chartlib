@@ -34,7 +34,7 @@ describe("given an initial bar chart", () => {
     newChart = newChart!.convertTo("scatter");
     expect(newChart.getChartType()).toEqual("scatter");
     expect(newChart.getBreakdownDimension()).toBeUndefined();
-    expect(newChart.canAddDimension()).toBe(false);
+    expect(newChart.canAddDimension()).toBe(true);
     expect(newChart.canAddMetric()).toBe(false);
     expect(newChart.getStyleShowTitle()).toBe(true);
   });

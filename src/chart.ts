@@ -345,8 +345,10 @@ export default class Chart<T extends ChartType> {
   canAddDimension(): boolean {
     if (this.dimensions.length < 1) {
       return true;
-    } else if (["bar", "line", "scatter", "heatmap"].includes(this.chartType)) {
+    } else if (["bar", "line", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
+    } else if (this.chartType === "scatter") {
+      return this.dimensions.length < 2 && this.metrics.length <= 2;
     } else {
       return false;
     }
