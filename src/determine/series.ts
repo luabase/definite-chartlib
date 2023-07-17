@@ -4,6 +4,9 @@ import { color } from "../constants";
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
 
+// NOTE: dataset ID will be of this format:
+// <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
+
 export function series<T extends ChartType>(
   chart: Chart<T>,
   datasets: echarts.DataSet[]
@@ -83,13 +86,14 @@ export function series<T extends ChartType>(
       return;
     } else if (chart.getChartType() === "heatmap") {
       delete item.color;
+      const [dim1, dim2] = chart.getDimensions();
       item.datasetIndex = 1;
       item.encode = {
-        x: dataset.dimensions[0],
-        y: dataset.dimensions[1],
-        value: dataset.dimensions[2],
+        x: dataset.dimensions[dim1.index],
+        y: dataset.dimensions[dim2.index],
+        value: dataset.dimensions[metric.index],
       };
-      item.name = dataset.dimensions[2];
+      item.name = dataset.dimensions[metric.index];
     } else {
       item.yAxisIndex = 0;
       item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };

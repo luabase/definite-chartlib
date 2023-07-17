@@ -3,6 +3,9 @@ import { DataFrame } from "../dataframe";
 import { ChartType, echarts } from "../types";
 import * as utils from "../utils";
 
+// NOTE: dataset ID will be of this format:
+// <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
+
 export function datasets<T extends ChartType>(
   chart: Chart<T>,
   df: DataFrame
