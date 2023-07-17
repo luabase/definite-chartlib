@@ -4,7 +4,8 @@
   "features": {
     "ghcr.io/devcontainers-contrib/features/pnpm": {},
     "ghcr.io/devcontainers-contrib/features/zsh-plugins": {},
-    "ghcr.io/devcontainers/features/docker-in-docker": {}
+    "ghcr.io/devcontainers/features/docker-in-docker": {},
+    "ghcr.io/dhoeric/features/google-cloud-cli": {}
   },
   "postCreateCommand": "pnpm i",
   "customizations": {
@@ -25,7 +26,9 @@
 		"ZixuanChen.vitest-explorer",
 		"GoogleCloudTools.cloudcode",
 		"ms-azuretools.vscode-docker",
-		"rangav.vscode-thunder-client"
+		"rangav.vscode-thunder-client",
+		"googlecloudtools.cloudcode",
+		"GitHub.copilot-chat"
 	]
     }
   }
