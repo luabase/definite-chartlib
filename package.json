@@ -11,7 +11,10 @@
     "build": "rm -rf ./dist ./node_modules && pnpm install && tsup src/index.ts --dts --format esm,cjs",
     "lint": "eslint --fix",
     "test": "vitest --reporter verbose",
-    "test:ci": "vitest --no-watch"
+    "test:ci": "vitest --no-watch",
+    "docker:build": "docker build -t chartlib-http .",
+    "docker:run": "docker run -p 8080:8080 chartlib-http",
+    "docker:up": "pnpm run docker:build && pnpm run docker:run"
   },
   "devDependencies": {
     "tsup": "^6.7.0",
