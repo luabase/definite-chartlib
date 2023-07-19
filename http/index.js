@@ -13,6 +13,21 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: false }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cors());
 
+// Create a middleware function to catch the error
+const errorHandler = (err, req, res, next) => {
+  if (err.name === "SyntaxError") {
+    res.status(400).send({
+      error: {
+        message: "The request body is not valid JSON",
+      },
+    });
+  } else {
+    next(err);
+  }
+};
+
+app.use(errorHandler);
+
 // GET ping
 app.get("/", (_, res) => res.send({ status: "ok" }));
 
