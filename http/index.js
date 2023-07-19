@@ -30,7 +30,7 @@ app.get("/schema", (_, res) => {
 
 // POST factory
 app.post("/factory", (req, res) => {
-  console.log("Request body", req.body);
+  console.log("Request body", JSON.stringify(req.body));
   let { limit, allow, options } = req.body;
   limit = Math.min(limit, 10);
   let counter = 0;
@@ -39,15 +39,20 @@ app.post("/factory", (req, res) => {
   const data = [];
   while (counter < limit && safety < 25) {
     const { value } = generator.next();
-    console.log("Generated chart with type", value.getChartType());
-    if (allow.includes(value.getChartType())) {
-      console.log("Adding chart to results");
-      data.push(value);
-      counter++;
+    if (!value) {
+      console.warn("No value returned from chart generator");
+      break;
     } else {
-      console.log("Skipping chart (not allowed)");
+      console.log("Generated chart with type", value.getChartType());
+      if (allow.includes(value.getChartType())) {
+        console.log("Adding chart to results");
+        data.push(value);
+        counter++;
+      } else {
+        console.log("Skipping chart (not allowed)");
+      }
+      safety++;
     }
-    safety++;
   }
   const charts = Array.from(new Set(data.map((chart) => chart.getOptions())));
   res.send(charts);
@@ -55,7 +60,7 @@ app.post("/factory", (req, res) => {
 
 // POST render
 app.post("/render", (req, res) => {
-  console.log("Request body", req.body);
+  console.log("Request body", JSON.stringify(req.body));
   let { name, chartConfig, data, height, width } = req.body;
   height = height || 837 / 1.3;
   width = width || 1008 / 1.3;
