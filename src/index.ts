@@ -1,6 +1,6 @@
 import * as chartlib from "./main";
-import Chart from "./chart";
 
 export default chartlib;
-export { Chart }
+export * from "./chart";
+export * from "./errors";
 export * from "./types";
