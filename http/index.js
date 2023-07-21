@@ -4,8 +4,9 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 
-import chartlib from "@definite/chartlib";
 import * as echarts from "echarts";
+import chartlib from "@definite/chartlib";
+import { CompileChartError, InvalidChartError } from "@definite/chartlib";
 
 const app = express();
 
@@ -94,8 +95,16 @@ app.post("/render", (req, res) => {
     console.log("Rendered chart to SVG");
     res.send({ ecOption, svg });
   } catch (e) {
-    console.error(e);
-    res.status(500).send({ error: "Something went wrong!" });
+    if (e instanceof InvalidChartError) {
+      console.error("Error:", e.message);
+      res.status(400).send({ error: e.message });
+    } else if (e instanceof CompileChartError) {
+      console.error("Error:", e.message);
+      res.status(400).send({ error: e.message });
+    } else {
+      console.error(e);
+      res.status(500).send({ error: "Something went wrong!" });
+    }
   }
 });
 
