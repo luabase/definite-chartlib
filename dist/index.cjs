@@ -29,7 +29,8 @@ var __decorateClass = (decorators, target, key, kind) => {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  Chart: () => Chart,
+  CompileChartError: () => CompileChartError,
+  InvalidChartError: () => InvalidChartError,
   color: () => color_exports,
   default: () => src_default,
   echarts: () => echarts_exports
@@ -512,7 +513,7 @@ function axis(chart, datasets2, kind) {
     if (chart.getChartType() === "bar") {
       item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
       item.axisLabel = {
-        interval: isLarge ? Math.floor((df.shape.height - 1) / 10) : 0,
+        interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), 18) : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter
       };
@@ -886,6 +887,20 @@ function visualMap(chart, datasets2) {
   };
 }
 
+// src/errors.ts
+var CompileChartError = class extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "CompileChartError";
+  }
+};
+var InvalidChartError = class extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidChartError";
+  }
+};
+
 // src/chart.ts
 var _Chart = class {
   constructor(chartType) {
@@ -1167,24 +1182,38 @@ var _Chart = class {
     });
     return chart;
   }
+  assertIsValid() {
+    if (this.dimensions.length < 1) {
+      throw new InvalidChartError("Chart must have at least one dimension");
+    }
+    if (this.metrics.length < 1) {
+      throw new InvalidChartError("Chart must have at least one metric");
+    }
+  }
   compile(title2, data) {
+    this.assertIsValid();
     const df = new DataFrame(data);
     const datasets2 = datasets(this, df);
-    return {
-      animation: true,
-      backgroundColor: color_exports.ZINC_900,
-      calendar: calendar(this, df),
-      dataset: datasets2,
-      grid: grid(this, datasets2),
-      legend: legend(this),
-      series: series(this, datasets2),
-      title: title(this, title2),
-      toolbox: toolbox(this),
-      tooltip: tooltip(this),
-      visualMap: visualMap(this, datasets2),
-      xAxis: axis(this, datasets2, "x"),
-      yAxis: axis(this, datasets2, "y")
-    };
+    try {
+      return {
+        animation: true,
+        backgroundColor: color_exports.ZINC_900,
+        calendar: calendar(this, df),
+        dataset: datasets2,
+        grid: grid(this, datasets2),
+        legend: legend(this),
+        series: series(this, datasets2),
+        title: title(this, title2),
+        toolbox: toolbox(this),
+        tooltip: tooltip(this),
+        visualMap: visualMap(this, datasets2),
+        xAxis: axis(this, datasets2, "x"),
+        yAxis: axis(this, datasets2, "y")
+      };
+    } catch (e) {
+      console.error(e);
+      throw new CompileChartError("Failed to compile chart.");
+    }
   }
   canAddDimension() {
     if (this.dimensions.length < 1) {
@@ -1477,7 +1506,8 @@ var echarts_exports = {};
 var src_default = main_exports;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  Chart,
+  CompileChartError,
+  InvalidChartError,
   color,
   echarts
 });

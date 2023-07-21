@@ -377,6 +377,7 @@ declare class Chart<T extends ChartType> {
     private toScatter;
     private toHeatmap;
     private toCalendar;
+    private assertIsValid;
     compile(title: string, data: RowOriented): ECOption;
     canAddDimension(): boolean;
     canAddMetric(): boolean;
@@ -426,4 +427,11 @@ declare namespace chartlib {
   };
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, DataType, Dimension, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, chartlib as default, index as echarts };
+declare class CompileChartError extends Error {
+    constructor(message: string);
+}
+declare class InvalidChartError extends Error {
+    constructor(message: string);
+}
+
+export { AggregationType, AxisType, BarStyleType, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, chartlib as default, index as echarts };
