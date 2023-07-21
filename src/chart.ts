@@ -18,6 +18,7 @@ import { color } from "./constants";
 import * as determine from "./determine";
 import * as utils from "./utils";
 import { profile } from "./perf";
+import { CompileChartError, InvalidChartError } from "./errors";
 
 export default class Chart<T extends ChartType> {
   private chartType: T;
@@ -321,25 +322,40 @@ export default class Chart<T extends ChartType> {
     return chart;
   }
 
+  private assertIsValid(): void {
+    if (this.dimensions.length < 1) {
+      throw new InvalidChartError("Chart must have at least one dimension");
+    }
+    if (this.metrics.length < 1) {
+      throw new InvalidChartError("Chart must have at least one metric");
+    }
+  }
+
   @profile
   compile(title: string, data: RowOriented): echarts.ECOption {
+    this.assertIsValid();
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
-    return {
-      animation: true,
-      backgroundColor: color.ZINC_900,
-      calendar: determine.calendar(this, df),
-      dataset: datasets,
-      grid: determine.grid(this, datasets),
-      legend: determine.legend(this),
-      series: determine.series(this, datasets),
-      title: determine.title(this, title),
-      toolbox: determine.toolbox(this),
-      tooltip: determine.tooltip(this),
-      visualMap: determine.visualMap(this, datasets),
-      xAxis: determine.axis(this, datasets, "x"),
-      yAxis: determine.axis(this, datasets, "y"),
-    };
+    try {
+      return {
+        animation: true,
+        backgroundColor: color.ZINC_900,
+        calendar: determine.calendar(this, df),
+        dataset: datasets,
+        grid: determine.grid(this, datasets),
+        legend: determine.legend(this),
+        series: determine.series(this, datasets),
+        title: determine.title(this, title),
+        toolbox: determine.toolbox(this),
+        tooltip: determine.tooltip(this),
+        visualMap: determine.visualMap(this, datasets),
+        xAxis: determine.axis(this, datasets, "x"),
+        yAxis: determine.axis(this, datasets, "y"),
+      };
+    } catch (e) {
+      console.error(e);
+      throw new CompileChartError("Failed to compile chart.");
+    }
   }
 
   canAddDimension(): boolean {
