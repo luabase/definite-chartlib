@@ -163,7 +163,7 @@ __export(datasets_exports, {
   containsLargeData: () => containsLargeData
 });
 function containsLargeData(datasets2) {
-  return datasets2[datasets2.length - 1].source.length > 10;
+  return datasets2[datasets2.length - 1].source.length > 6;
 }
 
 // src/utils/datetime.ts
