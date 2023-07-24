@@ -26,5 +26,8 @@
   "editor.formatOnSave": true,
   "markdown.extension.tableFormatter.normalizeIndentation": true,
   "markdown.extension.tableFormatter.delimiterRowNoPadding": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
