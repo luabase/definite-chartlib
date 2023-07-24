@@ -497,6 +497,7 @@ function valueFormatter(value) {
 }
 
 // src/determine/axis.ts
+var MAX_INTERVAL = 3;
 function axis(chart, datasets2, kind) {
   const df = DataFrame.fromDataSet(datasets2[0]);
   const isLarge = datasets_exports.containsLargeData(datasets2);
@@ -513,7 +514,7 @@ function axis(chart, datasets2, kind) {
     if (chart.getChartType() === "bar") {
       item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
       item.axisLabel = {
-        interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), 18) : 0,
+        interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL) : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter
       };
