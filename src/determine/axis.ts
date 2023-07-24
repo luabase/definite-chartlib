@@ -5,6 +5,8 @@ import { categoryFormatter, valueFormatter } from "../formatters";
 import { color } from "../constants";
 import * as utils from "../utils";
 
+const MAX_INTERVAL = 3;
+
 export function axis<T extends ChartType>(
   chart: Chart<T>,
   datasets: echarts.DataSet[],
@@ -25,7 +27,9 @@ export function axis<T extends ChartType>(
     if (chart.getChartType() === "bar") {
       item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
       item.axisLabel = {
-        interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), 18) : 0,
+        interval: isLarge
+          ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL)
+          : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter,
       };
