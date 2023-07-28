@@ -1022,7 +1022,7 @@ var _Chart = class {
     switch (chartType) {
       case "bar":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -1030,7 +1030,7 @@ var _Chart = class {
         };
       case "line":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point"
@@ -1038,13 +1038,13 @@ var _Chart = class {
       case "pie":
       case "scatter":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false
         };
       case "calendar":
       case "heatmap":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous"
         };
@@ -1170,6 +1170,9 @@ var _Chart = class {
   }
   compile(title2, data) {
     this.assertIsValid();
+    if (data.length < 1) {
+      throw new CompileChartError("Data must not be empty");
+    }
     const df = new DataFrame(data);
     const datasets2 = datasets(this, df);
     try {
