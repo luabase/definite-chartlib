@@ -85,7 +85,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },

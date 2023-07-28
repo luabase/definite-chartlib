@@ -94,7 +94,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },
