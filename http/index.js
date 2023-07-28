@@ -30,7 +30,17 @@ const errorHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 // GET ping
-app.get("/", (_, res) => res.send({ status: "ok" }));
+app.get("/", (_, res) => {
+  const filePath = path.join(process.cwd(), "package.json");
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ error: "Something went wrong!" });
+    }
+    const packageJson = JSON.parse(data);
+    res.send({ status: "ok", version: packageJson.version });
+  });
+});
 
 // GET schema
 app.get("/schema", (_, res) => {
