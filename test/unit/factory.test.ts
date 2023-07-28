@@ -22,7 +22,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -36,7 +36,7 @@ describe("given a list of column options", () => {
       {
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -47,7 +47,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -61,7 +61,7 @@ describe("given a list of column options", () => {
       {
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -72,7 +72,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -86,7 +86,7 @@ describe("given a list of column options", () => {
       {
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -97,7 +97,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -112,7 +112,7 @@ describe("given a list of column options", () => {
       {
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -124,7 +124,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -139,7 +139,7 @@ describe("given a list of column options", () => {
       {
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -151,7 +151,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -166,7 +166,7 @@ describe("given a list of column options", () => {
       {
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -178,7 +178,7 @@ describe("given a list of column options", () => {
       {
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",

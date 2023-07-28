@@ -11,7 +11,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -24,7 +24,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -42,7 +42,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -56,7 +56,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -73,7 +73,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -93,7 +93,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -109,7 +109,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -122,7 +122,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -136,7 +136,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -153,7 +153,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -173,7 +173,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -186,7 +186,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -199,7 +199,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -213,7 +213,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -230,7 +230,7 @@ describe("given a bar chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -252,7 +252,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -266,7 +266,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -279,7 +279,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -293,7 +293,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -310,7 +310,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -330,7 +330,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -347,7 +347,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -360,7 +360,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -374,7 +374,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -391,7 +391,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -411,7 +411,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -425,7 +425,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -438,7 +438,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -452,7 +452,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -469,7 +469,7 @@ describe("given a line chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -491,7 +491,7 @@ describe("given a pie chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -505,7 +505,7 @@ describe("given a pie chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -518,7 +518,7 @@ describe("given a pie chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -532,7 +532,7 @@ describe("given a pie chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -549,7 +549,7 @@ describe("given a pie chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -572,7 +572,7 @@ describe("given a scatter chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -589,7 +589,7 @@ describe("given a scatter chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -605,7 +605,7 @@ describe("given a scatter chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -618,7 +618,7 @@ describe("given a scatter chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -635,7 +635,7 @@ describe("given a scatter chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -658,7 +658,7 @@ describe("given a heatmap chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -672,7 +672,7 @@ describe("given a heatmap chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -685,7 +685,7 @@ describe("given a heatmap chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -696,7 +696,7 @@ describe("given a heatmap chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
@@ -710,7 +710,7 @@ describe("given a heatmap chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -730,7 +730,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -744,7 +744,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("line").getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -757,7 +757,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -770,7 +770,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -784,7 +784,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -807,7 +807,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -824,7 +824,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -837,7 +837,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -851,7 +851,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -868,7 +868,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -888,7 +888,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("bar").getOptions()).toEqual({
         chartType: "bar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -902,7 +902,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("pie").getOptions()).toEqual({
         chartType: "pie",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -915,7 +915,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("scatter").getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -929,7 +929,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("heatmap").getOptions()).toEqual({
         chartType: "heatmap",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -946,7 +946,7 @@ describe("given a calendar chart", () => {
       expect(chart.convertTo("calendar").getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },

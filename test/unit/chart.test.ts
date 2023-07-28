@@ -26,7 +26,7 @@ describe("Chart", () => {
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
-        showTitle: true,
+        showTitle: false,
         showToolbox: false,
         showLegend: true,
         barStyle: "grouped",
@@ -46,7 +46,7 @@ describe("Chart", () => {
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
-        showTitle: true,
+        showTitle: false,
         showToolbox: false,
         showLegend: true,
         barStyle: "grouped",
@@ -63,7 +63,7 @@ describe("Chart", () => {
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
-        showTitle: true,
+        showTitle: false,
         showToolbox: false,
         showLegend: true,
         barStyle: "grouped",
@@ -85,7 +85,7 @@ describe("Chart", () => {
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
-        showTitle: true,
+        showTitle: false,
         showToolbox: false,
         showLegend: true,
         barStyle: "grouped",
@@ -119,7 +119,7 @@ describe("Chart", () => {
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
-        showTitle: true,
+        showTitle: false,
         showToolbox: false,
         showLegend: true,
         barStyle: "grouped",
@@ -147,7 +147,7 @@ describe("Chart", () => {
     expect(barChart.getOptions()).toEqual({
       chartType: "bar",
       style: {
-        showTitle: true,
+        showTitle: false,
         showToolbox: false,
         showLegend: true,
         barStyle: "grouped",
