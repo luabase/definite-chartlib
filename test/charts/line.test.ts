@@ -67,7 +67,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },
@@ -212,7 +212,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },
@@ -350,7 +350,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },
@@ -494,7 +494,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },
@@ -627,7 +627,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },

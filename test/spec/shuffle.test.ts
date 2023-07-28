@@ -23,7 +23,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -36,7 +36,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -48,7 +48,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -61,7 +61,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -73,7 +73,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -87,7 +87,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
@@ -100,7 +100,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -113,7 +113,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -125,7 +125,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -138,7 +138,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "calendar",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         },
@@ -150,7 +150,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -164,7 +164,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "scatter",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],

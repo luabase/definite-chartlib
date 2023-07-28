@@ -70,7 +70,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },

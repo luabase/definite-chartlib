@@ -177,7 +177,7 @@ export default class Chart<T extends ChartType> {
     switch (chartType) {
       case "bar":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
@@ -185,7 +185,7 @@ export default class Chart<T extends ChartType> {
         };
       case "line":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
@@ -193,13 +193,13 @@ export default class Chart<T extends ChartType> {
       case "pie":
       case "scatter":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         };
       case "calendar":
       case "heatmap":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
         };
@@ -334,6 +334,9 @@ export default class Chart<T extends ChartType> {
   @profile
   compile(title: string, data: RowOriented): echarts.ECOption {
     this.assertIsValid();
+    if (data.length < 1) {
+      throw new CompileChartError("Data must not be empty");
+    }
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
     try {

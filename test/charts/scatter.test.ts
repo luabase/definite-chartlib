@@ -71,7 +71,7 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },
@@ -235,7 +235,7 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
       ],
       title: {
         left: "auto",
-        show: true,
+        show: false,
         text: "My chart",
         top: "2%",
       },

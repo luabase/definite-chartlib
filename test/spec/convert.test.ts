@@ -16,7 +16,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(true);
     expect(newChart.canAddMetric()).toBe(true);
-    expect(newChart.getStyleShowTitle()).toBe(true);
+    expect(newChart.getStyleShowTitle()).toBe(false);
     expect(newChart.getStyleShowLegend()).toBe(true);
     expect(newChart.getStyleLineStyle()).toEqual("point");
   });
@@ -27,7 +27,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(false);
     expect(newChart.canAddMetric()).toBe(false);
-    expect(newChart.getStyleShowTitle()).toBe(true);
+    expect(newChart.getStyleShowTitle()).toBe(false);
   });
   it("can then be converted to a scatter chart", () => {
     // state 3
@@ -36,7 +36,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(true);
     expect(newChart.canAddMetric()).toBe(false);
-    expect(newChart.getStyleShowTitle()).toBe(true);
+    expect(newChart.getStyleShowTitle()).toBe(false);
   });
   it("can then be converted to a heatmap chart", () => {
     // state 4
@@ -45,7 +45,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(false);
     expect(newChart.canAddMetric()).toBe(false);
-    expect(newChart.getStyleShowTitle()).toBe(true);
+    expect(newChart.getStyleShowTitle()).toBe(false);
     expect(newChart.getStyleColorGrouping()).toEqual("continuous");
   });
   it("can then be converted to a calendar chart", () => {
@@ -55,7 +55,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(false);
     expect(newChart.canAddMetric()).toBe(false);
-    expect(newChart.getStyleShowTitle()).toBe(true);
+    expect(newChart.getStyleShowTitle()).toBe(false);
     expect(newChart.getStyleColorGrouping()).toEqual("continuous");
   });
   it("can be converted back to a bar chart", () => {
@@ -65,7 +65,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(true);
     expect(newChart.canAddMetric()).toBe(true);
-    expect(newChart.getStyleShowTitle()).toBe(true);
+    expect(newChart.getStyleShowTitle()).toBe(false);
     expect(newChart.getStyleShowLegend()).toBe(true);
     expect(newChart.getStyleBarStyle()).toEqual("grouped");
   });

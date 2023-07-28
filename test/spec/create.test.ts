@@ -19,7 +19,7 @@ describe("given an array of column metadata", () => {
       expect(generator.next().value!.getOptions()).toEqual({
         chartType: "line",
         style: {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLegend: true,
           lineStyle: "point",
