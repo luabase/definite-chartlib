@@ -17,7 +17,7 @@ app.use(cors());
 // Create a middleware function to catch the error
 const errorHandler = (err, req, res, next) => {
   if (err.name === "SyntaxError") {
-    res.status(400).send({
+    res.status(404).send({
       error: {
         message: "The request body is not valid JSON",
       },
@@ -97,10 +97,10 @@ app.post("/render", (req, res) => {
   } catch (e) {
     if (e instanceof InvalidChartError) {
       console.error("Error:", e.message);
-      res.status(400).send({ error: e.message });
+      res.status(404).send({ error: e.message });
     } else if (e instanceof CompileChartError) {
       console.error("Error:", e.message);
-      res.status(400).send({ error: e.message });
+      res.status(404).send({ error: e.message });
     } else {
       console.error(e);
       res.status(500).send({ error: "Something went wrong!" });
