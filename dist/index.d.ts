@@ -128,7 +128,7 @@ interface AxisPointer {
 interface ToolTip extends IShowable {
     trigger?: "item" | "axis" | "none";
     axisPointer?: AxisPointer;
-    formatter?: string;
+    formatter?: string | ((params: any) => string);
 }
 
 interface VisualMap extends IAdjustable {

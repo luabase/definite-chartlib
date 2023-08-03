@@ -495,6 +495,24 @@ function valueFormatter(value) {
     maximumFractionDigits: 1
   }).format(Number(value));
 }
+function calendarTooltipFormatter(params) {
+  return `
+      <style>
+        .value::before {
+          content: "";
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: ${params.color};
+          margin-right: 5px;
+        }
+      </style>
+      <h4>${params.data[0]}</h4>
+      <p>
+        <span class='value'>${params.data[1]}<span>
+      </p>`;
+}
 
 // src/determine/axis.ts
 var MAX_INTERVAL = 3;
@@ -858,6 +876,8 @@ function tooltip(chart) {
   };
   if (["bar", "line"].includes(chart.getChartType())) {
     item.axisPointer = { type: "cross", crossStyle: { color: "#999999" } };
+  } else if (chart.getChartType() === "calendar") {
+    item.formatter = calendarTooltipFormatter;
   }
   return item;
 }
