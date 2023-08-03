@@ -10,3 +10,22 @@ export function valueFormatter(value: string | number): string {
     maximumFractionDigits: 1,
   }).format(Number(value));
 }
+
+export function calendarTooltipFormatter(params: any): string {
+  return `
+      <style>
+        .value::before {
+          content: "";
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: ${params.color};
+          margin-right: 5px;
+        }
+      </style>
+      <h4>${params.data[0]}</h4>
+      <p>
+        <span class='value'>${params.data[1]}<span>
+      </p>`;
+}

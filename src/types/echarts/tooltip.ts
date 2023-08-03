@@ -12,5 +12,5 @@ interface AxisPointer {
 export default interface ToolTip extends IShowable {
   trigger?: "item" | "axis" | "none";
   axisPointer?: AxisPointer;
-  formatter?: string;
+  formatter?: string | ((params: any) => string);
 }

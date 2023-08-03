@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { valueFormatter } from "../../src/formatters";
+import { valueFormatter, calendarTooltipFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 1 aggregate dimension", () => {
@@ -105,6 +105,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
       tooltip: {
         show: true,
         trigger: "item",
+        formatter: calendarTooltipFormatter,
       },
       visualMap: {
         min: 800,
