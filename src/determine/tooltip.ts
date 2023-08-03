@@ -1,5 +1,6 @@
 import Chart from "../chart";
 import { ChartType, echarts } from "../types";
+import { calendarTooltipFormatter } from "../formatters";
 
 export function tooltip<T extends ChartType>(chart: Chart<T>): echarts.ToolTip {
   const item: echarts.ToolTip = {
@@ -8,6 +9,8 @@ export function tooltip<T extends ChartType>(chart: Chart<T>): echarts.ToolTip {
   };
   if (["bar", "line"].includes(chart.getChartType())) {
     item.axisPointer = { type: "cross", crossStyle: { color: "#999999" } };
+  } else if (chart.getChartType() === "calendar") {
+    item.formatter = calendarTooltipFormatter;
   }
   return item;
 }
