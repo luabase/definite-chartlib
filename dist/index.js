@@ -1369,6 +1369,59 @@ __decorateClass([
 
 // src/factory.ts
 var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
+var chartMatchConfig = [
+  ...forAddValueColumnType(
+    {
+      column_type: ["category"],
+      chart_types: ["bar"]
+    },
+    0,
+    COLORS.length
+  ),
+  ...forAddValueColumnType(
+    {
+      column_type: ["datetime"],
+      chart_types: ["line"]
+    },
+    0,
+    COLORS.length
+  ),
+  {
+    column_type: ["category", "value"],
+    chart_types: ["pie"]
+  },
+  {
+    column_type: ["datetime", "value"],
+    chart_types: ["calendar"]
+  },
+  {
+    column_type: ["category", "value", "value"],
+    chart_types: ["scatter"]
+  },
+  {
+    column_type: ["datetime", "value", "value"],
+    chart_types: ["scatter"]
+  },
+  {
+    column_type: ["category", "category", "value"],
+    chart_types: ["bar", "heatmap"]
+  },
+  {
+    column_type: ["datetime", "category", "value"],
+    chart_types: ["line", "heatmap", "heatmap"]
+  }
+];
+function forAddValueColumnType(column_types, min, max) {
+  const entries = [];
+  for (let i = min; i <= max; i++) {
+    const newItem = JSON.parse(JSON.stringify(column_types));
+    for (let j = 0; j < i; j++) {
+      newItem.column_type.push("value");
+    }
+    entries.push(newItem);
+  }
+  return entries;
+}
 var AutoChartFactory = class {
   constructor(opts) {
     this.subsetQ = array_exports.getAllSubsets(opts, 2);
@@ -1382,71 +1435,16 @@ var AutoChartFactory = class {
     this.createQ = array_exports.removeDuplicates(this.createQ);
   }
   addAllCreateChartMessagesToQueue(opts) {
-    const dims = opts.filter(
-      (opt) => ["category", "datetime"].includes(opt.dataType)
+    const column_options = opts.map((opt) => opt.dataType);
+    const matches = chartMatchConfig.filter(
+      (config) => config.column_type.length === column_options.length && config.column_type.sort().join() === column_options.sort().join()
     );
-    if (dims.length < 1) {
-      return;
-    }
-    const metrics = opts.filter((opt) => opt.dataType === "value");
-    if (dims.length === 1) {
-      if (metrics.length === 1) {
-        if (dims[0].dataType === "category") {
-          ["bar", "pie"].forEach(
-            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
-          );
-        } else if (dims[0].dataType === "datetime") {
-          ["line", "calendar"].forEach(
-            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
-          );
-        }
-      } else if (metrics.length === 2) {
-        if (dims[0].dataType === "category") {
-          ["bar", "scatter"].forEach(
-            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
-          );
-        } else if (dims[0].dataType === "datetime") {
-          ["line", "scatter"].forEach(
-            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
-          );
-        }
-      } else {
-        if (dims[0].dataType === "category") {
-          this.createQ.push({
-            type: "bar",
-            dimensions: dims,
-            metrics
-          });
-        } else if (dims[0].dataType === "datetime") {
-          this.createQ.push({
-            type: "line",
-            dimensions: dims,
-            metrics
-          });
-        }
-      }
-    } else if (dims.length === 2) {
-      if (metrics.length === 1) {
-        if (dims[0].dataType === "datetime" && dims[1].dataType === "category") {
-          ["line", "heatmap"].forEach(
-            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
-          );
-        } else if (dims[0].dataType === "category" && dims[1].dataType === "category") {
-          ["bar", "heatmap"].forEach(
-            (t) => this.createQ.push({ type: t, dimensions: dims, metrics })
-          );
-        } else if (dims[0].dataType === "category" && dims[1].dataType === "datetime") {
-          this.createQ.push({
-            type: "heatmap",
-            dimensions: dims,
-            metrics
-          });
-        } else {
-          return;
-        }
-      } else {
-        return;
-      }
+    if (matches.length > 0) {
+      matches.forEach((match) => {
+        match.chart_types.forEach(
+          (chartType) => this.createQ.push({ type: chartType, options: opts })
+        );
+      });
     } else {
       return;
     }
@@ -1456,13 +1454,19 @@ var AutoChartFactory = class {
     if (!msg)
       throw new Error("No more charts to generate");
     const chart = new Chart(msg.type);
-    msg.dimensions.forEach(
-      (opt) => chart.addDimension({
+    const valueOptions = msg.options.filter(
+      (opt) => opt.dataType === "value"
+    );
+    const otherOptions = msg.options.filter(
+      (opt) => opt.dataType !== "value"
+    );
+    otherOptions.forEach((opt) => {
+      chart.addDimension({
         index: opt.index,
         dataType: opt.dataType
-      })
-    );
-    msg.metrics.forEach((opt, i) => {
+      });
+    });
+    valueOptions.forEach((opt, i) => {
       const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap"].includes(msg.type) ? "none" : "sum";
       chart.addMetric({
