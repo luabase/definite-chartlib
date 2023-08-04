@@ -13,16 +13,27 @@ const COLORS = [color.LIME_200, ...color.COLOR_PALETTE.slice(1)];
 
 // Map of column options to chart types, treated as unordered sets.
 // Can match multiple
-export type ChartMatchConfigOption = { column_type: string[]; chart_types: string[] };
+export type ChartMatchConfigOption = {
+  column_type: string[];
+  chart_types: string[];
+};
 const chartMatchConfig: ChartMatchConfigOption[] = [
-  ...forAddValueColumnType({
-    column_type: ["category"],
-    chart_types: ["bar"],
-  }, 0, COLORS.length),
-  ...forAddValueColumnType({
-    column_type: ["datetime"],
-    chart_types: ["line"],
-  }, 0, COLORS.length),
+  ...forAddValueColumnType(
+    {
+      column_type: ["category"],
+      chart_types: ["bar"],
+    },
+    0,
+    COLORS.length
+  ),
+  ...forAddValueColumnType(
+    {
+      column_type: ["datetime"],
+      chart_types: ["line"],
+    },
+    0,
+    COLORS.length
+  ),
   {
     column_type: ["category", "value"],
     chart_types: ["pie"],
@@ -47,18 +58,22 @@ const chartMatchConfig: ChartMatchConfigOption[] = [
     column_type: ["datetime", "category", "value"],
     chart_types: ["line", "heatmap", "heatmap"],
   },
-]
+];
 
-function forAddValueColumnType(column_types: ChartMatchConfigOption, min: number, max: number) {
-    const entries = [];
-    for (let i = min; i <= max; i++) {
-        const newItem = JSON.parse(JSON.stringify(column_types)); // Deep copy the original item
-        for (let j = 0; j < i; j++) {
-            newItem.column_type.push("value");
-        }
-        entries.push(newItem);
+function forAddValueColumnType(
+  column_types: ChartMatchConfigOption,
+  min: number,
+  max: number
+) {
+  const entries = [];
+  for (let i = min; i <= max; i++) {
+    const newItem = JSON.parse(JSON.stringify(column_types)); // Deep copy the original item
+    for (let j = 0; j < i; j++) {
+      newItem.column_type.push("value");
     }
-    return entries;
+    entries.push(newItem);
+  }
+  return entries;
 }
 
 export class AutoChartFactory {
@@ -79,21 +94,24 @@ export class AutoChartFactory {
   }
 
   private addAllCreateChartMessagesToQueue(opts: Array<ColumnOptions>) {
-    const column_options = opts.map(opt => opt.dataType);
+    const column_options = opts.map((opt) => opt.dataType);
 
     // Sort here to ignore order of columns.
-    const matches = chartMatchConfig.filter(config =>
-      config.column_type.length === column_options.length &&
-      config.column_type.sort().join() === column_options.sort().join()
+    const matches = chartMatchConfig.filter(
+      (config) =>
+        config.column_type.length === column_options.length &&
+        config.column_type.sort().join() === column_options.sort().join()
     );
 
-  if (matches.length > 0) {
-    matches.forEach(match => {
-      match.chart_types.forEach(chartType => this.createQ.push({ type: chartType, options: opts }));
-    });
-  } else {
-    return; // Unsupported combination
-  }
+    if (matches.length > 0) {
+      matches.forEach((match) => {
+        match.chart_types.forEach((chartType) =>
+          this.createQ.push({ type: chartType, options: opts })
+        );
+      });
+    } else {
+      return; // Unsupported combination
+    }
   }
 
   private generateSingleChart(): Chart<ChartType> {
@@ -101,14 +119,18 @@ export class AutoChartFactory {
     if (!msg) throw new Error("No more charts to generate");
     const chart = new Chart(<ChartType>msg.type);
 
-    const valueOptions: ColumnOptions[] = msg.options.filter(opt => opt.dataType === "value");
-    const otherOptions: ColumnOptions[] = msg.options.filter(opt => opt.dataType !== "value");
+    const valueOptions: ColumnOptions[] = msg.options.filter(
+      (opt) => opt.dataType === "value"
+    );
+    const otherOptions: ColumnOptions[] = msg.options.filter(
+      (opt) => opt.dataType !== "value"
+    );
 
     otherOptions.forEach((opt) => {
       chart.addDimension({
         index: opt.index,
         dataType: <Exclude<DataType, "value">>opt.dataType,
-      })
+      });
     });
 
     valueOptions.forEach((opt, i) => {
@@ -123,7 +145,7 @@ export class AutoChartFactory {
         color: colorChoice,
         aggregation: aggregation,
       });
-    })
+    });
     return chart;
   }
 
