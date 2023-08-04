@@ -18,7 +18,7 @@ describe("given an array of column metadata", () => {
     },
   ];
   describe("when passed to chart generator", () => {
-    const generator = chartlib.chartGenerator(data);
+    const generator = chartlib.chartGenerator(data, true);
     it("can infinitely shuffle through all chart options", () => {
       expect(generator.next().value?.getOptions()).toEqual({
         chartType: "line",
