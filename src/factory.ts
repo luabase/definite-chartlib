@@ -80,11 +80,12 @@ export class AutoChartFactory {
   private subsetQ: Array<Array<ColumnOptions>>;
   private createQ: Array<CreateChartMessage>;
 
-  constructor(opts: Array<ColumnOptions>, subsets: boolean) {
+  constructor(opts: Array<ColumnOptions>, subsets?: boolean) {
     // Unordered.
-    let min_subset_size = opts.length
+    opts = opts.slice(0, 6);
+    let min_subset_size = opts.length;
     if (subsets) {
-      min_subset_size = 2
+      min_subset_size = 2;
     }
 
     this.subsetQ = utils.array.getAllSubsets(opts, min_subset_size);
