@@ -1398,7 +1398,7 @@ var chartMatchConfig = [
       column_type: ["category"],
       chart_types: ["bar"]
     },
-    0,
+    1,
     COLORS.length
   ),
   ...forAddValueColumnType(
@@ -1406,7 +1406,7 @@ var chartMatchConfig = [
       column_type: ["datetime"],
       chart_types: ["line"]
     },
-    0,
+    1,
     COLORS.length
   ),
   {
@@ -1431,7 +1431,7 @@ var chartMatchConfig = [
   },
   {
     column_type: ["datetime", "category", "value"],
-    chart_types: ["line", "heatmap", "heatmap"]
+    chart_types: ["line", "heatmap"]
   }
 ];
 function forAddValueColumnType(column_types, min, max) {
