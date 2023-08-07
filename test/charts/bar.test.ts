@@ -14,7 +14,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       color: color.LIME_200,
       aggregation: "sum",
     });
-  it("can compile to a vertical bar chart", () => {
+  it("can compile to a horizontal bar chart", () => {
     expect(chart.compile("My chart", data["dailyUsersByMobileOS"])).toEqual({
       animation: true,
       backgroundColor: "#18181b",
