@@ -1447,6 +1447,7 @@ function forAddValueColumnType(column_types, min, max) {
 }
 var AutoChartFactory = class {
   constructor(opts, subsets) {
+    opts = opts.slice(0, 6);
     let min_subset_size = opts.length;
     if (subsets) {
       min_subset_size = 2;
