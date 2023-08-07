@@ -1446,8 +1446,12 @@ function forAddValueColumnType(column_types, min, max) {
   return entries;
 }
 var AutoChartFactory = class {
-  constructor(opts) {
-    this.subsetQ = array_exports.getAllSubsets(opts, 2);
+  constructor(opts, subsets) {
+    let min_subset_size = opts.length;
+    if (subsets) {
+      min_subset_size = 2;
+    }
+    this.subsetQ = array_exports.getAllSubsets(opts, min_subset_size);
     this.createQ = [];
     while (this.subsetQ.length > 0) {
       const subset = this.subsetQ.shift();
@@ -1517,9 +1521,9 @@ function create(type) {
 function load(opts) {
   return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
-function* chartGenerator(columns) {
+function* chartGenerator(columns, subsets) {
   let i = 0;
-  const factory = new AutoChartFactory(columns);
+  const factory = new AutoChartFactory(columns, subsets);
   const charts = factory.generateAllCharts();
   while (true) {
     yield array_exports.unboundedReadItem(charts, i);
