@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import Chart from "../../src/chart";
+import { Chart } from "../../src/chart";
 import { color } from "../../src/constants";
 
 describe("given a bar chart", () => {

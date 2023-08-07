@@ -1,4 +1,4 @@
-import Chart from "../chart";
+import { Chart } from "../chart";
 import { DataFrame } from "../dataframe";
 import { ChartType, echarts } from "../types";
 import * as utils from "../utils";

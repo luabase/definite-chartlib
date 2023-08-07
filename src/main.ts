@@ -1,4 +1,4 @@
-import Chart from "./chart";
+import { Chart } from "./chart";
 import { AutoChartFactory, ColumnOptions } from "./factory";
 import type { ChartOptions, ChartType } from "./types";
 import { LegacyOptions } from "./types/legacy";

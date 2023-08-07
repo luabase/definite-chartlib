@@ -1,4 +1,4 @@
-import Chart from "./chart";
+import { Chart } from "./chart";
 import { ChartType, DataType } from "./types";
 import { color } from "./constants";
 import * as utils from "./utils";

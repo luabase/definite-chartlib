@@ -20,7 +20,7 @@ import * as utils from "./utils";
 import { profile } from "./perf";
 import { CompileChartError, InvalidChartError } from "./errors";
 
-export default class Chart<T extends ChartType> {
+export class Chart<T extends ChartType> {
   private chartType: T;
   private style: StyleOptions<T>;
   private dimensions: Dimension<T>[];
