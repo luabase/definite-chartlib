@@ -835,7 +835,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       ],
     });
   });
-  it("can compile to a vertical bar chart", () => {
+  it("can compile to a horizontal bar chart", () => {
     chart.setStyleOption("orientation", "horizontal");
     expect(chart.compile("My chart", data["clickStreamEvents"])).toEqual({
       animation: true,
