@@ -217,4 +217,14 @@ describe("given a list of column options", () => {
       },
     ]);
   });
+  const singleColOpt = [
+    { index: 0, dataType: "category" },
+  ];
+  it("cannot generate single category charts", () => {
+    const factory = new AutoChartFactory(singleColOpt, false);
+    const charts = factory
+      .generateAllCharts()
+      .map((chart) => chart.getOptions());
+    expect(charts).toEqual([]);
+  });
 });
