@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Release version
+        description: Release version (e.g. "1.0.0")
         required: true
 
 jobs:
@@ -27,6 +27,14 @@ jobs:
       - name: Run tests
         run: pnpm test:ci
 
+      - name: Configure git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Pull main
+        run: git pull origin main
+
       - name: Run build
         run: pnpm build
 
@@ -35,11 +43,8 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
 
-      - name: Commit files
+      - name: Commit updated build files
         run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git pull origin main
           git add dist/*
           git add package.json
           git commit -m "🤖 build v$VERSION"
@@ -57,4 +62,32 @@ jobs:
           gh release create v$VERSION --generate-notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+
+      - name: Bump version dependency for http
+        run: |
+          cd http/
+          pnpm add github:luabase/definite-chartlib#v$VERSION
+          cd ..
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - id: gcloud_auth
+        name: gCloud Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Deploy
+        id: deploy
+        run: gcloud builds submit
+
+      - name: Commit updated http files
+        run: |
+          git add http/*
+          git commit -m "🤖 http deploy v$VERSION"
+        env:
           VERSION: ${{ inputs.version }}
