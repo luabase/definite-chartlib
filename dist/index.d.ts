@@ -382,6 +382,7 @@ declare class Chart<T extends ChartType> {
     canAddDimension(): boolean;
     canAddMetric(): boolean;
     canAddAxis(): boolean;
+    getAxisCount(): number;
     getGroupByDimension(): Dimension<T> | undefined;
     getBreakdownDimension(): Dimension<T> | undefined;
     getOptions(): ChartOptions<T>;
@@ -414,7 +415,7 @@ type ColumnOptions = {
 
 declare function create<T extends ChartType>(type: T): Chart<T>;
 declare function load<T extends ChartType>(opts: ChartOptions<T> | LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<T>;
-declare function chartGenerator(columns: ColumnOptions[], subsets: boolean): Generator<Chart<ChartType>, void, unknown>;
+declare function chartGenerator(columns: Array<ColumnOptions>, subsets: boolean): Generator<Chart<ChartType>, void, unknown>;
 
 declare const chartlib_chartGenerator: typeof chartGenerator;
 declare const chartlib_create: typeof create;
@@ -434,4 +435,4 @@ declare class InvalidChartError extends Error {
     constructor(message: string);
 }
 
-export { AggregationType, AxisType, BarStyleType, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, chartlib as default, index as echarts };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, chartlib as default, index as echarts };

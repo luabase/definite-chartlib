@@ -29,6 +29,7 @@ var __decorateClass = (decorators, target, key, kind) => {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+  Chart: () => Chart,
   CompileChartError: () => CompileChartError,
   InvalidChartError: () => InvalidChartError,
   color: () => color_exports,
@@ -733,6 +734,9 @@ function grid(chart, datasets2) {
   } else if (chart.getChartType() === "heatmap") {
     grid2.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
   }
+  if (["bar", "line"].includes(chart.getChartType())) {
+    grid2.right = chart.canAddAxis() ? "9%" : "12%";
+  }
   return grid2;
 }
 
@@ -835,6 +839,9 @@ function series(chart, datasets2) {
       if (chart.getChartType() === "bar" && t === "line") {
         item.stack = "";
       }
+    }
+    if (["bar", "line"].includes(chart.getChartType())) {
+      item.yAxisIndex = metric.axis === "right" ? 1 : 0;
     }
     series2.push(item);
   });
@@ -1262,7 +1269,21 @@ var _Chart = class {
     }
   }
   canAddAxis() {
-    throw new Error("Not implemented");
+    if (!["bar", "line"].includes(this.chartType)) {
+      return false;
+    } else {
+      return this.getAxisCount() < 2;
+    }
+  }
+  getAxisCount() {
+    if (!["bar", "line"].includes(this.chartType)) {
+      return 1;
+    } else {
+      const axes = this.metrics.map(
+        (m) => m.axis ?? "left"
+      );
+      return array_exports.removeDuplicates(axes).length;
+    }
   }
   getGroupByDimension() {
     return this.dimensions[0];
@@ -1539,6 +1560,7 @@ var echarts_exports = {};
 var src_default = main_exports;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  Chart,
   CompileChartError,
   InvalidChartError,
   color,
