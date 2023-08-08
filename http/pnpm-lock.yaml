@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@definite/chartlib':
-    specifier: github:luabase/definite-chartlib#v1.6.2
+    specifier: github:luabase/definite-chartlib#v1.7.0
     version: github.com/luabase/definite-chartlib/4bf86086c715cb224e5856675bd88177635ea22d
   body-parser:
     specifier: ^1.19.0
