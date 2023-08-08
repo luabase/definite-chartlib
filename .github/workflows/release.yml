@@ -68,6 +68,7 @@ jobs:
         run: |
           cd http/
           pnpm add github:luabase/definite-chartlib#v$VERSION
+          pnpm version $VERSION --no-commit-hooks --no-git-tag-version --no-workspaces-update
           cd ..
         env:
           VERSION: ${{ inputs.version }}
@@ -87,7 +88,8 @@ jobs:
 
       - name: Commit updated http files
         run: |
-          git add http/*
+          git add http/package.json
+          git add http/pnpm-lock.yaml
           git commit -m "🤖 http deploy v$VERSION"
         env:
           VERSION: ${{ inputs.version }}
