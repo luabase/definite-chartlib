@@ -35,7 +35,7 @@
       index: number,
       color: string | string[],
       aggregation: "none" | "avg" | "count" | "distinct" | "sum" | "min" | "max",
-      axis?: "left" | "right"
+      axis?: "left" | "right",
       dataType?: "value",
       chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
     },
