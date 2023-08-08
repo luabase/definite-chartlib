@@ -184,4 +184,19 @@ describe("Chart", () => {
     barChart.addMetric({ index: 4, color: "#ffffff", aggregation: "sum" });
     expect(barChart.canAddMetric()).toEqual(true);
   });
+  it("can determine if can add axis", () => {
+    const barChart = new Chart("bar");
+    expect(barChart.canAddAxis()).toEqual(true);
+    barChart.addMetric({ index: 0, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddAxis()).toEqual(true);
+    barChart.addMetric({ index: 1, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.canAddAxis()).toEqual(true);
+    barChart.addMetric({
+      index: 2,
+      color: "#ffffff",
+      aggregation: "sum",
+      axis: "right",
+    });
+    expect(barChart.canAddAxis()).toEqual(false);
+  });
 });

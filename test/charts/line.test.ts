@@ -691,3 +691,168 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
     });
   });
 });
+
+describe("given 1 dimension and 2 aggregate metrics, each with different axes", () => {
+  const chart = chartlib
+    .create("line")
+    .addDimension({ index: 0, dataType: "datetime" })
+    .addMetric({
+      index: 1,
+      color: color.LIME_200,
+      aggregation: "count",
+      axis: "left",
+    })
+    .addMetric({
+      index: 2,
+      color: color.DARK_BLUE,
+      aggregation: "distinct",
+      axis: "right",
+    });
+  it("can compile to point line chart", () => {
+    expect(chart.compile("My chart", data["clickStreamEvents"])).toEqual({
+      animation: true,
+      backgroundColor: "#18181b",
+      calendar: null,
+      dataset: [
+        {
+          dimensions: ["date", "event", "user_id"],
+          source: [
+            ["2020-01-01", "click", "123"],
+            ["2020-01-01", "pageview", "123"],
+            ["2020-01-02", "pageview", "123"],
+            ["2020-01-02", "pageview", "456"],
+            ["2020-01-02", "click", "456"],
+          ],
+        },
+        {
+          id: "1::line::1::event (count)::0",
+          dimensions: ["date", "event"],
+          source: [
+            ["2020-01-01", 2],
+            ["2020-01-02", 3],
+          ],
+        },
+        {
+          id: "2::line::2::user_id (distinct)::1",
+          dimensions: ["date", "user_id"],
+          source: [
+            ["2020-01-01", 1],
+            ["2020-01-02", 2],
+          ],
+        },
+      ],
+      grid: {
+        bottom: "12%",
+        containLabel: false,
+        left: "12%",
+        right: "12%",
+        show: false,
+      },
+      legend: {
+        left: "center",
+        show: true,
+        top: "2%",
+      },
+      series: [
+        {
+          type: "line",
+          color: "#d9f99d",
+          datasetIndex: 1,
+          encode: { x: "date", y: "event" },
+          name: "event (count)",
+          yAxisIndex: 0,
+        },
+        {
+          type: "line",
+          color: "#2f4b7c",
+          datasetIndex: 2,
+          encode: { x: "date", y: "user_id" },
+          name: "user_id (distinct)",
+          yAxisIndex: 1,
+        },
+      ],
+      title: {
+        left: "auto",
+        show: false,
+        text: "My chart",
+        top: "2%",
+      },
+      toolbox: {
+        feature: {
+          dataView: {
+            readOnly: true,
+            show: true,
+          },
+          saveAsImage: {
+            show: true,
+            type: "png",
+          },
+        },
+        show: false,
+      },
+      tooltip: {
+        axisPointer: {
+          crossStyle: {
+            color: "#999999",
+          },
+          type: "cross",
+        },
+        show: true,
+        trigger: "axis",
+      },
+      visualMap: null,
+      xAxis: [
+        {
+          name: "date",
+          nameGap: 30,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          type: "category",
+        },
+      ],
+      yAxis: [
+        {
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+          name: "event",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          type: "value",
+        },
+        {
+          axisLabel: {
+            formatter: valueFormatter,
+          },
+          name: "user_id",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          type: "value",
+        },
+      ],
+    });
+  });
+});
