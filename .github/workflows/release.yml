@@ -67,6 +67,8 @@ jobs:
       - name: Bump version dependency for http
         run: |
           cd http/
+          pnpm i
+          pnpm add github:luabase/definite-chartlib#v$VERSION
           pnpm add github:luabase/definite-chartlib#v$VERSION
           pnpm version $VERSION --no-commit-hooks --no-git-tag-version --no-workspaces-update
           cd ..
