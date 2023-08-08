@@ -23,5 +23,8 @@ export function grid<T extends ChartType>(
   } else if (chart.getChartType() === "heatmap") {
     grid.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
   }
+  if (["bar", "line"].includes(chart.getChartType())) {
+    grid.right = chart.canAddAxis() ? "9%" : "12%";
+  }
   return grid;
 }
