@@ -1,5 +1,5 @@
-import Chart from "../chart";
-import { ChartType, echarts } from "../types";
+import { Chart } from "../chart";
+import { ChartType, Metric, echarts } from "../types";
 import { color } from "../constants";
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
@@ -109,6 +109,10 @@ export function series<T extends ChartType>(
       if (chart.getChartType() === "bar" && t === "line") {
         item.stack = "";
       }
+    }
+    if (["bar", "line"].includes(chart.getChartType())) {
+      item.yAxisIndex =
+        (metric as Metric<"bar" | "line">).axis === "right" ? 1 : 0;
     }
     series.push(item);
   });

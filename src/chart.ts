@@ -20,7 +20,7 @@ import * as utils from "./utils";
 import { profile } from "./perf";
 import { CompileChartError, InvalidChartError } from "./errors";
 
-export default class Chart<T extends ChartType> {
+export class Chart<T extends ChartType> {
   private chartType: T;
   private style: StyleOptions<T>;
   private dimensions: Dimension<T>[];
@@ -386,8 +386,22 @@ export default class Chart<T extends ChartType> {
   }
 
   canAddAxis(): boolean {
-    // FIXME
-    throw new Error("Not implemented");
+    if (!["bar", "line"].includes(this.chartType)) {
+      return false;
+    } else {
+      return this.getAxisCount() < 2;
+    }
+  }
+
+  getAxisCount(): number {
+    if (!["bar", "line"].includes(this.chartType)) {
+      return 1;
+    } else {
+      const axes = this.metrics.map(
+        (m) => (m as Metric<"bar" | "line">).axis ?? "left"
+      );
+      return utils.array.removeDuplicates(axes).length;
+    }
   }
 
   getGroupByDimension(): Dimension<T> | undefined {

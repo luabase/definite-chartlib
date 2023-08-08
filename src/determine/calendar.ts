@@ -1,5 +1,5 @@
 import { DataFrame } from "../dataframe";
-import Chart from "../chart";
+import { Chart } from "../chart";
 import { ChartType, echarts } from "../types";
 import { color } from "../constants";
 

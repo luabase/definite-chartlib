@@ -1,4 +1,4 @@
-import Chart from "../chart";
+import { Chart } from "../chart";
 import { ChartType, echarts } from "../types";
 import * as utils from "../utils";
 
@@ -22,6 +22,9 @@ export function grid<T extends ChartType>(
     }
   } else if (chart.getChartType() === "heatmap") {
     grid.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
+  }
+  if (["bar", "line"].includes(chart.getChartType())) {
+    grid.right = chart.canAddAxis() ? "9%" : "12%";
   }
   return grid;
 }

@@ -1,4 +1,4 @@
-import Chart from "../chart";
+import { Chart } from "../chart";
 import { ChartType, Metric, echarts } from "../types";
 import { DataFrame } from "../dataframe";
 import { categoryFormatter, valueFormatter } from "../formatters";
