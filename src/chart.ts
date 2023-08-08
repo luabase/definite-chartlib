@@ -386,8 +386,22 @@ export class Chart<T extends ChartType> {
   }
 
   canAddAxis(): boolean {
-    // FIXME
-    throw new Error("Not implemented");
+    if (!["bar", "line"].includes(this.chartType)) {
+      return false;
+    } else {
+      return this.getAxisCount() < 2;
+    }
+  }
+
+  getAxisCount(): number {
+    if (!["bar", "line"].includes(this.chartType)) {
+      return 1;
+    } else {
+      const axes = this.metrics.map(
+        (m) => (m as Metric<"bar" | "line">).axis ?? "left"
+      );
+      return utils.array.removeDuplicates(axes).length;
+    }
   }
 
   getGroupByDimension(): Dimension<T> | undefined {
