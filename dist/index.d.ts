@@ -378,6 +378,7 @@ declare class Chart<T extends ChartType> {
     private toHeatmap;
     private toCalendar;
     private assertIsValid;
+    equals(other: Chart<T>): boolean;
     compile(title: string, data: RowOriented): ECOption;
     canAddDimension(): boolean;
     canAddMetric(): boolean;

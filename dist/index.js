@@ -1194,6 +1194,29 @@ var _Chart = class {
       throw new InvalidChartError("Chart must have at least one metric");
     }
   }
+  equals(other) {
+    if (this.chartType !== other.chartType)
+      return false;
+    if (this.dimensions.length !== other.dimensions.length)
+      return false;
+    if (this.metrics.length !== other.metrics.length)
+      return false;
+    const dimsEqual = this.dimensions.every(
+      (dim) => !!other.getDimension(
+        (otherDim) => otherDim.index === dim.index && otherDim.dataType === dim.dataType
+      )
+    );
+    if (!dimsEqual)
+      return false;
+    const metricsEqual = this.metrics.every(
+      (metric) => !!other.getMetric(
+        (m) => m.index === metric.index && m.aggregation === metric.aggregation
+      )
+    );
+    if (!metricsEqual)
+      return false;
+    return true;
+  }
   compile(title2, data) {
     this.assertIsValid();
     if (data.length < 1) {
