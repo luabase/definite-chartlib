@@ -62,7 +62,7 @@ app.post("/factory", (req, res) => {
   let counter = 0;
   let safety = 0;
   const generator = chartlib.chartGenerator(options, subsets);
-  const data = [];
+  const charts = [];
   while (counter < limit && safety < 25) {
     const { value } = generator.next();
     if (!value) {
@@ -72,7 +72,7 @@ app.post("/factory", (req, res) => {
       console.log("Generated chart with type", value.getChartType());
       if (allow.includes(value.getChartType())) {
         console.log("Adding chart to results");
-        data.push(value);
+        charts.push(value);
         counter++;
       } else {
         console.log("Skipping chart (not allowed)");
@@ -80,8 +80,13 @@ app.post("/factory", (req, res) => {
       safety++;
     }
   }
-  const charts = Array.from(new Set(data.map((chart) => chart.getOptions())));
-  res.send(charts);
+  res.send(
+    charts
+      .filter((chart, index, array) => {
+        return array.findIndex((other) => other.equals(chart)) === index
+      })
+      .map((chart) => chart.getOptions())
+  );
 });
 
 // POST render
