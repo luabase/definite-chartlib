@@ -331,6 +331,29 @@ export class Chart<T extends ChartType> {
     }
   }
 
+  equals(other: Chart<T>): boolean {
+    if (this.chartType !== other.chartType) return false;
+    if (this.dimensions.length !== other.dimensions.length) return false;
+    if (this.metrics.length !== other.metrics.length) return false;
+    const dimsEqual = this.dimensions.every(
+      (dim) =>
+        !!other.getDimension(
+          (otherDim) =>
+            otherDim.index === dim.index && otherDim.dataType === dim.dataType
+        )
+    );
+    if (!dimsEqual) return false;
+    const metricsEqual = this.metrics.every(
+      (metric) =>
+        !!other.getMetric(
+          (m) =>
+            m.index === metric.index && m.aggregation === metric.aggregation
+        )
+    );
+    if (!metricsEqual) return false;
+    return true;
+  }
+
   @profile
   compile(title: string, data: RowOriented): echarts.ECOption {
     this.assertIsValid();

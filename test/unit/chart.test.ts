@@ -199,4 +199,21 @@ describe("Chart", () => {
     });
     expect(barChart.canAddAxis()).toEqual(false);
   });
+  it("can compare the equality of two charts", () => {
+    const barChart = new Chart("bar")
+      .addDimension({ index: 0, dataType: "category" })
+      .addMetric({ index: 1, color: "#ffffff", aggregation: "sum" });
+    const barChart2 = new Chart("bar")
+      .addDimension({ index: 0, dataType: "category" })
+      .addMetric({ index: 1, color: "#ffffff", aggregation: "sum" });
+    const barChart3 = new Chart("bar")
+      .addDimension({ index: 0, dataType: "category" })
+      .addMetric({ index: 1, color: "#ffffff", aggregation: "avg" });
+    const barChart4 = new Chart("bar")
+      .addDimension({ index: 0, dataType: "datetime" })
+      .addMetric({ index: 1, color: "#ffffff", aggregation: "sum" });
+    expect(barChart.equals(barChart2)).toEqual(true);
+    expect(barChart.equals(barChart3)).toEqual(false);
+    expect(barChart.equals(barChart4)).toEqual(false);
+  });
 });
