@@ -12,7 +12,7 @@ describe("given an array of dates", () => {
     "2021-04-01",
     "2021-07-01",
     "2021-10-01",
-  ].map((d) => datetime.toDateUTC(d));
+  ].map((d) => new Date(String(d)));
   it("should return true if the date is the start or end of a year", () => {
     expect(dates.map(datetime.isStartOrEndOfYear)).toEqual([
       true,
@@ -55,7 +55,7 @@ describe("given an array of dates", () => {
 });
 
 describe("given a date and a format string", () => {
-  const date = datetime.toDateUTC("2020-01-01");
+  const date = new Date("2020-01-01");
   it("should return a string", () => {
     expect(datetime.strftime(date, "y")).toEqual("2020");
     expect(datetime.strftime(date, "yQq")).toEqual("2020Q1");
@@ -66,9 +66,20 @@ describe("given a date and a format string", () => {
 
 describe("given a date", () => {
   it("should return the quarter number", () => {
-    expect(datetime.getQuarter(datetime.toDateUTC("2020-01-01"))).toEqual(1);
-    expect(datetime.getQuarter(datetime.toDateUTC("2020-04-01"))).toEqual(2);
-    expect(datetime.getQuarter(datetime.toDateUTC("2020-07-01"))).toEqual(3);
-    expect(datetime.getQuarter(datetime.toDateUTC("2020-10-01"))).toEqual(4);
+    expect(datetime.getQuarter(new Date("2020-01-01"))).toEqual(1);
+    expect(datetime.getQuarter(new Date("2020-04-01"))).toEqual(2);
+    expect(datetime.getQuarter(new Date("2020-07-01"))).toEqual(3);
+    expect(datetime.getQuarter(new Date("2020-10-01"))).toEqual(4);
+  });
+});
+
+describe("given a month-like dates", () => {
+  it("should format the date as a month", () => {
+    expect(datetime.strftime(new Date("2023-04-01 00:00:00"), "y-m")).toEqual(
+      "2023-04"
+    );
+    expect(datetime.strftime(new Date("2023-05-01 00:00:00"), "y-m")).toEqual(
+      "2023-05"
+    );
   });
 });

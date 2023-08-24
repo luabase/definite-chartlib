@@ -86,7 +86,7 @@ export function datasets<T extends ChartType>(
 function formatDateTimeIndexForDF(df: DataFrame, index: number) {
   let fmt = "";
   const values = df.col(index);
-  const dates = values.map((v) => utils.datetime.toDateUTC(String(v)));
+  const dates = values.map((v) => new Date(String(v)));
   if (dates.every((d) => utils.datetime.isStartOrEndOfYear(d))) {
     fmt = "y";
   } else if (dates.every((d) => utils.datetime.isStartOrEndOfQuarter(d))) {
@@ -97,7 +97,7 @@ function formatDateTimeIndexForDF(df: DataFrame, index: number) {
     fmt = "y-m-d";
   }
   return df.map(index, (v) => {
-    const d = utils.datetime.toDateUTC(String(v));
+    const d = new Date(String(v));
     return utils.datetime.strftime(d, fmt);
   });
 }

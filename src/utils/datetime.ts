@@ -1,17 +1,3 @@
-export function toDateUTC(v: string | Date): Date {
-  const date = new Date(v);
-  return new Date(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    )
-  );
-}
-
 export function getQuarter(d: Date): number {
   const month = d.getUTCMonth() + 1;
   if (month <= 3) {
