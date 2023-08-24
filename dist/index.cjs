@@ -174,22 +174,8 @@ __export(datetime_exports, {
   isStartOrEndOfMonth: () => isStartOrEndOfMonth,
   isStartOrEndOfQuarter: () => isStartOrEndOfQuarter,
   isStartOrEndOfYear: () => isStartOrEndOfYear,
-  strftime: () => strftime,
-  toDateUTC: () => toDateUTC
+  strftime: () => strftime
 });
-function toDateUTC(v) {
-  const date = new Date(v);
-  return new Date(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    )
-  );
-}
 function getQuarter(d) {
   const month = d.getUTCMonth() + 1;
   if (month <= 3) {
@@ -699,7 +685,7 @@ function datasets(chart, df) {
 function formatDateTimeIndexForDF(df, index) {
   let fmt = "";
   const values = df.col(index);
-  const dates = values.map((v) => datetime_exports.toDateUTC(String(v)));
+  const dates = values.map((v) => new Date(String(v)));
   if (dates.every((d) => datetime_exports.isStartOrEndOfYear(d))) {
     fmt = "y";
   } else if (dates.every((d) => datetime_exports.isStartOrEndOfQuarter(d))) {
@@ -710,7 +696,7 @@ function formatDateTimeIndexForDF(df, index) {
     fmt = "y-m-d";
   }
   return df.map(index, (v) => {
-    const d = datetime_exports.toDateUTC(String(v));
+    const d = new Date(String(v));
     return datetime_exports.strftime(d, fmt);
   });
 }
