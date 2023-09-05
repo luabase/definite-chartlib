@@ -54,7 +54,15 @@ export function series<T extends ChartType>(
       item.radius = ["40%", "70%"];
     } else if (chart.getChartType() === "scatter") {
       const metrics = chart.getMetrics();
-      item.symbolSize = 15;
+      if (metrics.length === 2) {
+        item.symbolSize = 15;
+      } else if (metrics.length === 3) {
+        item.symbolSize = (value: Array<number | string>) => {
+          const number = Number(value[metrics[2].index]);
+          const exponent = Math.floor(Math.log10(number)) + 1;
+          return number / 10 ** (exponent - 2);
+        };
+      }
       item.encode = {
         x: dataset.dimensions[metrics[0].index],
         y: dataset.dimensions[metrics[1].index],

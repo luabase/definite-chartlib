@@ -276,7 +276,7 @@ export class Chart<T extends ChartType> {
         aggregation: "none",
       })
     );
-    if (chart.canAddMetric()) {
+    if (this.metrics.length < 2) {
       chart.addMetric({ ...chart.getMetrics()[0], id: 1 }); // re-add same metric
     }
     return chart;
@@ -402,7 +402,7 @@ export class Chart<T extends ChartType> {
     } else if (["bar", "line"].includes(this.chartType)) {
       return this.dimensions.length < 2;
     } else if (this.chartType === "scatter") {
-      return this.metrics.length < 2;
+      return this.metrics.length < 3;
     } else {
       return false;
     }
