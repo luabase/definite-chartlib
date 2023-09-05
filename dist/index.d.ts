@@ -94,7 +94,7 @@ interface Series extends IStylable {
     radius?: string[];
     areaStyle?: object;
     itemStyle?: object;
-    symbolSize?: number;
+    symbolSize?: number | ((value: Array<number | string>) => number);
     calendarIndex?: number;
     coordinateSystem?: string;
     datasetIndex?: number;

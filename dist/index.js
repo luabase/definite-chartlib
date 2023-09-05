@@ -753,7 +753,15 @@ function series(chart, datasets2) {
       item.radius = ["40%", "70%"];
     } else if (chart.getChartType() === "scatter") {
       const metrics = chart.getMetrics();
-      item.symbolSize = 15;
+      if (metrics.length === 2) {
+        item.symbolSize = 15;
+      } else if (metrics.length === 3) {
+        item.symbolSize = (value) => {
+          const number = Number(value[metrics[2].index]);
+          const exponent = Math.floor(Math.log10(number)) + 1;
+          return number / 10 ** (exponent - 2);
+        };
+      }
       item.encode = {
         x: dataset.dimensions[metrics[0].index],
         y: dataset.dimensions[metrics[1].index],
@@ -1129,7 +1137,7 @@ var _Chart = class {
         aggregation: "none"
       })
     );
-    if (chart.canAddMetric()) {
+    if (this.metrics.length < 2) {
       chart.addMetric({ ...chart.getMetrics()[0], id: 1 });
     }
     return chart;
@@ -1248,7 +1256,7 @@ var _Chart = class {
     } else if (["bar", "line"].includes(this.chartType)) {
       return this.dimensions.length < 2;
     } else if (this.chartType === "scatter") {
-      return this.metrics.length < 2;
+      return this.metrics.length < 3;
     } else {
       return false;
     }
