@@ -35,7 +35,7 @@ describe("given an initial bar chart", () => {
     expect(newChart.getChartType()).toEqual("scatter");
     expect(newChart.getBreakdownDimension()).toBeUndefined();
     expect(newChart.canAddDimension()).toBe(true);
-    expect(newChart.canAddMetric()).toBe(false);
+    expect(newChart.canAddMetric()).toBe(true); // user can add a metric to control symbol size
     expect(newChart.getStyleShowTitle()).toBe(false);
   });
   it("can then be converted to a heatmap chart", () => {
