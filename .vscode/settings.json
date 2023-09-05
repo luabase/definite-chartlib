@@ -17,8 +17,8 @@
   "editor.tabSize": 2,
   "typescript.inlayHints.parameterTypes.enabled": true,
   "typescript.inlayHints.parameterNames.enabled": "all",
-  "workbench.colorTheme": "GitHub Dark",
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "JetBrains New Dark",
+  "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.profiles.linux": {
     "zsh": {
