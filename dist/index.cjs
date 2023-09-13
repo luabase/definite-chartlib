@@ -866,7 +866,7 @@ function title(chart, s) {
     show: chart.getStyleShowTitle(),
     text: string_exports.truncate(s, 42),
     top: "2%",
-    left: "center"
+    left: chart.getChartType() === "calendar" ? "auto" : "center"
   };
 }
 
