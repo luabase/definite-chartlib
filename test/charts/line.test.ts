@@ -55,6 +55,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         left: "center",
         show: true,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
@@ -193,6 +194,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         left: "center",
         show: true,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
@@ -328,6 +330,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         left: "center",
         show: true,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
@@ -477,6 +480,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
         left: "center",
         show: true,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
@@ -607,6 +611,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
         left: "center",
         show: true,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
@@ -758,6 +763,7 @@ describe("given 1 dimension and 2 aggregate metrics, each with different axes", 
         left: "center",
         show: true,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
