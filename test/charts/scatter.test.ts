@@ -91,6 +91,7 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         show: true,
         trigger: "item",
       },
@@ -257,6 +258,7 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         show: true,
         trigger: "item",
       },

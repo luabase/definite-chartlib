@@ -86,6 +86,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -210,6 +211,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -362,6 +364,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -505,6 +508,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -649,6 +653,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -800,6 +805,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -938,6 +944,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",
@@ -1091,6 +1098,7 @@ describe("given 1 dimension and 2 aggregate metrics, each on different axes", ()
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",

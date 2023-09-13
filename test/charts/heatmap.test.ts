@@ -90,6 +90,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         show: true,
         trigger: "item",
       },
