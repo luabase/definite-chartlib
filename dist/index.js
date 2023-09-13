@@ -702,9 +702,9 @@ function grid(chart, datasets2) {
     top: "2%"
   };
   if (showTitle && showLegend) {
-    grid2.top = "12%";
+    grid2.top = "14%";
   } else if (boolean_exports.xor(showTitle, showLegend)) {
-    grid2.top = "8%";
+    grid2.top = "10%";
   }
   if (["bar", "line"].includes(chartType)) {
     grid2.right = chart.canAddAxis() ? "9%" : "12%";
@@ -724,7 +724,7 @@ function legend(chart) {
   return {
     show: chart.getStyleShowLegend(),
     left: "center",
-    top: chart.getStyleShowTitle() ? "6%" : "2%",
+    top: chart.getStyleShowTitle() ? "8%" : "2%",
     type: "scroll"
   };
 }
