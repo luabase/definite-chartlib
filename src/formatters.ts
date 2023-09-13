@@ -1,6 +1,6 @@
 export function categoryFormatter(value: string | number): string {
-  return String(value).length > 15
-    ? String(value).slice(0, 11) + "..." + String(value).slice(-4)
+  return String(value).length > 13
+    ? String(value).slice(0, 8) + "..." + String(value).slice(-2)
     : String(value);
 }
 
