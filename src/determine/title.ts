@@ -10,6 +10,6 @@ export function title<T extends ChartType>(
     show: chart.getStyleShowTitle(),
     text: utils.string.truncate(s, 42),
     top: "2%",
-    left: "center",
+    left: chart.getChartType() === "calendar" ? "auto" : "center",
   };
 }
