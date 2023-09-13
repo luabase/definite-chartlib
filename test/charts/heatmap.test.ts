@@ -56,6 +56,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         left: "center",
         show: false,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {

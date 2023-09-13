@@ -74,6 +74,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         left: "center",
         show: false,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {

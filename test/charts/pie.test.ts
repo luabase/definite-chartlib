@@ -54,6 +54,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         left: "center",
         show: false,
         top: "2%",
+        type: "scroll",
       },
       series: [
         {
