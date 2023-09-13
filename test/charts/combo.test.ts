@@ -114,6 +114,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         axisPointer: {
           crossStyle: {
             color: "#999999",

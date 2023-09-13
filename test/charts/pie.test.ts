@@ -108,6 +108,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         show: true,
         trigger: "item",
       },

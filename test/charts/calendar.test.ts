@@ -105,6 +105,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         show: false,
       },
       tooltip: {
+        confine: true,
         show: true,
         trigger: "item",
         formatter: calendarTooltipFormatter,
