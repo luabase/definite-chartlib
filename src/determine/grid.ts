@@ -20,9 +20,9 @@ export function grid<T extends ChartType>(
     top: "2%",
   };
   if (showTitle && showLegend) {
-    grid.top = "12%";
+    grid.top = "14%";
   } else if (utils.boolean.xor(showTitle, showLegend)) {
-    grid.top = "8%";
+    grid.top = "10%";
   }
   if (["bar", "line"].includes(chartType)) {
     grid.right = chart.canAddAxis() ? "9%" : "12%";
