@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@definite/chartlib':
-    specifier: github:luabase/definite-chartlib#v1.9.2
-    version: github.com/luabase/definite-chartlib/b196d3b6eecde494922366f788eb78a93f134b5e
+    specifier: github:luabase/definite-chartlib#v1.9.3
+    version: github.com/luabase/definite-chartlib/6f17a9a58a5adcf9085fa8f08765712e9018b7bc
   body-parser:
     specifier: ^1.19.0
     version: 1.20.1
@@ -459,8 +459,8 @@ packages:
       tslib: 2.3.0
     dev: false
 
-  github.com/luabase/definite-chartlib/b196d3b6eecde494922366f788eb78a93f134b5e:
-    resolution: {tarball: https://codeload.github.com/luabase/definite-chartlib/tar.gz/b196d3b6eecde494922366f788eb78a93f134b5e}
+  github.com/luabase/definite-chartlib/6f17a9a58a5adcf9085fa8f08765712e9018b7bc:
+    resolution: {tarball: https://codeload.github.com/luabase/definite-chartlib/tar.gz/6f17a9a58a5adcf9085fa8f08765712e9018b7bc}
     name: '@definite/chartlib'
-    version: 1.9.2
+    version: 1.9.3
     dev: false
