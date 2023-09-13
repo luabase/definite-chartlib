@@ -6,25 +6,33 @@ export function grid<T extends ChartType>(
   chart: Chart<T>,
   datasets: echarts.DataSet[]
 ): echarts.Grid {
+  const chartType = chart.getChartType();
+  const showTitle = chart.getStyleShowTitle();
+  const showLegend = chart.getStyleShowLegend();
   const isLarge = utils.datasets.containsLargeData(datasets);
+  const orientation = chart.getStyleOrientation();
   let grid: echarts.Grid = {
     show: false,
     containLabel: false,
     left: "12%",
     bottom: "12%",
     right: "9%",
+    top: "2%",
   };
-  if (chart.getChartType() === "bar") {
-    if (chart.getStyleOrientation() === "vertical") {
+  if (showTitle && showLegend) {
+    grid.top = "12%";
+  } else if (utils.boolean.xor(showTitle, showLegend)) {
+    grid.top = "8%";
+  }
+  if (["bar", "line"].includes(chartType)) {
+    grid.right = chart.canAddAxis() ? "9%" : "12%";
+    if (orientation === "vertical") {
       grid.bottom = isLarge ? "18%" : "12%";
-    } else {
+    } else if (orientation === "horizontal") {
       grid.left = isLarge ? "18%" : "15%";
     }
-  } else if (chart.getChartType() === "heatmap") {
+  } else if (chartType === "heatmap") {
     grid.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
-  }
-  if (["bar", "line"].includes(chart.getChartType())) {
-    grid.right = chart.canAddAxis() ? "9%" : "12%";
   }
   return grid;
 }

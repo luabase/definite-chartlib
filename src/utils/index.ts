@@ -1,4 +1,5 @@
 export * as array from "./array";
+export * as boolean from "./boolean";
 export * as color from "./color";
 export * as datasets from "./datasets";
 export * as datetime from "./datetime";

@@ -10,6 +10,6 @@ export function title<T extends ChartType>(
     show: chart.getStyleShowTitle(),
     text: utils.string.truncate(s, 42),
     top: "2%",
-    left: "auto",
+    left: "center",
   };
 }
