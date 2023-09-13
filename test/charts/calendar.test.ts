@@ -67,6 +67,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
+        top: "2%",
         show: false,
       },
       legend: {
@@ -84,7 +85,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         },
       ],
       title: {
-        left: "auto",
+        left: "center",
         show: false,
         text: "My chart",
         top: "2%",

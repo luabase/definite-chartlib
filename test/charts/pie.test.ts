@@ -47,6 +47,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
+        top: "2%",
         show: false,
       },
       legend: {
@@ -87,7 +88,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         },
       ],
       title: {
-        left: "auto",
+        left: "center",
         show: false,
         text: "My chart",
         top: "2%",

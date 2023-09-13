@@ -49,6 +49,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         containLabel: false,
         left: "12%",
         right: "11%",
+        top: "2%",
         show: false,
       },
       legend: {
@@ -69,7 +70,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         },
       ],
       title: {
-        left: "auto",
+        left: "center",
         show: false,
         text: "My chart",
         top: "2%",
