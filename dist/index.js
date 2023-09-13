@@ -50,6 +50,15 @@ function removeDuplicates(arr) {
   return Array.from(new Set(arr));
 }
 
+// src/utils/boolean.ts
+var boolean_exports = {};
+__export(boolean_exports, {
+  xor: () => xor
+});
+function xor(a, b) {
+  return (a || b) && !(a && b);
+}
+
 // src/utils/color.ts
 var color_exports2 = {};
 __export(color_exports2, {
@@ -450,7 +459,7 @@ __decorateClass([
 
 // src/formatters.ts
 function categoryFormatter(value) {
-  return String(value).length > 15 ? String(value).slice(0, 11) + "..." + String(value).slice(-4) : String(value);
+  return String(value).length > 13 ? String(value).slice(0, 8) + "..." + String(value).slice(-2) : String(value);
 }
 function valueFormatter(value) {
   return Intl.NumberFormat("en-US", {
@@ -679,25 +688,33 @@ function formatDateTimeIndexForDF(df, index) {
 
 // src/determine/grid.ts
 function grid(chart, datasets2) {
+  const chartType = chart.getChartType();
+  const showTitle = chart.getStyleShowTitle();
+  const showLegend = chart.getStyleShowLegend();
   const isLarge = datasets_exports.containsLargeData(datasets2);
+  const orientation = chart.getStyleOrientation();
   let grid2 = {
     show: false,
     containLabel: false,
     left: "12%",
     bottom: "12%",
-    right: "9%"
+    right: "9%",
+    top: "2%"
   };
-  if (chart.getChartType() === "bar") {
-    if (chart.getStyleOrientation() === "vertical") {
+  if (showTitle && showLegend) {
+    grid2.top = "12%";
+  } else if (boolean_exports.xor(showTitle, showLegend)) {
+    grid2.top = "8%";
+  }
+  if (["bar", "line"].includes(chartType)) {
+    grid2.right = chart.canAddAxis() ? "9%" : "12%";
+    if (orientation === "vertical") {
       grid2.bottom = isLarge ? "18%" : "12%";
-    } else {
+    } else if (orientation === "horizontal") {
       grid2.left = isLarge ? "18%" : "15%";
     }
-  } else if (chart.getChartType() === "heatmap") {
+  } else if (chartType === "heatmap") {
     grid2.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
-  }
-  if (["bar", "line"].includes(chart.getChartType())) {
-    grid2.right = chart.canAddAxis() ? "9%" : "12%";
   }
   return grid2;
 }
@@ -707,7 +724,8 @@ function legend(chart) {
   return {
     show: chart.getStyleShowLegend(),
     left: "center",
-    top: "2%"
+    top: chart.getStyleShowTitle() ? "6%" : "2%",
+    type: "scroll"
   };
 }
 
@@ -824,7 +842,7 @@ function title(chart, s) {
     show: chart.getStyleShowTitle(),
     text: string_exports.truncate(s, 42),
     top: "2%",
-    left: "auto"
+    left: "center"
   };
 }
 
@@ -847,11 +865,13 @@ function toolbox(chart) {
 
 // src/determine/tooltip.ts
 function tooltip(chart) {
+  const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item = {
+    confine: true,
     show: true,
-    trigger: !["line", "bar"].includes(chart.getChartType()) ? "item" : "axis"
+    trigger: !isBarOrLine ? "item" : "axis"
   };
-  if (["bar", "line"].includes(chart.getChartType())) {
+  if (isBarOrLine) {
     item.axisPointer = { type: "cross", crossStyle: { color: "#999999" } };
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;

@@ -126,6 +126,7 @@ interface AxisPointer {
     crossStyle: CrossStyle;
 }
 interface ToolTip extends IShowable {
+    confine?: boolean;
     trigger?: "item" | "axis" | "none";
     axisPointer?: AxisPointer;
     formatter?: string | ((params: any) => string);
