@@ -203,7 +203,7 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
