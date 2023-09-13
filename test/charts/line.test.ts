@@ -48,7 +48,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
@@ -188,7 +188,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
@@ -325,7 +325,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
@@ -476,7 +476,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
@@ -608,7 +608,7 @@ describe("given 1 dimension and 2 or more aggregate metrics", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
@@ -761,7 +761,7 @@ describe("given 1 dimension and 2 aggregate metrics, each with different axes", 
         containLabel: false,
         left: "12%",
         right: "12%",
-        top: "8%",
+        top: "10%",
         show: false,
       },
       legend: {
