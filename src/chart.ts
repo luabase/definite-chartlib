@@ -234,6 +234,7 @@ export class Chart<T extends ChartType> {
         index: metric.index,
         color: utils.color.asSingleton(metric.color),
         aggregation: "sum",
+        format: metric.format,
       })
     );
     return chart;
@@ -248,6 +249,7 @@ export class Chart<T extends ChartType> {
         index: metric.index,
         color: utils.color.asSingleton(metric.color),
         aggregation: "sum",
+        format: metric.format,
       });
     });
     return chart;
@@ -261,6 +263,7 @@ export class Chart<T extends ChartType> {
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color),
       aggregation: "sum",
+      format: this.metrics[0].format,
     });
     return chart;
   }
@@ -274,6 +277,7 @@ export class Chart<T extends ChartType> {
         index: metric.index,
         color: utils.color.asSingleton(metric.color),
         aggregation: "none",
+        format: metric.format,
       })
     );
     if (this.metrics.length < 2) {
@@ -295,6 +299,7 @@ export class Chart<T extends ChartType> {
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color),
       aggregation: "none",
+      format: this.metrics[0].format,
     });
     return chart;
   }
@@ -307,17 +312,20 @@ export class Chart<T extends ChartType> {
       chart.addDimension({
         index: dim.index,
         dataType: "datetime",
+        format: this.metrics[0].format,
       });
     } else {
       chart.addDimension({
         index: this.dimensions[0].index,
         dataType: "datetime",
+        format: this.metrics[0].format,
       });
     }
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color),
       aggregation: "sum",
+      format: this.metrics[0].format,
     });
     return chart;
   }

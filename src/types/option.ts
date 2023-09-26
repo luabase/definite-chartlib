@@ -17,13 +17,18 @@ interface Identifiable {
   id?: number;
 }
 
+interface Formattable {
+  format?: "percent" | "currency";
+}
+
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar"
   ? { dataType: Exclude<DataType, "value"> }
   : { dataType: Exclude<DataType, "value"> };
 
 export type Dimension<T extends ChartType> = Identifiable &
   Indexable &
-  ChartSpecificDimension<T>;
+  ChartSpecificDimension<T> &
+  Formattable;
 
 type ChartSpecificMetric<T extends ChartType> = T extends "bar"
   ? {
@@ -53,7 +58,7 @@ export type Metric<T extends ChartType> = Identifiable &
   ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
-  };
+  } & Formattable;
 
 interface BaseStyleOptions {
   showTitle: boolean;

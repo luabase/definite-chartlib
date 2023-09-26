@@ -2308,5 +2308,19 @@
       "RIDEABLE_TYPE": "classic_bike",
       "NUM_RIDES": 2772
     }
+  ],
+  "percentageTest": [
+    {
+      "key": "a",
+      "percent": 0.2
+    },
+    {
+      "key": "b",
+      "percent": 0.3
+    },
+    {
+      "key": "c",
+      "percent": 0.5
+    }
   ]
 }
