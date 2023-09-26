@@ -19,11 +19,8 @@ export function percentFormatter(value: string | number): string {
 }
 
 export function currencyFormatter(value: string | number): string {
-  return Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(Number(value));
+  const shortened = valueFormatter(value);
+  return "$" + shortened;
 }
 
 export function calendarTooltipFormatter(params: any): string {
