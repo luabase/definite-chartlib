@@ -416,6 +416,7 @@ declare class Chart<T extends ChartType> {
 type ColumnOptions = {
     index: number;
     dataType: string;
+    format?: "currency" | "percent";
 };
 
 declare function create<T extends ChartType>(type: T): Chart<T>;

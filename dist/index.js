@@ -1557,7 +1557,8 @@ var AutoChartFactory = class {
     otherOptions.forEach((opt) => {
       chart.addDimension({
         index: opt.index,
-        dataType: opt.dataType
+        dataType: opt.dataType,
+        format: opt.format
       });
     });
     valueOptions.forEach((opt, i) => {
@@ -1566,7 +1567,8 @@ var AutoChartFactory = class {
       chart.addMetric({
         index: opt.index,
         color: colorChoice,
-        aggregation
+        aggregation,
+        format: opt.format
       });
     });
     return chart;
