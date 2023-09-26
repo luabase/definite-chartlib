@@ -279,12 +279,15 @@ interface Indexable {
 interface Identifiable {
     id?: number;
 }
+interface Formattable {
+    format?: "percent" | "currency";
+}
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar" ? {
     dataType: Exclude<DataType, "value">;
 } : {
     dataType: Exclude<DataType, "value">;
 };
-type Dimension<T extends ChartType> = Identifiable & Indexable & ChartSpecificDimension<T>;
+type Dimension<T extends ChartType> = Identifiable & Indexable & ChartSpecificDimension<T> & Formattable;
 type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
     chartType?: "bar" | "line";
     axis?: AxisType;
@@ -309,7 +312,7 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
 type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
-};
+} & Formattable;
 interface BaseStyleOptions {
     showTitle: boolean;
     showToolbox: boolean;

@@ -467,6 +467,19 @@ function valueFormatter(value) {
     maximumFractionDigits: 1
   }).format(Number(value));
 }
+function percentFormatter(value) {
+  return Intl.NumberFormat("en-US", {
+    style: "percent",
+    maximumFractionDigits: 1
+  }).format(Number(value));
+}
+function currencyFormatter(value) {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0
+  }).format(Number(value));
+}
 function calendarTooltipFormatter(params) {
   return `
       <style>
@@ -524,7 +537,7 @@ function axis(chart, datasets2, kind) {
         type: "value",
         name: string_exports.truncate(name, 42),
         nameGap: kind === "x" ? 30 : 50,
-        axisLabel: { formatter: valueFormatter }
+        axisLabel: { formatter: determineFormatter(chart) }
       };
       axes.push(addCommonFeatures(chart.getChartType(), item, kind));
     });
@@ -568,6 +581,17 @@ function getMapOfValueAxes(chart) {
     map.set("left", chart.getMetrics());
   }
   return map;
+}
+function determineFormatter(chart) {
+  const metrics = chart.getMetrics();
+  const firstMetric = metrics[0];
+  if (firstMetric?.format === "percent") {
+    return percentFormatter;
+  } else if (firstMetric?.format === "currency") {
+    return currencyFormatter;
+  } else {
+    return valueFormatter;
+  }
 }
 
 // src/determine/calendar.ts
@@ -1117,7 +1141,8 @@ var _Chart = class {
       (metric) => chart.addMetric({
         index: metric.index,
         color: color_exports2.asSingleton(metric.color),
-        aggregation: "sum"
+        aggregation: "sum",
+        format: metric.format
       })
     );
     return chart;
@@ -1130,7 +1155,8 @@ var _Chart = class {
       chart.addMetric({
         index: metric.index,
         color: color_exports2.asSingleton(metric.color),
-        aggregation: "sum"
+        aggregation: "sum",
+        format: metric.format
       });
     });
     return chart;
@@ -1142,7 +1168,8 @@ var _Chart = class {
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color),
-      aggregation: "sum"
+      aggregation: "sum",
+      format: this.metrics[0].format
     });
     return chart;
   }
@@ -1154,7 +1181,8 @@ var _Chart = class {
       (metric) => chart.addMetric({
         index: metric.index,
         color: color_exports2.asSingleton(metric.color),
-        aggregation: "none"
+        aggregation: "none",
+        format: metric.format
       })
     );
     if (this.metrics.length < 2) {
@@ -1174,7 +1202,8 @@ var _Chart = class {
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color),
-      aggregation: "none"
+      aggregation: "none",
+      format: this.metrics[0].format
     });
     return chart;
   }
@@ -1185,18 +1214,21 @@ var _Chart = class {
     if (dim) {
       chart.addDimension({
         index: dim.index,
-        dataType: "datetime"
+        dataType: "datetime",
+        format: this.metrics[0].format
       });
     } else {
       chart.addDimension({
         index: this.dimensions[0].index,
-        dataType: "datetime"
+        dataType: "datetime",
+        format: this.metrics[0].format
       });
     }
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color),
-      aggregation: "sum"
+      aggregation: "sum",
+      format: this.metrics[0].format
     });
     return chart;
   }
