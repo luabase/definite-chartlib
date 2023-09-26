@@ -11,6 +11,21 @@ export function valueFormatter(value: string | number): string {
   }).format(Number(value));
 }
 
+export function percentFormatter(value: string | number): string {
+  return Intl.NumberFormat("en-US", {
+    style: "percent",
+    maximumFractionDigits: 1,
+  }).format(Number(value));
+}
+
+export function currencyFormatter(value: string | number): string {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(Number(value));
+}
+
 export function calendarTooltipFormatter(params: any): string {
   return `
       <style>

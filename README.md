@@ -26,7 +26,8 @@
   dimensions: [
     {
       index: number,
-      dataType: "category" | "datetime"
+      dataType: "category" | "datetime",
+      format?: "percent" | "currency",
     },
     ...
   ],
@@ -38,6 +39,7 @@
       axis?: "left" | "right",
       dataType?: "value",
       chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
+      format?: "percent" | "currency",
     },
     ...
   ]

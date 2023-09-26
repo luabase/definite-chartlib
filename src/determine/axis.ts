@@ -1,7 +1,12 @@
 import { Chart } from "../chart";
 import { ChartType, Metric, echarts } from "../types";
 import { DataFrame } from "../dataframe";
-import { categoryFormatter, valueFormatter } from "../formatters";
+import {
+  categoryFormatter,
+  valueFormatter,
+  percentFormatter,
+  currencyFormatter,
+} from "../formatters";
 import { color } from "../constants";
 import * as utils from "../utils";
 
@@ -52,7 +57,7 @@ export function axis<T extends ChartType>(
           type: "value",
           name: utils.string.truncate(name, 42),
           nameGap: kind === "x" ? 30 : 50,
-          axisLabel: { formatter: valueFormatter },
+          axisLabel: { formatter: determineFormatter(chart) },
         };
         axes.push(addCommonFeatures(chart.getChartType(), item, kind));
       });
@@ -106,4 +111,16 @@ function getMapOfValueAxes<T extends ChartType>(chart: Chart<T>) {
     map.set("left", chart.getMetrics());
   }
   return map;
+}
+
+function determineFormatter<T extends ChartType>(chart: Chart<T>) {
+  const metrics = chart.getMetrics();
+  const firstMetric = metrics[0];
+  if (firstMetric?.format === "percent") {
+    return percentFormatter;
+  } else if (firstMetric?.format === "currency") {
+    return currencyFormatter;
+  } else {
+    return valueFormatter;
+  }
 }
