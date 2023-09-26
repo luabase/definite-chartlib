@@ -474,11 +474,8 @@ function percentFormatter(value) {
   }).format(Number(value));
 }
 function currencyFormatter(value) {
-  return Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0
-  }).format(Number(value));
+  const shortened = valueFormatter(value);
+  return "$" + shortened;
 }
 function calendarTooltipFormatter(params) {
   return `
