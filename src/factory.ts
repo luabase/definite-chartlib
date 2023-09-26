@@ -3,7 +3,12 @@ import { ChartType, DataType } from "./types";
 import { color } from "./constants";
 import * as utils from "./utils";
 
-export type ColumnOptions = { index: number; dataType: string };
+export type ColumnOptions = {
+  index: number;
+  dataType: string;
+  format?: "currency" | "percent";
+};
+
 type CreateChartMessage = {
   type: string;
   options: Array<ColumnOptions>;
@@ -136,6 +141,7 @@ export class AutoChartFactory {
       chart.addDimension({
         index: opt.index,
         dataType: <Exclude<DataType, "value">>opt.dataType,
+        format: opt.format,
       });
     });
 
@@ -150,6 +156,7 @@ export class AutoChartFactory {
         index: opt.index,
         color: colorChoice,
         aggregation: aggregation,
+        format: opt.format,
       });
     });
     return chart;
