@@ -125,7 +125,9 @@ interface AxisPointer {
     type: "line" | "cross" | "none";
     crossStyle: CrossStyle;
 }
-interface ToolTip extends IShowable {
+interface ToolTip extends IShowable, IStylable {
+    backgroundColor?: string;
+    borderColor?: string;
     confine?: boolean;
     trigger?: "item" | "axis" | "none";
     axisPointer?: AxisPointer;
