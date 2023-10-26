@@ -91,6 +91,11 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
       },
       tooltip: {
         confine: true,
+        backgroundColor: "rgb(24 24 27)",
+        borderColor: "rgb(212 212 216)",
+        textStyle: {
+          color: "rgb(212 212 216)",
+        },
         show: true,
         trigger: "item",
       },

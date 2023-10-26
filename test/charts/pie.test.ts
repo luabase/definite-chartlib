@@ -109,6 +109,11 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       },
       tooltip: {
         confine: true,
+        backgroundColor: "rgb(24 24 27)",
+        borderColor: "rgb(212 212 216)",
+        textStyle: {
+          color: "rgb(212 212 216)",
+        },
         show: true,
         trigger: "item",
       },
@@ -251,6 +256,11 @@ describe("given a percentage format in the first metric", () => {
       },
       tooltip: {
         confine: true,
+        backgroundColor: "rgb(24 24 27)",
+        borderColor: "rgb(212 212 216)",
+        textStyle: {
+          color: "rgb(212 212 216)",
+        },
         show: true,
         trigger: "item",
       },
