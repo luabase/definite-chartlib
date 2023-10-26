@@ -1,4 +1,4 @@
-import { IShowable } from "./abstract";
+import { IShowable, IStylable } from "./abstract";
 
 interface CrossStyle {
   color: string;
@@ -9,7 +9,9 @@ interface AxisPointer {
   crossStyle: CrossStyle;
 }
 
-export default interface ToolTip extends IShowable {
+export default interface ToolTip extends IShowable, IStylable {
+  backgroundColor?: string;
+  borderColor?: string;
   confine?: boolean;
   trigger?: "item" | "axis" | "none";
   axisPointer?: AxisPointer;
