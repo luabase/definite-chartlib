@@ -23,7 +23,11 @@ export class DataFrame {
           }
         });
       }
-      this.data.push(Object.values(row));
+      // normalize boolean values to string
+      const values = Object.values(row).map((v) =>
+        typeof v === "boolean" ? String(v) : v
+      );
+      this.data.push(values);
     });
     this.shape = {
       height: this.data.length,
