@@ -188,7 +188,7 @@ declare namespace index {
 }
 
 type RowOriented = Array<{
-    [key: string]: Option<number | string>;
+    [key: string]: Option<number | string | boolean>;
 }>;
 
 declare const LIME_200 = "#d9f99d";
