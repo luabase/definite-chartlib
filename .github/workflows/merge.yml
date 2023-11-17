@@ -22,10 +22,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Get pnpm version
-        id: get_pnpm_version
+      - name: Get package version
+        id: get_package_version
         run: |
-          echo "::set-output name=version::$(pnpm --version)"
+          echo "::set-output name=version::$(node -p 'require(`./package.json`).version')"
 
       - id: gcloud_auth
         name: gCloud Auth
@@ -45,4 +45,4 @@ jobs:
           gh release create v$VERSION --generate-notes
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-          VERSION: ${{ steps.get_pnpm_version.outputs.version }}
+          VERSION: ${{ steps.get_package_version.outputs.version }}
