@@ -15,6 +15,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - uses: pnpm/action-setup@v2
         name: Setup pnpm
@@ -24,25 +25,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Configure git
+      - name: Config git
+        shell: bash
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git config --global pull.rebase false
 
-      - name: Pull main
-        run: git pull origin main
-
-      - name: Create release branch
-        run: |
-          RELEASE_BRANCH="release/${{ inputs.version }}"
-          git checkout -b "$RELEASE_BRANCH"
+      - uses: peterjgrainger/action-create-branch@v2.2.0
         env:
-          VERSION: ${{ inputs.version }}
-
-      - name: Push release branch
-        uses: ad-m/github-push-action@master
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          github_token: ${{ secrets.PAT }}
           branch: release/${{ inputs.version }}
 
       - name: Run build
@@ -97,7 +90,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.PAT }}
-          branch: ${{ github.ref }}
+          branch: release/${{ inputs.version }}
 
       - name: Open Pull Request
         id: pr
@@ -114,6 +107,13 @@ jobs:
           gh pr merge $PR_NUMBER --squash --admin
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+
+      - uses: actions/checkout@v3
+        name: Checkout main
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - name: Create release
         run: |
