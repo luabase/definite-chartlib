@@ -1,6 +1,7 @@
 name: Pull Request
 on:
   pull_request:
+    types: [opened, edited, synchronize, ready_for_review]
     paths:
       - "http/**"
       - "src/**"
@@ -144,11 +145,15 @@ jobs:
             const { number: prNumber } = context.payload.pull_request;
 
             const comment = `
-              **PR has been linted, tested and built successfully.**
+              🤖 This is an automated comment
+
+              **PR is ready for deployment**
 
               :white_check_mark: Linted
               :white_check_mark: Tested
               :white_check_mark: Built
+
+              Before merging, please tag a new version.
 
               To tag version please comment with one of the following:
 
