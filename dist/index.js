@@ -263,7 +263,10 @@ var _DataFrame = class {
           }
         });
       }
-      this.data.push(Object.values(row));
+      const values = Object.values(row).map(
+        (v) => typeof v === "boolean" ? String(v) : v
+      );
+      this.data.push(values);
     });
     this.shape = {
       height: this.data.length,
