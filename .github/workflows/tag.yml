@@ -10,7 +10,7 @@ jobs:
       - uses: khan/pull-request-comment-trigger@v1.1.0
         id: check
         with:
-          trigger: "@tag:patch"
+          trigger: "tag:patch"
           reaction: eyes
         env:
           GITHUB_TOKEN: "${{ secrets.PAT }}"
@@ -76,7 +76,7 @@ jobs:
       - uses: khan/pull-request-comment-trigger@v1.1.0
         id: check
         with:
-          trigger: "@tag:minor"
+          trigger: "tag:minor"
           reaction: eyes
         env:
           GITHUB_TOKEN: "${{ secrets.PAT }}"
@@ -142,7 +142,7 @@ jobs:
       - uses: khan/pull-request-comment-trigger@v1.1.0
         id: check
         with:
-          trigger: "@tag:major"
+          trigger: "tag:major"
           reaction: eyes
         env:
           GITHUB_TOKEN: "${{ secrets.PAT }}"
