@@ -1,4 +1,4 @@
-name: Pull Request
+name: Tag Version
 on:
   issue_comment:
     types: [created]
