@@ -10,6 +10,7 @@
   "scripts": {
     "build": "rm -rf ./dist ./node_modules && pnpm install && tsup src/index.ts --dts --format esm,cjs",
     "lint": "eslint --fix",
+    "lint:ci": "eslint",
     "test": "vitest --reporter verbose",
     "test:ci": "vitest --no-watch",
     "docker:build": "docker build -t chartlib-http .",
