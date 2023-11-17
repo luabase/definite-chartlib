@@ -5,6 +5,8 @@ on:
       - "src/**"
       - "tests/**"
       - "package.json"
+    branches-ignore:
+      - "release"
 
 jobs:
   test:

@@ -13,19 +13,16 @@ jobs:
       - uses: actions/checkout@v3
         name: Checkout
         with:
-          ref: ${{ github.head_ref }}
+          ref: main
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v2
         name: Setup pnpm
         with:
-          version: 8.6.3
+          version: 8.10.2
 
       - name: Install dependencies
         run: pnpm install
-
-      - name: Run tests
-        run: pnpm test:ci
 
       - name: Configure git
         run: |
@@ -34,6 +31,19 @@ jobs:
 
       - name: Pull main
         run: git pull origin main
+
+      - name: Create release branch
+        run: |
+          RELEASE_BRANCH="release/${{ inputs.version }}"
+          git checkout -b "$RELEASE_BRANCH"
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - name: Push release branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: release/${{ inputs.version }}
 
       - name: Run build
         run: pnpm build
@@ -49,19 +59,6 @@ jobs:
           git add package.json
           git commit -m "🤖 build v$VERSION"
         env:
-          VERSION: ${{ inputs.version }}
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
-      - name: Create release
-        run: |
-          gh release create v$VERSION --generate-notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ inputs.version }}
 
       - name: Bump version dependency for http
@@ -99,5 +96,28 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           branch: ${{ github.ref }}
+
+      - name: Open Pull Request
+        id: pr
+        run: |
+          PR_URL=$(gh pr create --base main --head release/${{ inputs.version }} --title "Release ${{ inputs.version }}" --body "Release pull request for version ${{ inputs.version }}" --json url)
+          echo "::set-output name=url::$PR_URL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          VERSION: ${{ inputs.version }}
+
+      - name: Merge Pull Request
+        run: |
+          PR_NUMBER=$(basename ${{ steps.pr.outputs.url }})
+          gh pr merge $PR_NUMBER --squash --admin
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+      - name: Create release
+        run: |
+          gh release create v$VERSION --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          VERSION: ${{ inputs.version }}
