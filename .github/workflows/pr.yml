@@ -1,0 +1,171 @@
+name: Pull Request
+on:
+  pull_request:
+    types: [opened, edited, synchronize, ready_for_review]
+    paths:
+      - "http/**"
+      - "src/**"
+      - "tests/**"
+      - "Dockerfile"
+
+jobs:
+  meta:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Assign PR to author
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const issue_number = context.issue.number;
+            const user = context.payload.pull_request.user.login;
+            await github.rest.issues.addAssignees({
+              ...context.repo,
+              issue_number: issue_number,
+              assignees: [user]
+            });
+
+      - name: Label PR based on title
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const { number: prNumber, title } = context.payload.pull_request;
+            const match = title.match(/^(feat|fix|chore)/);
+
+            if (!match || match.length < 1) {
+              console.log('No label prefix found in PR title, skipping labelling.');
+              return;
+            }
+
+            const labelName = match[0].toLowerCase();
+
+            const validLabels = ['feat', 'fix', 'chore'];
+            if (!validLabels.includes(labelName)) {
+              console.log(`Invalid label "${labelName}" in PR title, skipping labelling.`);
+              return;
+            }
+
+            await github.rest.issues.setLabels({
+              ...context.repo,
+              issue_number: prNumber,
+              labels: [labelName]
+            });
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint:ci
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test:ci
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Config git
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --global pull.rebase false
+
+      - name: Commit files
+        id: commit
+        continue-on-error: true
+        shell: bash
+        run: |
+          git add .
+          git commit -m "🤖 build"
+          git push
+
+      - name: Push changes
+        if: steps.commit.outcome == 'success'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.head_ref }}
+
+      - name: Comment PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const { number: prNumber } = context.payload.pull_request;
+
+            const comment = `
+              🤖 This is an automated comment
+
+              **PR is ready for deployment**
+
+              :white_check_mark: Linted
+              :white_check_mark: Tested
+              :white_check_mark: Built
+
+              Before merging, please tag a new version.
+
+              To tag version please comment with one of the following:
+
+              - \`tag:patch\` for bug fixes
+              - \`tag:minor\` for new features
+              - \`tag:major\` for breaking changes
+            `;
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: comment
+            });
