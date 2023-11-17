@@ -160,9 +160,11 @@ jobs:
 
               To tag version please comment with one of the following:
 
-              - \`tag:patch\` for bug fixes
-              - \`tag:minor\` for new features
-              - \`tag:major\` for breaking changes
+              - \`patch\` for bug fixes
+              - \`minor\` for new features
+              - \`major\` for breaking changes
+
+              To trigger, please prefix your choice with \`tag:<TYPE>\`
             `;
 
             await github.rest.issues.createComment({
