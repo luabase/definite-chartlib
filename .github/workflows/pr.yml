@@ -7,7 +7,6 @@ on:
       - "src/**"
       - "tests/**"
       - "Dockerfile"
-      - "package.json"
 
 jobs:
   meta:
