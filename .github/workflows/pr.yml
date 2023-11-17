@@ -1,0 +1,353 @@
+name: Pull Request
+on:
+  pull_request:
+    paths:
+      - "http/**"
+      - "src/**"
+      - "tests/**"
+      - "Dockerfile"
+      - "package.json"
+
+jobs:
+  meta:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Assign PR to author
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const issue_number = context.issue.number;
+            const user = context.payload.pull_request.user.login;
+            await github.rest.issues.addAssignees({
+              ...context.repo,
+              issue_number: issue_number,
+              assignees: [user]
+            });
+
+      - name: Label PR based on title
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const { number: prNumber, title } = context.payload.pull_request;
+            const match = title.match(/^(feat|fix|chore)/);
+
+            if (!match || match.length < 1) {
+              console.log('No label prefix found in PR title, skipping labelling.');
+              return;
+            }
+
+            const labelName = match[0].toLowerCase();
+
+            const validLabels = ['feat', 'fix', 'chore'];
+            if (!validLabels.includes(labelName)) {
+              console.log(`Invalid label "${labelName}" in PR title, skipping labelling.`);
+              return;
+            }
+
+            await github.rest.issues.setLabels({
+              ...context.repo,
+              issue_number: prNumber,
+              labels: [labelName]
+            });
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint:ci
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test:ci
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Config git
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --global pull.rebase false
+
+      - name: Commit files
+        shell: bash
+        run: |
+          git add .
+          git commit -m "🤖 build"
+          git push
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.head_ref }}
+
+      - name: Comment PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const { number: prNumber } = context.payload.pull_request;
+
+            const comment = `
+              **PR has been linted, tested and built successfully.**
+
+              :white_check_mark: Linted
+              :white_check_mark: Tested
+              :white_check_mark: Built
+
+              To tag version please comment with one of the following:
+
+              - @tag:patch
+              - @tag:minor
+              - @tag:major
+            `;
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: comment
+            });
+
+  tag_patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check
+        with:
+          trigger: "@tag:patch"
+          reaction: eyes
+        env:
+          GITHUB_TOKEN: "${{ secrets.PAT }}"
+
+      - uses: actions/checkout@v3
+        name: Checkout
+        if: steps.check.outputs.triggered == 'true'
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        if: steps.check.outputs.triggered == 'true'
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        if: steps.check.outputs.triggered == 'true'
+        run: |
+          pnpm version patch --no-commit-hooks --no-git-tag-version --no-workspaces-update
+          cd http
+          pnpm version patch --no-commit-hooks --no-git-tag-version --no-workspaces-update
+
+      - name: Config git
+        if: steps.check.outputs.triggered == 'true'
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --global pull.rebase false
+
+      - name: Get pnpm version
+        if: steps.check.outputs.triggered == 'true'
+        id: get_pnpm_version
+        run: |
+          echo "::set-output name=version::$(pnpm --version)"
+
+      - name: Commit files
+        shell: bash
+        run: |
+          git add .
+          git commit -m "🤖 bump to v$VERSION"
+          git push
+        env:
+          VERSION: ${{ steps.get_pnpm_version.outputs.version }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.head_ref }}
+
+  tag_minor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check
+        with:
+          trigger: "@tag:minor"
+          reaction: eyes
+        env:
+          GITHUB_TOKEN: "${{ secrets.PAT }}"
+
+      - uses: actions/checkout@v3
+        name: Checkout
+        if: steps.check.outputs.triggered == 'true'
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        if: steps.check.outputs.triggered == 'true'
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        if: steps.check.outputs.triggered == 'true'
+        run: |
+          pnpm version minor --no-commit-hooks --no-git-tag-version --no-workspaces-update
+          cd http
+          pnpm version minor --no-commit-hooks --no-git-tag-version --no-workspaces-update
+
+      - name: Config git
+        if: steps.check.outputs.triggered == 'true'
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --global pull.rebase false
+
+      - name: Get pnpm version
+        if: steps.check.outputs.triggered == 'true'
+        id: get_pnpm_version
+        run: |
+          echo "::set-output name=version::$(pnpm --version)"
+
+      - name: Commit files
+        shell: bash
+        run: |
+          git add .
+          git commit -m "🤖 bump to v$VERSION"
+          git push
+        env:
+          VERSION: ${{ steps.get_pnpm_version.outputs.version }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.head_ref }}
+
+  tag_major:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check
+        with:
+          trigger: "@tag:major"
+          reaction: eyes
+        env:
+          GITHUB_TOKEN: "${{ secrets.PAT }}"
+
+      - uses: actions/checkout@v3
+        name: Checkout
+        if: steps.check.outputs.triggered == 'true'
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        if: steps.check.outputs.triggered == 'true'
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        if: steps.check.outputs.triggered == 'true'
+        run: |
+          pnpm version major --no-commit-hooks --no-git-tag-version --no-workspaces-update
+          cd http
+          pnpm version major --no-commit-hooks --no-git-tag-version --no-workspaces-update
+
+      - name: Config git
+        if: steps.check.outputs.triggered == 'true'
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --global pull.rebase false
+
+      - name: Get pnpm version
+        if: steps.check.outputs.triggered == 'true'
+        id: get_pnpm_version
+        run: |
+          echo "::set-output name=version::$(pnpm --version)"
+
+      - name: Commit files
+        shell: bash
+        run: |
+          git add .
+          git commit -m "🤖 bump to v$VERSION"
+          git push
+        env:
+          VERSION: ${{ steps.get_pnpm_version.outputs.version }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.head_ref }}

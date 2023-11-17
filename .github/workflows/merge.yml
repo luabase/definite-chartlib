@@ -1,0 +1,48 @@
+name: Merge
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          ref: main
+          token: ${{ secrets.PAT }}
+
+      - uses: pnpm/action-setup@v2
+        name: Setup pnpm
+        with:
+          version: 8.10.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get pnpm version
+        id: get_pnpm_version
+        run: |
+          echo "::set-output name=version::$(pnpm --version)"
+
+      - id: gcloud_auth
+        name: gCloud Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Deploy
+        id: deploy
+        run: gcloud builds submit
+
+      - name: Create release
+        run: |
+          gh release create v$VERSION --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          VERSION: ${{ steps.get_pnpm_version.outputs.version }}
