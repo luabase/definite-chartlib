@@ -159,9 +159,9 @@ jobs:
 
               To tag version please comment with one of the following:
 
-              - tag:patch
-              - tag:minor
-              - tag:major
+              - \'tag:patch\' for bug fixes
+              - \'tag:minor\' for new features
+              - \'tag:major\' for breaking changes
             `;
 
             await github.rest.issues.createComment({
