@@ -18,6 +18,7 @@
     "docker:up": "pnpm run docker:build && pnpm run docker:run"
   },
   "devDependencies": {
+    "eslint": "^8.53.0",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4",
     "vitest": "^0.31.0"
