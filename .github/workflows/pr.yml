@@ -6,6 +6,7 @@ on:
       - "http/**"
       - "src/**"
       - "tests/**"
+      - "cloudbuild.yaml"
       - "Dockerfile"
 
 jobs:
