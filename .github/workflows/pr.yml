@@ -6,6 +6,7 @@ on:
       - "http/**"
       - "src/**"
       - "tests/**"
+      - "cloudbuild.yaml"
       - "Dockerfile"
 
 jobs:
@@ -155,13 +156,13 @@ jobs:
               :white_check_mark: Tested
               :white_check_mark: Built
 
-              Before merging, please tag a new version.
+              Before merging, please make sure that you have bumped the version number in the \`package.json\` file.
 
-              To tag version please comment with one of the following:
+              There are scripts available to help you with this:
 
-              - \`tag:patch\` for bug fixes
-              - \`tag:minor\` for new features
-              - \`tag:major\` for breaking changes
+              - \`pnpm version:major\` (for breaking changes)
+              - \`pnpm version:minor\` (for new features)
+              - \`pnpm version:patch\` (for bug fixes)
             `;
 
             await github.rest.issues.createComment({

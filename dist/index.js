@@ -263,15 +263,19 @@ var _DataFrame = class {
           }
         });
       }
-      const values = Object.values(row).map(
-        (v) => typeof v === "boolean" ? String(v) : v
-      );
+      const values = this.normalizeRow(Object.values(row));
       this.data.push(values);
     });
     this.shape = {
       height: this.data.length,
       width: Object.keys(this.columns).length
     };
+  }
+  normalizeRow(row) {
+    const values = Object.values(row).map(
+      (v) => typeof v === "boolean" ? String(v) : v
+    );
+    return values;
   }
   static load(data, columns) {
     const df = new _DataFrame([]);

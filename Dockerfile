@@ -1,10 +1,8 @@
-FROM node:16-alpine
+FROM node:20-alpine
 
 RUN npm install --global pnpm
 
 COPY . .
-
-RUN pnpm build
 
 WORKDIR /http
 RUN pnpm install

@@ -24,15 +24,22 @@ export class DataFrame {
         });
       }
       // normalize boolean values to string
-      const values = Object.values(row).map((v) =>
-        typeof v === "boolean" ? String(v) : v
-      );
+      const values = this.normalizeRow(Object.values(row));
       this.data.push(values);
     });
     this.shape = {
       height: this.data.length,
       width: Object.keys(this.columns).length,
     };
+  }
+
+  private normalizeRow(
+    row: Array<number | string | boolean | null>
+  ): Array<Value> {
+    const values = Object.values(row).map((v) =>
+      typeof v === "boolean" ? String(v) : v
+    );
+    return values;
   }
 
   static load(data: Matrix, columns: Map<number, string>) {

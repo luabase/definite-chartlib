@@ -1,8 +1,5 @@
 # @definite/chartlib
 
-[![Test](https://github.com/luabase/definite-chartlib/actions/workflows/test.yml/badge.svg)](https://github.com/luabase/definite-chartlib/actions/workflows/test.yml)
-[![Release](https://github.com/luabase/definite-chartlib/actions/workflows/release.yml/badge.svg)](https://github.com/luabase/definite-chartlib/actions/workflows/release.yml)
-
 ## Chart Options Schema
 
 📑 [Spec](./schema.json)
