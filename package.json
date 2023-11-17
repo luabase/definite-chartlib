@@ -1,7 +1,7 @@
 {
   "name": "@definite/chartlib",
   "type": "module",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -15,7 +15,10 @@
     "test:ci": "vitest --no-watch",
     "docker:build": "docker build -t chartlib-http .",
     "docker:run": "docker run -p 8080:8080 chartlib-http",
-    "docker:up": "pnpm run docker:build && pnpm run docker:run"
+    "docker:up": "pnpm run docker:build && pnpm run docker:run",
+    "version:patch": "./scripts/version.sh --bump patch",
+    "version:minor": "./scripts/version.sh --bump minor",
+    "version:major": "./scripts/version.sh --bump major"
   },
   "devDependencies": {
     "eslint": "^8.53.0",
