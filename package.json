@@ -1,7 +1,7 @@
 {
   "name": "@definite/chartlib",
   "type": "module",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
