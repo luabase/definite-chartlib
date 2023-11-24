@@ -24,7 +24,6 @@
     {
       index: number,
       dataType: "category" | "datetime",
-      format?: "percent" | "currency",
     },
     ...
   ],

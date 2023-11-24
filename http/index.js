@@ -44,7 +44,7 @@ app.get("/", (_, res) => {
 
 // GET schema
 app.get("/schema", (_, res) => {
-  const filePath = path.join(process.cwd(), "schema.json");
+  const filePath = path.join(process.cwd(), "../schema.json");
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
       console.error(err);
@@ -83,7 +83,7 @@ app.post("/factory", (req, res) => {
   res.send(
     charts
       .filter((chart, index, array) => {
-        return array.findIndex((other) => other.equals(chart)) === index
+        return array.findIndex((other) => other.equals(chart)) === index;
       })
       .map((chart) => chart.getOptions())
   );
