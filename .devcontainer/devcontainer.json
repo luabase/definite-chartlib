@@ -1,6 +1,6 @@
 {
   "name": "chartlib-dev",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:16",
   "features": {
     "ghcr.io/devcontainers-contrib/features/pnpm": {},
     "ghcr.io/devcontainers-contrib/features/zsh-plugins": {},
