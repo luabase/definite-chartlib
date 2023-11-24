@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "ChartOptions",
   "type": "object",
   "properties": {
     "chartType": {
@@ -12,13 +13,11 @@
       "properties": {
         "showTitle": {
           "type": "boolean",
-          "description": "Whether to show chart title",
-          "default": true
+          "description": "Whether to show chart title"
         },
         "showToolbox": {
           "type": "boolean",
-          "description": "Whether to show toolbox",
-          "default": false
+          "description": "Whether to show toolbox"
         },
         "showLegend": {
           "type": "boolean",
@@ -106,6 +105,26 @@
           "type": "string",
           "enum": ["avg", "sum", "count", "distinct", "min", "max", "none"],
           "description": "Aggregation to use for the metric field grouping by the first dimension given. If scatter or heatmap is chosen then aggregation must be none"
+        },
+        "axis": {
+          "type": "string",
+          "enum": ["left", "right"],
+          "description": "Axis to use for the metric field. Only valid for line charts"
+        },
+        "dataType": {
+          "type": "string",
+          "enum": ["value"],
+          "description": "Data type of the field"
+        },
+        "chartType": {
+          "type": "string",
+          "enum": ["bar", "line", "pie", "scatter", "heatmap", "calendar"],
+          "description": "Chart type"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["percent", "currency"],
+          "description": "Format of the metric"
         }
       },
       "required": ["index", "color", "aggregation"],
