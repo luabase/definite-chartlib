@@ -7,6 +7,7 @@ on:
       - "src/**"
       - "tests/**"
       - "cloudbuild.yaml"
+      - "schema.json"
       - "Dockerfile"
 
 jobs:
