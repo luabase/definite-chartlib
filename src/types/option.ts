@@ -18,7 +18,7 @@ interface Identifiable {
 }
 
 interface Formattable {
-  format?: "percent" | "currency";
+  format?: "percent" | "currency" | "number";
 }
 
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar"
