@@ -38,6 +38,8 @@ interface Axis$1 extends IShowable {
     nameTextStyle?: TextStyle;
     splitLine?: SplitLine;
     axisLabel?: AxisLabel;
+    min?: number;
+    max?: number;
 }
 
 interface Calendar extends IAdjustable {
@@ -282,7 +284,11 @@ interface Identifiable {
     id?: number;
 }
 interface Formattable {
-    format?: "percent" | "currency";
+    format?: "percent" | "currency" | "number";
+}
+interface OptionalNumberRange {
+    min?: number;
+    max?: number;
 }
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar" ? {
     dataType: Exclude<DataType, "value">;
@@ -314,7 +320,7 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
 type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
-} & Formattable;
+} & Formattable & OptionalNumberRange;
 interface BaseStyleOptions {
     showTitle: boolean;
     showToolbox: boolean;
