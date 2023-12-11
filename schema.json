@@ -135,8 +135,16 @@
           },
           "format": {
             "type": "string",
-            "enum": ["percent", "currency"],
+            "enum": ["percent", "currency", "number"],
             "description": "Format of the metric"
+          },
+          "min": {
+            "type": "number",
+            "description": "Minimum value allowed in chart"
+          },
+          "max": {
+            "type": "number",
+            "description": "Maximum value allowed in chart"
           }
         },
         "required": ["index", "color", "aggregation"],
