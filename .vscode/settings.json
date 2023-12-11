@@ -1,36 +1,20 @@
 {
-  "cSpell.words": [
-    "chartlib",
-    "dataframe",
-    "datetime",
-    "devcontainers",
-    "echart",
-    "echarts",
-    "gcloud",
-    "luabase",
-    "noreply",
-    "pageview",
-    "pageviews",
-    "Showable",
-    "tsup"
-  ],
   "editor.tabSize": 2,
   "typescript.inlayHints.parameterTypes.enabled": true,
   "typescript.inlayHints.parameterNames.enabled": "all",
-  "workbench.colorTheme": "JetBrains New Dark",
-  "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
-  "terminal.integrated.defaultProfile.linux": "zsh",
-  "terminal.integrated.profiles.linux": {
-    "zsh": {
-      "path": "/bin/zsh"
-    }
-  },
-  "cloudcode.autoDependencies": "off",
   "editor.formatOnSave": true,
   "markdown.extension.tableFormatter.normalizeIndentation": true,
   "markdown.extension.tableFormatter.delimiterRowNoPadding": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {

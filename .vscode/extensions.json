@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "dbaeumer.vscode-eslint",
+    "github.vscode-github-actions",
+    "GitHub.vscode-pull-request-github",
+    "eamodio.gitlens",
+    "yzhang.markdown-all-in-one",
+    "esbenp.prettier-vscode",
+    "Gruntfuggly.todo-tree",
+    "ZixuanChen.vitest-explorer",
+    "GoogleCloudTools.cloudcode",
+    "ms-azuretools.vscode-docker",
+    "rangav.vscode-thunder-client",
+    "googlecloudtools.cloudcode"
+  ]
+}
