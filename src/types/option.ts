@@ -21,6 +21,11 @@ interface Formattable {
   format?: "percent" | "currency" | "number";
 }
 
+interface OptionalNumberRange {
+  min?: number;
+  max?: number;
+}
+
 type ChartSpecificDimension<T extends ChartType> = T extends "calendar"
   ? { dataType: Exclude<DataType, "value"> }
   : { dataType: Exclude<DataType, "value"> };
@@ -58,7 +63,8 @@ export type Metric<T extends ChartType> = Identifiable &
   ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
-  } & Formattable;
+  } & Formattable &
+  OptionalNumberRange;
 
 interface BaseStyleOptions {
   showTitle: boolean;

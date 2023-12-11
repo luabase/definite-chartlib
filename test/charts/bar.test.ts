@@ -13,6 +13,8 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       index: 2,
       color: color.LIME_200,
       aggregation: "sum",
+      min: 400,
+      max: 500,
     });
   it("can compile to a vertical bar chart", () => {
     expect(chart.compile("My chart", data["dailyUsersByMobileOS"])).toEqual({
@@ -138,6 +140,8 @@ describe("given 1 dimension and 1 aggregate metric", () => {
             },
           },
           type: "value",
+          min: 400,
+          max: 500,
         },
       ],
     });
@@ -245,6 +249,8 @@ describe("given 1 dimension and 1 aggregate metric", () => {
           },
           show: true,
           type: "value",
+          min: 400,
+          max: 500,
         },
       ],
       yAxis: [

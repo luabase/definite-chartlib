@@ -15,4 +15,6 @@ export default interface Axis extends IShowable {
   nameTextStyle?: TextStyle;
   splitLine?: SplitLine;
   axisLabel?: AxisLabel;
+  min?: number;
+  max?: number;
 }
