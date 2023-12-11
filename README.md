@@ -35,7 +35,9 @@
       axis?: "left" | "right",
       dataType?: "value",
       chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
-      format?: "percent" | "currency",
+      format?: "percent" | "currency" | "number",
+      min?: number,
+      max?: number
     },
     ...
   ]

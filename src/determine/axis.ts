@@ -59,6 +59,12 @@ export function axis<T extends ChartType>(
           nameGap: kind === "x" ? 30 : 50,
           axisLabel: { formatter: determineFormatter(chart) },
         };
+        if (metrics[0].min !== undefined && String(metrics[0].min) !== "") {
+          item.min = metrics[0].min;
+        }
+        if (metrics[0].max !== undefined && String(metrics[0].max) !== "") {
+          item.max = metrics[0].max;
+        }
         axes.push(addCommonFeatures(chart.getChartType(), item, kind));
       });
   }

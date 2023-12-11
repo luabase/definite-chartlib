@@ -543,6 +543,12 @@ function axis(chart, datasets2, kind) {
         nameGap: kind === "x" ? 30 : 50,
         axisLabel: { formatter: determineFormatter(chart) }
       };
+      if (metrics[0].min !== void 0 && String(metrics[0].min) !== "") {
+        item.min = metrics[0].min;
+      }
+      if (metrics[0].max !== void 0 && String(metrics[0].max) !== "") {
+        item.max = metrics[0].max;
+      }
       axes.push(addCommonFeatures(chart.getChartType(), item, kind));
     });
   }
