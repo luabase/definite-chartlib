@@ -176,67 +176,6 @@ function containsLargeData(datasets2) {
   return datasets2[datasets2.length - 1].source.length > 6;
 }
 
-// src/utils/datetime.ts
-var datetime_exports = {};
-__export(datetime_exports, {
-  getQuarter: () => getQuarter,
-  isStartOrEndOfMonth: () => isStartOrEndOfMonth,
-  isStartOrEndOfQuarter: () => isStartOrEndOfQuarter,
-  isStartOrEndOfYear: () => isStartOrEndOfYear,
-  strftime: () => strftime
-});
-function getQuarter(d) {
-  const month = d.getUTCMonth() + 1;
-  if (month <= 3) {
-    return 1;
-  } else if (month <= 6) {
-    return 2;
-  } else if (month <= 9) {
-    return 3;
-  } else {
-    return 4;
-  }
-}
-function isStartOrEndOfYear(d) {
-  return d.getUTCMonth() === 0 && d.getUTCDate() === 1 || d.getUTCMonth() === 11 && d.getUTCDate() === 31;
-}
-function isStartOrEndOfQuarter(d) {
-  return d.getUTCMonth() + 1 === 1 && d.getUTCDate() === 1 || // Jan 1
-  d.getUTCMonth() + 1 === 3 && d.getUTCDate() === 31 || // Mar 31
-  d.getUTCMonth() + 1 === 4 && d.getUTCDate() === 1 || // Apr 1
-  d.getUTCMonth() + 1 === 6 && d.getUTCDate() === 30 || // Jun 30
-  d.getUTCMonth() + 1 === 7 && d.getUTCDate() === 1 || // Jul 1
-  d.getUTCMonth() + 1 === 9 && d.getUTCDate() === 30 || // Sep 30
-  d.getUTCMonth() + 1 === 10 && d.getUTCDate() === 1 || // Oct 1
-  d.getUTCMonth() + 1 === 12 && d.getUTCDate() === 31;
-}
-function isStartOrEndOfMonth(d) {
-  return [1, 3, 5, 7, 8, 10, 12].includes(d.getUTCMonth() + 1) && [1, 31].includes(d.getUTCDate()) || [4, 6, 9, 11].includes(d.getUTCMonth() + 1) && [1, 30].includes(d.getUTCDate()) || d.getUTCMonth() + 1 === 2 && [1, 28, 29].includes(d.getUTCDate());
-}
-function strftime(d, fmt) {
-  let str = "";
-  fmt.split("").forEach((t) => {
-    switch (t) {
-      case "y":
-        str += d.getUTCFullYear();
-        break;
-      case "q":
-        str += getQuarter(d);
-        break;
-      case "m":
-        str += d.getUTCMonth() + 1 > 9 ? d.getUTCMonth() + 1 : `0${d.getUTCMonth() + 1}`;
-        break;
-      case "d":
-        str += d.getUTCDate() > 9 ? d.getUTCDate() : `0${d.getUTCDate()}`;
-        break;
-      default:
-        str += t;
-        break;
-    }
-  });
-  return str;
-}
-
 // src/utils/map.ts
 var map_exports = {};
 __export(map_exports, {
@@ -664,9 +603,6 @@ function datasets(chart, df) {
   if (!groupBy)
     throw new Error("Group by dimension not found");
   const splitBy = chart.getBreakdownDimension();
-  if (groupBy.dataType === "datetime") {
-    df = formatDateTimeIndexForDF(df, groupBy.index);
-  }
   const dfs = [];
   if (splitBy) {
     if (chart.getChartType() === "scatter") {
@@ -724,24 +660,6 @@ function datasets(chart, df) {
     }
   });
   return datasets2;
-}
-function formatDateTimeIndexForDF(df, index) {
-  let fmt = "";
-  const values = df.col(index);
-  const dates = values.map((v) => new Date(String(v)));
-  if (dates.every((d) => datetime_exports.isStartOrEndOfYear(d))) {
-    fmt = "y";
-  } else if (dates.every((d) => datetime_exports.isStartOrEndOfQuarter(d))) {
-    fmt = "yQq";
-  } else if (dates.every((d) => datetime_exports.isStartOrEndOfMonth(d))) {
-    fmt = "y-m";
-  } else {
-    fmt = "y-m-d";
-  }
-  return df.map(index, (v) => {
-    const d = new Date(String(v));
-    return datetime_exports.strftime(d, fmt);
-  });
 }
 
 // src/determine/grid.ts
