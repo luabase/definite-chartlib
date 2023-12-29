@@ -14,9 +14,6 @@ export function datasets<T extends ChartType>(
   const groupBy = chart.getGroupByDimension();
   if (!groupBy) throw new Error("Group by dimension not found");
   const splitBy = chart.getBreakdownDimension();
-  if (groupBy.dataType === "datetime") {
-    df = formatDateTimeIndexForDF(df, groupBy.index);
-  }
   const dfs: DataFrame[] = [];
   if (splitBy) {
     if (chart.getChartType() === "scatter") {
@@ -81,23 +78,4 @@ export function datasets<T extends ChartType>(
     }
   });
   return datasets;
-}
-
-function formatDateTimeIndexForDF(df: DataFrame, index: number) {
-  let fmt = "";
-  const values = df.col(index);
-  const dates = values.map((v) => new Date(String(v)));
-  if (dates.every((d) => utils.datetime.isStartOrEndOfYear(d))) {
-    fmt = "y";
-  } else if (dates.every((d) => utils.datetime.isStartOrEndOfQuarter(d))) {
-    fmt = "yQq";
-  } else if (dates.every((d) => utils.datetime.isStartOrEndOfMonth(d))) {
-    fmt = "y-m";
-  } else {
-    fmt = "y-m-d";
-  }
-  return df.map(index, (v) => {
-    const d = new Date(String(v));
-    return utils.datetime.strftime(d, fmt);
-  });
 }
