@@ -61,7 +61,7 @@ describe("given 1 metric and no dimensions", () => {
         },
         detail: {
           show: true,
-          fontSize: 100,
+          fontSize: 42,
           formatter: currencyFormatter
         }
       }],

@@ -44,7 +44,7 @@ export function series<T extends ChartType>(
       },
       detail: {
         show: true,
-        fontSize: 100,
+        fontSize: 42,
         formatter
       }
     })
