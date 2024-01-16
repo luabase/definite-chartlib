@@ -6,7 +6,7 @@
 
 ```ts
 {
-  chartType: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
+  chartType: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap" | "kpi",
   style: {
     showTitle: boolean,
     showToolbox: boolean,
