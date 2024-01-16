@@ -140,34 +140,3 @@ jobs:
         with:
           github_token: ${{ secrets.PAT }}
           branch: ${{ github.head_ref }}
-
-      - name: Comment PR
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.PAT}}
-          script: |
-            const { number: prNumber } = context.payload.pull_request;
-
-            const comment = `
-              🤖 This is an automated comment
-
-              **PR is ready for deployment**
-
-              :white_check_mark: Linted
-              :white_check_mark: Tested
-              :white_check_mark: Built
-
-              Before merging, please make sure that you have bumped the version number in the \`package.json\` file.
-
-              There are scripts available to help you with this:
-
-              - \`pnpm version:major\` (for breaking changes)
-              - \`pnpm version:minor\` (for new features)
-              - \`pnpm version:patch\` (for bug fixes)
-            `;
-
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: prNumber,
-              body: comment
-            });
