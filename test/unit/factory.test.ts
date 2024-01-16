@@ -217,9 +217,7 @@ describe("given a list of column options", () => {
       },
     ]);
   });
-  const singleColOpt = [
-    { index: 0, dataType: "category" },
-  ];
+  const singleColOpt = [{ index: 0, dataType: "category" }];
   it("cannot generate single category charts", () => {
     const factory = new AutoChartFactory(singleColOpt, false);
     const charts = factory
@@ -228,8 +226,17 @@ describe("given a list of column options", () => {
     expect(charts).toEqual([]);
   });
   it("can generate single value charts", () => {
-    const factory = new AutoChartFactory([{ index: 0, dataType: "value" }], false);
-    const charts = factory.generateAllCharts().map(chart => chart.getOptions())
+    const factory = new AutoChartFactory(
+      [
+        { index: 0, dataType: "value" },
+        { index: 1, dataType: "value" },
+        { index: 2, dataType: "value" },
+      ],
+      false
+    );
+    const charts = factory
+      .generateAllCharts()
+      .map((chart) => chart.getOptions());
     expect(charts).toEqual([
       {
         chartType: "kpi",
@@ -239,9 +246,9 @@ describe("given a list of column options", () => {
         },
         dimensions: [],
         metrics: [
-          { id: 0, index: 0, color: color.LIME_200, aggregation: "none" }
-        ]
-      }
+          { id: 0, index: 0, color: color.LIME_200, aggregation: "none" },
+        ],
+      },
     ]);
-  })
+  });
 });

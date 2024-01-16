@@ -1448,10 +1448,14 @@ __decorateClass([
 // src/factory.ts
 var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
 var chartMatchConfig = [
-  {
-    column_type: ["value"],
-    chart_types: ["kpi"]
-  },
+  ...forAddValueColumnType(
+    {
+      column_type: [],
+      chart_types: ["kpi"]
+    },
+    1,
+    COLORS.length
+  ),
   ...forAddValueColumnType(
     {
       column_type: ["category"],
@@ -1557,12 +1561,14 @@ var AutoChartFactory = class {
     valueOptions.forEach((opt, i) => {
       const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type) ? "none" : "sum";
-      chart.addMetric({
-        index: opt.index,
-        color: colorChoice,
-        aggregation,
-        format: opt.format
-      });
+      if (chart.canAddMetric()) {
+        chart.addMetric({
+          index: opt.index,
+          color: colorChoice,
+          aggregation,
+          format: opt.format
+        });
+      }
     });
     return chart;
   }
