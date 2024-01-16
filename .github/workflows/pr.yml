@@ -2,15 +2,6 @@ name: Pull Request
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - "http/**"
-      - "src/**"
-      - "tests/**"
-      - "cloudbuild.yaml"
-      - "schema.json"
-      - "Dockerfile"
-    paths-ignore:
-      - "dist/**"
 
 jobs:
   meta:
