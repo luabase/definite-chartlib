@@ -747,7 +747,7 @@ function series(chart, datasets2) {
       },
       detail: {
         show: true,
-        fontSize: 100,
+        fontSize: 42,
         formatter
       }
     });
