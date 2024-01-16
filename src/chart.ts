@@ -203,6 +203,11 @@ export class Chart<T extends ChartType> {
           showToolbox: false,
           colorGrouping: "continuous",
         };
+      case "kpi":
+        return {
+          showTitle: false,
+          showToolbox: false
+        }
     }
   }
 
@@ -331,7 +336,7 @@ export class Chart<T extends ChartType> {
   }
 
   private assertIsValid(): void {
-    if (this.dimensions.length < 1) {
+    if (this.dimensions.length < 1 && this.chartType !== "kpi") {
       throw new InvalidChartError("Chart must have at least one dimension");
     }
     if (this.metrics.length < 1) {
@@ -394,7 +399,7 @@ export class Chart<T extends ChartType> {
 
   canAddDimension(): boolean {
     if (this.dimensions.length < 1) {
-      return true;
+      return this.chartType !== "kpi";
     } else if (["bar", "line", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
     } else if (this.chartType === "scatter") {

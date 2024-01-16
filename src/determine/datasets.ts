@@ -12,7 +12,9 @@ export function datasets<T extends ChartType>(
 ): echarts.DataSet[] {
   const datasets: echarts.DataSet[] = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
-  if (!groupBy) throw new Error("Group by dimension not found");
+  if (!groupBy) {
+    return datasets;
+  }
   const splitBy = chart.getBreakdownDimension();
   const dfs: DataFrame[] = [];
   if (splitBy) {

@@ -227,4 +227,21 @@ describe("given a list of column options", () => {
       .map((chart) => chart.getOptions());
     expect(charts).toEqual([]);
   });
+  it("can generate single value charts", () => {
+    const factory = new AutoChartFactory([{ index: 0, dataType: "value" }], false);
+    const charts = factory.generateAllCharts().map(chart => chart.getOptions())
+    expect(charts).toEqual([
+      {
+        chartType: "kpi",
+        style: {
+          showTitle: false,
+          showToolbox: false,
+        },
+        dimensions: [],
+        metrics: [
+          { id: 0, index: 0, color: color.LIME_200, aggregation: "none" }
+        ]
+      }
+    ]);
+  })
 });
