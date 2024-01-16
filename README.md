@@ -34,7 +34,7 @@
       aggregation: "none" | "avg" | "count" | "distinct" | "sum" | "min" | "max",
       axis?: "left" | "right",
       dataType?: "value",
-      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap",
+      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap" | "kpi",
       format?: "percent" | "currency" | "number",
       min?: number,
       max?: number

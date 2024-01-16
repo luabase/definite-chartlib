@@ -37,26 +37,30 @@ export type Dimension<T extends ChartType> = Identifiable &
 
 type ChartSpecificMetric<T extends ChartType> = T extends "bar"
   ? {
-      chartType?: "bar" | "line";
-      axis?: AxisType;
-      aggregation: Exclude<AggregationType, "none">;
-    }
+    chartType?: "bar" | "line";
+    axis?: AxisType;
+    aggregation: Exclude<AggregationType, "none">;
+  }
   : T extends "line"
   ? {
-      chartType?: "line" | "bar";
-      axis?: AxisType;
-      aggregation: Exclude<AggregationType, "none">;
-    }
+    chartType?: "line" | "bar";
+    axis?: AxisType;
+    aggregation: Exclude<AggregationType, "none">;
+  }
   : T extends "pie"
   ? {
-      chartType?: "pie";
-      aggregation: Exclude<AggregationType, "none" | "min" | "max">;
-    }
+    chartType?: "pie";
+    aggregation: Exclude<AggregationType, "none" | "min" | "max">;
+  }
   : T extends "scatter"
   ? { chartType?: "scatter"; aggregation: "none" }
   : T extends "heatmap"
   ? { chartType?: "heatmap"; aggregation: "none" }
-  : { chartType?: "calendar"; aggregation: AggregationType };
+  : T extends "calendar"
+  ? { chartType?: "calendar"; aggregation: AggregationType }
+  : T extends "kpi"
+  ? { chartType?: "kpi"; aggregation: "none" }
+  : {};
 
 export type Metric<T extends ChartType> = Identifiable &
   Indexable &
@@ -73,10 +77,10 @@ interface BaseStyleOptions {
 
 type ExtraStyleOptions<T extends ChartType> = T extends "bar"
   ? {
-      showLegend: boolean;
-      barStyle: BarStyleType;
-      orientation: OrientationType;
-    }
+    showLegend: boolean;
+    barStyle: BarStyleType;
+    orientation: OrientationType;
+  }
   : T extends "line"
   ? { showLegend: boolean; lineStyle: LineStyleType }
   : T extends "calendar"

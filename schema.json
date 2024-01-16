@@ -179,7 +179,8 @@
               "pie",
               "scatter",
               "heatmap",
-              "calendar"
+              "calendar",
+              "kpi"
             ],
             "description": "Chart type"
           },
