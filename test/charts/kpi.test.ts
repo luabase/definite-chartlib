@@ -31,13 +31,13 @@ describe("given 1 metric and no dimensions", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "2%",
+        top: "10%",
         show: false,
       },
       legend: {
         left: "center",
         show: false,
-        top: "2%",
+        top: "8%",
         type: "scroll"
       },
       series: [{
@@ -67,7 +67,7 @@ describe("given 1 metric and no dimensions", () => {
       }],
       title: {
         left: "left",
-        show: false,
+        show: true,
         text: "MRR",
         top: "2%",
       },

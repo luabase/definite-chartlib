@@ -205,7 +205,7 @@ export class Chart<T extends ChartType> {
         };
       case "kpi":
         return {
-          showTitle: false,
+          showTitle: true,
           showToolbox: false
         }
     }

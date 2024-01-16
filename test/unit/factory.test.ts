@@ -234,7 +234,7 @@ describe("given a list of column options", () => {
       {
         chartType: "kpi",
         style: {
-          showTitle: false,
+          showTitle: true,
           showToolbox: false,
         },
         dimensions: [],
