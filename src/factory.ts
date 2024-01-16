@@ -24,10 +24,14 @@ export type ChartMatchConfigOption = {
 };
 
 const chartMatchConfig: ChartMatchConfigOption[] = [
-  {
-    column_type: ["value"],
-    chart_types: ["kpi"],
-  },
+  ...forAddValueColumnType(
+    {
+      column_type: [],
+      chart_types: ["kpi"],
+    },
+    1,
+    COLORS.length
+  ),
   ...forAddValueColumnType(
     {
       column_type: ["category"],
@@ -157,12 +161,14 @@ export class AutoChartFactory {
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type)
         ? "none"
         : "sum";
-      chart.addMetric({
-        index: opt.index,
-        color: colorChoice,
-        aggregation: aggregation,
-        format: opt.format,
-      });
+      if (chart.canAddMetric()) {
+        chart.addMetric({
+          index: opt.index,
+          color: colorChoice,
+          aggregation: aggregation,
+          format: opt.format,
+        });
+      }
     });
     return chart;
   }
@@ -174,7 +180,7 @@ export class AutoChartFactory {
       charts.push(chart);
     }
     if (charts.length > 1) {
-      charts = charts.filter(chart => chart.getChartType() !== "kpi");
+      charts = charts.filter((chart) => chart.getChartType() !== "kpi");
     }
     return charts;
   }
