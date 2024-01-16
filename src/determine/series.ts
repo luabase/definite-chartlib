@@ -3,6 +3,7 @@ import { ChartType, Metric, echarts } from "../types";
 import { color } from "../constants";
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
+import * as formatters from "../formatters";
 
 // NOTE: dataset ID will be of this format:
 // <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
@@ -13,8 +14,46 @@ export function series<T extends ChartType>(
 ): echarts.Series[] {
   const series: echarts.Series[] = [];
   const colors: string[] = [];
+  if (chart.getChartType() === "kpi") {
+    const metric = chart.getMetrics()[0];
+    const format = metric.format ?? "number";
+    let formatter = formatters.valueFormatter;
+    if (format === "percent") {
+      formatter = formatters.percentFormatter;
+    } else if (format === "currency") {
+      formatter = formatters.currencyFormatter;
+    }
+    series.push({
+      type: "gauge",
+      datasetIndex: 0,
+      radius: "0%",
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        show: false
+      },
+      pointer: {
+        show: false
+      },
+      title: {
+        show: false
+      },
+      detail: {
+        show: true,
+        fontSize: 100,
+        formatter
+      }
+    })
+    return series;
+  }
   datasets.slice(1).forEach((dataset) => {
-    if (!dataset.id) throw new Error("Dataset for series must include ID");
+    if (!dataset.id) {
+      throw new Error("Dataset for series must include ID");
+    }
     let [mix, t, dix, name, mid] = dataset.id.split("::");
     const metric = chart.getMetric(
       (m) =>

@@ -17,6 +17,9 @@ export function axis<T extends ChartType>(
   datasets: echarts.DataSet[],
   kind: "x" | "y"
 ): echarts.Axis[] {
+  if (chart.getChartType() === "kpi") {
+    return []
+  }
   const df = DataFrame.fromDataSet(datasets[0]);
   const isLarge = utils.datasets.containsLargeData(datasets);
   const axes: echarts.Axis[] = [];

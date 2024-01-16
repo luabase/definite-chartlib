@@ -6,7 +6,7 @@ import * as utils from "./utils";
 export type ColumnOptions = {
   index: number;
   dataType: string;
-  format?: "currency" | "percent";
+  format?: "number" | "currency" | "percent";
 };
 
 type CreateChartMessage = {
@@ -22,7 +22,12 @@ export type ChartMatchConfigOption = {
   column_type: string[];
   chart_types: string[];
 };
+
 const chartMatchConfig: ChartMatchConfigOption[] = [
+  {
+    column_type: ["value"],
+    chart_types: ["kpi"],
+  },
   ...forAddValueColumnType(
     {
       column_type: ["category"],
@@ -149,7 +154,7 @@ export class AutoChartFactory {
       const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type)
         ? color.LIME_PALETTE
         : utils.array.unboundedReadItem(COLORS, i);
-      const aggregation = ["scatter", "heatmap"].includes(msg.type)
+      const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type)
         ? "none"
         : "sum";
       chart.addMetric({
@@ -163,10 +168,13 @@ export class AutoChartFactory {
   }
 
   generateAllCharts(): Array<Chart<ChartType>> {
-    const charts: Array<Chart<ChartType>> = [];
+    let charts: Array<Chart<ChartType>> = [];
     while (this.createQ.length > 0) {
       const chart = this.generateSingleChart();
       charts.push(chart);
+    }
+    if (charts.length > 1) {
+      charts = charts.filter(chart => chart.getChartType() !== "kpi");
     }
     return charts;
   }

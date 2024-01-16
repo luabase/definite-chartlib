@@ -420,8 +420,12 @@ function percentFormatter(value) {
   }).format(Number(value));
 }
 function currencyFormatter(value) {
-  const shortened = valueFormatter(value);
-  return "$" + shortened;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(value);
 }
 function calendarTooltipFormatter(params) {
   return `
@@ -445,6 +449,9 @@ function calendarTooltipFormatter(params) {
 // src/determine/axis.ts
 var MAX_INTERVAL = 3;
 function axis(chart, datasets2, kind) {
+  if (chart.getChartType() === "kpi") {
+    return [];
+  }
   const df = DataFrame.fromDataSet(datasets2[0]);
   const isLarge = datasets_exports.containsLargeData(datasets2);
   const axes = [];
@@ -576,8 +583,9 @@ function calendar(chart, df) {
 function datasets(chart, df) {
   const datasets2 = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
-  if (!groupBy)
-    throw new Error("Group by dimension not found");
+  if (!groupBy) {
+    return datasets2;
+  }
   const splitBy = chart.getBreakdownDimension();
   const dfs = [];
   if (splitBy) {
@@ -685,9 +693,46 @@ function legend(chart) {
 function series(chart, datasets2) {
   const series2 = [];
   const colors = [];
+  if (chart.getChartType() === "kpi") {
+    const metric = chart.getMetrics()[0];
+    const format = metric.format ?? "number";
+    let formatter = valueFormatter;
+    if (format === "percent") {
+      formatter = percentFormatter;
+    } else if (format === "currency") {
+      formatter = currencyFormatter;
+    }
+    series2.push({
+      type: "gauge",
+      datasetIndex: 0,
+      radius: "0%",
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      pointer: {
+        show: false
+      },
+      title: {
+        show: false
+      },
+      detail: {
+        show: true,
+        fontSize: 100,
+        formatter
+      }
+    });
+    return series2;
+  }
   datasets2.slice(1).forEach((dataset) => {
-    if (!dataset.id)
+    if (!dataset.id) {
       throw new Error("Dataset for series must include ID");
+    }
     let [mix, t, dix, name, mid] = dataset.id.split("::");
     const metric = chart.getMetric(
       (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t && m.id === Number(mid)
@@ -790,11 +835,17 @@ function series(chart, datasets2) {
 
 // src/determine/title.ts
 function title(chart, s) {
+  let left = "center";
+  if (chart.getChartType() === "calendar") {
+    left = "auto";
+  } else if (chart.getChartType() === "kpi") {
+    left = "left";
+  }
   return {
     show: chart.getStyleShowTitle(),
     text: string_exports.truncate(s, 42),
     top: "2%",
-    left: chart.getChartType() === "calendar" ? "auto" : "center"
+    left
   };
 }
 
@@ -1045,6 +1096,11 @@ var _Chart = class {
           showToolbox: false,
           colorGrouping: "continuous"
         };
+      case "kpi":
+        return {
+          showTitle: false,
+          showToolbox: false
+        };
     }
   }
   convertTo(to) {
@@ -1166,7 +1222,7 @@ var _Chart = class {
     return chart;
   }
   assertIsValid() {
-    if (this.dimensions.length < 1) {
+    if (this.dimensions.length < 1 && this.chartType !== "kpi") {
       throw new InvalidChartError("Chart must have at least one dimension");
     }
     if (this.metrics.length < 1) {
@@ -1226,7 +1282,7 @@ var _Chart = class {
   }
   canAddDimension() {
     if (this.dimensions.length < 1) {
-      return true;
+      return this.chartType !== "kpi";
     } else if (["bar", "line", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
     } else if (this.chartType === "scatter") {
@@ -1392,6 +1448,10 @@ __decorateClass([
 // src/factory.ts
 var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
 var chartMatchConfig = [
+  {
+    column_type: ["value"],
+    chart_types: ["kpi"]
+  },
   ...forAddValueColumnType(
     {
       column_type: ["category"],
@@ -1496,7 +1556,7 @@ var AutoChartFactory = class {
     });
     valueOptions.forEach((opt, i) => {
       const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
-      const aggregation = ["scatter", "heatmap"].includes(msg.type) ? "none" : "sum";
+      const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type) ? "none" : "sum";
       chart.addMetric({
         index: opt.index,
         color: colorChoice,
@@ -1507,10 +1567,13 @@ var AutoChartFactory = class {
     return chart;
   }
   generateAllCharts() {
-    const charts = [];
+    let charts = [];
     while (this.createQ.length > 0) {
       const chart = this.generateSingleChart();
       charts.push(chart);
+    }
+    if (charts.length > 1) {
+      charts = charts.filter((chart) => chart.getChartType() !== "kpi");
     }
     return charts;
   }

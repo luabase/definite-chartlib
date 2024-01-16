@@ -5,7 +5,15 @@
   "properties": {
     "chartType": {
       "type": "string",
-      "enum": ["bar", "line", "pie", "scatter", "heatmap", "calendar"],
+      "enum": [
+        "bar",
+        "line",
+        "pie",
+        "scatter",
+        "heatmap",
+        "calendar",
+        "kpi"
+      ],
       "description": "Chart type",
       "default": "bar"
     },
@@ -28,26 +36,41 @@
         },
         "barStyle": {
           "type": "string",
-          "enum": ["grouped", "stacked"],
+          "enum": [
+            "grouped",
+            "stacked"
+          ],
           "description": "Bar chart style. Only valid for bar charts"
         },
         "orientation": {
           "type": "string",
-          "enum": ["vertical", "horizontal"],
+          "enum": [
+            "vertical",
+            "horizontal"
+          ],
           "description": "Bar orientation. Only valid for bar charts"
         },
         "lineStyle": {
           "type": "string",
-          "enum": ["point", "area"],
+          "enum": [
+            "point",
+            "area"
+          ],
           "description": "Line chart style. Only valid for line charts. Point is where lines are plotted on the chart exactly at the coordinates specified by the data. Area will stack the bars on top of one another and will show area under the line"
         },
         "colorGrouping": {
           "type": "string",
-          "enum": ["continuous", "piecewise"],
+          "enum": [
+            "continuous",
+            "piecewise"
+          ],
           "description": "Color grouping. Only valid for heatmap and calendar charts"
         }
       },
-      "required": ["showTitle", "showToolbox"],
+      "required": [
+        "showTitle",
+        "showToolbox"
+      ],
       "description": "Chart style options",
       "default": {
         "showTitle": false,
@@ -65,11 +88,17 @@
           },
           "dataType": {
             "type": "string",
-            "enum": ["category", "datetime"],
+            "enum": [
+              "category",
+              "datetime"
+            ],
             "description": "Data type of the field"
           }
         },
-        "required": ["index", "dataType"],
+        "required": [
+          "index",
+          "dataType"
+        ],
         "description": "First dimension is used to aggregate the data. Second dimension is used to breakdown the metric."
       },
       "description": "Dimensions to use in the chart",
@@ -114,28 +143,54 @@
           },
           "aggregation": {
             "type": "string",
-            "enum": ["avg", "sum", "count", "distinct", "min", "max", "none"],
+            "enum": [
+              "avg",
+              "sum",
+              "count",
+              "distinct",
+              "min",
+              "max",
+              "none"
+            ],
             "description": "Aggregation to use for the metric field grouping by the first dimension given. If scatter or heatmap is chosen then aggregation must be none",
             "default": "sum"
           },
           "axis": {
             "type": "string",
-            "enum": ["left", "right"],
+            "enum": [
+              "left",
+              "right"
+            ],
             "description": "Axis to use for the metric field. Only valid for line charts"
           },
           "dataType": {
             "type": "string",
-            "enum": ["value", "category"],
+            "enum": [
+              "value",
+              "category"
+            ],
             "description": "Data type of the field"
           },
           "chartType": {
             "type": "string",
-            "enum": ["bar", "line", "pie", "scatter", "heatmap", "calendar"],
+            "enum": [
+              "bar",
+              "line",
+              "pie",
+              "scatter",
+              "heatmap",
+              "calendar",
+              "kpi"
+            ],
             "description": "Chart type"
           },
           "format": {
             "type": "string",
-            "enum": ["percent", "currency", "number"],
+            "enum": [
+              "percent",
+              "currency",
+              "number"
+            ],
             "description": "Format of the metric"
           },
           "min": {
@@ -147,12 +202,21 @@
             "description": "Maximum value allowed in chart"
           }
         },
-        "required": ["index", "color", "aggregation"],
+        "required": [
+          "index",
+          "color",
+          "aggregation"
+        ],
         "description": "Metrics to use as series in the chart"
       },
       "description": "Metrics to use as series in the chart",
       "default": []
     }
   },
-  "required": ["chartType", "style", "dimensions", "metrics"]
+  "required": [
+    "chartType",
+    "style",
+    "dimensions",
+    "metrics"
+  ]
 }

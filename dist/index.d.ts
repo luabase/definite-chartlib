@@ -83,6 +83,10 @@ interface Encode {
     value?: string;
     tooltip?: string[] | string;
 }
+interface Detail extends IShowable {
+    fontSize: number;
+    formatter?: (value: string | number) => string;
+}
 interface Series extends IStylable {
     type: string;
     name?: string;
@@ -93,13 +97,19 @@ interface Series extends IStylable {
     label?: Label;
     stack?: string;
     smooth?: boolean;
-    radius?: string[];
+    radius?: string[] | string;
     areaStyle?: object;
     itemStyle?: object;
     symbolSize?: number | ((value: Array<number | string>) => number);
     calendarIndex?: number;
     coordinateSystem?: string;
     datasetIndex?: number;
+    splitLine?: SplitLine;
+    axisTick?: IShowable;
+    axisLabel?: IShowable;
+    pointer?: IShowable;
+    title?: IShowable;
+    detail?: Detail;
 }
 
 interface Title extends IShowable, IAdjustable, IStylable {
@@ -268,7 +278,7 @@ declare namespace color {
   };
 }
 
-type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter";
+type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter" | "kpi";
 type DataType = "category" | "datetime" | "value";
 type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "none";
 type AxisType = "left" | "right";
@@ -313,10 +323,13 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
 } : T extends "heatmap" ? {
     chartType?: "heatmap";
     aggregation: "none";
-} : {
+} : T extends "calendar" ? {
     chartType?: "calendar";
     aggregation: AggregationType;
-};
+} : T extends "kpi" ? {
+    chartType?: "kpi";
+    aggregation: "none";
+} : {};
 type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetric<T> & {
     color: string | string[];
     dataType?: "value";
@@ -382,7 +395,7 @@ declare class Chart<T extends ChartType> {
     static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T>;
     static fromLegacy<T extends ChartType>(opts: LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar">;
     static defaultStyleOptions(chartType: ChartType): StyleOptions<typeof chartType>;
-    convertTo(to: ChartType): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar">;
+    convertTo(to: ChartType): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | undefined;
     private toBarChart;
     private toLineChart;
     private toPieChart;
@@ -424,7 +437,7 @@ declare class Chart<T extends ChartType> {
 type ColumnOptions = {
     index: number;
     dataType: string;
-    format?: "currency" | "percent";
+    format?: "number" | "currency" | "percent";
 };
 
 declare function create<T extends ChartType>(type: T): Chart<T>;
