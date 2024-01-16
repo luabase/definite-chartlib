@@ -9,6 +9,8 @@ on:
       - "cloudbuild.yaml"
       - "schema.json"
       - "Dockerfile"
+    paths-ignore:
+      - "dist/**"
 
 jobs:
   meta:
