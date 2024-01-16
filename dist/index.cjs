@@ -1122,7 +1122,7 @@ var _Chart = class {
         };
       case "kpi":
         return {
-          showTitle: false,
+          showTitle: true,
           showToolbox: false
         };
     }
