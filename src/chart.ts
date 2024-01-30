@@ -206,8 +206,13 @@ export class Chart<T extends ChartType> {
       case "kpi":
         return {
           showTitle: true,
-          showToolbox: false
-        }
+          showToolbox: false,
+        };
+      case "map":
+        return {
+          showTitle: true,
+          showToolbox: false,
+        };
     }
   }
 
@@ -227,6 +232,8 @@ export class Chart<T extends ChartType> {
         return this.toHeatmap();
       case "calendar":
         return this.toCalendar();
+      case "map":
+        return this.toMap();
     }
   }
 
@@ -335,6 +342,19 @@ export class Chart<T extends ChartType> {
     return chart;
   }
 
+  private toMap(): Chart<"map"> {
+    const chart = new Chart("map");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: utils.color.asArray(this.metrics[0].color),
+      aggregation: "sum",
+      format: this.metrics[0].format,
+    });
+    return chart;
+  }
+
   private assertIsValid(): void {
     if (this.dimensions.length < 1 && this.chartType !== "kpi") {
       throw new InvalidChartError("Chart must have at least one dimension");
@@ -375,6 +395,7 @@ export class Chart<T extends ChartType> {
     }
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
+
     try {
       return {
         animation: true,
@@ -464,7 +485,7 @@ export class Chart<T extends ChartType> {
   }
 
   isCartesian(): boolean {
-    return !["pie", "calendar"].includes(this.chartType);
+    return !["pie", "calendar", "map"].includes(this.chartType);
   }
 
   getStyleShowTitle(): boolean {

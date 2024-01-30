@@ -4,6 +4,8 @@ import { color } from "../constants";
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
 import * as formatters from "../formatters";
+import { mockData, stateAbbreviations } from "../constants";
+import { findStateAndNumberIndices } from "./helpers";
 
 // NOTE: dataset ID will be of this format:
 // <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
@@ -28,26 +30,26 @@ export function series<T extends ChartType>(
       datasetIndex: 0,
       radius: "0%",
       splitLine: {
-        show: false
+        show: false,
       },
       axisTick: {
         show: false,
       },
       axisLabel: {
-        show: false
+        show: false,
       },
       pointer: {
-        show: false
+        show: false,
       },
       title: {
-        show: false
+        show: false,
       },
       detail: {
         show: true,
         fontSize: 42,
-        formatter
-      }
-    })
+        formatter,
+      },
+    });
     return series;
   }
   datasets.slice(1).forEach((dataset) => {
@@ -141,6 +143,27 @@ export function series<T extends ChartType>(
         value: dataset.dimensions[metric.index],
       };
       item.name = dataset.dimensions[metric.index];
+    } else if (chart.getChartType() === "map") {
+      item.roam = false;
+      item.type = "map";
+      item.map = "USA";
+      item.emphasis = { label: { show: false } };
+      const { stateIndex, numberIndex } = findStateAndNumberIndices(
+        dataset.source
+      );
+      item.name = dataset.dimensions[numberIndex];
+      const data = [];
+
+      dataset.source.forEach((sourceItem) => {
+        data.push({
+          name:
+            sourceItem[stateIndex].length == 2
+              ? stateAbbreviations[sourceItem[stateIndex]]
+              : sourceItem[stateIndex],
+          value: sourceItem[numberIndex],
+        });
+      });
+      item.data = data;
     } else {
       item.yAxisIndex = 0;
       item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
@@ -163,5 +186,7 @@ export function series<T extends ChartType>(
     }
     series.push(item);
   });
+
+  // return mockData;
   return series;
 }

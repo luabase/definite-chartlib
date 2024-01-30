@@ -1,4 +1,4 @@
-import { IShowable, IStylable } from "./abstract";
+import { IShowable, IStylable, DataValue } from "./abstract";
 import { SplitLine } from "./elements";
 
 interface Label extends IShowable {
@@ -15,7 +15,7 @@ interface Encode {
 }
 
 interface Detail extends IShowable {
-  fontSize: number,
+  fontSize: number;
   formatter?: (value: string | number) => string;
 }
 
@@ -42,4 +42,5 @@ export default interface Series extends IStylable {
   pointer?: IShowable;
   title?: IShowable;
   detail?: Detail;
+  data?: DataValue;
 }
