@@ -145,7 +145,7 @@ export function series<T extends ChartType>(
       };
       item.name = dataset.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
-      item.roam = false;
+      item.roam = true;
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {
@@ -184,9 +184,6 @@ export function series<T extends ChartType>(
               ? stateAbbreviations?.[sourceItem?.[stateIndex]] || ""
               : sourceItem[stateIndex];
         }
-
-        console.log("FIND ME");
-        console.log(regionFullName);
 
         data.push({
           name: regionFullName,
