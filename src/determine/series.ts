@@ -5,7 +5,8 @@ import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
 import * as formatters from "../formatters";
 import { mockData, stateAbbreviations } from "../constants";
-import { findStateAndNumberIndices } from "./helpers";
+import { findCountryOrStateIndices, findNumberIndex } from "./helpers";
+import country from "country-list-js";
 
 // NOTE: dataset ID will be of this format:
 // <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
@@ -146,20 +147,49 @@ export function series<T extends ChartType>(
     } else if (chart.getChartType() === "map") {
       item.roam = false;
       item.type = "map";
-      item.map = "USA";
-      item.emphasis = { label: { show: false } };
-      const { stateIndex, numberIndex } = findStateAndNumberIndices(
-        dataset.source
+      item.label = { show: false };
+      item.itemStyle = {
+        // Color of the point.
+        color: "rgba(0,0,0,0)",
+      };
+      const { stateIndex, countryIndex } = findCountryOrStateIndices(
+        dataset.dimensions
       );
+
+      const isCountries = countryIndex > -1;
+      const isStates = stateIndex > -1;
+
+      item.map = isCountries ? "Countries" : "USA";
+
+      const { numberIndex } = findNumberIndex(dataset.source);
       item.name = dataset.dimensions[numberIndex];
+
       const data = [];
 
       dataset.source.forEach((sourceItem) => {
+        const region =
+          (isCountries ? sourceItem[countryIndex] : sourceItem[stateIndex]) ||
+          "";
+
+        let regionFullName = "";
+
+        if (isCountries) {
+          regionFullName =
+            region.length === 2
+              ? country.findByIso2(region)?.name || ""
+              : region;
+        } else if (isStates) {
+          regionFullName =
+            region.length === 2
+              ? stateAbbreviations?.[sourceItem?.[stateIndex]] || ""
+              : sourceItem[stateIndex];
+        }
+
+        console.log("FIND ME");
+        console.log(regionFullName);
+
         data.push({
-          name:
-            sourceItem[stateIndex].length == 2
-              ? stateAbbreviations[sourceItem[stateIndex]]
-              : sourceItem[stateIndex],
+          name: regionFullName,
           value: sourceItem[numberIndex],
         });
       });

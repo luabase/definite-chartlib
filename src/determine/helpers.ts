@@ -1,25 +1,22 @@
 import { stateAbbreviations } from "../constants";
 
-export function findStateAndNumberIndices(dataArray) {
-  let stateIndex = -1;
+export function findNumberIndex(dataArray) {
   let numberIndex = -1;
 
   // Assuming each element in dataArray is an array
   if (dataArray.length > 0 && Array.isArray(dataArray[0])) {
     for (let i = 0; i < dataArray[0].length; i++) {
-      if (isState(dataArray[0][i])) {
-        stateIndex = i;
-      } else if (isNumber(dataArray[0][i])) {
+      if (isNumber(dataArray[0][i])) {
         numberIndex = i;
       }
 
-      if (stateIndex !== -1 && numberIndex !== -1) {
+      if (numberIndex !== -1) {
         break;
       }
     }
   }
 
-  return { stateIndex, numberIndex };
+  return { numberIndex };
 }
 
 // Check if the value is a state name or abbreviation
@@ -46,4 +43,18 @@ export function findMinMax(datasetsSource) {
   });
 
   return { min, max };
+}
+
+export function findCountryOrStateIndices(arr) {
+  let stateIndex = -1,
+    countryIndex = -1;
+  arr.forEach((str, index) => {
+    if (str.toLowerCase().includes("state") && stateIndex === -1) {
+      stateIndex = index;
+    }
+    if (str.toLowerCase().includes("countr") && countryIndex === -1) {
+      countryIndex = index;
+    }
+  });
+  return { stateIndex, countryIndex };
 }
