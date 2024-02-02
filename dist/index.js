@@ -23179,7 +23179,7 @@ function series(chart, datasets2) {
       };
       item.name = dataset.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
-      item.roam = false;
+      item.roam = true;
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {
@@ -23203,8 +23203,6 @@ function series(chart, datasets2) {
         } else if (isStates) {
           regionFullName = region.length === 2 ? stateAbbreviations?.[sourceItem?.[stateIndex]] || "" : sourceItem[stateIndex];
         }
-        console.log("FIND ME");
-        console.log(regionFullName);
         data.push({
           name: regionFullName,
           value: sourceItem[numberIndex]
