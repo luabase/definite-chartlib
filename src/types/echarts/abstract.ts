@@ -14,3 +14,8 @@ export interface IAdjustable {
 export interface IStylable {
   textStyle?: TextStyle;
 }
+
+export interface DataValue {
+  name: string;
+  value: number;
+}

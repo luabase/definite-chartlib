@@ -6,7 +6,7 @@
 
 ```ts
 {
-  chartType: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap" | "kpi",
+  chartType: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap" | "kpi" | "map",
   style: {
     showTitle: boolean,
     showToolbox: boolean,
@@ -34,7 +34,7 @@
       aggregation: "none" | "avg" | "count" | "distinct" | "sum" | "min" | "max",
       axis?: "left" | "right",
       dataType?: "value",
-      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap" | "kpi",
+      chartType?: "bar" | "line" | "pie" | "scatter" | "calendar" | "heatmap" | "kpi" | "map",
       format?: "percent" | "currency" | "number",
       min?: number,
       max?: number

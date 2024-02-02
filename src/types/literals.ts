@@ -5,7 +5,8 @@ export type ChartType =
   | "heatmap"
   | "pie"
   | "scatter"
-  | "kpi";
+  | "kpi"
+  | "map";
 
 export type DataType = "category" | "datetime" | "value";
 
