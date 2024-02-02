@@ -5,6 +5,12 @@ substitutions:
   _NAME: "chartlib-http"
 
 steps:
+  - name: node:18
+    id: npm-install
+    entrypoint: npm
+    args: ["install"]
+    env:
+      - 'TSC_COMPILE_ON_ERROR=true'
   # Build the Docker image.
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/$PROJECT_ID/${_NAME}:latest", "."]
