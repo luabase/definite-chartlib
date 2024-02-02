@@ -27,7 +27,6 @@
     "vitest": "^0.31.0"
   },
   "dependencies": {
-    "country-list-js": "^3.1.8",
-    "wax": "link:/Users/stefankovac/Code/wax"
+    "country-list-js": "^3.1.8"
   }
 }
