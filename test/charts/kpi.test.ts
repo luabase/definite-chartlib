@@ -5,14 +5,12 @@ import { currencyFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 metric and no dimensions", () => {
-  const chart = chartlib
-    .create("kpi")
-    .addMetric({
-      index: 0,
-      color: color.LIME_200,
-      aggregation: "none",
-      format: "currency"
-    });
+  const chart = chartlib.create("kpi").addMetric({
+    index: 0,
+    color: color.LIME_200,
+    aggregation: "none",
+    format: "currency",
+  });
   it("can compile to a KPI chart", () => {
     expect(chart.compile("MRR", [{ mrr: 50000 }])).toEqual({
       animation: true,
@@ -21,10 +19,8 @@ describe("given 1 metric and no dimensions", () => {
       dataset: [
         {
           dimensions: ["mrr"],
-          source: [
-            [50000]
-          ]
-        }
+          source: [[50000]],
+        },
       ],
       grid: {
         bottom: "12%",
@@ -38,33 +34,41 @@ describe("given 1 metric and no dimensions", () => {
         left: "center",
         show: false,
         top: "8%",
-        type: "scroll"
+        type: "scroll",
       },
-      series: [{
-        type: "gauge",
-        datasetIndex: 0,
-        radius: "0%",
-        splitLine: {
-          show: false
+      series: [
+        {
+          type: "gauge",
+          datasetIndex: 0,
+          radius: "0%",
+          splitLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            show: false,
+          },
+          pointer: {
+            show: false,
+          },
+          title: {
+            show: false,
+          },
+          data: [
+            {
+              value: 50000,
+              name: "mrr",
+            },
+          ],
+          detail: {
+            show: true,
+            fontSize: 42,
+            formatter: currencyFormatter,
+          },
         },
-        axisTick: {
-          show: false,
-        },
-        axisLabel: {
-          show: false
-        },
-        pointer: {
-          show: false
-        },
-        title: {
-          show: false
-        },
-        detail: {
-          show: true,
-          fontSize: 42,
-          formatter: currencyFormatter
-        }
-      }],
+      ],
       title: {
         left: "left",
         show: true,
@@ -79,10 +83,10 @@ describe("given 1 metric and no dimensions", () => {
           },
           saveAsImage: {
             show: true,
-            type: "png"
-          }
+            type: "png",
+          },
         },
-        show: false
+        show: false,
       },
       tooltip: {
         backgroundColor: "rgb(24 24 27)",
@@ -92,11 +96,11 @@ describe("given 1 metric and no dimensions", () => {
         textStyle: {
           color: "rgb(212 212 216)",
         },
-        trigger: "item"
+        trigger: "item",
       },
       visualMap: null,
       xAxis: [],
-      yAxis: []
-    })
-  })
-})
+      yAxis: [],
+    });
+  });
+});
