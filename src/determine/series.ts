@@ -4,7 +4,7 @@ import { color } from "../constants";
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
 import * as formatters from "../formatters";
-import { mockData, stateAbbreviations } from "../constants";
+import { stateAbbreviations } from "../constants";
 import { findCountryOrStateIndices, findNumberIndex } from "./helpers";
 import country from "country-list-js";
 
@@ -19,6 +19,7 @@ export function series<T extends ChartType>(
   const colors: string[] = [];
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
+    const dataset = datasets[0];
     const format = metric.format ?? "number";
     let formatter = formatters.valueFormatter;
     if (format === "percent") {
@@ -28,7 +29,6 @@ export function series<T extends ChartType>(
     }
     series.push({
       type: "gauge",
-      datasetIndex: 0,
       radius: "0%",
       splitLine: {
         show: false,
@@ -50,6 +50,12 @@ export function series<T extends ChartType>(
         fontSize: 42,
         formatter,
       },
+      data: [
+        {
+          value: dataset.source[0][metric.index],
+          name: dataset.dimensions[metric.index],
+        },
+      ],
     });
     return series;
   }

@@ -23061,6 +23061,7 @@ function series(chart, datasets2) {
   const colors = [];
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
+    const dataset = datasets2[0];
     const format = metric.format ?? "number";
     let formatter = valueFormatter;
     if (format === "percent") {
@@ -23070,7 +23071,6 @@ function series(chart, datasets2) {
     }
     series2.push({
       type: "gauge",
-      datasetIndex: 0,
       radius: "0%",
       splitLine: {
         show: false
@@ -23091,7 +23091,13 @@ function series(chart, datasets2) {
         show: true,
         fontSize: 42,
         formatter
-      }
+      },
+      data: [
+        {
+          value: dataset.source[0][metric.index],
+          name: dataset.dimensions[metric.index]
+        }
+      ]
     });
     return series2;
   }
