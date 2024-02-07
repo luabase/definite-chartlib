@@ -220,6 +220,5 @@ export function series<T extends ChartType>(
     series.push(item);
   });
 
-  // return mockData;
   return series;
 }
