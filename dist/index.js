@@ -22837,11 +22837,14 @@ function datasets(chart, df) {
   const groupBy = chart.getGroupByDimension();
   if (chart.getChartType() === "kpi") {
     const dataset = df.asDataSet();
-    const selectedMetric = chart.getMetrics()[0];
+    const metric = chart.getMetrics()[0];
     const selectedMetricDataset = {
-      dimensions: [dataset.dimensions[selectedMetric.index]],
-      source: [[dataset.source[0][selectedMetric.index]]]
+      dimensions: [dataset.dimensions[metric.index]],
+      source: [[dataset.source[0][metric.index]]]
     };
+    const name = df.columns.get(metric.index);
+    const type = chart.getChartType();
+    selectedMetricDataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
     datasets2.push(selectedMetricDataset);
     return datasets2;
   }
@@ -23009,7 +23012,7 @@ function series(chart, datasets2) {
       formatter = currencyFormatter;
     }
     series2.push({
-      datasetIndex: metric.index,
+      datasetIndex: 1,
       type: "gauge",
       radius: "0%",
       splitLine: {
