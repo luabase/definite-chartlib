@@ -27,7 +27,7 @@ export function series<T extends ChartType>(
       formatter = formatters.currencyFormatter;
     }
     series.push({
-      datasetIndex: metric.index,
+      datasetIndex: 1,
       type: "gauge",
       radius: "0%",
       splitLine: {

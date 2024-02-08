@@ -14,11 +14,15 @@ export function datasets<T extends ChartType>(
   const groupBy = chart.getGroupByDimension();
   if (chart.getChartType() === "kpi") {
     const dataset = df.asDataSet();
-    const selectedMetric = chart.getMetrics()[0];
+    const metric = chart.getMetrics()[0];
     const selectedMetricDataset = {
-      dimensions: [dataset.dimensions[selectedMetric.index]],
-      source: [[dataset.source[0][selectedMetric.index]]],
+      dimensions: [dataset.dimensions[metric.index]],
+      source: [[dataset.source[0][metric.index]]],
     };
+
+    const name = df.columns.get(metric.index);
+    const type = chart.getChartType();
+    dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
     datasets.push(selectedMetricDataset);
     return datasets;
   }

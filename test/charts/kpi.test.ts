@@ -42,7 +42,7 @@ describe("given 1 metric and no dimensions", () => {
       },
       series: [
         {
-          datasetIndex: 0,
+          datasetIndex: 1,
           type: "gauge",
           radius: "0%",
           splitLine: {
