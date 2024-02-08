@@ -21,6 +21,10 @@ describe("given 1 metric and no dimensions", () => {
           dimensions: ["mrr"],
           source: [[50000]],
         },
+        {
+          dimensions: ["mrr"],
+          source: [[50000]],
+        },
       ],
       grid: {
         bottom: "12%",
@@ -38,6 +42,7 @@ describe("given 1 metric and no dimensions", () => {
       },
       series: [
         {
+          datasetIndex: 0,
           type: "gauge",
           radius: "0%",
           splitLine: {
@@ -55,12 +60,6 @@ describe("given 1 metric and no dimensions", () => {
           title: {
             show: false,
           },
-          data: [
-            {
-              value: 50000,
-              name: "mrr",
-            },
-          ],
           detail: {
             show: true,
             fontSize: 42,
