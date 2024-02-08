@@ -4,7 +4,7 @@ import { color } from "../constants";
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
 import * as formatters from "../formatters";
-import { mockData, stateAbbreviations } from "../constants";
+import { stateAbbreviations } from "../constants";
 import { findCountryOrStateIndices, findNumberIndex } from "./helpers";
 import country from "country-list-js";
 
@@ -27,8 +27,8 @@ export function series<T extends ChartType>(
       formatter = formatters.currencyFormatter;
     }
     series.push({
+      datasetIndex: 1,
       type: "gauge",
-      datasetIndex: 0,
       radius: "0%",
       splitLine: {
         show: false,
@@ -214,6 +214,5 @@ export function series<T extends ChartType>(
     series.push(item);
   });
 
-  // return mockData;
   return series;
 }
