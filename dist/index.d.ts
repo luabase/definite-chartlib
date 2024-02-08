@@ -79608,22 +79608,6 @@ var countriesMap = {
 	features: features
 };
 
-declare const mockData: {
-    name: string;
-    type: string;
-    roam: boolean;
-    map: string;
-    emphasis: {
-        label: {
-            show: boolean;
-        };
-    };
-    data: {
-        name: string;
-        value: number;
-    }[];
-}[];
-
 declare const stateAbbreviations: {
     AL: string;
     AK: string;
@@ -79863,4 +79847,4 @@ declare class InvalidChartError extends Error {
     constructor(message: string);
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, countriesMap, chartlib as default, index as echarts, mockData, stateAbbreviations, usaMap };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };

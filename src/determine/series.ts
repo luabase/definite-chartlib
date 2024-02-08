@@ -19,7 +19,6 @@ export function series<T extends ChartType>(
   const colors: string[] = [];
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
-    const dataset = datasets[0];
     const format = metric.format ?? "number";
     let formatter = formatters.valueFormatter;
     if (format === "percent") {
@@ -28,6 +27,7 @@ export function series<T extends ChartType>(
       formatter = formatters.currencyFormatter;
     }
     series.push({
+      datasetIndex: metric.index,
       type: "gauge",
       radius: "0%",
       splitLine: {
@@ -50,12 +50,6 @@ export function series<T extends ChartType>(
         fontSize: 42,
         formatter,
       },
-      data: [
-        {
-          value: dataset.source[0][metric.index],
-          name: dataset.dimensions[metric.index],
-        },
-      ],
     });
     return series;
   }

@@ -12,6 +12,17 @@ export function datasets<T extends ChartType>(
 ): echarts.DataSet[] {
   const datasets: echarts.DataSet[] = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
+  if (chart.getChartType() === "kpi") {
+    const dataset = df.asDataSet();
+    const selectedMetric = chart.getMetrics()[0];
+    const selectedMetricDataset = {
+      dimensions: [dataset.dimensions[selectedMetric.index]],
+      source: [[dataset.source[0][selectedMetric.index]]],
+    };
+    datasets.push(selectedMetricDataset);
+    return datasets;
+  }
+
   if (!groupBy) {
     return datasets;
   }
