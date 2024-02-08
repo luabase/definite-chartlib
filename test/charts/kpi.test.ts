@@ -22,6 +22,7 @@ describe("given 1 metric and no dimensions", () => {
           source: [[50000]],
         },
         {
+          id: "0::kpi::1::mrr::0",
           dimensions: ["mrr"],
           source: [[50000]],
         },

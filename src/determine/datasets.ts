@@ -22,7 +22,7 @@ export function datasets<T extends ChartType>(
 
     const name = df.columns.get(metric.index);
     const type = chart.getChartType();
-    dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
+    selectedMetricDataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
     datasets.push(selectedMetricDataset);
     return datasets;
   }
