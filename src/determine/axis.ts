@@ -60,7 +60,7 @@ export function axis<T extends ChartType>(
           type: "value",
           name: utils.string.truncate(name, 42),
           nameGap: kind === "x" ? 30 : 50,
-          axisLabel: { formatter: determineFormatter(chart) },
+          axisLabel: { formatter: determineFormatter(chart, k) },
         };
         if (metrics[0].min !== undefined && String(metrics[0].min) !== "") {
           item.min = metrics[0].min;
@@ -105,7 +105,7 @@ function addCommonFeatures(
 }
 
 function getMapOfValueAxes<T extends ChartType>(chart: Chart<T>) {
-  const map = new Map<string, Metric<T>[]>();
+  const map = new Map<"left" | "right", Metric<T>[]>();
   if (["bar", "line"].includes(chart.getChartType())) {
     return chart.getMetrics().reduce((acc, m: Metric<T>) => {
       const axis = (<Metric<"bar">>m).axis ?? "left";
@@ -122,9 +122,9 @@ function getMapOfValueAxes<T extends ChartType>(chart: Chart<T>) {
   return map;
 }
 
-function determineFormatter<T extends ChartType>(chart: Chart<T>) {
+function determineFormatter<T extends ChartType>(chart: Chart<T>, axis: "left" | "right") {
   const metrics = chart.getMetrics();
-  const firstMetric = metrics[0];
+  const firstMetric = metrics.find(m => (m?.axis ?? "left") == axis);
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {

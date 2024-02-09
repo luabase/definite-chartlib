@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { categoryFormatter, valueFormatter } from "../../src/formatters";
+import { categoryFormatter, percentFormatter, valueFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 2 aggregate metrics", () => {
@@ -15,12 +15,16 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       chartType: "bar",
       color: color.LIME_200,
       aggregation: "sum",
+      axis: "left",
+      format: "number"
     })
     .addMetric({
       index: 2,
       chartType: "line",
       color: color.LIGHT_PINK,
       aggregation: "avg",
+      axis: "right",
+      format: "percent"
     });
   it("can compile to combo chart", () => {
     expect(chart.compile("My chart", data["dailyUsersByMobileOS"])).toEqual({
@@ -64,7 +68,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         bottom: "12%",
         containLabel: false,
         left: "12%",
-        right: "9%",
+        right: "12%",
         top: "10%",
         show: false,
       },
@@ -90,7 +94,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
           datasetIndex: 2,
           encode: { x: "date", y: "users" },
           name: "users (avg)",
-          yAxisIndex: 0,
+          yAxisIndex: 1,
           stack: "",
         },
       ],
@@ -152,7 +156,26 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
           axisLabel: {
             formatter: valueFormatter,
           },
-          name: "",
+          name: "users",
+          nameGap: 50,
+          nameLocation: "center",
+          nameTextStyle: {
+            fontSize: 14,
+          },
+          show: true,
+          splitLine: {
+            lineStyle: {
+              color: "#27272a",
+              type: "dashed",
+            },
+          },
+          type: "value",
+        },
+        {
+          axisLabel: {
+            formatter: percentFormatter,
+          },
+          name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
