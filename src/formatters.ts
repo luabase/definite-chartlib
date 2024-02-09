@@ -18,14 +18,22 @@ export function percentFormatter(value: string | number): string {
   }).format(Number(value));
 }
 
-export function currencyFormatter(value: string | number): string {
+// TODO: have different formatters for charts and KPI
+
+export function longFormCurrencyFormatter(value: string | number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }).format(value)
+  }).format(Number(value))
 }
+
+export function currencyFormatter(value: string | number): string {
+  const shortened = valueFormatter(value);
+  return "$" + shortened;
+}
+
 
 export function calendarTooltipFormatter(params: any): string {
   return `
