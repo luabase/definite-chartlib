@@ -22671,13 +22671,17 @@ function percentFormatter(value) {
     maximumFractionDigits: 1
   }).format(Number(value));
 }
-function currencyFormatter(value) {
+function longFormCurrencyFormatter(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }).format(value);
+  }).format(Number(value));
+}
+function currencyFormatter(value) {
+  const shortened = valueFormatter(value);
+  return "$" + shortened;
 }
 function calendarTooltipFormatter(params) {
   return `
@@ -22739,7 +22743,7 @@ function axis(chart, datasets2, kind) {
         type: "value",
         name: string_exports.truncate(name, 42),
         nameGap: kind === "x" ? 30 : 50,
-        axisLabel: { formatter: determineFormatter(chart) }
+        axisLabel: { formatter: determineFormatter(chart, k) }
       };
       if (metrics[0].min !== void 0 && String(metrics[0].min) !== "") {
         item.min = metrics[0].min;
@@ -22790,9 +22794,9 @@ function getMapOfValueAxes(chart) {
   }
   return map;
 }
-function determineFormatter(chart) {
+function determineFormatter(chart, axis2) {
   const metrics = chart.getMetrics();
-  const firstMetric = metrics[0];
+  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis2);
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
@@ -23009,7 +23013,7 @@ function series(chart, datasets2) {
     if (format === "percent") {
       formatter = percentFormatter;
     } else if (format === "currency") {
-      formatter = currencyFormatter;
+      formatter = longFormCurrencyFormatter;
     }
     series2.push({
       datasetIndex: 1,
