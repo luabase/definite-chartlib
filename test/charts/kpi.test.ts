@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import chartlib from "../../src";
-import { currencyFormatter } from "../../src/formatters";
+import { longFormCurrencyFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 metric and no dimensions", () => {
@@ -64,7 +64,7 @@ describe("given 1 metric and no dimensions", () => {
           detail: {
             show: true,
             fontSize: 42,
-            formatter: currencyFormatter,
+            formatter: longFormCurrencyFormatter,
           },
         },
       ],
