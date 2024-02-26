@@ -79779,7 +79779,7 @@ declare class Chart<T extends ChartType> {
     static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T>;
     static fromLegacy<T extends ChartType>(opts: LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar">;
     static defaultStyleOptions(chartType: ChartType): StyleOptions<typeof chartType>;
-    convertTo(to: ChartType): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | undefined;
+    convertTo(to: ChartType): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi">;
     private toBarChart;
     private toLineChart;
     private toPieChart;
@@ -79787,6 +79787,7 @@ declare class Chart<T extends ChartType> {
     private toHeatmap;
     private toCalendar;
     private toMap;
+    private toKpi;
     private assertIsValid;
     equals(other: Chart<T>): boolean;
     compile(title: string, data: RowOriented): ECOption;

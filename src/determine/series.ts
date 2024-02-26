@@ -24,7 +24,7 @@ export function series<T extends ChartType>(
     if (format === "percent") {
       formatter = formatters.percentFormatter;
     } else if (format === "currency") {
-      formatter = formatters.longFormCurrencyFormatter;
+      formatter = formatters.currencyFormatter;
     }
     series.push({
       datasetIndex: 1,

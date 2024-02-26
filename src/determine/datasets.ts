@@ -15,9 +15,15 @@ export function datasets<T extends ChartType>(
   if (chart.getChartType() === "kpi") {
     const dataset = df.asDataSet();
     const metric = chart.getMetrics()[0];
+    const lastIndex = dataset.source.length - 1;
     const selectedMetricDataset = {
       dimensions: [dataset.dimensions[metric.index]],
-      source: [[dataset.source[0][metric.index]]],
+      source: [
+        [
+          dataset.source[lastIndex][metric.index],
+          dataset.source[lastIndex - 1]?.[metric.index],
+        ],
+      ],
     };
 
     const name = df.columns.get(metric.index);

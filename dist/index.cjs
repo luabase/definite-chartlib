@@ -22708,14 +22708,6 @@ function percentFormatter(value) {
     maximumFractionDigits: 1
   }).format(Number(value));
 }
-function longFormCurrencyFormatter(value) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(Number(value));
-}
 function currencyFormatter(value) {
   const shortened = valueFormatter(value);
   return "$" + shortened;
@@ -22879,9 +22871,15 @@ function datasets(chart, df) {
   if (chart.getChartType() === "kpi") {
     const dataset = df.asDataSet();
     const metric = chart.getMetrics()[0];
+    const lastIndex = dataset.source.length - 1;
     const selectedMetricDataset = {
       dimensions: [dataset.dimensions[metric.index]],
-      source: [[dataset.source[0][metric.index]]]
+      source: [
+        [
+          dataset.source[lastIndex][metric.index],
+          dataset.source[lastIndex - 1]?.[metric.index]
+        ]
+      ]
     };
     const name = df.columns.get(metric.index);
     const type = chart.getChartType();
@@ -23050,7 +23048,7 @@ function series(chart, datasets2) {
     if (format === "percent") {
       formatter = percentFormatter;
     } else if (format === "currency") {
-      formatter = longFormCurrencyFormatter;
+      formatter = currencyFormatter;
     }
     series2.push({
       datasetIndex: 1,
@@ -23522,6 +23520,8 @@ var _Chart = class {
         return this.toCalendar();
       case "map":
         return this.toMap();
+      case "kpi":
+        return this.toKpi();
     }
   }
   toBarChart() {
@@ -23631,6 +23631,17 @@ var _Chart = class {
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color),
       aggregation: "sum",
+      format: this.metrics[0].format
+    });
+    return chart;
+  }
+  toKpi() {
+    const chart = new _Chart("kpi");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color),
+      aggregation: "none",
       format: this.metrics[0].format
     });
     return chart;
