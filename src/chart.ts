@@ -234,6 +234,8 @@ export class Chart<T extends ChartType> {
         return this.toCalendar();
       case "map":
         return this.toMap();
+      case "kpi":
+        return this.toKpi();
     }
   }
 
@@ -350,6 +352,18 @@ export class Chart<T extends ChartType> {
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color),
       aggregation: "sum",
+      format: this.metrics[0].format,
+    });
+    return chart;
+  }
+
+  private toKpi(): Chart<"kpi"> {
+    const chart = new Chart("kpi");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: utils.color.asArray(this.metrics[0].color),
+      aggregation: "none",
       format: this.metrics[0].format,
     });
     return chart;
