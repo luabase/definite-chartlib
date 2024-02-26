@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import chartlib from "../../src";
-import { longFormCurrencyFormatter } from "../../src/formatters";
+import { currencyFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 metric and no dimensions", () => {
@@ -24,7 +24,7 @@ describe("given 1 metric and no dimensions", () => {
         {
           id: "0::kpi::1::mrr::0",
           dimensions: ["mrr"],
-          source: [[50000]],
+          source: [[50000, undefined]],
         },
       ],
       grid: {
@@ -64,7 +64,7 @@ describe("given 1 metric and no dimensions", () => {
           detail: {
             show: true,
             fontSize: 42,
-            formatter: longFormCurrencyFormatter,
+            formatter: currencyFormatter,
           },
         },
       ],
