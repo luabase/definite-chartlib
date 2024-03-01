@@ -23915,7 +23915,7 @@ __decorateClass([
 ], Chart.prototype, "compile", 1);
 
 // src/factory.ts
-var COLORS = [color_exports.LIME_500, ...color_exports.COLOR_PALETTE.slice(1)];
+var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
 var chartMatchConfig = [
   ...forAddValueColumnType(
     {
