@@ -7,8 +7,12 @@ interface CrossStyle {
 interface AxisPointer {
   type: "line" | "cross" | "none";
   crossStyle: CrossStyle;
+  label: AxisPointerLabel;
 }
 
+interface AxisPointerLabel {
+  backgroundColor: string;
+}
 export default interface ToolTip extends IShowable, IStylable {
   backgroundColor?: string;
   borderColor?: string;

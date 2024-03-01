@@ -402,7 +402,7 @@ export class Chart<T extends ChartType> {
   }
 
   @profile
-  compile(title: string, data: RowOriented): echarts.ECOption {
+  compile(title: string, data: RowOriented, theme: string): echarts.ECOption {
     this.assertIsValid();
     if (data.length < 1) {
       throw new CompileChartError("Data must not be empty");
@@ -413,18 +413,18 @@ export class Chart<T extends ChartType> {
     try {
       return {
         animation: true,
-        backgroundColor: color.ZINC_900,
-        calendar: determine.calendar(this, df),
+        backgroundColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        calendar: determine.calendar(this, df, theme),
         dataset: datasets,
         grid: determine.grid(this, datasets),
-        legend: determine.legend(this),
-        series: determine.series(this, datasets),
+        legend: determine.legend(this, theme),
+        series: determine.series(this, datasets, theme),
         title: determine.title(this, title),
         toolbox: determine.toolbox(this),
-        tooltip: determine.tooltip(this),
+        tooltip: determine.tooltip(this, theme),
         visualMap: determine.visualMap(this, datasets),
-        xAxis: determine.axis(this, datasets, "x"),
-        yAxis: determine.axis(this, datasets, "y"),
+        xAxis: determine.axis(this, datasets, "x", theme),
+        yAxis: determine.axis(this, datasets, "y", theme),
       };
     } catch (e) {
       console.error(e);

@@ -112,21 +112,36 @@ __export(color_exports, {
   DARK_PURPLE: () => DARK_PURPLE,
   LIGHT_PINK: () => LIGHT_PINK,
   LIME_200: () => LIME_200,
+  LIME_200_DARKER: () => LIME_200_DARKER,
   LIME_300: () => LIME_300,
+  LIME_300_DARKER: () => LIME_300_DARKER,
   LIME_400: () => LIME_400,
+  LIME_400_DARKER: () => LIME_400_DARKER,
   LIME_500: () => LIME_500,
+  LIME_500_DARKER: () => LIME_500_DARKER,
   LIME_600: () => LIME_600,
+  LIME_600_DARKER: () => LIME_600_DARKER,
   LIME_700: () => LIME_700,
+  LIME_700_DARKER: () => LIME_700_DARKER,
   LIME_800: () => LIME_800,
+  LIME_800_DARKER: () => LIME_800_DARKER,
   LIME_900: () => LIME_900,
+  LIME_900_DARKER: () => LIME_900_DARKER,
   LIME_PALETTE: () => LIME_PALETTE,
+  LIME_PALETTE_DARKER: () => LIME_PALETTE_DARKER,
   ORANGE: () => ORANGE,
   PINK: () => PINK,
   PURPLE: () => PURPLE,
   TEAL: () => TEAL,
   YELLOW: () => YELLOW,
+  ZINC_100: () => ZINC_100,
+  ZINC_200: () => ZINC_200,
+  ZINC_300: () => ZINC_300,
   ZINC_400: () => ZINC_400,
+  ZINC_50: () => ZINC_50,
   ZINC_500: () => ZINC_500,
+  ZINC_600: () => ZINC_600,
+  ZINC_700: () => ZINC_700,
   ZINC_800: () => ZINC_800,
   ZINC_900: () => ZINC_900
 });
@@ -138,8 +153,14 @@ var LIME_600 = "#65a30d";
 var LIME_700 = "#4d7c0f";
 var LIME_800 = "#3f6212";
 var LIME_900 = "#365314";
+var ZINC_50 = "#fafafa";
+var ZINC_100 = "#f4f4f5";
+var ZINC_200 = "#e4e4e7";
+var ZINC_300 = "#d4d4d8";
 var ZINC_400 = "#a1a1aa";
 var ZINC_500 = "#71717a";
+var ZINC_600 = "#52525b";
+var ZINC_700 = "#3f3f46";
 var ZINC_800 = "#27272a";
 var ZINC_900 = "#18181b";
 var TEAL = "#003f5c";
@@ -159,6 +180,24 @@ var LIME_PALETTE = [
   LIME_700,
   LIME_800,
   LIME_900
+];
+var LIME_200_DARKER = "#bde075";
+var LIME_300_DARKER = "#a6cc50";
+var LIME_400_DARKER = "#8ebc2c";
+var LIME_500_DARKER = "#76a819";
+var LIME_600_DARKER = "#618905";
+var LIME_700_DARKER = "#4c7008";
+var LIME_800_DARKER = "#395808";
+var LIME_900_DARKER = "#2e4607";
+var LIME_PALETTE_DARKER = [
+  LIME_200_DARKER,
+  LIME_300_DARKER,
+  LIME_400_DARKER,
+  LIME_500_DARKER,
+  LIME_600_DARKER,
+  LIME_700_DARKER,
+  LIME_800_DARKER,
+  LIME_900_DARKER
 ];
 var COLOR_PALETTE = [
   TEAL,
@@ -22733,7 +22772,7 @@ function calendarTooltipFormatter(params) {
 
 // src/determine/axis.ts
 var MAX_INTERVAL = 3;
-function axis(chart, datasets2, kind) {
+function axis(chart, datasets2, kind, theme) {
   if (chart.getChartType() === "kpi") {
     return [];
   }
@@ -22747,17 +22786,26 @@ function axis(chart, datasets2, kind) {
       show: chart.isCartesian(),
       type: "category",
       name: string_exports.truncate(name, 42),
-      nameGap: kind === "y" ? 85 : 30
-    };
-    if (chart.getChartType() === "bar") {
-      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
-      item.axisLabel = {
+      nameGap: kind === "y" ? 85 : 30,
+      nameTextStyle: {
+        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+      },
+      axisLabel: {
+        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500,
         interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL) : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter
-      };
+      },
+      axisLine: {
+        lineStyle: {
+          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+        }
+      }
+    };
+    if (chart.getChartType() === "bar") {
+      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
     }
-    axes.push(addCommonFeatures(chart.getChartType(), item, kind));
+    axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
   } else {
     const map = getMapOfValueAxes(chart);
     const keys = Array.from(map.keys());
@@ -22772,7 +22820,16 @@ function axis(chart, datasets2, kind) {
         type: "value",
         name: string_exports.truncate(name, 42),
         nameGap: kind === "x" ? 30 : 50,
-        axisLabel: { formatter: determineFormatter(chart, k) }
+        nameTextStyle: {
+          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+        },
+        axisLine: {
+          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+        },
+        axisLabel: {
+          formatter: determineFormatter(chart, k),
+          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+        }
       };
       if (metrics[0].min !== void 0 && String(metrics[0].min) !== "") {
         item.min = metrics[0].min;
@@ -22780,7 +22837,7 @@ function axis(chart, datasets2, kind) {
       if (metrics[0].max !== void 0 && String(metrics[0].max) !== "") {
         item.max = metrics[0].max;
       }
-      axes.push(addCommonFeatures(chart.getChartType(), item, kind));
+      axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
     });
   }
   return axes;
@@ -22796,12 +22853,18 @@ function isDimensionalAxis(chart, kind) {
   }
   return dim;
 }
-function addCommonFeatures(chartType, item, kind) {
+function addCommonFeatures(chartType, item, kind, theme) {
   item.nameLocation = "center";
-  item.nameTextStyle = { fontSize: 14 };
+  item.nameTextStyle = {
+    fontSize: 14,
+    color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+  };
   if (kind === "y" || chartType === "scatter") {
     item.splitLine = {
-      lineStyle: { type: "dashed", color: color_exports.ZINC_800 }
+      lineStyle: {
+        type: "dashed",
+        color: theme === "light" ? color_exports.ZINC_200 : color_exports.ZINC_800
+      }
     };
   }
   return item;
@@ -22836,7 +22899,7 @@ function determineFormatter(chart, axis2) {
 }
 
 // src/determine/calendar.ts
-function calendar(chart, df) {
+function calendar(chart, df, theme) {
   if (chart.getChartType() !== "calendar")
     return null;
   const dim = chart.getGroupByDimension();
@@ -22854,12 +22917,17 @@ function calendar(chart, df) {
       cellSize: ["auto", 13],
       range: String(y),
       itemStyle: {
-        color: color_exports.ZINC_900,
+        color: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
         borderColor: color_exports.ZINC_500,
         borderWidth: 0.5
       },
       orient: "horizontal",
-      splitLine: { lineStyle: { color: color_exports.ZINC_400, type: "solid" } }
+      splitLine: {
+        lineStyle: {
+          color: theme === "light" ? color_exports.ZINC_500 : color_exports.ZINC_400,
+          type: "solid"
+        }
+      }
     };
   });
 }
@@ -22984,12 +23052,15 @@ function grid(chart, datasets2) {
 }
 
 // src/determine/legend.ts
-function legend(chart) {
+function legend(chart, theme) {
   return {
     show: chart.getStyleShowLegend(),
     left: "center",
     top: chart.getStyleShowTitle() ? "8%" : "2%",
-    type: "scroll"
+    type: "scroll",
+    textStyle: {
+      color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
+    }
   };
 }
 
@@ -23038,7 +23109,7 @@ function findCountryOrStateIndices(arr) {
 
 // src/determine/series.ts
 var import_country_list_js = __toESM(require("country-list-js"), 1);
-function series(chart, datasets2) {
+function series(chart, datasets2, theme) {
   const series2 = [];
   const colors = [];
   if (chart.getChartType() === "kpi") {
@@ -23106,13 +23177,18 @@ function series(chart, datasets2) {
         value: dataset.dimensions[1]
       };
       item.itemStyle = {
-        borderColor: color_exports.ZINC_900,
+        borderColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
         borderRadius: 10,
         borderWidth: 2
       };
-      item.label = { color: color_exports.ZINC_500, show: true };
+      item.label = {
+        color: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        show: true
+      };
       item.yAxisIndex = 0;
-      item.textStyle = { color: color_exports.ZINC_500 };
+      item.textStyle = {
+        color: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900
+      };
       item.radius = ["40%", "70%"];
     } else if (chart.getChartType() === "scatter") {
       const metrics = chart.getMetrics();
@@ -23246,21 +23322,26 @@ function toolbox(chart) {
 }
 
 // src/determine/tooltip.ts
-function tooltip(chart) {
+function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item = {
     confine: true,
-    backgroundColor: "rgb(24 24 27)",
-    borderColor: "rgb(212 212 216)",
+    backgroundColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+    borderColor: theme === "light" ? color_exports.ZINC_300 : color_exports.ZINC_500,
     textStyle: {
-      color: "rgb(212 212 216)"
+      color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
     },
     show: true,
-    trigger: !isBarOrLine ? "item" : "axis"
+    trigger: !isBarOrLine ? "item" : "axis",
+    axisPointer: {
+      type: "cross",
+      crossStyle: { color: color_exports.ZINC_500 },
+      label: {
+        backgroundColor: color_exports.ZINC_500
+      }
+    }
   };
-  if (isBarOrLine) {
-    item.axisPointer = { type: "cross", crossStyle: { color: "#999999" } };
-  } else if (chart.getChartType() === "calendar") {
+  if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }
   return item;
@@ -23677,7 +23758,7 @@ var _Chart = class {
       return false;
     return true;
   }
-  compile(title2, data) {
+  compile(title2, data, theme) {
     this.assertIsValid();
     if (data.length < 1) {
       throw new CompileChartError("Data must not be empty");
@@ -23687,18 +23768,18 @@ var _Chart = class {
     try {
       return {
         animation: true,
-        backgroundColor: color_exports.ZINC_900,
-        calendar: calendar(this, df),
+        backgroundColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        calendar: calendar(this, df, theme),
         dataset: datasets2,
         grid: grid(this, datasets2),
-        legend: legend(this),
-        series: series(this, datasets2),
+        legend: legend(this, theme),
+        series: series(this, datasets2, theme),
         title: title(this, title2),
         toolbox: toolbox(this),
-        tooltip: tooltip(this),
+        tooltip: tooltip(this, theme),
         visualMap: visualMap(this, datasets2),
-        xAxis: axis(this, datasets2, "x"),
-        yAxis: axis(this, datasets2, "y")
+        xAxis: axis(this, datasets2, "x", theme),
+        yAxis: axis(this, datasets2, "y", theme)
       };
     } catch (e) {
       console.error(e);
@@ -24017,7 +24098,7 @@ function create(type) {
 function load(opts) {
   return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
-function* chartGenerator(columns, subsets) {
+function* chartGenerator(columns, subsets, theme) {
   let i = 0;
   const factory = new AutoChartFactory(columns, subsets);
   const charts = factory.generateAllCharts();

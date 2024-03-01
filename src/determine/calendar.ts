@@ -5,7 +5,8 @@ import { color } from "../constants";
 
 export function calendar<T extends ChartType>(
   chart: Chart<T>,
-  df: DataFrame
+  df: DataFrame,
+  theme: string
 ): echarts.Calendar[] | null {
   if (chart.getChartType() !== "calendar") return null;
   const dim = chart.getGroupByDimension();
@@ -26,12 +27,17 @@ export function calendar<T extends ChartType>(
       cellSize: ["auto", 13],
       range: String(y),
       itemStyle: {
-        color: color.ZINC_900,
+        color: theme === "light" ? color.ZINC_100 : color.ZINC_900,
         borderColor: color.ZINC_500,
         borderWidth: 0.5,
       },
       orient: "horizontal",
-      splitLine: { lineStyle: { color: color.ZINC_400, type: "solid" } },
+      splitLine: {
+        lineStyle: {
+          color: theme === "light" ? color.ZINC_500 : color.ZINC_400,
+          type: "solid",
+        },
+      },
     };
   });
 }
