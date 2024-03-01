@@ -7,7 +7,8 @@ import { color } from "../constants";
 
 export function visualMap<T extends ChartType>(
   chart: Chart<T>,
-  datasets: echarts.DataSet[]
+  datasets: echarts.DataSet[],
+  theme: string
 ): echarts.VisualMap | null {
   if (!["heatmap", "calendar", "map"].includes(chart.getChartType()))
     return null;
@@ -34,7 +35,7 @@ export function visualMap<T extends ChartType>(
   const isHeatmap = chart.getChartType() === "heatmap";
   return {
     inRange: {
-      color: utils.color.asArray(metric.color),
+      color: utils.color.asArray(metric.color, theme),
     },
     left: isHeatmap ? "right" : "center",
     top: isHeatmap ? "center" : 3,

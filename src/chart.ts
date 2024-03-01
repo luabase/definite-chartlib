@@ -216,7 +216,7 @@ export class Chart<T extends ChartType> {
     }
   }
 
-  convertTo(to: ChartType) {
+  convertTo(to: ChartType, theme: string) {
     const from = this.chartType;
     if (to === from) return this;
     switch (to) {
@@ -225,17 +225,17 @@ export class Chart<T extends ChartType> {
       case "line":
         return this.toLineChart();
       case "pie":
-        return this.toPieChart();
+        return this.toPieChart(theme);
       case "scatter":
         return this.toScatter();
       case "heatmap":
-        return this.toHeatmap();
+        return this.toHeatmap(theme);
       case "calendar":
-        return this.toCalendar();
+        return this.toCalendar(theme);
       case "map":
-        return this.toMap();
+        return this.toMap(theme);
       case "kpi":
-        return this.toKpi();
+        return this.toKpi(theme);
     }
   }
 
@@ -269,13 +269,13 @@ export class Chart<T extends ChartType> {
     return chart;
   }
 
-  private toPieChart(): Chart<"pie"> {
+  private toPieChart(theme: string): Chart<"pie"> {
     const chart = new Chart("pie");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
-      color: utils.color.asArray(this.metrics[0].color),
+      color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format,
     });
@@ -300,7 +300,7 @@ export class Chart<T extends ChartType> {
     return chart;
   }
 
-  private toHeatmap(): Chart<"heatmap"> {
+  private toHeatmap(theme: string): Chart<"heatmap"> {
     const chart = new Chart("heatmap");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     this.dimensions.slice(0, 2).forEach((dim) => {
@@ -311,14 +311,14 @@ export class Chart<T extends ChartType> {
     }
     chart.addMetric({
       index: this.metrics[0].index,
-      color: utils.color.asArray(this.metrics[0].color),
+      color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "none",
       format: this.metrics[0].format,
     });
     return chart;
   }
 
-  private toCalendar(): Chart<"calendar"> {
+  private toCalendar(theme: string): Chart<"calendar"> {
     const chart = new Chart("calendar");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     const dim = this.dimensions.find((dim) => dim.dataType === "datetime");
@@ -337,32 +337,32 @@ export class Chart<T extends ChartType> {
     }
     chart.addMetric({
       index: this.metrics[0].index,
-      color: utils.color.asArray(this.metrics[0].color),
+      color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format,
     });
     return chart;
   }
 
-  private toMap(): Chart<"map"> {
+  private toMap(theme: string): Chart<"map"> {
     const chart = new Chart("map");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
-      color: utils.color.asArray(this.metrics[0].color),
+      color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format,
     });
     return chart;
   }
 
-  private toKpi(): Chart<"kpi"> {
+  private toKpi(theme: string): Chart<"kpi"> {
     const chart = new Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addMetric({
       index: this.metrics[0].index,
-      color: utils.color.asArray(this.metrics[0].color),
+      color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "none",
       format: this.metrics[0].format,
     });
@@ -422,7 +422,7 @@ export class Chart<T extends ChartType> {
         title: determine.title(this, title),
         toolbox: determine.toolbox(this),
         tooltip: determine.tooltip(this, theme),
-        visualMap: determine.visualMap(this, datasets),
+        visualMap: determine.visualMap(this, datasets, theme),
         xAxis: determine.axis(this, datasets, "x", theme),
         yAxis: determine.axis(this, datasets, "y", theme),
       };

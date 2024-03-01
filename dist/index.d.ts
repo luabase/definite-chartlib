@@ -79837,7 +79837,7 @@ declare class Chart<T extends ChartType> {
     static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T>;
     static fromLegacy<T extends ChartType>(opts: LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar">;
     static defaultStyleOptions(chartType: ChartType): StyleOptions<typeof chartType>;
-    convertTo(to: ChartType): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi">;
+    convertTo(to: ChartType, theme: string): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi">;
     private toBarChart;
     private toLineChart;
     private toPieChart;

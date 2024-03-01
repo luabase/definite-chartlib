@@ -22427,8 +22427,8 @@ var stateAbbreviations = {
 };
 
 // src/utils/color.ts
-function asArray(s) {
-  return Array.isArray(s) ? s : color_exports.LIME_PALETTE;
+function asArray(s, theme) {
+  return Array.isArray(s) ? s : theme === "light" ? color_exports.LIME_PALETTE_DARKER : color_exports.LIME_PALETTE;
 }
 function asSingleton(s) {
   return Array.isArray(s) ? s[0] : s;
@@ -23311,7 +23311,7 @@ function tooltip(chart, theme) {
 }
 
 // src/determine/visualMap.ts
-function visualMap(chart, datasets2) {
+function visualMap(chart, datasets2, theme) {
   if (!["heatmap", "calendar", "map"].includes(chart.getChartType()))
     return null;
   if (chart.getChartType() == "map") {
@@ -23338,7 +23338,7 @@ function visualMap(chart, datasets2) {
   const isHeatmap = chart.getChartType() === "heatmap";
   return {
     inRange: {
-      color: color_exports2.asArray(metric.color)
+      color: color_exports2.asArray(metric.color, theme)
     },
     left: isHeatmap ? "right" : "center",
     top: isHeatmap ? "center" : 3,
@@ -23545,7 +23545,7 @@ var _Chart = class {
         };
     }
   }
-  convertTo(to) {
+  convertTo(to, theme) {
     const from = this.chartType;
     if (to === from)
       return this;
@@ -23555,17 +23555,17 @@ var _Chart = class {
       case "line":
         return this.toLineChart();
       case "pie":
-        return this.toPieChart();
+        return this.toPieChart(theme);
       case "scatter":
         return this.toScatter();
       case "heatmap":
-        return this.toHeatmap();
+        return this.toHeatmap(theme);
       case "calendar":
-        return this.toCalendar();
+        return this.toCalendar(theme);
       case "map":
-        return this.toMap();
+        return this.toMap(theme);
       case "kpi":
-        return this.toKpi();
+        return this.toKpi(theme);
     }
   }
   toBarChart() {
@@ -23596,13 +23596,13 @@ var _Chart = class {
     });
     return chart;
   }
-  toPieChart() {
+  toPieChart(theme) {
     const chart = new _Chart("pie");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color),
+      color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format
     });
@@ -23625,7 +23625,7 @@ var _Chart = class {
     }
     return chart;
   }
-  toHeatmap() {
+  toHeatmap(theme) {
     const chart = new _Chart("heatmap");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     this.dimensions.slice(0, 2).forEach((dim) => {
@@ -23636,13 +23636,13 @@ var _Chart = class {
     }
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color),
+      color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "none",
       format: this.metrics[0].format
     });
     return chart;
   }
-  toCalendar() {
+  toCalendar(theme) {
     const chart = new _Chart("calendar");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     const dim = this.dimensions.find((dim2) => dim2.dataType === "datetime");
@@ -23661,30 +23661,30 @@ var _Chart = class {
     }
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color),
+      color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format
     });
     return chart;
   }
-  toMap() {
+  toMap(theme) {
     const chart = new _Chart("map");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color),
+      color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format
     });
     return chart;
   }
-  toKpi() {
+  toKpi(theme) {
     const chart = new _Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color),
+      color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "none",
       format: this.metrics[0].format
     });
@@ -23740,7 +23740,7 @@ var _Chart = class {
         title: title(this, title2),
         toolbox: toolbox(this),
         tooltip: tooltip(this, theme),
-        visualMap: visualMap(this, datasets2),
+        visualMap: visualMap(this, datasets2, theme),
         xAxis: axis(this, datasets2, "x", theme),
         yAxis: axis(this, datasets2, "y", theme)
       };
@@ -23915,7 +23915,7 @@ __decorateClass([
 ], Chart.prototype, "compile", 1);
 
 // src/factory.ts
-var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
+var COLORS = [color_exports.LIME_500, ...color_exports.COLOR_PALETTE.slice(1)];
 var chartMatchConfig = [
   ...forAddValueColumnType(
     {
