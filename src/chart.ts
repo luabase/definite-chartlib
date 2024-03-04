@@ -233,7 +233,7 @@ export class Chart<T extends ChartType> {
       case "calendar":
         return this.toCalendar(theme);
       case "map":
-        return this.toMap(theme);
+        return this.toMap();
       case "kpi":
         return this.toKpi(theme);
     }
@@ -344,13 +344,13 @@ export class Chart<T extends ChartType> {
     return chart;
   }
 
-  private toMap(theme: string): Chart<"map"> {
+  private toMap(): Chart<"map"> {
     const chart = new Chart("map");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
-      color: utils.color.asArray(this.metrics[0].color, theme),
+      color: utils.color.asArray(this.metrics[0].color, "dark"),
       aggregation: "sum",
       format: this.metrics[0].format,
     });

@@ -23600,7 +23600,7 @@ var _Chart = class {
       case "calendar":
         return this.toCalendar(theme);
       case "map":
-        return this.toMap(theme);
+        return this.toMap();
       case "kpi":
         return this.toKpi(theme);
     }
@@ -23704,16 +23704,19 @@ var _Chart = class {
     });
     return chart;
   }
-  toMap(theme) {
+  toMap() {
     const chart = new _Chart("map");
+    console.log("HIT 0 OF TO MAP");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
+    console.log("HIT 1 OF TO MAP");
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color, theme),
+      color: color_exports2.asArray(this.metrics[0].color, "dark"),
       aggregation: "sum",
       format: this.metrics[0].format
     });
+    console.log("HIT END OF TO MAP");
     return chart;
   }
   toKpi(theme) {
@@ -24098,7 +24101,7 @@ function create(type) {
 function load(opts) {
   return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
-function* chartGenerator(columns, subsets, theme) {
+function* chartGenerator(columns, subsets) {
   let i = 0;
   const factory = new AutoChartFactory(columns, subsets);
   const charts = factory.generateAllCharts();
