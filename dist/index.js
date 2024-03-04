@@ -23563,7 +23563,7 @@ var _Chart = class {
       case "calendar":
         return this.toCalendar(theme);
       case "map":
-        return this.toMap();
+        return this.toMap(theme);
       case "kpi":
         return this.toKpi(theme);
     }
@@ -23667,19 +23667,16 @@ var _Chart = class {
     });
     return chart;
   }
-  toMap() {
+  toMap(theme) {
     const chart = new _Chart("map");
-    console.log("HIT 0 OF TO MAP");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
-    console.log("HIT 1 OF TO MAP");
     chart.addMetric({
       index: this.metrics[0].index,
-      color: color_exports2.asArray(this.metrics[0].color, "dark"),
+      color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format
     });
-    console.log("HIT END OF TO MAP");
     return chart;
   }
   toKpi(theme) {
