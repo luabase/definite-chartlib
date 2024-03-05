@@ -24034,7 +24034,7 @@ var AutoChartFactory = class {
       });
     });
     valueOptions.forEach((opt, i) => {
-      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE_DARKER : array_exports.unboundedReadItem(COLORS, i);
+      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type) ? "none" : "sum";
       if (chart.canAddMetric()) {
         chart.addMetric({
