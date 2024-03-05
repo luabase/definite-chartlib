@@ -33,10 +33,10 @@ export function axis<T extends ChartType>(
       name: utils.string.truncate(name, 42),
       nameGap: kind === "y" ? 85 : 30,
       nameTextStyle: {
-        color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+        color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
       },
       axisLabel: {
-        color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+        color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
         interval: isLarge
           ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL)
           : 0,
@@ -45,7 +45,7 @@ export function axis<T extends ChartType>(
       },
       axisLine: {
         lineStyle: {
-          color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+          color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
         },
       },
     };
@@ -71,14 +71,14 @@ export function axis<T extends ChartType>(
           name: utils.string.truncate(name, 42),
           nameGap: kind === "x" ? 30 : 50,
           nameTextStyle: {
-            color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
           },
           axisLine: {
-            color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
           },
           axisLabel: {
             formatter: determineFormatter(chart, k),
-            color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
           },
         };
         if (metrics[0].min !== undefined && String(metrics[0].min) !== "") {
@@ -117,7 +117,7 @@ function addCommonFeatures(
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
-    color: theme === "light" ? color.ZINC_900 : color.ZINC_500,
+    color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
   };
   if (kind === "y" || chartType === "scatter") {
     item.splitLine = {

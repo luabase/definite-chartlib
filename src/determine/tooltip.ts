@@ -18,14 +18,20 @@ export function tooltip<T extends ChartType>(
     show: true,
     trigger: !isBarOrLine ? "item" : "axis",
     axisPointer: {
-      type: "cross",
-      crossStyle: { color: color.ZINC_500 },
       label: {
         backgroundColor: color.ZINC_500,
       },
     },
   };
-  if (chart.getChartType() === "calendar") {
+  if (isBarOrLine) {
+    item.axisPointer = {
+      type: "cross",
+      label: {
+        backgroundColor: color.ZINC_500,
+      },
+      crossStyle: { color: "#999999" },
+    };
+  } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }
   return item;

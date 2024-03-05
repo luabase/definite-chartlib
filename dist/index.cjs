@@ -22788,17 +22788,17 @@ function axis(chart, datasets2, kind, theme) {
       name: string_exports.truncate(name, 42),
       nameGap: kind === "y" ? 85 : 30,
       nameTextStyle: {
-        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+        color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
       },
       axisLabel: {
-        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500,
+        color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400,
         interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL) : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter
       },
       axisLine: {
         lineStyle: {
-          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
         }
       }
     };
@@ -22821,14 +22821,14 @@ function axis(chart, datasets2, kind, theme) {
         name: string_exports.truncate(name, 42),
         nameGap: kind === "x" ? 30 : 50,
         nameTextStyle: {
-          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
         },
         axisLine: {
-          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
         },
         axisLabel: {
           formatter: determineFormatter(chart, k),
-          color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
         }
       };
       if (metrics[0].min !== void 0 && String(metrics[0].min) !== "") {
@@ -22857,7 +22857,7 @@ function addCommonFeatures(chartType, item, kind, theme) {
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
-    color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_500
+    color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
   };
   if (kind === "y" || chartType === "scatter") {
     item.splitLine = {
@@ -23334,14 +23334,20 @@ function tooltip(chart, theme) {
     show: true,
     trigger: !isBarOrLine ? "item" : "axis",
     axisPointer: {
-      type: "cross",
-      crossStyle: { color: color_exports.ZINC_500 },
       label: {
         backgroundColor: color_exports.ZINC_500
       }
     }
   };
-  if (chart.getChartType() === "calendar") {
+  if (isBarOrLine) {
+    item.axisPointer = {
+      type: "cross",
+      label: {
+        backgroundColor: color_exports.ZINC_500
+      },
+      crossStyle: { color: "#999999" }
+    };
+  } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }
   return item;
