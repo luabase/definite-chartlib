@@ -41,14 +41,14 @@ export const LIME_PALETTE = [
   LIME_900,
 ];
 
-export const LIME_200_DARKER = "#bde075"; // Original: #d9f99d
-export const LIME_300_DARKER = "#a6cc50"; // Original: #bef264
-export const LIME_400_DARKER = "#8ebc2c"; // Original: #a3e635
-export const LIME_500_DARKER = "#76a819"; // Original: #84cc16
-export const LIME_600_DARKER = "#618905"; // Original: #65a30d
-export const LIME_700_DARKER = "#4c7008"; // Original: #4d7c0f
-export const LIME_800_DARKER = "#395808"; // Original: #3f6212
-export const LIME_900_DARKER = "#2e4607"; // Original: #365314
+export const LIME_200_DARKER = "#97b35d";
+export const LIME_300_DARKER = "#84a340";
+export const LIME_400_DARKER = "#719623";
+export const LIME_500_DARKER = "#5e8614";
+export const LIME_600_DARKER = "#4d6d04";
+export const LIME_700_DARKER = "#3c5906";
+export const LIME_800_DARKER = "#2d4606";
+export const LIME_900_DARKER = "#243805";
 
 export const LIME_PALETTE_DARKER = [
   LIME_200_DARKER,

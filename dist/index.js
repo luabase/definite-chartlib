@@ -144,14 +144,14 @@ var LIME_PALETTE = [
   LIME_800,
   LIME_900
 ];
-var LIME_200_DARKER = "#bde075";
-var LIME_300_DARKER = "#a6cc50";
-var LIME_400_DARKER = "#8ebc2c";
-var LIME_500_DARKER = "#76a819";
-var LIME_600_DARKER = "#618905";
-var LIME_700_DARKER = "#4c7008";
-var LIME_800_DARKER = "#395808";
-var LIME_900_DARKER = "#2e4607";
+var LIME_200_DARKER = "#97b35d";
+var LIME_300_DARKER = "#84a340";
+var LIME_400_DARKER = "#719623";
+var LIME_500_DARKER = "#5e8614";
+var LIME_600_DARKER = "#4d6d04";
+var LIME_700_DARKER = "#3c5906";
+var LIME_800_DARKER = "#2d4606";
+var LIME_900_DARKER = "#243805";
 var LIME_PALETTE_DARKER = [
   LIME_200_DARKER,
   LIME_300_DARKER,
@@ -24034,7 +24034,7 @@ var AutoChartFactory = class {
       });
     });
     valueOptions.forEach((opt, i) => {
-      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
+      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE_DARKER : array_exports.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type) ? "none" : "sum";
       if (chart.canAddMetric()) {
         chart.addMetric({
