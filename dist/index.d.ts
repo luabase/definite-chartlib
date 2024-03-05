@@ -124,6 +124,7 @@ interface Series extends IStylable {
     title?: IShowable;
     detail?: Detail;
     data?: DataValue;
+    roam?: Boolean;
 }
 
 interface Title extends IShowable, IAdjustable, IStylable {

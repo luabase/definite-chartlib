@@ -23200,7 +23200,7 @@ function series(chart, datasets2, theme) {
       };
       item.name = dataset.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
-      item.roam = true;
+      item.roam = false;
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {

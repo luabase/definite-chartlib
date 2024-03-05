@@ -151,7 +151,7 @@ export function series<T extends ChartType>(
       };
       item.name = dataset.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
-      item.roam = true;
+      item.roam = false;
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {
