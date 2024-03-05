@@ -5,6 +5,16 @@ interface AxisLabel {
   interval?: number;
   rotate?: number;
   formatter?: (value: string | number) => string;
+  color?: string;
+}
+
+interface AxisLine {
+  lineStyle?: LineStyle;
+  color?: string;
+}
+
+interface LineStyle {
+  color: string;
 }
 
 export default interface Axis extends IShowable {
@@ -15,6 +25,7 @@ export default interface Axis extends IShowable {
   nameTextStyle?: TextStyle;
   splitLine?: SplitLine;
   axisLabel?: AxisLabel;
+  axisLine?: AxisLine;
   min?: number;
   max?: number;
 }

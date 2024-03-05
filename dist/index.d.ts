@@ -3,13 +3,13 @@ interface TextStyle {
     fontWeight?: "normal" | "bold";
     fontSize?: number;
 }
-interface LineStyle {
+interface LineStyle$1 {
     width?: number;
     type?: string;
     color?: string;
 }
 interface SplitLine extends IShowable {
-    lineStyle?: LineStyle;
+    lineStyle?: LineStyle$1;
 }
 
 interface IShowable {
@@ -33,6 +33,14 @@ interface AxisLabel {
     interval?: number;
     rotate?: number;
     formatter?: (value: string | number) => string;
+    color?: string;
+}
+interface AxisLine {
+    lineStyle?: LineStyle;
+    color?: string;
+}
+interface LineStyle {
+    color: string;
 }
 interface Axis$1 extends IShowable {
     type: "value" | "category";
@@ -42,6 +50,7 @@ interface Axis$1 extends IShowable {
     nameTextStyle?: TextStyle;
     splitLine?: SplitLine;
     axisLabel?: AxisLabel;
+    axisLine?: AxisLine;
     min?: number;
     max?: number;
 }
@@ -115,6 +124,7 @@ interface Series extends IStylable {
     title?: IShowable;
     detail?: Detail;
     data?: DataValue;
+    roam?: Boolean;
 }
 
 interface Title extends IShowable, IAdjustable, IStylable {
@@ -141,6 +151,10 @@ interface CrossStyle {
 interface AxisPointer {
     type: "line" | "cross" | "none";
     crossStyle: CrossStyle;
+    label: AxisPointerLabel;
+}
+interface AxisPointerLabel {
+    backgroundColor: string;
 }
 interface ToolTip extends IShowable, IStylable {
     backgroundColor?: string;
@@ -216,8 +230,14 @@ declare const LIME_600 = "#65a30d";
 declare const LIME_700 = "#4d7c0f";
 declare const LIME_800 = "#3f6212";
 declare const LIME_900 = "#365314";
+declare const ZINC_50 = "#fafafa";
+declare const ZINC_100 = "#f4f4f5";
+declare const ZINC_200 = "#e4e4e7";
+declare const ZINC_300 = "#d4d4d8";
 declare const ZINC_400 = "#a1a1aa";
 declare const ZINC_500 = "#71717a";
+declare const ZINC_600 = "#52525b";
+declare const ZINC_700 = "#3f3f46";
 declare const ZINC_800 = "#27272a";
 declare const ZINC_900 = "#18181b";
 declare const TEAL = "#003f5c";
@@ -229,6 +249,15 @@ declare const LIGHT_PINK = "#f95d6a";
 declare const ORANGE = "#ff7c43";
 declare const YELLOW = "#ffa600";
 declare const LIME_PALETTE: string[];
+declare const LIME_200_DARKER = "#97b35d";
+declare const LIME_300_DARKER = "#84a340";
+declare const LIME_400_DARKER = "#719623";
+declare const LIME_500_DARKER = "#5e8614";
+declare const LIME_600_DARKER = "#4d6d04";
+declare const LIME_700_DARKER = "#3c5906";
+declare const LIME_800_DARKER = "#2d4606";
+declare const LIME_900_DARKER = "#243805";
+declare const LIME_PALETTE_DARKER: string[];
 declare const COLOR_PALETTE: string[];
 declare const COMBINED_PALETTE: string[];
 
@@ -238,21 +267,36 @@ declare const color_DARK_BLUE: typeof DARK_BLUE;
 declare const color_DARK_PURPLE: typeof DARK_PURPLE;
 declare const color_LIGHT_PINK: typeof LIGHT_PINK;
 declare const color_LIME_200: typeof LIME_200;
+declare const color_LIME_200_DARKER: typeof LIME_200_DARKER;
 declare const color_LIME_300: typeof LIME_300;
+declare const color_LIME_300_DARKER: typeof LIME_300_DARKER;
 declare const color_LIME_400: typeof LIME_400;
+declare const color_LIME_400_DARKER: typeof LIME_400_DARKER;
 declare const color_LIME_500: typeof LIME_500;
+declare const color_LIME_500_DARKER: typeof LIME_500_DARKER;
 declare const color_LIME_600: typeof LIME_600;
+declare const color_LIME_600_DARKER: typeof LIME_600_DARKER;
 declare const color_LIME_700: typeof LIME_700;
+declare const color_LIME_700_DARKER: typeof LIME_700_DARKER;
 declare const color_LIME_800: typeof LIME_800;
+declare const color_LIME_800_DARKER: typeof LIME_800_DARKER;
 declare const color_LIME_900: typeof LIME_900;
+declare const color_LIME_900_DARKER: typeof LIME_900_DARKER;
 declare const color_LIME_PALETTE: typeof LIME_PALETTE;
+declare const color_LIME_PALETTE_DARKER: typeof LIME_PALETTE_DARKER;
 declare const color_ORANGE: typeof ORANGE;
 declare const color_PINK: typeof PINK;
 declare const color_PURPLE: typeof PURPLE;
 declare const color_TEAL: typeof TEAL;
 declare const color_YELLOW: typeof YELLOW;
+declare const color_ZINC_100: typeof ZINC_100;
+declare const color_ZINC_200: typeof ZINC_200;
+declare const color_ZINC_300: typeof ZINC_300;
 declare const color_ZINC_400: typeof ZINC_400;
+declare const color_ZINC_50: typeof ZINC_50;
 declare const color_ZINC_500: typeof ZINC_500;
+declare const color_ZINC_600: typeof ZINC_600;
+declare const color_ZINC_700: typeof ZINC_700;
 declare const color_ZINC_800: typeof ZINC_800;
 declare const color_ZINC_900: typeof ZINC_900;
 declare namespace color {
@@ -263,21 +307,36 @@ declare namespace color {
     color_DARK_PURPLE as DARK_PURPLE,
     color_LIGHT_PINK as LIGHT_PINK,
     color_LIME_200 as LIME_200,
+    color_LIME_200_DARKER as LIME_200_DARKER,
     color_LIME_300 as LIME_300,
+    color_LIME_300_DARKER as LIME_300_DARKER,
     color_LIME_400 as LIME_400,
+    color_LIME_400_DARKER as LIME_400_DARKER,
     color_LIME_500 as LIME_500,
+    color_LIME_500_DARKER as LIME_500_DARKER,
     color_LIME_600 as LIME_600,
+    color_LIME_600_DARKER as LIME_600_DARKER,
     color_LIME_700 as LIME_700,
+    color_LIME_700_DARKER as LIME_700_DARKER,
     color_LIME_800 as LIME_800,
+    color_LIME_800_DARKER as LIME_800_DARKER,
     color_LIME_900 as LIME_900,
+    color_LIME_900_DARKER as LIME_900_DARKER,
     color_LIME_PALETTE as LIME_PALETTE,
+    color_LIME_PALETTE_DARKER as LIME_PALETTE_DARKER,
     color_ORANGE as ORANGE,
     color_PINK as PINK,
     color_PURPLE as PURPLE,
     color_TEAL as TEAL,
     color_YELLOW as YELLOW,
+    color_ZINC_100 as ZINC_100,
+    color_ZINC_200 as ZINC_200,
+    color_ZINC_300 as ZINC_300,
     color_ZINC_400 as ZINC_400,
+    color_ZINC_50 as ZINC_50,
     color_ZINC_500 as ZINC_500,
+    color_ZINC_600 as ZINC_600,
+    color_ZINC_700 as ZINC_700,
     color_ZINC_800 as ZINC_800,
     color_ZINC_900 as ZINC_900,
   };
@@ -79779,7 +79838,7 @@ declare class Chart<T extends ChartType> {
     static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T>;
     static fromLegacy<T extends ChartType>(opts: LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar">;
     static defaultStyleOptions(chartType: ChartType): StyleOptions<typeof chartType>;
-    convertTo(to: ChartType): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi">;
+    convertTo(to: ChartType, theme: string): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi">;
     private toBarChart;
     private toLineChart;
     private toPieChart;
@@ -79790,7 +79849,7 @@ declare class Chart<T extends ChartType> {
     private toKpi;
     private assertIsValid;
     equals(other: Chart<T>): boolean;
-    compile(title: string, data: RowOriented): ECOption;
+    compile(title: string, data: RowOriented, theme: string): ECOption;
     canAddDimension(): boolean;
     canAddMetric(): boolean;
     canAddAxis(): boolean;

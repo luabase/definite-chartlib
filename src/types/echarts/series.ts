@@ -43,4 +43,5 @@ export default interface Series extends IStylable {
   title?: IShowable;
   detail?: Detail;
   data?: DataValue;
+  roam?: Boolean;
 }

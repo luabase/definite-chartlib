@@ -15,7 +15,8 @@ const MAX_INTERVAL = 3;
 export function axis<T extends ChartType>(
   chart: Chart<T>,
   datasets: echarts.DataSet[],
-  kind: "x" | "y"
+  kind: "x" | "y",
+  theme: string
 ): echarts.Axis[] {
   if (chart.getChartType() === "kpi") {
     return [];
@@ -31,18 +32,27 @@ export function axis<T extends ChartType>(
       type: "category",
       name: utils.string.truncate(name, 42),
       nameGap: kind === "y" ? 85 : 30,
-    };
-    if (chart.getChartType() === "bar") {
-      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
-      item.axisLabel = {
+      nameTextStyle: {
+        color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+      },
+      axisLabel: {
+        color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
         interval: isLarge
           ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL)
           : 0,
         rotate: isLarge ? 30 : 0,
         formatter: categoryFormatter,
-      };
+      },
+      axisLine: {
+        lineStyle: {
+          color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+        },
+      },
+    };
+    if (chart.getChartType() === "bar") {
+      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
     }
-    axes.push(addCommonFeatures(chart.getChartType(), item, kind));
+    axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
   } else {
     const map = getMapOfValueAxes(chart);
     const keys = Array.from(map.keys());
@@ -60,7 +70,16 @@ export function axis<T extends ChartType>(
           type: "value",
           name: utils.string.truncate(name, 42),
           nameGap: kind === "x" ? 30 : 50,
-          axisLabel: { formatter: determineFormatter(chart, k) },
+          nameTextStyle: {
+            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+          },
+          axisLine: {
+            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+          },
+          axisLabel: {
+            formatter: determineFormatter(chart, k),
+            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+          },
         };
         if (metrics[0].min !== undefined && String(metrics[0].min) !== "") {
           item.min = metrics[0].min;
@@ -68,7 +87,7 @@ export function axis<T extends ChartType>(
         if (metrics[0].max !== undefined && String(metrics[0].max) !== "") {
           item.max = metrics[0].max;
         }
-        axes.push(addCommonFeatures(chart.getChartType(), item, kind));
+        axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
       });
   }
   return axes;
@@ -92,13 +111,20 @@ function isDimensionalAxis<T extends ChartType>(
 function addCommonFeatures(
   chartType: ChartType,
   item: echarts.Axis,
-  kind: "x" | "y"
+  kind: "x" | "y",
+  theme: string
 ) {
   item.nameLocation = "center";
-  item.nameTextStyle = { fontSize: 14 };
+  item.nameTextStyle = {
+    fontSize: 14,
+    color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+  };
   if (kind === "y" || chartType === "scatter") {
     item.splitLine = {
-      lineStyle: { type: "dashed", color: color.ZINC_800 },
+      lineStyle: {
+        type: "dashed",
+        color: theme === "light" ? color.ZINC_200 : color.ZINC_800,
+      },
     };
   }
   return item;
@@ -122,9 +148,12 @@ function getMapOfValueAxes<T extends ChartType>(chart: Chart<T>) {
   return map;
 }
 
-function determineFormatter<T extends ChartType>(chart: Chart<T>, axis: "left" | "right") {
+function determineFormatter<T extends ChartType>(
+  chart: Chart<T>,
+  axis: "left" | "right"
+) {
   const metrics = chart.getMetrics();
-  const firstMetric = metrics.find(m => (m?.axis ?? "left") == axis);
+  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis);
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {

@@ -13,7 +13,8 @@ import country from "country-list-js";
 
 export function series<T extends ChartType>(
   chart: Chart<T>,
-  datasets: echarts.DataSet[]
+  datasets: echarts.DataSet[],
+  theme: string
 ): echarts.Series[] {
   const series: echarts.Series[] = [];
   const colors: string[] = [];
@@ -86,13 +87,18 @@ export function series<T extends ChartType>(
         value: dataset.dimensions[1],
       };
       item.itemStyle = {
-        borderColor: color.ZINC_900,
+        borderColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
         borderRadius: 10,
         borderWidth: 2,
       };
-      item.label = { color: color.ZINC_500, show: true };
+      item.label = {
+        color: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        show: true,
+      };
       item.yAxisIndex = 0;
-      item.textStyle = { color: color.ZINC_500 };
+      item.textStyle = {
+        color: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+      };
       item.radius = ["40%", "70%"];
     } else if (chart.getChartType() === "scatter") {
       const metrics = chart.getMetrics();
@@ -145,7 +151,7 @@ export function series<T extends ChartType>(
       };
       item.name = dataset.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
-      item.roam = true;
+      item.roam = false;
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {
