@@ -92,10 +92,10 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -104,12 +104,17 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
           },
           name: "gdp",
           nameGap: 30,
           nameLocation: "center",
+          axisLine: {
+            color: "#a1a1aa",
+          },
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           splitLine: {
@@ -125,12 +130,17 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "avg_income",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -264,10 +274,15 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -276,12 +291,17 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "gdp",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           splitLine: {
@@ -297,12 +317,17 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "avg_income",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
