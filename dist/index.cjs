@@ -22741,10 +22741,24 @@ function valueFormatter(value) {
     maximumFractionDigits: 1
   }).format(Number(value));
 }
+function longFormValueFormatter(value) {
+  return Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1
+    // Adjust this as needed for desired decimal places
+  }).format(Number(value));
+}
 function percentFormatter(value) {
   return Intl.NumberFormat("en-US", {
     style: "percent",
     maximumFractionDigits: 1
+  }).format(Number(value));
+}
+function longFormCurrencyFormatter(value) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   }).format(Number(value));
 }
 function currencyFormatter(value) {
@@ -23115,11 +23129,11 @@ function series(chart, datasets2, theme) {
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format = metric.format ?? "number";
-    let formatter = valueFormatter;
+    let formatter = chart.getStyleShowLongNumber() ? valueFormatter : longFormValueFormatter;
     if (format === "percent") {
       formatter = percentFormatter;
     } else if (format === "currency") {
-      formatter = currencyFormatter;
+      formatter = chart.getStyleShowLongNumber() ? currencyFormatter : longFormCurrencyFormatter;
     }
     series2.push({
       datasetIndex: 1,
@@ -23579,7 +23593,8 @@ var _Chart = class {
       case "kpi":
         return {
           showTitle: true,
-          showToolbox: false
+          showToolbox: false,
+          showLongNumber: false
         };
       case "map":
         return {
@@ -23725,6 +23740,7 @@ var _Chart = class {
   toKpi(theme) {
     const chart = new _Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
@@ -23853,6 +23869,12 @@ var _Chart = class {
   }
   getStyleShowTitle() {
     return this.style.showTitle;
+  }
+  getStyleShowLongNumber() {
+    if (this.chartType === "kpi") {
+      return { ...this.style }.showLongNumber;
+    }
+    return false;
   }
   getStyleShowToolbox() {
     return this.style.showToolbox;

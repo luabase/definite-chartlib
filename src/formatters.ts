@@ -11,6 +11,12 @@ export function valueFormatter(value: string | number): string {
   }).format(Number(value));
 }
 
+export function longFormValueFormatter(value: string | number): string {
+  return Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1, // Adjust this as needed for desired decimal places
+  }).format(Number(value));
+}
+
 export function percentFormatter(value: string | number): string {
   return Intl.NumberFormat("en-US", {
     style: "percent",
@@ -21,19 +27,18 @@ export function percentFormatter(value: string | number): string {
 // TODO: have different formatters for charts and KPI
 
 export function longFormCurrencyFormatter(value: string | number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(Number(value))
+    maximumFractionDigits: 0,
+  }).format(Number(value));
 }
 
 export function currencyFormatter(value: string | number): string {
   const shortened = valueFormatter(value);
   return "$" + shortened;
 }
-
 
 export function calendarTooltipFormatter(params: any): string {
   return `

@@ -88,6 +88,8 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
   ? { colorGrouping: ColorGroupingType }
   : T extends "heatmap"
   ? { colorGrouping: ColorGroupingType }
+  : T extends "kpi"
+  ? { showLongNumber: boolean }
   : {};
 
 export type StyleOptions<T extends ChartType> = BaseStyleOptions &

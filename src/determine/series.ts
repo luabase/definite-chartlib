@@ -21,11 +21,15 @@ export function series<T extends ChartType>(
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format = metric.format ?? "number";
-    let formatter = formatters.valueFormatter;
+    let formatter = chart.getStyleShowLongNumber()
+      ? formatters.valueFormatter
+      : formatters.longFormValueFormatter;
     if (format === "percent") {
       formatter = formatters.percentFormatter;
     } else if (format === "currency") {
-      formatter = formatters.currencyFormatter;
+      formatter = chart.getStyleShowLongNumber()
+        ? formatters.currencyFormatter
+        : formatters.longFormCurrencyFormatter;
     }
     series.push({
       datasetIndex: 1,

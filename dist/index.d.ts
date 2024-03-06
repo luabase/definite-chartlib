@@ -79792,6 +79792,8 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar" ? {
     colorGrouping: ColorGroupingType;
 } : T extends "heatmap" ? {
     colorGrouping: ColorGroupingType;
+} : T extends "kpi" ? {
+    showLongNumber: boolean;
 } : {};
 type StyleOptions<T extends ChartType> = BaseStyleOptions & ExtraStyleOptions<T>;
 interface ChartOptions<T extends ChartType> {
@@ -79860,6 +79862,7 @@ declare class Chart<T extends ChartType> {
     getChartType(): ChartType;
     isCartesian(): boolean;
     getStyleShowTitle(): boolean;
+    getStyleShowLongNumber(): boolean;
     getStyleShowToolbox(): boolean;
     getStyleShowLegend(): boolean;
     getStyleOrientation(): OrientationType | undefined;

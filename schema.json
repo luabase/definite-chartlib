@@ -56,11 +56,12 @@
           "description": "Color grouping. Only valid for heatmap and calendar charts"
         }
       },
-      "required": ["showTitle", "showToolbox"],
+      "required": ["showTitle", "showToolbox", "showLongNumber"],
       "description": "Chart style options",
       "default": {
         "showTitle": false,
-        "showToolbox": false
+        "showToolbox": false,
+        "showLongNumber": false
       }
     },
     "dimensions": {
