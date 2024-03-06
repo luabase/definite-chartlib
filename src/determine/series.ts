@@ -22,14 +22,14 @@ export function series<T extends ChartType>(
     const metric = chart.getMetrics()[0];
     const format = metric.format ?? "number";
     let formatter = chart.getStyleShowLongNumber()
-      ? formatters.valueFormatter
-      : formatters.longFormValueFormatter;
+      ? formatters.longFormValueFormatter
+      : formatters.valueFormatter;
     if (format === "percent") {
       formatter = formatters.percentFormatter;
     } else if (format === "currency") {
       formatter = chart.getStyleShowLongNumber()
-        ? formatters.currencyFormatter
-        : formatters.longFormCurrencyFormatter;
+        ? formatters.longFormCurrencyFormatter
+        : formatters.currencyFormatter;
     }
     series.push({
       datasetIndex: 1,

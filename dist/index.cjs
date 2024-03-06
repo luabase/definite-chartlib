@@ -23129,11 +23129,11 @@ function series(chart, datasets2, theme) {
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format = metric.format ?? "number";
-    let formatter = chart.getStyleShowLongNumber() ? valueFormatter : longFormValueFormatter;
+    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
     if (format === "percent") {
       formatter = percentFormatter;
     } else if (format === "currency") {
-      formatter = chart.getStyleShowLongNumber() ? currencyFormatter : longFormCurrencyFormatter;
+      formatter = chart.getStyleShowLongNumber() ? longFormCurrencyFormatter : currencyFormatter;
     }
     series2.push({
       datasetIndex: 1,
