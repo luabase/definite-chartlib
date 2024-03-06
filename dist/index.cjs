@@ -23740,6 +23740,7 @@ var _Chart = class {
   toKpi(theme) {
     const chart = new _Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
@@ -23873,7 +23874,7 @@ var _Chart = class {
     if (this.chartType === "kpi") {
       return { ...this.style }.showLongNumber;
     }
-    return void 0;
+    return false;
   }
   getStyleShowToolbox() {
     return this.style.showToolbox;

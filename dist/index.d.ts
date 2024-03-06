@@ -79862,7 +79862,7 @@ declare class Chart<T extends ChartType> {
     getChartType(): ChartType;
     isCartesian(): boolean;
     getStyleShowTitle(): boolean;
-    getStyleShowLongNumber(): boolean | undefined;
+    getStyleShowLongNumber(): boolean;
     getStyleShowToolbox(): boolean;
     getStyleShowLegend(): boolean;
     getStyleOrientation(): OrientationType | undefined;

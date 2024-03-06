@@ -361,6 +361,7 @@ export class Chart<T extends ChartType> {
   private toKpi(theme: string): Chart<"kpi"> {
     const chart = new Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color, theme),
@@ -507,11 +508,11 @@ export class Chart<T extends ChartType> {
     return this.style.showTitle;
   }
 
-  getStyleShowLongNumber(): boolean | undefined {
+  getStyleShowLongNumber(): boolean {
     if (this.chartType === "kpi") {
       return (<StyleOptions<"kpi">>{ ...this.style }).showLongNumber;
     }
-    return undefined;
+    return false;
   }
 
   getStyleShowToolbox(): boolean {
