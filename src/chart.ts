@@ -207,6 +207,7 @@ export class Chart<T extends ChartType> {
         return {
           showTitle: true,
           showToolbox: false,
+          showLongNumber: false,
         };
       case "map":
         return {
@@ -504,6 +505,13 @@ export class Chart<T extends ChartType> {
 
   getStyleShowTitle(): boolean {
     return this.style.showTitle;
+  }
+
+  getStyleShowLongNumber(): boolean | undefined {
+    if (this.chartType === "kpi") {
+      return (<StyleOptions<"kpi">>{ ...this.style }).showLongNumber;
+    }
+    return undefined;
   }
 
   getStyleShowToolbox(): boolean {
