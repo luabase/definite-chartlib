@@ -23916,12 +23916,22 @@ var _Chart = class {
     return this;
   }
   addDimension(dim) {
-    if (!this.canAddDimension())
-      throw new Error("Cannot add another dimension");
-    if (dim.id === void 0) {
-      dim.id = this.dimensions.length;
+    if (!dim) {
+      console.warn("No dimension provided; adding a default dimension.");
+      const defaultDim = {
+        index: 0,
+        dataType: "category",
+        id: this.dimensions.length
+      };
+      this.dimensions.push(defaultDim);
+    } else {
+      if (!this.canAddDimension())
+        throw new Error("Cannot add another dimension");
+      if (dim.id === void 0) {
+        dim.id = this.dimensions.length;
+      }
+      this.dimensions.push(dim);
     }
-    this.dimensions.push(dim);
     return this;
   }
   getDimensions() {
