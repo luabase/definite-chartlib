@@ -79870,7 +79870,7 @@ declare class Chart<T extends ChartType> {
     getStyleLineStyle(): LineStyleType | undefined;
     getStyleColorGrouping(): ColorGroupingType | undefined;
     setStyleOption(k: keyof StyleOptions<T>, v: StyleOptions<T>[typeof k]): Chart<T>;
-    addDimension(dim: Dimension<T>): Chart<T>;
+    addDimension(dim?: Dimension<T>): Chart<T>;
     getDimensions(): Dimension<T>[];
     getDimension(where: Predicate<Dimension<T>>): Dimension<T> | undefined;
     setDimension(where: Predicate<Dimension<T>>, v: Dimension<T>): Chart<T>;

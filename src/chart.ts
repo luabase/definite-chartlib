@@ -564,13 +564,26 @@ export class Chart<T extends ChartType> {
     return this;
   }
 
-  addDimension(dim: Dimension<T>): Chart<T> {
-    if (!this.canAddDimension())
-      throw new Error("Cannot add another dimension");
-    if (dim.id === undefined) {
-      dim.id = this.dimensions.length;
+  addDimension(dim?: Dimension<T>): Chart<T> {
+    if (!dim) {
+      console.warn("No dimension provided; adding a default dimension.");
+      const defaultDim: Dimension<T> = {
+        index: 0,
+        dataType: "category",
+        id: this.dimensions.length,
+      };
+      this.dimensions.push(defaultDim);
+    } else {
+      // Check if we can add another dimension
+      if (!this.canAddDimension())
+        throw new Error("Cannot add another dimension");
+      // Ensure the dimension has an ID
+      if (dim.id === undefined) {
+        dim.id = this.dimensions.length;
+      }
+      // Add the provided dimension
+      this.dimensions.push(dim);
     }
-    this.dimensions.push(dim);
     return this;
   }
 
