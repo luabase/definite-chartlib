@@ -24122,9 +24122,7 @@ var AutoChartFactory = class {
       const chart = this.generateSingleChart();
       charts.push(chart);
     }
-    if (charts.length > 1) {
-      charts = charts.filter((chart) => chart.getChartType() !== "kpi");
-    }
+    console.log(charts);
     return charts;
   }
 };
