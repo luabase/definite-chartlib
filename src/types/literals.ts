@@ -6,7 +6,8 @@ export type ChartType =
   | "pie"
   | "scatter"
   | "kpi"
-  | "map";
+  | "map"
+  | "funnel";
 
 export type DataType = "category" | "datetime" | "value";
 
