@@ -23564,6 +23564,11 @@ var _Chart = class {
           showTitle: true,
           showToolbox: false
         };
+      case "funnel":
+        return {
+          showTitle: true,
+          showToolbox: false
+        };
     }
   }
   convertTo(to, theme) {
@@ -23587,6 +23592,8 @@ var _Chart = class {
         return this.toMap(theme);
       case "kpi":
         return this.toKpi(theme);
+      case "funnel":
+        return this.toFunnel(theme);
     }
   }
   toBarChart() {
@@ -23704,6 +23711,18 @@ var _Chart = class {
     const chart = new _Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
+    chart.addDimension(this.dimensions[0]);
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color, theme),
+      aggregation: "none",
+      format: this.metrics[0].format
+    });
+    return chart;
+  }
+  toFunnel(theme) {
+    const chart = new _Chart("funnel");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
@@ -24085,7 +24104,6 @@ var AutoChartFactory = class {
       const chart = this.generateSingleChart();
       charts.push(chart);
     }
-    console.log(charts);
     return charts;
   }
 };

@@ -79720,7 +79720,7 @@ declare const stateAbbreviations: {
     WY: string;
 };
 
-type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter" | "kpi" | "map";
+type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter" | "kpi" | "map" | "funnel";
 type DataType = "category" | "datetime" | "value";
 type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "none";
 type AxisType = "left" | "right";
@@ -79840,7 +79840,7 @@ declare class Chart<T extends ChartType> {
     static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T>;
     static fromLegacy<T extends ChartType>(opts: LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar">;
     static defaultStyleOptions(chartType: ChartType): StyleOptions<typeof chartType>;
-    convertTo(to: ChartType, theme: string): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi">;
+    convertTo(to: ChartType, theme: string): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<"map"> | Chart<"kpi"> | Chart<"funnel">;
     private toBarChart;
     private toLineChart;
     private toPieChart;
@@ -79849,6 +79849,7 @@ declare class Chart<T extends ChartType> {
     private toCalendar;
     private toMap;
     private toKpi;
+    private toFunnel;
     private assertIsValid;
     equals(other: Chart<T>): boolean;
     compile(title: string, data: RowOriented, theme: string): ECOption;
