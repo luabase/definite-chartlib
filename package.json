@@ -1,7 +1,7 @@
 {
   "name": "@definite/chartlib",
   "type": "module",
-  "version": "1.13.12",
+  "version": "1.13.13",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -27,6 +27,7 @@
     "vitest": "^0.31.0"
   },
   "dependencies": {
-    "country-list-js": "^3.1.8"
+    "country-list-js": "^3.1.8",
+    "date-fns": "^3.6.0"
   }
 }

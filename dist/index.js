@@ -22748,7 +22748,20 @@ function calendarTooltipFormatter(params) {
 }
 
 // src/determine/axis.ts
+import { format, isValid, parseISO } from "date-fns";
 var MAX_INTERVAL = 3;
+var axisFormatter = (value) => {
+  function isValidDate(dateString) {
+    const date = parseISO(dateString);
+    return isValid(date);
+  }
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    const date = parseISO(value);
+    return format(date, "yyyy-MM-dd");
+  } else {
+    return categoryFormatter(value);
+  }
+};
 function axis(chart, datasets2, kind, theme) {
   if (chart.getChartType() === "kpi") {
     return [];
@@ -22763,7 +22776,7 @@ function axis(chart, datasets2, kind, theme) {
       show: chart.isCartesian(),
       type: "category",
       name: string_exports.truncate(name, 42),
-      nameGap: kind === "y" ? 85 : 30,
+      nameGap: kind === "y" ? 85 : isLarge ? 50 : 30,
       nameTextStyle: {
         color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
       },
@@ -22771,7 +22784,7 @@ function axis(chart, datasets2, kind, theme) {
         color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400,
         interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL) : 0,
         rotate: isLarge ? 30 : 0,
-        formatter: categoryFormatter
+        formatter: axisFormatter
       },
       axisLine: {
         lineStyle: {
@@ -23006,7 +23019,7 @@ function grid(chart, datasets2) {
     show: false,
     containLabel: false,
     left: "12%",
-    bottom: "12%",
+    bottom: isLarge ? "20%" : "12%",
     right: "9%",
     top: "2%"
   };
@@ -23091,11 +23104,11 @@ function series(chart, datasets2, theme) {
   const colors = [];
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
-    const format = metric.format ?? "number";
+    const format2 = metric.format ?? "number";
     let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
-    if (format === "percent") {
+    if (format2 === "percent") {
       formatter = percentFormatter;
-    } else if (format === "currency") {
+    } else if (format2 === "currency") {
       formatter = chart.getStyleShowLongNumber() ? longFormCurrencyFormatter : currencyFormatter;
     }
     series2.push({
@@ -24085,7 +24098,6 @@ var AutoChartFactory = class {
       const chart = this.generateSingleChart();
       charts.push(chart);
     }
-    console.log(charts);
     return charts;
   }
 };

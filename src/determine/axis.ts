@@ -8,9 +8,28 @@ import {
   currencyFormatter,
 } from "../formatters";
 import { color } from "../constants";
+import { format, isValid, parseISO, getYear } from "date-fns";
 import * as utils from "../utils";
 
 const MAX_INTERVAL = 3;
+
+const axisFormatter = (value: string) => {
+  // First, define a function that tries to parse a string to a date and checks if it's valid
+  function isValidDate(dateString: string) {
+    const date = parseISO(dateString);
+    return isValid(date);
+  }
+
+  // Check if the value can represent a valid date
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    // It's a valid date string; format it
+    const date = parseISO(value);
+    return format(date, "yyyy-MM-dd"); // Customize as needed
+  } else {
+    // Not a valid date string; use categoryFormatter
+    return categoryFormatter(value);
+  }
+};
 
 export function axis<T extends ChartType>(
   chart: Chart<T>,
@@ -31,7 +50,7 @@ export function axis<T extends ChartType>(
       show: chart.isCartesian(),
       type: "category",
       name: utils.string.truncate(name, 42),
-      nameGap: kind === "y" ? 85 : 30,
+      nameGap: kind === "y" ? 85 : isLarge ? 50 : 30,
       nameTextStyle: {
         color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
       },
@@ -41,7 +60,7 @@ export function axis<T extends ChartType>(
           ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL)
           : 0,
         rotate: isLarge ? 30 : 0,
-        formatter: categoryFormatter,
+        formatter: axisFormatter,
       },
       axisLine: {
         lineStyle: {
