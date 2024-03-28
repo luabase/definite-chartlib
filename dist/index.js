@@ -23736,12 +23736,28 @@ var _Chart = class {
   toFunnel(theme) {
     const chart = new _Chart("funnel");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    const dim = this.dimensions.find((dim2) => dim2.dataType === "datetime");
+    if (dim) {
+      chart.addDimension({
+        index: dim.index,
+        dataType: "datetime",
+        format: this.metrics[0].format
+      });
+    } else {
+      chart.addDimension({
+        index: this.dimensions[0].index,
+        dataType: "datetime",
+        format: this.metrics[0].format
+      });
+    }
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
-      aggregation: "none",
+      aggregation: "sum",
       format: this.metrics[0].format
     });
+    console.log("FIND ME");
+    console.log(chart);
     return chart;
   }
   assertIsValid() {

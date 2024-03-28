@@ -221,6 +221,9 @@ export function series<T extends ChartType>(
       item.yAxisIndex =
         (metric as Metric<"bar" | "line">).axis === "right" ? 1 : 0;
     }
+    if (chart.getChartType() === "funnel") {
+      // Funnel chart type
+    }
     series.push(item);
   });
 

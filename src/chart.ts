@@ -382,12 +382,29 @@ export class Chart<T extends ChartType> {
   private toFunnel(theme: string): Chart<"funnel"> {
     const chart = new Chart("funnel");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    const dim = this.dimensions.find((dim) => dim.dataType === "datetime");
+    if (dim) {
+      chart.addDimension({
+        index: dim.index,
+        dataType: "datetime",
+        format: this.metrics[0].format,
+      });
+    } else {
+      chart.addDimension({
+        index: this.dimensions[0].index,
+        dataType: "datetime",
+        format: this.metrics[0].format,
+      });
+    }
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color, theme),
-      aggregation: "none",
+      aggregation: "sum",
       format: this.metrics[0].format,
     });
+
+    console.log("FIND ME");
+    console.log(chart);
     return chart;
   }
 
