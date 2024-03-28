@@ -15,7 +15,7 @@ export function grid<T extends ChartType>(
     show: false,
     containLabel: false,
     left: "12%",
-    bottom: "12%",
+    bottom: isLarge ? "20%" : "12%",
     right: "9%",
     top: "2%",
   };
