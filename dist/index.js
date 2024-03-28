@@ -23273,6 +23273,8 @@ function series(chart, datasets2, theme) {
     if (["bar", "line"].includes(chart.getChartType())) {
       item.yAxisIndex = metric.axis === "right" ? 1 : 0;
     }
+    if (chart.getChartType() === "funnel") {
+    }
     series2.push(item);
   });
   return series2;
@@ -23756,8 +23758,6 @@ var _Chart = class {
       aggregation: "sum",
       format: this.metrics[0].format
     });
-    console.log("FIND ME");
-    console.log(chart);
     return chart;
   }
   assertIsValid() {

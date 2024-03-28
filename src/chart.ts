@@ -402,9 +402,6 @@ export class Chart<T extends ChartType> {
       aggregation: "sum",
       format: this.metrics[0].format,
     });
-
-    console.log("FIND ME");
-    console.log(chart);
     return chart;
   }
 
