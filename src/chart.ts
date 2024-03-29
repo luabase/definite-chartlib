@@ -214,6 +214,11 @@ export class Chart<T extends ChartType> {
           showTitle: true,
           showToolbox: false,
         };
+      case "funnel":
+        return {
+          showTitle: true,
+          showToolbox: false,
+        };
     }
   }
 
@@ -237,6 +242,8 @@ export class Chart<T extends ChartType> {
         return this.toMap(theme);
       case "kpi":
         return this.toKpi(theme);
+      case "funnel":
+        return this.toFunnel(theme);
     }
   }
 
@@ -362,10 +369,37 @@ export class Chart<T extends ChartType> {
     const chart = new Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
+    chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "none",
+      format: this.metrics[0].format,
+    });
+    return chart;
+  }
+
+  private toFunnel(theme: string): Chart<"funnel"> {
+    const chart = new Chart("funnel");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    const dim = this.dimensions.find((dim) => dim.dataType === "datetime");
+    if (dim) {
+      chart.addDimension({
+        index: dim.index,
+        dataType: "datetime",
+        format: this.metrics[0].format,
+      });
+    } else {
+      chart.addDimension({
+        index: this.dimensions[0].index,
+        dataType: "datetime",
+        format: this.metrics[0].format,
+      });
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: utils.color.asArray(this.metrics[0].color, theme),
+      aggregation: "sum",
       format: this.metrics[0].format,
     });
     return chart;
@@ -501,7 +535,7 @@ export class Chart<T extends ChartType> {
   }
 
   isCartesian(): boolean {
-    return !["pie", "calendar", "map"].includes(this.chartType);
+    return !["pie", "calendar", "map", "funnel"].includes(this.chartType);
   }
 
   getStyleShowTitle(): boolean {

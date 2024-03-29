@@ -23099,16 +23099,29 @@ function findCountryOrStateIndices(arr) {
 
 // src/determine/series.ts
 import country from "country-list-js";
+import { format as format2, isValid as isValid2, parseISO as parseISO2 } from "date-fns";
+var funnelFormatter = (value) => {
+  function isValidDate(dateString) {
+    const date = parseISO2(dateString);
+    return isValid2(date);
+  }
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    const date = parseISO2(value);
+    return format2(date, "yyyy-MM-dd");
+  } else {
+    return categoryFormatter(value);
+  }
+};
 function series(chart, datasets2, theme) {
   const series2 = [];
   const colors = [];
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
-    const format2 = metric.format ?? "number";
+    const format3 = metric.format ?? "number";
     let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
-    if (format2 === "percent") {
+    if (format3 === "percent") {
       formatter = percentFormatter;
-    } else if (format2 === "currency") {
+    } else if (format3 === "currency") {
       formatter = chart.getStyleShowLongNumber() ? longFormCurrencyFormatter : currencyFormatter;
     }
     series2.push({
@@ -23158,7 +23171,20 @@ function series(chart, datasets2, theme) {
       datasetIndex: Number(dix),
       name
     };
-    if (chart.getStyleOrientation() === "horizontal") {
+    if (chart.getChartType() === "funnel") {
+      item.label = {
+        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_100,
+        show: true,
+        position: "inside",
+        backgroundColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        padding: [1, 2],
+        borderRadius: 2,
+        formatter: (params) => funnelFormatter(params.name)
+      };
+      item.itemStyle = {
+        borderWidth: 0
+      };
+    } else if (chart.getStyleOrientation() === "horizontal") {
       item.xAxisIndex = 0;
       item.encode = { x: dataset.dimensions[1], y: dataset.dimensions[0] };
     } else if (chart.getChartType() === "pie") {
@@ -23272,6 +23298,8 @@ function series(chart, datasets2, theme) {
     }
     if (["bar", "line"].includes(chart.getChartType())) {
       item.yAxisIndex = metric.axis === "right" ? 1 : 0;
+    }
+    if (chart.getChartType() === "funnel") {
     }
     series2.push(item);
   });
@@ -23577,6 +23605,11 @@ var _Chart = class {
           showTitle: true,
           showToolbox: false
         };
+      case "funnel":
+        return {
+          showTitle: true,
+          showToolbox: false
+        };
     }
   }
   convertTo(to, theme) {
@@ -23600,6 +23633,8 @@ var _Chart = class {
         return this.toMap(theme);
       case "kpi":
         return this.toKpi(theme);
+      case "funnel":
+        return this.toFunnel(theme);
     }
   }
   toBarChart() {
@@ -23717,10 +23752,36 @@ var _Chart = class {
     const chart = new _Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
+    chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "none",
+      format: this.metrics[0].format
+    });
+    return chart;
+  }
+  toFunnel(theme) {
+    const chart = new _Chart("funnel");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    const dim = this.dimensions.find((dim2) => dim2.dataType === "datetime");
+    if (dim) {
+      chart.addDimension({
+        index: dim.index,
+        dataType: "datetime",
+        format: this.metrics[0].format
+      });
+    } else {
+      chart.addDimension({
+        index: this.dimensions[0].index,
+        dataType: "datetime",
+        format: this.metrics[0].format
+      });
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color, theme),
+      aggregation: "sum",
       format: this.metrics[0].format
     });
     return chart;
@@ -23841,7 +23902,7 @@ var _Chart = class {
     return this.chartType;
   }
   isCartesian() {
-    return !["pie", "calendar", "map"].includes(this.chartType);
+    return !["pie", "calendar", "map", "funnel"].includes(this.chartType);
   }
   getStyleShowTitle() {
     return this.style.showTitle;

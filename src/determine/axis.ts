@@ -8,7 +8,7 @@ import {
   currencyFormatter,
 } from "../formatters";
 import { color } from "../constants";
-import { format, isValid, parseISO, getYear } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 import * as utils from "../utils";
 
 const MAX_INTERVAL = 3;
