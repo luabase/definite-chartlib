@@ -7,9 +7,29 @@ import * as formatters from "../formatters";
 import { stateAbbreviations } from "../constants";
 import { findCountryOrStateIndices, findNumberIndex } from "./helpers";
 import country from "country-list-js";
+import { format, isValid, parseISO, getYear } from "date-fns";
+import { categoryFormatter } from "../formatters";
 
 // NOTE: dataset ID will be of this format:
 // <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
+
+const funnelFormatter = (value: string) => {
+  // First, define a function that tries to parse a string to a date and checks if it's valid
+  function isValidDate(dateString: string) {
+    const date = parseISO(dateString);
+    return isValid(date);
+  }
+
+  // Check if the value can represent a valid date
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    // It's a valid date string; format it
+    const date = parseISO(value);
+    return format(date, "yyyy-MM-dd"); // Customize as needed
+  } else {
+    // Not a valid date string; use categoryFormatter
+    return categoryFormatter(value);
+  }
+};
 
 export function series<T extends ChartType>(
   chart: Chart<T>,
@@ -82,7 +102,20 @@ export function series<T extends ChartType>(
       datasetIndex: Number(dix),
       name: name,
     };
-    if (chart.getStyleOrientation() === "horizontal") {
+    if (chart.getChartType() === "funnel") {
+      item.label = {
+        color: theme === "light" ? color.ZINC_900 : color.ZINC_100,
+        show: true,
+        position: "inside",
+        backgroundColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        padding: [1, 2],
+        borderRadius: 2,
+        formatter: (params) => funnelFormatter(params.name),
+      };
+      item.itemStyle = {
+        borderWidth: 0,
+      };
+    } else if (chart.getStyleOrientation() === "horizontal") {
       item.xAxisIndex = 0;
       item.encode = { x: dataset.dimensions[1], y: dataset.dimensions[0] };
     } else if (chart.getChartType() === "pie") {

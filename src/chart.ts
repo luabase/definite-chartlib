@@ -535,7 +535,7 @@ export class Chart<T extends ChartType> {
   }
 
   isCartesian(): boolean {
-    return !["pie", "calendar", "map"].includes(this.chartType);
+    return !["pie", "calendar", "map", "funnel"].includes(this.chartType);
   }
 
   getStyleShowTitle(): boolean {
