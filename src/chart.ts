@@ -369,7 +369,6 @@ export class Chart<T extends ChartType> {
     const chart = new Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
-    chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color, theme),
