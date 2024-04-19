@@ -23789,7 +23789,6 @@ var _Chart = class {
     const chart = new _Chart("kpi");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.setStyleOption("showLongNumber", this.getStyleShowLongNumber());
-    chart.addDimension(this.dimensions[0]);
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
