@@ -24067,14 +24067,6 @@ var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
 var chartMatchConfig = [
   ...forAddValueColumnType(
     {
-      column_type: [],
-      chart_types: ["kpi"]
-    },
-    1,
-    COLORS.length
-  ),
-  ...forAddValueColumnType(
-    {
       column_type: ["category"],
       chart_types: ["bar"]
     },
@@ -24085,6 +24077,14 @@ var chartMatchConfig = [
     {
       column_type: ["datetime"],
       chart_types: ["line"]
+    },
+    1,
+    COLORS.length
+  ),
+  ...forAddValueColumnType(
+    {
+      column_type: [],
+      chart_types: ["kpi"]
     },
     1,
     COLORS.length
@@ -24147,6 +24147,7 @@ var AutoChartFactory = class {
     const matches = chartMatchConfig.filter(
       (config) => config.column_type.length === column_options.length && config.column_type.sort().join() === column_options.sort().join()
     );
+    console.log("FIND ME ", matches);
     if (matches.length > 0) {
       matches.forEach((match) => {
         match.chart_types.forEach(

@@ -54,6 +54,9 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
       legend: {
         left: "center",
         show: false,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
@@ -91,11 +94,16 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
         show: false,
       },
       tooltip: {
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -214,6 +222,9 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
       legend: {
         left: "center",
         show: true,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
@@ -263,11 +274,16 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
         show: false,
       },
       tooltip: {
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",

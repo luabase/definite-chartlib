@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { valueFormatter, percentFormatter } from "../../src/formatters";
+import {
+  valueFormatter,
+  percentFormatter,
+  axisFormatter,
+} from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 1 aggregate metric", () => {
@@ -53,6 +57,9 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       legend: {
         left: "center",
         show: false,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
@@ -76,11 +83,11 @@ describe("given 1 dimension and 1 aggregate metric", () => {
             borderWidth: 2,
           },
           textStyle: {
-            color: "#71717a",
+            color: "#18181b",
           },
           label: {
             show: true,
-            color: "#71717a",
+            color: "#18181b",
           },
           datasetIndex: 1,
           encode: { itemName: "os", value: "users" },
@@ -108,11 +115,16 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         show: false,
       },
       tooltip: {
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -120,10 +132,16 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       visualMap: null,
       xAxis: [
         {
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
+          },
           name: "os",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: false,
@@ -133,12 +151,17 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: false,
@@ -200,6 +223,9 @@ describe("given a percentage format in the first metric", () => {
       legend: {
         left: "center",
         show: false,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
@@ -223,11 +249,11 @@ describe("given a percentage format in the first metric", () => {
             borderWidth: 2,
           },
           textStyle: {
-            color: "#71717a",
+            color: "#18181b",
           },
           label: {
             show: true,
-            color: "#71717a",
+            color: "#18181b",
           },
           datasetIndex: 1,
           encode: { itemName: "key", value: "percent" },
@@ -255,11 +281,16 @@ describe("given a percentage format in the first metric", () => {
         show: false,
       },
       tooltip: {
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -267,10 +298,22 @@ describe("given a percentage format in the first metric", () => {
       visualMap: null,
       xAxis: [
         {
+          axisLabel: {
+            color: "#a1a1aa",
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
+          },
           name: "key",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: false,
@@ -280,12 +323,17 @@ describe("given a percentage format in the first metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: percentFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "percent",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: false,

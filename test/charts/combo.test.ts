@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { categoryFormatter, percentFormatter, valueFormatter } from "../../src/formatters";
+import {
+  axisFormatter,
+  categoryFormatter,
+  percentFormatter,
+  valueFormatter,
+} from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 2 aggregate metrics", () => {
@@ -16,7 +21,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       color: color.LIME_200,
       aggregation: "sum",
       axis: "left",
-      format: "number"
+      format: "number",
     })
     .addMetric({
       index: 2,
@@ -24,7 +29,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       color: color.LIGHT_PINK,
       aggregation: "avg",
       axis: "right",
-      format: "percent"
+      format: "percent",
     });
   it("can compile to combo chart", () => {
     expect(chart.compile("My chart", data["dailyUsersByMobileOS"])).toEqual({
@@ -75,6 +80,9 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       legend: {
         left: "center",
         show: true,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
@@ -119,14 +127,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -137,14 +148,21 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       xAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -154,12 +172,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -173,12 +196,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         },
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: percentFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,

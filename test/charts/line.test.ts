@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { valueFormatter } from "../../src/formatters";
+import { valueFormatter, axisFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 1 aggregate metric", () => {
@@ -105,10 +105,22 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       visualMap: null,
       xAxis: [
         {
+        axisLabel: {
+            color: '#a1a1aa',
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#a1a1aa',
+            },
+          },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: '#a1a1aa',
             fontSize: 14,
           },
           show: true,
@@ -118,7 +130,15 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
-            formatter: valueFormatter,
+            color: '#a1a1aa',
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#a1a1aa',
+            },
           },
           name: "users",
           nameGap: 50,
@@ -199,6 +219,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       legend: {
         left: "center",
         show: true,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
@@ -250,6 +273,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
           crossStyle: {
             color: "#999999",
           },
+          label: {
+            backgroundColor: "#71717a",
+          },
           type: "cross",
         },
         show: true,
@@ -258,10 +284,22 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       visualMap: null,
       xAxis: [
         {
+          axisLabel: {
+            color: '#a1a1aa',
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#a1a1aa',
+            },
+          },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -271,12 +309,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: '#a1a1aa',
             formatter: valueFormatter,
           },
+          axisLine: {
+              color: '#a1a1aa',
+            },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: '#a1a1aa'
             fontSize: 14,
           },
           show: true,
@@ -404,6 +447,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       visualMap: null,
       xAxis: [
         {
+          axisLabel: {
+              color: '#a1a1aa',
+              formatter: axisFormatter,
+              interval: 0,
+              rotate: 0,
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#a1a1aa',
+              },
+            },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
@@ -417,12 +471,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: '#a1a1aa',
             formatter: valueFormatter,
           },
+          axisLine: {
+              color: '#a1a1aa',
+            },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: '#a1a1aa',
             fontSize: 14,
           },
           show: true,
