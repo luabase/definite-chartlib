@@ -3,6 +3,7 @@ import data from "../fixtures";
 
 import chartlib from "../../src";
 import { color } from "../../src/constants";
+import { axisFormatter } from "../../src/formatters";
 
 describe("given 2 dimensions and 1 non-aggregated metric", () => {
   const chart = chartlib
@@ -57,6 +58,9 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         show: false,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -91,10 +95,15 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -126,6 +135,7 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -134,10 +144,22 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
       ],
       yAxis: [
         {
+          axisLabel: {
+            color: "#a1a1aa",
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
+          },
           name: "hour",
           nameGap: 85,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,

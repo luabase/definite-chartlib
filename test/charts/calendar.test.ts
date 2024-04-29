@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { valueFormatter, calendarTooltipFormatter } from "../../src/formatters";
+import {
+  valueFormatter,
+  calendarTooltipFormatter,
+  axisFormatter,
+} from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 1 aggregate dimension", () => {
@@ -75,6 +79,9 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         show: false,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -105,11 +112,16 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         show: false,
       },
       tooltip: {
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         show: true,
         trigger: "item",
@@ -138,6 +150,17 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
       },
       xAxis: [
         {
+          axisLabel: {
+            color: "#a1a1aa",
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
+          },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
