@@ -38,6 +38,9 @@ describe("given 1 metric and no dimensions", () => {
       legend: {
         left: "center",
         show: false,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "8%",
         type: "scroll",
       },
@@ -88,12 +91,17 @@ describe("given 1 metric and no dimensions", () => {
         show: false,
       },
       tooltip: {
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
+        },
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         confine: true,
         show: true,
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         trigger: "item",
       },

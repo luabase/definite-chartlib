@@ -21,178 +21,495 @@ describe("given a list of column options", () => {
     expect(charts).toEqual([
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
-        ],
       },
       {
         chartType: "pie",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: [
+              "#d9f99d",
+              "#bef264",
+              "#a3e635",
+              "#84cc16",
+              "#65a30d",
+              "#4d7c0f",
+              "#3f6212",
+              "#365314",
+            ],
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+        ],
         style: {
           showTitle: false,
           showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_PALETTE, aggregation: "sum" },
-        ],
       },
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 5,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 5, color: color.LIME_200, aggregation: "sum" },
-        ],
       },
       {
         chartType: "pie",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: [
+              "#d9f99d",
+              "#bef264",
+              "#a3e635",
+              "#84cc16",
+              "#65a30d",
+              "#4d7c0f",
+              "#3f6212",
+              "#365314",
+            ],
+            format: undefined,
+            id: 0,
+            index: 5,
+          },
+        ],
         style: {
           showTitle: false,
           showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+      },
+      {
+        chartType: "kpi",
+        dimensions: [],
         metrics: [
-          { id: 0, index: 5, color: color.LIME_PALETTE, aggregation: "sum" },
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
         ],
+        style: {
+          showLongNumber: false,
+          showTitle: true,
+          showToolbox: false,
+        },
       },
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 6,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 6, color: color.LIME_200, aggregation: "sum" },
-        ],
       },
       {
         chartType: "pie",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: [
+              "#d9f99d",
+              "#bef264",
+              "#a3e635",
+              "#84cc16",
+              "#65a30d",
+              "#4d7c0f",
+              "#3f6212",
+              "#365314",
+            ],
+            format: undefined,
+            id: 0,
+            index: 6,
+          },
+        ],
         style: {
           showTitle: false,
           showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+      },
+      {
+        chartType: "kpi",
+        dimensions: [],
         metrics: [
-          { id: 0, index: 6, color: color.LIME_PALETTE, aggregation: "sum" },
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
         ],
+        style: {
+          showLongNumber: false,
+          showTitle: true,
+          showToolbox: false,
+        },
+      },
+      {
+        chartType: "kpi",
+        dimensions: [],
+        metrics: [
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 5,
+          },
+        ],
+        style: {
+          showLongNumber: false,
+          showTitle: true,
+          showToolbox: false,
+        },
       },
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+          {
+            aggregation: "sum",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 5,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
-          { id: 1, index: 5, color: color.DARK_BLUE, aggregation: "sum" },
-        ],
       },
       {
         chartType: "scatter",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+          {
+            aggregation: "none",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 5,
+          },
+        ],
         style: {
           showTitle: false,
           showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_200, aggregation: "none" },
-          { id: 1, index: 5, color: color.DARK_BLUE, aggregation: "none" },
-        ],
       },
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+          {
+            aggregation: "sum",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 6,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
-          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "sum" },
-        ],
       },
       {
         chartType: "scatter",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+          {
+            aggregation: "none",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 6,
+          },
+        ],
         style: {
           showTitle: false,
           showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_200, aggregation: "none" },
-          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "none" },
-        ],
       },
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 5,
+          },
+          {
+            aggregation: "sum",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 6,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 5, color: color.LIME_200, aggregation: "sum" },
-          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "sum" },
-        ],
       },
       {
         chartType: "scatter",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 5,
+          },
+          {
+            aggregation: "none",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 6,
+          },
+        ],
         style: {
           showTitle: false,
           showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
+      },
+      {
+        chartType: "kpi",
+        dimensions: [],
         metrics: [
-          { id: 0, index: 5, color: color.LIME_200, aggregation: "none" },
-          { id: 1, index: 6, color: color.DARK_BLUE, aggregation: "none" },
+          {
+            aggregation: "none",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
         ],
+        style: {
+          showLongNumber: false,
+          showTitle: true,
+          showToolbox: false,
+        },
       },
       {
         chartType: "bar",
+        dimensions: [
+          {
+            dataType: "category",
+            format: undefined,
+            id: 0,
+            index: 0,
+          },
+        ],
+        metrics: [
+          {
+            aggregation: "sum",
+            color: "#d9f99d",
+            format: undefined,
+            id: 0,
+            index: 4,
+          },
+          {
+            aggregation: "sum",
+            color: "#2f4b7c",
+            format: undefined,
+            id: 1,
+            index: 5,
+          },
+          {
+            aggregation: "sum",
+            color: "#665191",
+            format: undefined,
+            id: 2,
+            index: 6,
+          },
+        ],
         style: {
-          showTitle: false,
-          showToolbox: false,
-          showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showLegend: true,
+          showTitle: false,
+          showToolbox: false,
         },
-        dimensions: [{ id: 0, index: 0, dataType: "category" }],
-        metrics: [
-          { id: 0, index: 4, color: color.LIME_200, aggregation: "sum" },
-          { id: 1, index: 5, color: color.DARK_BLUE, aggregation: "sum" },
-          { id: 2, index: 6, color: color.DARK_PURPLE, aggregation: "sum" },
-        ],
       },
     ]);
   });
+
   it("can provide a list of charts without subsets that can be created", () => {
     const factory = new AutoChartFactory(colOpts, false);
     const charts = factory
@@ -243,6 +560,7 @@ describe("given a list of column options", () => {
         style: {
           showTitle: true,
           showToolbox: false,
+          showLongNumber: false,
         },
         dimensions: [],
         metrics: [

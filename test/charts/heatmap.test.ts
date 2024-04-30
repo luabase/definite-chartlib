@@ -3,6 +3,7 @@ import data from "../fixtures";
 
 import chartlib from "../../src";
 import { color } from "../../src/constants";
+import { axisFormatter } from "../../src/formatters";
 
 describe("given 2 dimensions and 1 non-aggregated metric", () => {
   const chart = chartlib
@@ -49,25 +50,28 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         containLabel: false,
         left: "12%",
         right: "11%",
-        top: "2%",
         show: false,
+        top: "2%",
       },
       legend: {
         left: "center",
         show: false,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         top: "2%",
         type: "scroll",
       },
       series: [
         {
-          type: "heatmap",
+          datasetIndex: 1,
           encode: {
+            value: "value",
             x: "date",
             y: "hour",
-            value: "value",
           },
           name: "value",
-          datasetIndex: 1,
+          type: "heatmap",
         },
       ],
       title: {
@@ -90,23 +94,22 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
         show: false,
       },
       tooltip: {
-        confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
-        textStyle: {
-          color: "rgb(212 212 216)",
+        axisPointer: {
+          label: {
+            backgroundColor: "#71717a",
+          },
         },
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
+        confine: true,
         show: true,
+        textStyle: {
+          color: "#d4d4d8",
+        },
         trigger: "item",
       },
       visualMap: {
-        min: 30,
-        max: 55,
         calculable: true,
-        type: "continuous",
-        orient: "vertical",
-        left: "right",
-        top: "center",
         inRange: {
           color: [
             "#003f5c",
@@ -119,13 +122,31 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
             "#ffa600",
           ],
         },
+        left: "right",
+        max: 55,
+        min: 30,
+        orient: "vertical",
+        top: "center",
+        type: "continuous",
       },
       xAxis: [
         {
+          axisLabel: {
+            color: "#a1a1aa",
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
+          },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -134,10 +155,22 @@ describe("given 2 dimensions and 1 non-aggregated metric", () => {
       ],
       yAxis: [
         {
+          axisLabel: {
+            color: "#a1a1aa",
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
+          },
           name: "hour",
           nameGap: 85,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,

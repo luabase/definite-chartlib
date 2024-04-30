@@ -1,3 +1,5 @@
+import { format, isValid, parseISO } from "date-fns";
+
 export function categoryFormatter(value: string | number): string {
   return String(value).length > 13
     ? String(value).slice(0, 8) + "..." + String(value).slice(-2)
@@ -58,3 +60,21 @@ export function calendarTooltipFormatter(params: any): string {
         <span class='value'>${params.data[1]}<span>
       </p>`;
 }
+
+export const axisFormatter = (value: string) => {
+  // First, define a function that tries to parse a string to a date and checks if it's valid
+  function isValidDate(dateString: string) {
+    const date = parseISO(dateString);
+    return isValid(date);
+  }
+
+  // Check if the value can represent a valid date
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    // It's a valid date string; format it
+    const date = parseISO(value);
+    return format(date, "yyyy-MM-dd"); // Customize as needed
+  } else {
+    // Not a valid date string; use categoryFormatter
+    return categoryFormatter(value);
+  }
+};

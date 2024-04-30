@@ -22732,6 +22732,7 @@ __decorateClass([
 ], DataFrame.prototype, "select", 1);
 
 // src/formatters.ts
+var import_date_fns = require("date-fns");
 function categoryFormatter(value) {
   return String(value).length > 13 ? String(value).slice(0, 8) + "..." + String(value).slice(-2) : String(value);
 }
@@ -22783,10 +22784,6 @@ function calendarTooltipFormatter(params) {
         <span class='value'>${params.data[1]}<span>
       </p>`;
 }
-
-// src/determine/axis.ts
-var import_date_fns = require("date-fns");
-var MAX_INTERVAL = 3;
 var axisFormatter = (value) => {
   function isValidDate(dateString) {
     const date = (0, import_date_fns.parseISO)(dateString);
@@ -22799,6 +22796,9 @@ var axisFormatter = (value) => {
     return categoryFormatter(value);
   }
 };
+
+// src/determine/axis.ts
+var MAX_INTERVAL = 3;
 function axis(chart, datasets2, kind, theme) {
   if (chart.getChartType() === "kpi") {
     return [];

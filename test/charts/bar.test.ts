@@ -2,8 +2,13 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { categoryFormatter, valueFormatter } from "../../src/formatters";
+import {
+  categoryFormatter,
+  valueFormatter,
+  axisFormatter,
+} from "../../src/formatters";
 import { color } from "../../src/constants";
+import { axis } from "../../src/determine";
 
 describe("given 1 dimension and 1 aggregate metric", () => {
   const chart = chartlib
@@ -57,6 +62,9 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -89,14 +97,17 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -107,14 +118,21 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       xAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "os",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -124,12 +142,17 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -188,6 +211,9 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -221,14 +247,17 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -239,12 +268,17 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -256,14 +290,21 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "os",
           nameGap: 85,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -341,6 +382,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -381,14 +425,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -399,14 +446,21 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       xAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -416,12 +470,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -488,6 +547,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -530,14 +592,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -548,14 +613,21 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       xAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -565,12 +637,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -638,6 +715,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -680,14 +760,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -698,12 +781,17 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -713,14 +801,21 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
       yAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 85,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -797,6 +892,9 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -837,14 +935,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -855,14 +956,21 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       xAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -872,12 +980,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -939,6 +1052,9 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -981,14 +1097,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -999,12 +1118,17 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -1014,14 +1138,21 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
       yAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 85,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -1100,6 +1231,9 @@ describe("given 1 dimension and 2 aggregate metrics, each on different axes", ()
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -1140,14 +1274,17 @@ describe("given 1 dimension and 2 aggregate metrics, each on different axes", ()
       },
       tooltip: {
         confine: true,
-        backgroundColor: "rgb(24 24 27)",
-        borderColor: "rgb(212 212 216)",
+        backgroundColor: "#18181b",
+        borderColor: "#71717a",
         textStyle: {
-          color: "rgb(212 212 216)",
+          color: "#d4d4d8",
         },
         axisPointer: {
           crossStyle: {
             color: "#999999",
+          },
+          label: {
+            backgroundColor: "#71717a",
           },
           type: "cross",
         },
@@ -1158,14 +1295,21 @@ describe("given 1 dimension and 2 aggregate metrics, each on different axes", ()
       xAxis: [
         {
           axisLabel: {
-            formatter: categoryFormatter,
+            color: "#a1a1aa",
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -1175,12 +1319,17 @@ describe("given 1 dimension and 2 aggregate metrics, each on different axes", ()
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "event",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -1194,12 +1343,17 @@ describe("given 1 dimension and 2 aggregate metrics, each on different axes", ()
         },
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "user_id",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
