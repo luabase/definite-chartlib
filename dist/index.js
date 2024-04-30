@@ -22695,6 +22695,7 @@ __decorateClass([
 ], DataFrame.prototype, "select", 1);
 
 // src/formatters.ts
+import { format, isValid, parseISO } from "date-fns";
 function categoryFormatter(value) {
   return String(value).length > 13 ? String(value).slice(0, 8) + "..." + String(value).slice(-2) : String(value);
 }
@@ -22746,10 +22747,6 @@ function calendarTooltipFormatter(params) {
         <span class='value'>${params.data[1]}<span>
       </p>`;
 }
-
-// src/determine/axis.ts
-import { format, isValid, parseISO } from "date-fns";
-var MAX_INTERVAL = 3;
 var axisFormatter = (value) => {
   function isValidDate(dateString) {
     const date = parseISO(dateString);
@@ -22762,6 +22759,9 @@ var axisFormatter = (value) => {
     return categoryFormatter(value);
   }
 };
+
+// src/determine/axis.ts
+var MAX_INTERVAL = 3;
 function axis(chart, datasets2, kind, theme) {
   if (chart.getChartType() === "kpi") {
     return [];
@@ -24030,6 +24030,14 @@ var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
 var chartMatchConfig = [
   ...forAddValueColumnType(
     {
+      column_type: [],
+      chart_types: ["kpi"]
+    },
+    1,
+    COLORS.length
+  ),
+  ...forAddValueColumnType(
+    {
       column_type: ["category"],
       chart_types: ["bar"]
     },
@@ -24040,14 +24048,6 @@ var chartMatchConfig = [
     {
       column_type: ["datetime"],
       chart_types: ["line"]
-    },
-    1,
-    COLORS.length
-  ),
-  ...forAddValueColumnType(
-    {
-      column_type: [],
-      chart_types: ["kpi"]
     },
     1,
     COLORS.length
@@ -24110,7 +24110,6 @@ var AutoChartFactory = class {
     const matches = chartMatchConfig.filter(
       (config) => config.column_type.length === column_options.length && config.column_type.sort().join() === column_options.sort().join()
     );
-    console.log("FIND ME ", matches);
     if (matches.length > 0) {
       matches.forEach((match) => {
         match.chart_types.forEach(
