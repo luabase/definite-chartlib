@@ -24,22 +24,22 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
       backgroundColor: "#18181b",
       calendar: [
         {
-          top: 90,
-          right: 30,
           cellSize: ["auto", 13],
-          range: "2020",
           itemStyle: {
-            color: "#18181b",
             borderColor: "#71717a",
             borderWidth: 0.5,
+            color: "#18181b",
           },
           orient: "horizontal",
+          range: "2020",
+          right: 30,
           splitLine: {
             lineStyle: {
               color: "#a1a1aa",
               type: "solid",
             },
           },
+          top: 90,
         },
       ],
       dataset: [
@@ -57,8 +57,8 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
           ],
         },
         {
-          id: "2::calendar::1::users::0",
           dimensions: ["date", "users"],
+          id: "2::calendar::1::users::0",
           source: [
             ["2020-01-01", 800],
             ["2020-01-02", 807],
@@ -71,25 +71,25 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "2%",
         show: false,
+        top: "2%",
       },
       legend: {
         left: "center",
         show: false,
-        top: "2%",
-        type: "scroll",
         textStyle: {
           color: "#d4d4d8",
         },
+        top: "2%",
+        type: "scroll",
       },
       series: [
         {
-          type: "heatmap",
-          coordinateSystem: "calendar",
           calendarIndex: 0,
+          coordinateSystem: "calendar",
           datasetIndex: 1,
           name: "users",
+          type: "heatmap",
         },
       ],
       title: {
@@ -117,24 +117,18 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
             backgroundColor: "#71717a",
           },
         },
-        confine: true,
         backgroundColor: "#18181b",
         borderColor: "#71717a",
+        confine: true,
+        formatter: calendarTooltipFormatter,
+        show: true,
         textStyle: {
           color: "#d4d4d8",
         },
-        show: true,
         trigger: "item",
-        formatter: calendarTooltipFormatter,
       },
       visualMap: {
-        min: 800,
-        max: 1740,
         calculable: true,
-        type: "continuous",
-        orient: "horizontal",
-        left: "center",
-        top: 3,
         inRange: {
           color: [
             "#003f5c",
@@ -147,6 +141,12 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
             "#ffa600",
           ],
         },
+        left: "center",
+        max: 1740,
+        min: 800,
+        orient: "horizontal",
+        top: 3,
+        type: "continuous",
       },
       xAxis: [
         {
@@ -165,6 +165,7 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: false,
@@ -174,12 +175,17 @@ describe("given 1 dimension and 1 aggregate dimension", () => {
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "users",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: false,

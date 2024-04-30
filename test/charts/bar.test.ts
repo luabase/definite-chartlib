@@ -8,6 +8,7 @@ import {
   axisFormatter,
 } from "../../src/formatters";
 import { color } from "../../src/constants";
+import { axis } from "../../src/determine";
 
 describe("given 1 dimension and 1 aggregate metric", () => {
   const chart = chartlib
@@ -268,7 +269,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         {
           axisLabel: {
             color: "#a1a1aa",
-            formatter: axisFormatter,
+            formatter: valueFormatter,
           },
           axisLine: {
             color: "#a1a1aa",
@@ -295,7 +296,9 @@ describe("given 1 dimension and 1 aggregate metric", () => {
             rotate: 0,
           },
           axisLine: {
-            color: "#a1a1aa",
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "os",
           nameGap: 85,
@@ -449,7 +452,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
             rotate: 0,
           },
           axisLine: {
-            color: "#a1a1aa",
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 30,
@@ -542,6 +547,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         show: true,
         top: "2%",
         type: "scroll",
+        textStyle: {
+          color: "#d4d4d8",
+        },
       },
       series: [
         {
@@ -630,7 +638,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         {
           axisLabel: {
             color: "#a1a1aa",
-            formatter: axisFormatter,
+            formatter: valueFormatter,
           },
           axisLine: {
             color: "#a1a1aa",
@@ -774,7 +782,7 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
         {
           axisLabel: {
             color: "#a1a1aa",
-            formatter: axisFormatter,
+            formatter: valueFormatter,
           },
           axisLine: {
             color: "#a1a1aa",
@@ -799,7 +807,9 @@ describe("given 2 dimensions and 1 aggregate metric", () => {
             rotate: 0,
           },
           axisLine: {
-            color: "#a1a1aa",
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 85,
@@ -947,15 +957,15 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         {
           axisLabel: {
             color: "#a1a1aa",
-            formatter: valueFormatter,
+            formatter: axisFormatter,
             interval: 0,
             rotate: 0,
           },
           axisLine: {
-            color: '#a1a1aa',
             lineStyle: {
-              color: '#a1a1aa',
+              color: "#a1a1aa",
             },
+          },
           name: "date",
           nameGap: 30,
           nameLocation: "center",
@@ -971,7 +981,7 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
         {
           axisLabel: {
             color: "#a1a1aa",
-            formatter: axisFormatter,
+            formatter: valueFormatter,
           },
           axisLine: {
             color: "#a1a1aa",
@@ -1134,7 +1144,9 @@ describe("given 1 dimension and 2 aggregate metrics", () => {
             rotate: 0,
           },
           axisLine: {
-            color: "#a1a1aa",
+            lineStyle: {
+              color: "#a1a1aa",
+            },
           },
           name: "date",
           nameGap: 85,

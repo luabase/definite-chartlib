@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import data from "../fixtures";
 
 import chartlib from "../../src";
-import { valueFormatter } from "../../src/formatters";
+import { axisFormatter, valueFormatter } from "../../src/formatters";
 import { color } from "../../src/constants";
 
 describe("given 1 dimension and 2 non-aggregate metrics", () => {
@@ -34,8 +34,8 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
           ],
         },
         {
-          id: "2::scatter::1::::0",
           dimensions: ["state", "year", "gdp", "avg_income"],
+          id: "2::scatter::1::::0",
           source: [
             ["New York", 2010, 1223529700000, 46566],
             ["California", 2010, 1954092700000, 41773],
@@ -48,8 +48,8 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "2%",
         show: false,
+        top: "2%",
       },
       legend: {
         left: "center",
@@ -62,16 +62,16 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
       },
       series: [
         {
-          type: "scatter",
           color: "#d9f99d",
           datasetIndex: 1,
-          symbolSize: 15,
           encode: {
+            tooltip: ["state", "gdp", "avg_income"],
             x: "gdp",
             y: "avg_income",
-            tooltip: ["state", "gdp", "avg_income"],
           },
           name: "",
+          symbolSize: 15,
+          type: "scatter",
         },
       ],
       title: {
@@ -99,46 +99,56 @@ describe("given 1 dimension and 2 non-aggregate metrics", () => {
             backgroundColor: "#71717a",
           },
         },
-        confine: true,
         backgroundColor: "#18181b",
         borderColor: "#71717a",
+        confine: true,
+        show: true,
         textStyle: {
           color: "#d4d4d8",
         },
-        show: true,
         trigger: "item",
       },
       visualMap: null,
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "gdp",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
+          show: true,
           splitLine: {
             lineStyle: {
               color: "#27272a",
               type: "dashed",
             },
           },
-          show: true,
           type: "value",
         },
       ],
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "avg_income",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,
@@ -193,8 +203,8 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
           ],
         },
         {
-          id: "2::scatter::1::2010::0",
           dimensions: ["state", "year", "gdp", "avg_income"],
+          id: "2::scatter::1::2010::0",
           source: [
             ["New York", 2010, 1223529700000, 46566],
             ["California", 2010, 1954092700000, 41773],
@@ -202,8 +212,8 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
           ],
         },
         {
-          id: "2::scatter::2::2020::0",
           dimensions: ["state", "year", "gdp", "avg_income"],
+          id: "2::scatter::2::2020::0",
           source: [
             ["New York", 2020, 1740804700000, 58675],
             ["California", 2020, 3020173700000, 56973],
@@ -216,8 +226,8 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "10%",
         show: false,
+        top: "10%",
       },
       legend: {
         left: "center",
@@ -230,28 +240,28 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
       },
       series: [
         {
-          type: "scatter",
           color: "#d9f99d",
           datasetIndex: 1,
-          symbolSize: 15,
           encode: {
+            tooltip: ["state", "gdp", "avg_income"],
             x: "gdp",
             y: "avg_income",
-            tooltip: ["state", "gdp", "avg_income"],
           },
           name: "2010",
+          symbolSize: 15,
+          type: "scatter",
         },
         {
-          type: "scatter",
           color: "#2f4b7c",
           datasetIndex: 2,
-          symbolSize: 15,
           encode: {
+            tooltip: ["state", "gdp", "avg_income"],
             x: "gdp",
             y: "avg_income",
-            tooltip: ["state", "gdp", "avg_income"],
           },
           name: "2020",
+          symbolSize: 15,
+          type: "scatter",
         },
       ],
       title: {
@@ -279,46 +289,56 @@ describe("given 2 dimensions and 2 non-aggregate dimensions", () => {
             backgroundColor: "#71717a",
           },
         },
-        confine: true,
         backgroundColor: "#18181b",
         borderColor: "#71717a",
+        confine: true,
+        show: true,
         textStyle: {
           color: "#d4d4d8",
         },
-        show: true,
         trigger: "item",
       },
       visualMap: null,
       xAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "gdp",
           nameGap: 30,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
+          show: true,
           splitLine: {
             lineStyle: {
               color: "#27272a",
               type: "dashed",
             },
           },
-          show: true,
           type: "value",
         },
       ],
       yAxis: [
         {
           axisLabel: {
+            color: "#a1a1aa",
             formatter: valueFormatter,
+          },
+          axisLine: {
+            color: "#a1a1aa",
           },
           name: "avg_income",
           nameGap: 50,
           nameLocation: "center",
           nameTextStyle: {
+            color: "#a1a1aa",
             fontSize: 14,
           },
           show: true,

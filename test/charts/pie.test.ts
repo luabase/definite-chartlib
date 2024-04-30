@@ -38,8 +38,8 @@ describe("given 1 dimension and 1 aggregate metric", () => {
           ],
         },
         {
-          id: "2::pie::1::users::0",
           dimensions: ["os", "users"],
+          id: "2::pie::1::users::0",
           source: [
             ["iOS", 1220],
             ["Android", 2127],
@@ -51,8 +51,8 @@ describe("given 1 dimension and 1 aggregate metric", () => {
         containLabel: false,
         left: "12%",
         right: "9%",
-        top: "2%",
         show: false,
+        top: "2%",
       },
       legend: {
         left: "center",
@@ -65,8 +65,6 @@ describe("given 1 dimension and 1 aggregate metric", () => {
       },
       series: [
         {
-          type: "pie",
-          radius: ["40%", "70%"],
           color: [
             "#d9f99d",
             "#bef264",
@@ -77,21 +75,26 @@ describe("given 1 dimension and 1 aggregate metric", () => {
             "#3f6212",
             "#365314",
           ],
+          datasetIndex: 1,
+          encode: {
+            itemName: "os",
+            value: "users",
+          },
           itemStyle: {
             borderColor: "#18181b",
             borderRadius: 10,
             borderWidth: 2,
           },
+          label: {
+            color: "#18181b",
+            show: true,
+          },
+          name: "users",
+          radius: ["40%", "70%"],
           textStyle: {
             color: "#18181b",
           },
-          label: {
-            show: true,
-            color: "#18181b",
-          },
-          datasetIndex: 1,
-          encode: { itemName: "os", value: "users" },
-          name: "users",
+          type: "pie",
           yAxisIndex: 0,
         },
       ],
@@ -120,18 +123,24 @@ describe("given 1 dimension and 1 aggregate metric", () => {
             backgroundColor: "#71717a",
           },
         },
-        confine: true,
         backgroundColor: "#18181b",
         borderColor: "#71717a",
+        confine: true,
+        show: true,
         textStyle: {
           color: "#d4d4d8",
         },
-        show: true,
         trigger: "item",
       },
       visualMap: null,
       xAxis: [
         {
+          axisLabel: {
+            color: "#a1a1aa",
+            formatter: axisFormatter,
+            interval: 0,
+            rotate: 0,
+          },
           axisLine: {
             lineStyle: {
               color: "#a1a1aa",
