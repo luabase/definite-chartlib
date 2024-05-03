@@ -22763,10 +22763,23 @@ var tooltipFormatter = (value) => {
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
     const date = parseISO(value);
     return format(date, "yyyy-MM-dd");
+  } else if (!isNaN(+value)) {
+    return longFormValueFormatter(value);
   } else {
     return String(value);
   }
 };
+function determineFormatter(chart, axis2) {
+  const metrics = chart.getMetrics();
+  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis2);
+  if (firstMetric?.format === "percent") {
+    return percentFormatter;
+  } else if (firstMetric?.format === "currency") {
+    return currencyFormatter;
+  } else {
+    return tooltipFormatter;
+  }
+}
 
 // src/determine/axis.ts
 var MAX_INTERVAL = 3;
@@ -22797,6 +22810,13 @@ function axis(chart, datasets2, kind, theme) {
       axisLine: {
         lineStyle: {
           color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+        }
+      },
+      axisPointer: {
+        label: {
+          formatter: (params) => {
+            return tooltipFormatter(params.value);
+          }
         }
       }
     };
@@ -22883,17 +22903,6 @@ function getMapOfValueAxes(chart) {
     map.set("left", chart.getMetrics());
   }
   return map;
-}
-function determineFormatter(chart, axis2) {
-  const metrics = chart.getMetrics();
-  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis2);
-  if (firstMetric?.format === "percent") {
-    return percentFormatter;
-  } else if (firstMetric?.format === "currency") {
-    return currencyFormatter;
-  } else {
-    return valueFormatter;
-  }
 }
 
 // src/determine/calendar.ts
@@ -23349,10 +23358,11 @@ function toolbox(chart) {
 }
 
 // src/determine/tooltip.ts
-var legendFormatter = (params) => {
+var legendFormatter = (params, chart) => {
+  const formatter = determineFormatter(chart, "left");
   var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
   params.forEach(function(item) {
-    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + longFormValueFormatter(item.value[1]) + "</span></div>";
+    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + formatter(item.value[1]) + "</span></div>";
   });
   return result;
 };
@@ -23371,8 +23381,7 @@ function tooltip(chart, theme) {
       label: {
         backgroundColor: color_exports.ZINC_500
       }
-    },
-    formatter: legendFormatter
+    }
   };
   if (isBarOrLine) {
     item.axisPointer = {
@@ -23382,6 +23391,7 @@ function tooltip(chart, theme) {
       },
       crossStyle: { color: "#999999" }
     };
+    item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }

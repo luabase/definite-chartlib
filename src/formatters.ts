@@ -1,3 +1,5 @@
+import { ChartType } from "./types";
+import { Chart } from "./chart";
 import { format, isValid, parseISO } from "date-fns";
 
 export function categoryFormatter(value: string | number): string {
@@ -79,13 +81,31 @@ export const axisFormatter = (value: string) => {
 };
 
 export const tooltipFormatter = (value: string) => {
-  // Check if the value can represent a valid date
+  // Check if the value is a valid date string
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
-    // It's a valid date string; format it
-    const date = parseISO(value);
-    return format(date, "yyyy-MM-dd"); // Customize as needed
+    const date = parseISO(value); // Parse the ISO string to a date object
+    return format(date, "yyyy-MM-dd"); // Format the date
+  } else if (!isNaN(+value)) {
+    // Check if value is a number
+    return longFormValueFormatter(value); // Apply number formatter if it is a number
   } else {
-    // Not a valid date string; use categoryFormatter
+    // If not a date and not a number, return the string value
     return String(value);
   }
 };
+
+export function determineFormatter<T extends ChartType>(
+  chart: Chart<T>,
+  axis: "left" | "right"
+) {
+  const metrics = chart.getMetrics();
+  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis);
+
+  if (firstMetric?.format === "percent") {
+    return percentFormatter;
+  } else if (firstMetric?.format === "currency") {
+    return currencyFormatter;
+  } else {
+    return tooltipFormatter;
+  }
+}

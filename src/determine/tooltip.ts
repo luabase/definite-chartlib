@@ -4,10 +4,12 @@ import {
   tooltipFormatter,
   calendarTooltipFormatter,
   longFormValueFormatter,
+  determineFormatter,
 } from "../formatters";
 import { color } from "../constants";
 
-const legendFormatter = (params) => {
+const legendFormatter = (params, chart) => {
+  const formatter = determineFormatter(chart, "left");
   var result =
     '<div style="font-weight: bold">' +
     tooltipFormatter(params[0].axisValueLabel) +
@@ -24,7 +26,7 @@ const legendFormatter = (params) => {
       tooltipFormatter(item.seriesName) +
       ": " +
       '<span style="font-weight: bold">' +
-      longFormValueFormatter(item.value[1]) +
+      formatter(item.value[1]) +
       "</span></div>"; // Bold the value, text in default color
   });
   return result;
@@ -49,7 +51,6 @@ export function tooltip<T extends ChartType>(
         backgroundColor: color.ZINC_500,
       },
     },
-    formatter: legendFormatter,
   };
   if (isBarOrLine) {
     item.axisPointer = {
@@ -59,6 +60,7 @@ export function tooltip<T extends ChartType>(
       },
       crossStyle: { color: "#999999" },
     };
+    item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }

@@ -7,6 +7,8 @@ import {
   percentFormatter,
   currencyFormatter,
   axisFormatter,
+  tooltipFormatter,
+  determineFormatter,
 } from "../formatters";
 import { color } from "../constants";
 import * as utils from "../utils";
@@ -47,6 +49,13 @@ export function axis<T extends ChartType>(
       axisLine: {
         lineStyle: {
           color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+        },
+      },
+      axisPointer: {
+        label: {
+          formatter: (params) => {
+            return tooltipFormatter(params.value);
+          },
         },
       },
     };
@@ -147,19 +156,4 @@ function getMapOfValueAxes<T extends ChartType>(chart: Chart<T>) {
     map.set("left", chart.getMetrics());
   }
   return map;
-}
-
-function determineFormatter<T extends ChartType>(
-  chart: Chart<T>,
-  axis: "left" | "right"
-) {
-  const metrics = chart.getMetrics();
-  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis);
-  if (firstMetric?.format === "percent") {
-    return percentFormatter;
-  } else if (firstMetric?.format === "currency") {
-    return currencyFormatter;
-  } else {
-    return valueFormatter;
-  }
 }
