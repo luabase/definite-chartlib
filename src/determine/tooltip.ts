@@ -1,7 +1,34 @@
 import { Chart } from "../chart";
 import { ChartType, echarts } from "../types";
-import { calendarTooltipFormatter } from "../formatters";
+import {
+  tooltipFormatter,
+  calendarTooltipFormatter,
+  longFormValueFormatter,
+} from "../formatters";
 import { color } from "../constants";
+
+const legendFormatter = (params) => {
+  var result =
+    '<div style="font-weight: bold">' +
+    tooltipFormatter(params[0].axisValueLabel) +
+    "</div>"; // Category label
+  params.forEach(function (item) {
+    result +=
+      "<div>" + // No color style here
+      '<span style="color: ' +
+      item.color +
+      '">' +
+      item.marker +
+      "</span>" + // Color only applied to the marker
+      " " +
+      tooltipFormatter(item.seriesName) +
+      ": " +
+      '<span style="font-weight: bold">' +
+      longFormValueFormatter(item.value[1]) +
+      "</span></div>"; // Bold the value, text in default color
+  });
+  return result;
+};
 
 export function tooltip<T extends ChartType>(
   chart: Chart<T>,
@@ -22,6 +49,7 @@ export function tooltip<T extends ChartType>(
         backgroundColor: color.ZINC_500,
       },
     },
+    formatter: legendFormatter,
   };
   if (isBarOrLine) {
     item.axisPointer = {

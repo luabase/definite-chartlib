@@ -22784,16 +22784,24 @@ function calendarTooltipFormatter(params) {
         <span class='value'>${params.data[1]}<span>
       </p>`;
 }
+function isValidDate(dateString) {
+  const date = (0, import_date_fns.parseISO)(dateString);
+  return (0, import_date_fns.isValid)(date);
+}
 var axisFormatter = (value) => {
-  function isValidDate(dateString) {
-    const date = (0, import_date_fns.parseISO)(dateString);
-    return (0, import_date_fns.isValid)(date);
-  }
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
     const date = (0, import_date_fns.parseISO)(value);
     return (0, import_date_fns.format)(date, "yyyy-MM-dd");
   } else {
     return categoryFormatter(value);
+  }
+};
+var tooltipFormatter = (value) => {
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    const date = (0, import_date_fns.parseISO)(value);
+    return (0, import_date_fns.format)(date, "yyyy-MM-dd");
+  } else {
+    return String(value);
   }
 };
 
@@ -23087,7 +23095,8 @@ function legend(chart, theme) {
     type: "scroll",
     textStyle: {
       color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
-    }
+    },
+    formatter: tooltipFormatter
   };
 }
 
@@ -23138,11 +23147,11 @@ function findCountryOrStateIndices(arr) {
 var import_country_list_js = __toESM(require("country-list-js"), 1);
 var import_date_fns2 = require("date-fns");
 var funnelFormatter = (value) => {
-  function isValidDate(dateString) {
+  function isValidDate2(dateString) {
     const date = (0, import_date_fns2.parseISO)(dateString);
     return (0, import_date_fns2.isValid)(date);
   }
-  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+  if (typeof value === "string" && isValidDate2(value) && value.length > 6) {
     const date = (0, import_date_fns2.parseISO)(value);
     return (0, import_date_fns2.format)(date, "yyyy-MM-dd");
   } else {
@@ -23377,6 +23386,13 @@ function toolbox(chart) {
 }
 
 // src/determine/tooltip.ts
+var legendFormatter = (params) => {
+  var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
+  params.forEach(function(item) {
+    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + longFormValueFormatter(item.value[1]) + "</span></div>";
+  });
+  return result;
+};
 function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item = {
@@ -23392,7 +23408,8 @@ function tooltip(chart, theme) {
       label: {
         backgroundColor: color_exports.ZINC_500
       }
-    }
+    },
+    formatter: legendFormatter
   };
   if (isBarOrLine) {
     item.axisPointer = {

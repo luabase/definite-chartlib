@@ -6,7 +6,7 @@ interface CrossStyle {
 
 interface AxisPointer {
   type: "line" | "cross" | "none";
-  crossStyle: CrossStyle;
+  crossStyle?: CrossStyle;
   label: AxisPointerLabel;
 }
 

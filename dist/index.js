@@ -22747,16 +22747,24 @@ function calendarTooltipFormatter(params) {
         <span class='value'>${params.data[1]}<span>
       </p>`;
 }
+function isValidDate(dateString) {
+  const date = parseISO(dateString);
+  return isValid(date);
+}
 var axisFormatter = (value) => {
-  function isValidDate(dateString) {
-    const date = parseISO(dateString);
-    return isValid(date);
-  }
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
     const date = parseISO(value);
     return format(date, "yyyy-MM-dd");
   } else {
     return categoryFormatter(value);
+  }
+};
+var tooltipFormatter = (value) => {
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    const date = parseISO(value);
+    return format(date, "yyyy-MM-dd");
+  } else {
+    return String(value);
   }
 };
 
@@ -23050,7 +23058,8 @@ function legend(chart, theme) {
     type: "scroll",
     textStyle: {
       color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
-    }
+    },
+    formatter: tooltipFormatter
   };
 }
 
@@ -23101,11 +23110,11 @@ function findCountryOrStateIndices(arr) {
 import country from "country-list-js";
 import { format as format2, isValid as isValid2, parseISO as parseISO2 } from "date-fns";
 var funnelFormatter = (value) => {
-  function isValidDate(dateString) {
+  function isValidDate2(dateString) {
     const date = parseISO2(dateString);
     return isValid2(date);
   }
-  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+  if (typeof value === "string" && isValidDate2(value) && value.length > 6) {
     const date = parseISO2(value);
     return format2(date, "yyyy-MM-dd");
   } else {
@@ -23340,6 +23349,13 @@ function toolbox(chart) {
 }
 
 // src/determine/tooltip.ts
+var legendFormatter = (params) => {
+  var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
+  params.forEach(function(item) {
+    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + longFormValueFormatter(item.value[1]) + "</span></div>";
+  });
+  return result;
+};
 function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item = {
@@ -23355,7 +23371,8 @@ function tooltip(chart, theme) {
       label: {
         backgroundColor: color_exports.ZINC_500
       }
-    }
+    },
+    formatter: legendFormatter
   };
   if (isBarOrLine) {
     item.axisPointer = {
