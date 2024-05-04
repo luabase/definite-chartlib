@@ -22784,11 +22784,11 @@ function calendarTooltipFormatter(params) {
         <span class='value'>${params.data[1]}<span>
       </p>`;
 }
+function isValidDate(dateString) {
+  const date = (0, import_date_fns.parseISO)(dateString);
+  return (0, import_date_fns.isValid)(date);
+}
 var axisFormatter = (value) => {
-  function isValidDate(dateString) {
-    const date = (0, import_date_fns.parseISO)(dateString);
-    return (0, import_date_fns.isValid)(date);
-  }
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
     const date = (0, import_date_fns.parseISO)(value);
     return (0, import_date_fns.format)(date, "yyyy-MM-dd");
@@ -22796,6 +22796,27 @@ var axisFormatter = (value) => {
     return categoryFormatter(value);
   }
 };
+var tooltipFormatter = (value) => {
+  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+    const date = (0, import_date_fns.parseISO)(value);
+    return (0, import_date_fns.format)(date, "yyyy-MM-dd");
+  } else if (!isNaN(+value)) {
+    return longFormValueFormatter(value);
+  } else {
+    return String(value);
+  }
+};
+function determineFormatter(chart, axis2) {
+  const metrics = chart.getMetrics();
+  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis2);
+  if (firstMetric?.format === "percent") {
+    return percentFormatter;
+  } else if (firstMetric?.format === "currency") {
+    return currencyFormatter;
+  } else {
+    return tooltipFormatter;
+  }
+}
 
 // src/determine/axis.ts
 var MAX_INTERVAL = 3;
@@ -22826,6 +22847,13 @@ function axis(chart, datasets2, kind, theme) {
       axisLine: {
         lineStyle: {
           color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+        }
+      },
+      axisPointer: {
+        label: {
+          formatter: (params) => {
+            return tooltipFormatter(params.value);
+          }
         }
       }
     };
@@ -22864,7 +22892,10 @@ function axis(chart, datasets2, kind, theme) {
       if (metrics[0].max !== void 0 && String(metrics[0].max) !== "") {
         item.max = metrics[0].max;
       }
-      axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
+      const formatter = determineFormatter(chart, "left");
+      axes.push(
+        addCommonFeatures(chart.getChartType(), item, kind, theme, formatter)
+      );
     });
   }
   return axes;
@@ -22880,7 +22911,7 @@ function isDimensionalAxis(chart, kind) {
   }
   return dim;
 }
-function addCommonFeatures(chartType, item, kind, theme) {
+function addCommonFeatures(chartType, item, kind, theme, formatter) {
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
@@ -22891,6 +22922,11 @@ function addCommonFeatures(chartType, item, kind, theme) {
       lineStyle: {
         type: "dashed",
         color: theme === "light" ? color_exports.ZINC_200 : color_exports.ZINC_800
+      }
+    };
+    item.axisPointer = {
+      label: {
+        formatter: (params) => formatter(params.value)
       }
     };
   }
@@ -22912,17 +22948,6 @@ function getMapOfValueAxes(chart) {
     map.set("left", chart.getMetrics());
   }
   return map;
-}
-function determineFormatter(chart, axis2) {
-  const metrics = chart.getMetrics();
-  const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis2);
-  if (firstMetric?.format === "percent") {
-    return percentFormatter;
-  } else if (firstMetric?.format === "currency") {
-    return currencyFormatter;
-  } else {
-    return valueFormatter;
-  }
 }
 
 // src/determine/calendar.ts
@@ -23087,7 +23112,8 @@ function legend(chart, theme) {
     type: "scroll",
     textStyle: {
       color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
-    }
+    },
+    formatter: tooltipFormatter
   };
 }
 
@@ -23138,11 +23164,11 @@ function findCountryOrStateIndices(arr) {
 var import_country_list_js = __toESM(require("country-list-js"), 1);
 var import_date_fns2 = require("date-fns");
 var funnelFormatter = (value) => {
-  function isValidDate(dateString) {
+  function isValidDate2(dateString) {
     const date = (0, import_date_fns2.parseISO)(dateString);
     return (0, import_date_fns2.isValid)(date);
   }
-  if (typeof value === "string" && isValidDate(value) && value.length > 6) {
+  if (typeof value === "string" && isValidDate2(value) && value.length > 6) {
     const date = (0, import_date_fns2.parseISO)(value);
     return (0, import_date_fns2.format)(date, "yyyy-MM-dd");
   } else {
@@ -23377,6 +23403,14 @@ function toolbox(chart) {
 }
 
 // src/determine/tooltip.ts
+var legendFormatter = (params, chart) => {
+  const formatter = determineFormatter(chart, "left");
+  var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
+  params.forEach(function(item) {
+    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + formatter(item.value[1]) + "</span></div>";
+  });
+  return result;
+};
 function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item = {
@@ -23402,6 +23436,7 @@ function tooltip(chart, theme) {
       },
       crossStyle: { color: "#999999" }
     };
+    item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }

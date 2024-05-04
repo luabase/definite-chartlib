@@ -1,7 +1,36 @@
 import { Chart } from "../chart";
 import { ChartType, echarts } from "../types";
-import { calendarTooltipFormatter } from "../formatters";
+import {
+  tooltipFormatter,
+  calendarTooltipFormatter,
+  longFormValueFormatter,
+  determineFormatter,
+} from "../formatters";
 import { color } from "../constants";
+
+const legendFormatter = (params, chart) => {
+  const formatter = determineFormatter(chart, "left");
+  var result =
+    '<div style="font-weight: bold">' +
+    tooltipFormatter(params[0].axisValueLabel) +
+    "</div>"; // Category label
+  params.forEach(function (item) {
+    result +=
+      "<div>" + // No color style here
+      '<span style="color: ' +
+      item.color +
+      '">' +
+      item.marker +
+      "</span>" + // Color only applied to the marker
+      " " +
+      tooltipFormatter(item.seriesName) +
+      ": " +
+      '<span style="font-weight: bold">' +
+      formatter(item.value[1]) +
+      "</span></div>"; // Bold the value, text in default color
+  });
+  return result;
+};
 
 export function tooltip<T extends ChartType>(
   chart: Chart<T>,
@@ -31,6 +60,7 @@ export function tooltip<T extends ChartType>(
       },
       crossStyle: { color: "#999999" },
     };
+    item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }
