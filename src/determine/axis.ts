@@ -97,7 +97,10 @@ export function axis<T extends ChartType>(
         if (metrics[0].max !== undefined && String(metrics[0].max) !== "") {
           item.max = metrics[0].max;
         }
-        axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
+        const formatter = determineFormatter(chart, "left");
+        axes.push(
+          addCommonFeatures(chart.getChartType(), item, kind, theme, formatter)
+        );
       });
   }
   return axes;
@@ -122,7 +125,8 @@ function addCommonFeatures(
   chartType: ChartType,
   item: echarts.Axis,
   kind: "x" | "y",
-  theme: string
+  theme: string,
+  formatter?: any
 ) {
   item.nameLocation = "center";
   item.nameTextStyle = {
@@ -134,6 +138,11 @@ function addCommonFeatures(
       lineStyle: {
         type: "dashed",
         color: theme === "light" ? color.ZINC_200 : color.ZINC_800,
+      },
+    };
+    item.axisPointer = {
+      label: {
+        formatter: (params) => formatter(params.value),
       },
     };
   }

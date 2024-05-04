@@ -22892,7 +22892,10 @@ function axis(chart, datasets2, kind, theme) {
       if (metrics[0].max !== void 0 && String(metrics[0].max) !== "") {
         item.max = metrics[0].max;
       }
-      axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
+      const formatter = determineFormatter(chart, "left");
+      axes.push(
+        addCommonFeatures(chart.getChartType(), item, kind, theme, formatter)
+      );
     });
   }
   return axes;
@@ -22908,7 +22911,7 @@ function isDimensionalAxis(chart, kind) {
   }
   return dim;
 }
-function addCommonFeatures(chartType, item, kind, theme) {
+function addCommonFeatures(chartType, item, kind, theme, formatter) {
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
@@ -22919,6 +22922,11 @@ function addCommonFeatures(chartType, item, kind, theme) {
       lineStyle: {
         type: "dashed",
         color: theme === "light" ? color_exports.ZINC_200 : color_exports.ZINC_800
+      }
+    };
+    item.axisPointer = {
+      label: {
+        formatter: (params) => formatter(params.value)
       }
     };
   }
