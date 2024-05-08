@@ -23261,7 +23261,7 @@ function series(chart, datasets2, theme) {
         borderWidth: 2
       };
       item.label = {
-        color: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_100,
         show: true
       };
       item.yAxisIndex = 0;

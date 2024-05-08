@@ -129,7 +129,7 @@ export function series<T extends ChartType>(
         borderWidth: 2,
       };
       item.label = {
-        color: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        color: theme === "light" ? color.ZINC_900 : color.ZINC_100,
         show: true,
       };
       item.yAxisIndex = 0;
