@@ -140,11 +140,13 @@ function addCommonFeatures(
         color: theme === "light" ? color.ZINC_200 : color.ZINC_800,
       },
     };
-    item.axisPointer = {
-      label: {
-        formatter: (params) => formatter(params.value),
-      },
-    };
+    if (typeof formatter === "function") {
+      item.axisPointer = {
+        label: {
+          formatter: (params) => formatter(params.value),
+        },
+      };
+    }
   }
   return item;
 }

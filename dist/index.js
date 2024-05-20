@@ -22887,11 +22887,13 @@ function addCommonFeatures(chartType, item, kind, theme, formatter) {
         color: theme === "light" ? color_exports.ZINC_200 : color_exports.ZINC_800
       }
     };
-    item.axisPointer = {
-      label: {
-        formatter: (params) => formatter(params.value)
-      }
-    };
+    if (typeof formatter === "function") {
+      item.axisPointer = {
+        label: {
+          formatter: (params) => formatter(params.value)
+        }
+      };
+    }
   }
   return item;
 }
