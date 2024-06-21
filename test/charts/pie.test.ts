@@ -15,7 +15,7 @@ describe("given 1 dimension and 1 aggregate metric", () => {
     .addDimension({ index: 1, dataType: "category" })
     .addMetric({
       index: 2,
-      color: color.LIME_PALETTE,
+      color: color.COLOR_PALETTE,
       aggregation: "sum",
     });
   it("can compile to pie chart", () => {
@@ -193,7 +193,7 @@ describe("given a percentage format in the first metric", () => {
     .addDimension({ index: 0, dataType: "category" })
     .addMetric({
       index: 1,
-      color: color.LIME_PALETTE,
+      color: color.COLOR_PALETTE,
       aggregation: "sum",
       format: "percent",
     });

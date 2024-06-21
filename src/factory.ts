@@ -156,7 +156,7 @@ export class AutoChartFactory {
 
     valueOptions.forEach((opt, i) => {
       const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type)
-        ? color.LIME_PALETTE
+        ? color.COLOR_PALETTE
         : utils.array.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type)
         ? "none"
