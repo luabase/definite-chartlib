@@ -1,6 +1,6 @@
 {
   "name": "chartlib-http",
-  "version": "1.13.19",
+  "version": "1.13.20",
   "type": "module",
   "main": "index.js",
   "scripts": {
