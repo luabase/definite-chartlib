@@ -60,7 +60,12 @@ export class Chart<T extends ChartType> {
         metrics.forEach((col) =>
           chart.addMetric({
             index: col.index,
-            color: col.color ?? color.LIME_200,
+            color:
+              col.color ??
+              utils.array.unboundedReadItem(
+                color.COLOR_PALETTE,
+                chart.getMetrics().length
+              ),
             chartType: col.type === "line" ? "line" : "bar",
             aggregation: "sum",
           })
@@ -85,7 +90,12 @@ export class Chart<T extends ChartType> {
         opts.yAxis[0].columns.forEach((col) =>
           chart.addMetric({
             index: col.index,
-            color: col.color ?? color.LIME_200,
+            color:
+              col.color ??
+              utils.array.unboundedReadItem(
+                color.COLOR_PALETTE,
+                chart.getMetrics().length
+              ),
             chartType: col.type === "line" ? "line" : "bar",
             aggregation: "sum",
           })
@@ -106,7 +116,12 @@ export class Chart<T extends ChartType> {
         });
         chart.addMetric({
           index: opts.yAxis[0].columns[0].index,
-          color: opts.yAxis[0].columns[0].color ?? color.LIME_PALETTE,
+          color:
+            opts.yAxis[0].columns[0].color ??
+            utils.array.unboundedReadItem(
+              color.COLOR_PALETTE,
+              chart.getMetrics().length
+            ),
           aggregation: "sum",
         });
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -117,7 +132,12 @@ export class Chart<T extends ChartType> {
         [...opts.xAxis[0].columns, ...opts.yAxis[0].columns].forEach((col) => {
           chart.addMetric({
             index: col.index,
-            color: col.color ?? color.LIME_200,
+            color:
+              col.color ??
+              utils.array.unboundedReadItem(
+                color.COLOR_PALETTE,
+                chart.getMetrics().length
+              ),
             aggregation: "none",
           });
         });
@@ -138,7 +158,12 @@ export class Chart<T extends ChartType> {
         });
         chart.addMetric({
           index: opts.zAxis[0].columns[0].index,
-          color: opts.zAxis[0].columns[0].color ?? color.LIME_PALETTE,
+          color:
+            opts.zAxis[0].columns[0].color ??
+            utils.array.unboundedReadItem(
+              color.COLOR_PALETTE,
+              chart.getMetrics().length
+            ),
           aggregation: "none",
         });
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -156,7 +181,12 @@ export class Chart<T extends ChartType> {
         });
         chart.addMetric({
           index: opts.yAxis[0].columns[0].index,
-          color: opts.yAxis[0].columns[0].color ?? color.LIME_PALETTE,
+          color:
+            opts.yAxis[0].columns[0].color ??
+            utils.array.unboundedReadItem(
+              color.COLOR_PALETTE,
+              chart.getMetrics().length
+            ),
           aggregation: "sum",
         });
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -448,7 +478,7 @@ export class Chart<T extends ChartType> {
     try {
       return {
         animation: true,
-        backgroundColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        backgroundColor: "rgba(0,0,0,0)",
         calendar: determine.calendar(this, df, theme),
         dataset: datasets,
         grid: determine.grid(this, datasets),

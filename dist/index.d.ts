@@ -248,47 +248,65 @@ declare const PINK = "#d45087";
 declare const LIGHT_PINK = "#f95d6a";
 declare const ORANGE = "#ff7c43";
 declare const YELLOW = "#ffa600";
-declare const LIME_PALETTE: string[];
-declare const LIME_200_DARKER = "#97b35d";
-declare const LIME_300_DARKER = "#84a340";
-declare const LIME_400_DARKER = "#719623";
-declare const LIME_500_DARKER = "#5e8614";
-declare const LIME_600_DARKER = "#4d6d04";
-declare const LIME_700_DARKER = "#3c5906";
-declare const LIME_800_DARKER = "#2d4606";
-declare const LIME_900_DARKER = "#243805";
-declare const LIME_PALETTE_DARKER: string[];
+declare const BLUE_30 = "#47B3FF";
+declare const BLUE_40 = "#0077CC";
+declare const PURPLE_30 = "#C247FF";
+declare const PURPLE_40 = "#8800CC";
+declare const YELLOW_30 = "#FFE047";
+declare const YELLOW_40 = "#CCAA00";
+declare const PINK_30 = "#FF47C2";
+declare const PINK_40 = "#CC0088";
+declare const ORANGE_30 = "#FF9447";
+declare const ORANGE_40 = "#CC5500";
+declare const RED_30 = "#FF5747";
+declare const RED_40 = "#CC1100";
+declare const GREEN_30 = "#47FF75";
+declare const GREEN_40 = "#00CC33";
+declare const CYAN_30 = "#47FFFF";
+declare const CYAN_40 = "#00CCCC";
+declare const LIME_30 = "#E0FF47";
+declare const LIME_40 = "#AACC00";
+declare const COLOR_PALETTE_30: string[];
+declare const COLOR_PALETTE_40: string[];
 declare const COLOR_PALETTE: string[];
-declare const COMBINED_PALETTE: string[];
 
+declare const color_BLUE_30: typeof BLUE_30;
+declare const color_BLUE_40: typeof BLUE_40;
 declare const color_COLOR_PALETTE: typeof COLOR_PALETTE;
-declare const color_COMBINED_PALETTE: typeof COMBINED_PALETTE;
+declare const color_COLOR_PALETTE_30: typeof COLOR_PALETTE_30;
+declare const color_COLOR_PALETTE_40: typeof COLOR_PALETTE_40;
+declare const color_CYAN_30: typeof CYAN_30;
+declare const color_CYAN_40: typeof CYAN_40;
 declare const color_DARK_BLUE: typeof DARK_BLUE;
 declare const color_DARK_PURPLE: typeof DARK_PURPLE;
+declare const color_GREEN_30: typeof GREEN_30;
+declare const color_GREEN_40: typeof GREEN_40;
 declare const color_LIGHT_PINK: typeof LIGHT_PINK;
 declare const color_LIME_200: typeof LIME_200;
-declare const color_LIME_200_DARKER: typeof LIME_200_DARKER;
+declare const color_LIME_30: typeof LIME_30;
 declare const color_LIME_300: typeof LIME_300;
-declare const color_LIME_300_DARKER: typeof LIME_300_DARKER;
+declare const color_LIME_40: typeof LIME_40;
 declare const color_LIME_400: typeof LIME_400;
-declare const color_LIME_400_DARKER: typeof LIME_400_DARKER;
 declare const color_LIME_500: typeof LIME_500;
-declare const color_LIME_500_DARKER: typeof LIME_500_DARKER;
 declare const color_LIME_600: typeof LIME_600;
-declare const color_LIME_600_DARKER: typeof LIME_600_DARKER;
 declare const color_LIME_700: typeof LIME_700;
-declare const color_LIME_700_DARKER: typeof LIME_700_DARKER;
 declare const color_LIME_800: typeof LIME_800;
-declare const color_LIME_800_DARKER: typeof LIME_800_DARKER;
 declare const color_LIME_900: typeof LIME_900;
-declare const color_LIME_900_DARKER: typeof LIME_900_DARKER;
-declare const color_LIME_PALETTE: typeof LIME_PALETTE;
-declare const color_LIME_PALETTE_DARKER: typeof LIME_PALETTE_DARKER;
 declare const color_ORANGE: typeof ORANGE;
+declare const color_ORANGE_30: typeof ORANGE_30;
+declare const color_ORANGE_40: typeof ORANGE_40;
 declare const color_PINK: typeof PINK;
+declare const color_PINK_30: typeof PINK_30;
+declare const color_PINK_40: typeof PINK_40;
 declare const color_PURPLE: typeof PURPLE;
+declare const color_PURPLE_30: typeof PURPLE_30;
+declare const color_PURPLE_40: typeof PURPLE_40;
+declare const color_RED_30: typeof RED_30;
+declare const color_RED_40: typeof RED_40;
 declare const color_TEAL: typeof TEAL;
 declare const color_YELLOW: typeof YELLOW;
+declare const color_YELLOW_30: typeof YELLOW_30;
+declare const color_YELLOW_40: typeof YELLOW_40;
 declare const color_ZINC_100: typeof ZINC_100;
 declare const color_ZINC_200: typeof ZINC_200;
 declare const color_ZINC_300: typeof ZINC_300;
@@ -301,34 +319,43 @@ declare const color_ZINC_800: typeof ZINC_800;
 declare const color_ZINC_900: typeof ZINC_900;
 declare namespace color {
   export {
+    color_BLUE_30 as BLUE_30,
+    color_BLUE_40 as BLUE_40,
     color_COLOR_PALETTE as COLOR_PALETTE,
-    color_COMBINED_PALETTE as COMBINED_PALETTE,
+    color_COLOR_PALETTE_30 as COLOR_PALETTE_30,
+    color_COLOR_PALETTE_40 as COLOR_PALETTE_40,
+    color_CYAN_30 as CYAN_30,
+    color_CYAN_40 as CYAN_40,
     color_DARK_BLUE as DARK_BLUE,
     color_DARK_PURPLE as DARK_PURPLE,
+    color_GREEN_30 as GREEN_30,
+    color_GREEN_40 as GREEN_40,
     color_LIGHT_PINK as LIGHT_PINK,
     color_LIME_200 as LIME_200,
-    color_LIME_200_DARKER as LIME_200_DARKER,
+    color_LIME_30 as LIME_30,
     color_LIME_300 as LIME_300,
-    color_LIME_300_DARKER as LIME_300_DARKER,
+    color_LIME_40 as LIME_40,
     color_LIME_400 as LIME_400,
-    color_LIME_400_DARKER as LIME_400_DARKER,
     color_LIME_500 as LIME_500,
-    color_LIME_500_DARKER as LIME_500_DARKER,
     color_LIME_600 as LIME_600,
-    color_LIME_600_DARKER as LIME_600_DARKER,
     color_LIME_700 as LIME_700,
-    color_LIME_700_DARKER as LIME_700_DARKER,
     color_LIME_800 as LIME_800,
-    color_LIME_800_DARKER as LIME_800_DARKER,
     color_LIME_900 as LIME_900,
-    color_LIME_900_DARKER as LIME_900_DARKER,
-    color_LIME_PALETTE as LIME_PALETTE,
-    color_LIME_PALETTE_DARKER as LIME_PALETTE_DARKER,
     color_ORANGE as ORANGE,
+    color_ORANGE_30 as ORANGE_30,
+    color_ORANGE_40 as ORANGE_40,
     color_PINK as PINK,
+    color_PINK_30 as PINK_30,
+    color_PINK_40 as PINK_40,
     color_PURPLE as PURPLE,
+    color_PURPLE_30 as PURPLE_30,
+    color_PURPLE_40 as PURPLE_40,
+    color_RED_30 as RED_30,
+    color_RED_40 as RED_40,
     color_TEAL as TEAL,
     color_YELLOW as YELLOW,
+    color_YELLOW_30 as YELLOW_30,
+    color_YELLOW_40 as YELLOW_40,
     color_ZINC_100 as ZINC_100,
     color_ZINC_200 as ZINC_200,
     color_ZINC_300 as ZINC_300,

@@ -30,46 +30,56 @@ export const LIGHT_PINK = "#f95d6a";
 export const ORANGE = "#ff7c43";
 export const YELLOW = "#ffa600";
 
-export const LIME_PALETTE = [
-  LIME_200,
-  LIME_300,
-  LIME_400,
-  LIME_500,
-  LIME_600,
-  LIME_700,
-  LIME_800,
-  LIME_900,
+// Redesign New Colors
+export const BLUE_30 = "#47B3FF";
+export const BLUE_40 = "#0077CC";
+
+export const PURPLE_30 = "#C247FF";
+export const PURPLE_40 = "#8800CC";
+
+export const YELLOW_30 = "#FFE047";
+export const YELLOW_40 = "#CCAA00";
+
+export const PINK_30 = "#FF47C2";
+export const PINK_40 = "#CC0088";
+
+export const ORANGE_30 = "#FF9447";
+export const ORANGE_40 = "#CC5500";
+
+export const RED_30 = "#FF5747";
+export const RED_40 = "#CC1100";
+
+export const GREEN_30 = "#47FF75";
+export const GREEN_40 = "#00CC33";
+
+export const CYAN_30 = "#47FFFF";
+export const CYAN_40 = "#00CCCC";
+
+export const LIME_30 = "#E0FF47";
+export const LIME_40 = "#AACC00";
+
+export const COLOR_PALETTE_30 = [
+  BLUE_30,
+  PURPLE_30,
+  YELLOW_30,
+  PINK_30,
+  ORANGE_30,
+  RED_30,
+  GREEN_30,
+  CYAN_30,
+  LIME_30,
 ];
 
-export const LIME_200_DARKER = "#97b35d";
-export const LIME_300_DARKER = "#84a340";
-export const LIME_400_DARKER = "#719623";
-export const LIME_500_DARKER = "#5e8614";
-export const LIME_600_DARKER = "#4d6d04";
-export const LIME_700_DARKER = "#3c5906";
-export const LIME_800_DARKER = "#2d4606";
-export const LIME_900_DARKER = "#243805";
-
-export const LIME_PALETTE_DARKER = [
-  LIME_200_DARKER,
-  LIME_300_DARKER,
-  LIME_400_DARKER,
-  LIME_500_DARKER,
-  LIME_600_DARKER,
-  LIME_700_DARKER,
-  LIME_800_DARKER,
-  LIME_900_DARKER,
+export const COLOR_PALETTE_40 = [
+  BLUE_40,
+  PURPLE_40,
+  YELLOW_40,
+  PINK_40,
+  ORANGE_40,
+  RED_40,
+  GREEN_40,
+  CYAN_40,
+  LIME_40,
 ];
 
-export const COLOR_PALETTE = [
-  TEAL,
-  DARK_BLUE,
-  DARK_PURPLE,
-  PURPLE,
-  PINK,
-  LIGHT_PINK,
-  ORANGE,
-  YELLOW,
-];
-
-export const COMBINED_PALETTE = [...LIME_PALETTE, ...COLOR_PALETTE];
+export const COLOR_PALETTE = [...COLOR_PALETTE_30];

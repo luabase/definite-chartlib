@@ -69,34 +69,43 @@ __export(color_exports2, {
 // src/constants/color.ts
 var color_exports = {};
 __export(color_exports, {
+  BLUE_30: () => BLUE_30,
+  BLUE_40: () => BLUE_40,
   COLOR_PALETTE: () => COLOR_PALETTE,
-  COMBINED_PALETTE: () => COMBINED_PALETTE,
+  COLOR_PALETTE_30: () => COLOR_PALETTE_30,
+  COLOR_PALETTE_40: () => COLOR_PALETTE_40,
+  CYAN_30: () => CYAN_30,
+  CYAN_40: () => CYAN_40,
   DARK_BLUE: () => DARK_BLUE,
   DARK_PURPLE: () => DARK_PURPLE,
+  GREEN_30: () => GREEN_30,
+  GREEN_40: () => GREEN_40,
   LIGHT_PINK: () => LIGHT_PINK,
   LIME_200: () => LIME_200,
-  LIME_200_DARKER: () => LIME_200_DARKER,
+  LIME_30: () => LIME_30,
   LIME_300: () => LIME_300,
-  LIME_300_DARKER: () => LIME_300_DARKER,
+  LIME_40: () => LIME_40,
   LIME_400: () => LIME_400,
-  LIME_400_DARKER: () => LIME_400_DARKER,
   LIME_500: () => LIME_500,
-  LIME_500_DARKER: () => LIME_500_DARKER,
   LIME_600: () => LIME_600,
-  LIME_600_DARKER: () => LIME_600_DARKER,
   LIME_700: () => LIME_700,
-  LIME_700_DARKER: () => LIME_700_DARKER,
   LIME_800: () => LIME_800,
-  LIME_800_DARKER: () => LIME_800_DARKER,
   LIME_900: () => LIME_900,
-  LIME_900_DARKER: () => LIME_900_DARKER,
-  LIME_PALETTE: () => LIME_PALETTE,
-  LIME_PALETTE_DARKER: () => LIME_PALETTE_DARKER,
   ORANGE: () => ORANGE,
+  ORANGE_30: () => ORANGE_30,
+  ORANGE_40: () => ORANGE_40,
   PINK: () => PINK,
+  PINK_30: () => PINK_30,
+  PINK_40: () => PINK_40,
   PURPLE: () => PURPLE,
+  PURPLE_30: () => PURPLE_30,
+  PURPLE_40: () => PURPLE_40,
+  RED_30: () => RED_30,
+  RED_40: () => RED_40,
   TEAL: () => TEAL,
   YELLOW: () => YELLOW,
+  YELLOW_30: () => YELLOW_30,
+  YELLOW_40: () => YELLOW_40,
   ZINC_100: () => ZINC_100,
   ZINC_200: () => ZINC_200,
   ZINC_300: () => ZINC_300,
@@ -134,45 +143,47 @@ var PINK = "#d45087";
 var LIGHT_PINK = "#f95d6a";
 var ORANGE = "#ff7c43";
 var YELLOW = "#ffa600";
-var LIME_PALETTE = [
-  LIME_200,
-  LIME_300,
-  LIME_400,
-  LIME_500,
-  LIME_600,
-  LIME_700,
-  LIME_800,
-  LIME_900
+var BLUE_30 = "#47B3FF";
+var BLUE_40 = "#0077CC";
+var PURPLE_30 = "#C247FF";
+var PURPLE_40 = "#8800CC";
+var YELLOW_30 = "#FFE047";
+var YELLOW_40 = "#CCAA00";
+var PINK_30 = "#FF47C2";
+var PINK_40 = "#CC0088";
+var ORANGE_30 = "#FF9447";
+var ORANGE_40 = "#CC5500";
+var RED_30 = "#FF5747";
+var RED_40 = "#CC1100";
+var GREEN_30 = "#47FF75";
+var GREEN_40 = "#00CC33";
+var CYAN_30 = "#47FFFF";
+var CYAN_40 = "#00CCCC";
+var LIME_30 = "#E0FF47";
+var LIME_40 = "#AACC00";
+var COLOR_PALETTE_30 = [
+  BLUE_30,
+  PURPLE_30,
+  YELLOW_30,
+  PINK_30,
+  ORANGE_30,
+  RED_30,
+  GREEN_30,
+  CYAN_30,
+  LIME_30
 ];
-var LIME_200_DARKER = "#97b35d";
-var LIME_300_DARKER = "#84a340";
-var LIME_400_DARKER = "#719623";
-var LIME_500_DARKER = "#5e8614";
-var LIME_600_DARKER = "#4d6d04";
-var LIME_700_DARKER = "#3c5906";
-var LIME_800_DARKER = "#2d4606";
-var LIME_900_DARKER = "#243805";
-var LIME_PALETTE_DARKER = [
-  LIME_200_DARKER,
-  LIME_300_DARKER,
-  LIME_400_DARKER,
-  LIME_500_DARKER,
-  LIME_600_DARKER,
-  LIME_700_DARKER,
-  LIME_800_DARKER,
-  LIME_900_DARKER
+var COLOR_PALETTE_40 = [
+  BLUE_40,
+  PURPLE_40,
+  YELLOW_40,
+  PINK_40,
+  ORANGE_40,
+  RED_40,
+  GREEN_40,
+  CYAN_40,
+  LIME_40
 ];
-var COLOR_PALETTE = [
-  TEAL,
-  DARK_BLUE,
-  DARK_PURPLE,
-  PURPLE,
-  PINK,
-  LIGHT_PINK,
-  ORANGE,
-  YELLOW
-];
-var COMBINED_PALETTE = [...LIME_PALETTE, ...COLOR_PALETTE];
+var COLOR_PALETTE = [...COLOR_PALETTE_30];
 
 // src/constants/usaMap.json
 var usaMap_default = {
@@ -22428,7 +22439,7 @@ var stateAbbreviations = {
 
 // src/utils/color.ts
 function asArray(s, theme) {
-  return Array.isArray(s) ? s : theme === "light" ? color_exports.LIME_PALETTE_DARKER : color_exports.LIME_PALETTE;
+  return Array.isArray(s) ? s : color_exports.COLOR_PALETTE;
 }
 function asSingleton(s) {
   return Array.isArray(s) ? s[0] : s;
@@ -23490,7 +23501,10 @@ var _Chart = class {
         metrics.forEach(
           (col) => chart.addMetric({
             index: col.index,
-            color: col.color ?? color_exports.LIME_200,
+            color: col.color ?? array_exports.unboundedReadItem(
+              color_exports.COLOR_PALETTE,
+              chart.getMetrics().length
+            ),
             chartType: col.type === "line" ? "line" : "bar",
             aggregation: "sum"
           })
@@ -23515,7 +23529,10 @@ var _Chart = class {
         opts.yAxis[0].columns.forEach(
           (col) => chart.addMetric({
             index: col.index,
-            color: col.color ?? color_exports.LIME_200,
+            color: col.color ?? array_exports.unboundedReadItem(
+              color_exports.COLOR_PALETTE,
+              chart.getMetrics().length
+            ),
             chartType: col.type === "line" ? "line" : "bar",
             aggregation: "sum"
           })
@@ -23536,7 +23553,10 @@ var _Chart = class {
         });
         chart.addMetric({
           index: opts.yAxis[0].columns[0].index,
-          color: opts.yAxis[0].columns[0].color ?? color_exports.LIME_PALETTE,
+          color: opts.yAxis[0].columns[0].color ?? array_exports.unboundedReadItem(
+            color_exports.COLOR_PALETTE,
+            chart.getMetrics().length
+          ),
           aggregation: "sum"
         });
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -23547,7 +23567,10 @@ var _Chart = class {
         [...opts.xAxis[0].columns, ...opts.yAxis[0].columns].forEach((col) => {
           chart.addMetric({
             index: col.index,
-            color: col.color ?? color_exports.LIME_200,
+            color: col.color ?? array_exports.unboundedReadItem(
+              color_exports.COLOR_PALETTE,
+              chart.getMetrics().length
+            ),
             aggregation: "none"
           });
         });
@@ -23569,7 +23592,10 @@ var _Chart = class {
         });
         chart.addMetric({
           index: opts.zAxis[0].columns[0].index,
-          color: opts.zAxis[0].columns[0].color ?? color_exports.LIME_PALETTE,
+          color: opts.zAxis[0].columns[0].color ?? array_exports.unboundedReadItem(
+            color_exports.COLOR_PALETTE,
+            chart.getMetrics().length
+          ),
           aggregation: "none"
         });
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -23587,7 +23613,10 @@ var _Chart = class {
         });
         chart.addMetric({
           index: opts.yAxis[0].columns[0].index,
-          color: opts.yAxis[0].columns[0].color ?? color_exports.LIME_PALETTE,
+          color: opts.yAxis[0].columns[0].color ?? array_exports.unboundedReadItem(
+            color_exports.COLOR_PALETTE,
+            chart.getMetrics().length
+          ),
           aggregation: "sum"
         });
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -23863,7 +23892,7 @@ var _Chart = class {
     try {
       return {
         animation: true,
-        backgroundColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        backgroundColor: "rgba(0,0,0,0)",
         calendar: calendar(this, df, theme),
         dataset: datasets2,
         grid: grid(this, datasets2),
@@ -24176,7 +24205,7 @@ var AutoChartFactory = class {
       });
     });
     valueOptions.forEach((opt, i) => {
-      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.LIME_PALETTE : array_exports.unboundedReadItem(COLORS, i);
+      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.COLOR_PALETTE : array_exports.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type) ? "none" : "sum";
       if (chart.canAddMetric()) {
         chart.addMetric({

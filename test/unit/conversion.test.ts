@@ -32,7 +32,7 @@ describe("given a bar chart", () => {
           {
             id: 0,
             index: 1,
-            color: color.LIME_PALETTE,
+            color: color.COLOR_PALETTE,
             aggregation: "sum",
           },
         ],
@@ -65,7 +65,7 @@ describe("given a bar chart", () => {
           { id: 1, index: 0, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -79,7 +79,7 @@ describe("given a bar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -114,7 +114,7 @@ describe("given a bar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -145,7 +145,7 @@ describe("given a bar chart", () => {
           { id: 1, index: 0, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -159,7 +159,7 @@ describe("given a bar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -191,7 +191,7 @@ describe("given a bar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -222,7 +222,7 @@ describe("given a bar chart", () => {
           { id: 1, index: 2, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -236,7 +236,7 @@ describe("given a bar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -271,7 +271,7 @@ describe("given a line chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -302,7 +302,7 @@ describe("given a line chart", () => {
           { id: 1, index: 0, dataType: "datetime" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -316,7 +316,7 @@ describe("given a line chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -352,7 +352,7 @@ describe("given a line chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -383,7 +383,7 @@ describe("given a line chart", () => {
           { id: 1, index: 0, dataType: "datetime" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -397,7 +397,7 @@ describe("given a line chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -430,7 +430,7 @@ describe("given a line chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -461,7 +461,7 @@ describe("given a line chart", () => {
           { id: 1, index: 1, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -475,7 +475,7 @@ describe("given a line chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -541,7 +541,7 @@ describe("given a pie chart", () => {
           { id: 1, index: 0, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -555,7 +555,7 @@ describe("given a pie chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -610,7 +610,7 @@ describe("given a scatter chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "category" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -627,7 +627,7 @@ describe("given a scatter chart", () => {
           { id: 1, index: 0, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -641,7 +641,7 @@ describe("given a scatter chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -762,7 +762,7 @@ describe("given a calendar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -793,7 +793,7 @@ describe("given a calendar chart", () => {
           { id: 1, index: 0, dataType: "datetime" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -829,7 +829,7 @@ describe("given a calendar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -860,7 +860,7 @@ describe("given a calendar chart", () => {
           { id: 1, index: 0, dataType: "datetime" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -874,7 +874,7 @@ describe("given a calendar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -907,7 +907,7 @@ describe("given a calendar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });
@@ -938,7 +938,7 @@ describe("given a calendar chart", () => {
           { id: 1, index: 1, dataType: "category" },
         ],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "none" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "none" },
         ],
       });
     });
@@ -952,7 +952,7 @@ describe("given a calendar chart", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
     });

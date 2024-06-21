@@ -42,7 +42,7 @@ describe("given an array of column metadata", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
       expect(generator.next().value?.getOptions()).toEqual({
@@ -67,7 +67,7 @@ describe("given an array of column metadata", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 2, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 2, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
 
@@ -139,7 +139,7 @@ describe("given an array of column metadata", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 1, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 1, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
       expect(generator.next().value?.getOptions()).toEqual({
@@ -164,7 +164,7 @@ describe("given an array of column metadata", () => {
         },
         dimensions: [{ id: 0, index: 0, dataType: "datetime" }],
         metrics: [
-          { id: 0, index: 2, color: color.LIME_PALETTE, aggregation: "sum" },
+          { id: 0, index: 2, color: color.COLOR_PALETTE, aggregation: "sum" },
         ],
       });
 
