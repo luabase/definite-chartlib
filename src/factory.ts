@@ -14,7 +14,7 @@ type CreateChartMessage = {
   options: Array<ColumnOptions>;
 };
 
-const COLORS = [color.LIME_200, ...color.COLOR_PALETTE.slice(1)];
+const COLORS = color.COLOR_PALETTE;
 
 // Map of column options to chart types, treated as unordered sets.
 // Can match multiple

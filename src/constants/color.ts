@@ -82,4 +82,4 @@ export const COLOR_PALETTE_40 = [
   LIME_40,
 ];
 
-export const COLOR_PALETTE = [...COLOR_PALETTE_30];
+export const COLOR_PALETTE = COLOR_PALETTE_40;
