@@ -183,7 +183,7 @@ var COLOR_PALETTE_40 = [
   CYAN_40,
   LIME_40
 ];
-var COLOR_PALETTE = [...COLOR_PALETTE_30];
+var COLOR_PALETTE = COLOR_PALETTE_40;
 
 // src/constants/usaMap.json
 var usaMap_default = {
@@ -24092,7 +24092,7 @@ __decorateClass([
 ], Chart.prototype, "compile", 1);
 
 // src/factory.ts
-var COLORS = [color_exports.LIME_200, ...color_exports.COLOR_PALETTE.slice(1)];
+var COLORS = color_exports.COLOR_PALETTE;
 var chartMatchConfig = [
   ...forAddValueColumnType(
     {
