@@ -23196,7 +23196,8 @@ function series(chart, datasets2, theme) {
     }
     let [mix, t, dix, name, mid] = dataset.id.split("::");
     const metric = chart.getMetric(
-      (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t && m.id === Number(mid)
+      (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t && m.id == mid
+      // ID is now uuidv4(), legacy is number. TODO Run a migration to update them all to uuid
     );
     if (!metric)
       throw new Error("Metric not found");
@@ -23474,6 +23475,7 @@ var InvalidChartError = class extends Error {
 };
 
 // src/chart.ts
+import { v4 as uuidv4 } from "uuid";
 var _Chart = class {
   constructor(chartType) {
     this.chartType = chartType;
@@ -23662,18 +23664,18 @@ var _Chart = class {
         };
       case "kpi":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLongNumber: false
         };
       case "map":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false
         };
       case "funnel":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false
         };
     }
@@ -23756,7 +23758,7 @@ var _Chart = class {
       })
     );
     if (this.metrics.length < 2) {
-      chart.addMetric({ ...chart.getMetrics()[0], id: 1 });
+      chart.addMetric({ ...chart.getMetrics()[0], id: uuidv4() });
     }
     return chart;
   }
@@ -23767,7 +23769,7 @@ var _Chart = class {
       chart.addDimension(dim);
     });
     if (chart.canAddDimension()) {
-      chart.addDimension({ ...chart.getDimensions()[0], id: 1 });
+      chart.addDimension({ ...chart.getDimensions()[0], id: uuidv4() });
     }
     chart.addMetric({
       index: this.metrics[0].index,
@@ -24023,14 +24025,14 @@ var _Chart = class {
       const defaultDim = {
         index: 0,
         dataType: "category",
-        id: this.dimensions.length
+        id: uuidv4()
       };
       this.dimensions.push(defaultDim);
     } else {
       if (!this.canAddDimension())
         throw new Error("Cannot add another dimension");
       if (dim.id === void 0) {
-        dim.id = this.dimensions.length;
+        dim.id = uuidv4();
       }
       this.dimensions.push(dim);
     }
@@ -24060,7 +24062,7 @@ var _Chart = class {
     if (!this.canAddMetric())
       throw new Error("Cannot add another metric");
     if (metric.id === void 0) {
-      metric.id = this.metrics.length;
+      metric.id = uuidv4();
     }
     this.metrics.push(metric);
     return this;

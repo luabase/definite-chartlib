@@ -79760,7 +79760,7 @@ interface Indexable {
     index: number;
 }
 interface Identifiable {
-    id?: number;
+    id?: number | string;
 }
 interface Formattable {
     format?: "percent" | "currency" | "number";
