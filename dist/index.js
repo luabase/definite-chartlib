@@ -24098,14 +24098,6 @@ var COLORS = color_exports.COLOR_PALETTE;
 var chartMatchConfig = [
   ...forAddValueColumnType(
     {
-      column_type: [],
-      chart_types: ["kpi"]
-    },
-    1,
-    COLORS.length
-  ),
-  ...forAddValueColumnType(
-    {
       column_type: ["category"],
       chart_types: ["bar"]
     },
