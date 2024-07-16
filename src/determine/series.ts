@@ -87,7 +87,7 @@ export function series<T extends ChartType>(
       (m) =>
         m.index === Number(mix) &&
         (m.chartType ?? chart.getChartType()) === t &&
-        m.id === Number(mid)
+        m.id == mid // ID is now uuidv4(), legacy is number. TODO Run a migration to update them all to uuid
     );
     if (!metric) throw new Error("Metric not found");
     const colorId = `${mid}-${metric.color}`;

@@ -24,7 +24,7 @@
         "showTitle": {
           "type": "boolean",
           "description": "Whether to show chart title",
-          "default": true
+          "default": false
         },
         "showToolbox": {
           "type": "boolean",

@@ -19,6 +19,7 @@ import * as determine from "./determine";
 import * as utils from "./utils";
 import { profile } from "./perf";
 import { CompileChartError, InvalidChartError } from "./errors";
+import { v4 as uuidv4 } from "uuid";
 
 export class Chart<T extends ChartType> {
   private chartType: T;
@@ -235,18 +236,18 @@ export class Chart<T extends ChartType> {
         };
       case "kpi":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
           showLongNumber: false,
         };
       case "map":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         };
       case "funnel":
         return {
-          showTitle: true,
+          showTitle: false,
           showToolbox: false,
         };
     }
@@ -333,7 +334,7 @@ export class Chart<T extends ChartType> {
       })
     );
     if (this.metrics.length < 2) {
-      chart.addMetric({ ...chart.getMetrics()[0], id: 1 }); // re-add same metric
+      chart.addMetric({ ...chart.getMetrics()[0], id: uuidv4() }); // re-add same metric
     }
     return chart;
   }
@@ -345,7 +346,7 @@ export class Chart<T extends ChartType> {
       chart.addDimension(dim);
     });
     if (chart.canAddDimension()) {
-      chart.addDimension({ ...chart.getDimensions()[0], id: 1 }); // re-add same dimension
+      chart.addDimension({ ...chart.getDimensions()[0], id: uuidv4() }); // re-add same dimension
     }
     chart.addMetric({
       index: this.metrics[0].index,
@@ -633,7 +634,7 @@ export class Chart<T extends ChartType> {
       const defaultDim: Dimension<T> = {
         index: 0,
         dataType: "category",
-        id: this.dimensions.length,
+        id: uuidv4(),
       };
       this.dimensions.push(defaultDim);
     } else {
@@ -642,7 +643,7 @@ export class Chart<T extends ChartType> {
         throw new Error("Cannot add another dimension");
       // Ensure the dimension has an ID
       if (dim.id === undefined) {
-        dim.id = this.dimensions.length;
+        dim.id = uuidv4();
       }
       // Add the provided dimension
       this.dimensions.push(dim);
@@ -677,7 +678,7 @@ export class Chart<T extends ChartType> {
   addMetric(metric: Metric<T>): Chart<T> {
     if (!this.canAddMetric()) throw new Error("Cannot add another metric");
     if (metric.id === undefined) {
-      metric.id = this.metrics.length;
+      metric.id = uuidv4();
     }
     this.metrics.push(metric);
     return this;

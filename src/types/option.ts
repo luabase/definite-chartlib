@@ -14,7 +14,7 @@ interface Indexable {
 }
 
 interface Identifiable {
-  id?: number;
+  id?: number | string;
 }
 
 interface Formattable {
