@@ -1,6 +1,6 @@
 import { Chart } from "../chart";
 import { ChartType, Metric, echarts } from "../types";
-import { color } from "../constants";
+import { DS_SURFACE_PLATFORM_COLORS, DS_TEXT_COLORS } from "../constants/color"; // Update this import to the correct path
 import * as utils from "../utils";
 import { DataFrame } from "../dataframe";
 import * as formatters from "../formatters";
@@ -9,24 +9,18 @@ import { findCountryOrStateIndices, findNumberIndex } from "./helpers";
 import country from "country-list-js";
 import { format, isValid, parseISO, getYear } from "date-fns";
 import { categoryFormatter } from "../formatters";
-
-// NOTE: dataset ID will be of this format:
-// <metric index>::<chart type>::<dataset index>::<dataset name>::<metric id>
+import { DS_BORDER_COLORS } from "../constants/color";
 
 const funnelFormatter = (value: string) => {
-  // First, define a function that tries to parse a string to a date and checks if it's valid
   function isValidDate(dateString: string) {
     const date = parseISO(dateString);
     return isValid(date);
   }
 
-  // Check if the value can represent a valid date
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
-    // It's a valid date string; format it
     const date = parseISO(value);
-    return format(date, "yyyy-MM-dd"); // Customize as needed
+    return format(date, "yyyy-MM-dd");
   } else {
-    // Not a valid date string; use categoryFormatter
     return categoryFormatter(value);
   }
 };
@@ -87,7 +81,7 @@ export function series<T extends ChartType>(
       (m) =>
         m.index === Number(mix) &&
         (m.chartType ?? chart.getChartType()) === t &&
-        m.id == mid // ID is now uuidv4(), legacy is number. TODO Run a migration to update them all to uuid
+        m.id == mid
     );
     if (!metric) throw new Error("Metric not found");
     const colorId = `${mid}-${metric.color}`;
@@ -104,10 +98,16 @@ export function series<T extends ChartType>(
     };
     if (chart.getChartType() === "funnel") {
       item.label = {
-        color: theme === "light" ? color.ZINC_900 : color.ZINC_100,
+        color:
+          theme === "light"
+            ? DS_TEXT_COLORS.light.primary
+            : DS_TEXT_COLORS.dark.primary,
         show: true,
         position: "inside",
-        backgroundColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        backgroundColor:
+          theme === "light"
+            ? DS_SURFACE_PLATFORM_COLORS.light.card
+            : DS_SURFACE_PLATFORM_COLORS.dark.card,
         padding: [1, 2],
         borderRadius: 2,
         formatter: (params) => funnelFormatter(params.name),
@@ -124,17 +124,26 @@ export function series<T extends ChartType>(
         value: dataset.dimensions[1],
       };
       item.itemStyle = {
-        borderColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        borderColor:
+          theme === "light"
+            ? DS_BORDER_COLORS.light.secondary
+            : DS_BORDER_COLORS.dark.secondary,
         borderRadius: 10,
         borderWidth: 2,
       };
       item.label = {
-        color: theme === "light" ? color.ZINC_900 : color.ZINC_100,
+        color:
+          theme === "light"
+            ? DS_TEXT_COLORS.light.primary
+            : DS_TEXT_COLORS.dark.primary,
         show: true,
       };
       item.yAxisIndex = 0;
       item.textStyle = {
-        color: theme === "light" ? color.ZINC_100 : color.ZINC_900,
+        color:
+          theme === "light"
+            ? DS_SURFACE_PLATFORM_COLORS.light.card
+            : DS_SURFACE_PLATFORM_COLORS.dark.card,
       };
       item.radius = ["40%", "70%"];
     } else if (chart.getChartType() === "scatter") {
@@ -192,7 +201,6 @@ export function series<T extends ChartType>(
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {
-        // Color of the point.
         color: "rgba(0,0,0,0)",
       };
       const { stateIndex, countryIndex } = findCountryOrStateIndices(

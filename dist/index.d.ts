@@ -222,24 +222,52 @@ type RowOriented = Array<{
     [key: string]: Option<number | string | boolean>;
 }>;
 
-declare const LIME_200 = "#d9f99d";
-declare const LIME_300 = "#bef264";
-declare const LIME_400 = "#a3e635";
-declare const LIME_500 = "#84cc16";
-declare const LIME_600 = "#65a30d";
-declare const LIME_700 = "#4d7c0f";
-declare const LIME_800 = "#3f6212";
-declare const LIME_900 = "#365314";
-declare const ZINC_50 = "#fafafa";
-declare const ZINC_100 = "#f4f4f5";
-declare const ZINC_200 = "#e4e4e7";
-declare const ZINC_300 = "#d4d4d8";
-declare const ZINC_400 = "#a1a1aa";
-declare const ZINC_500 = "#71717a";
-declare const ZINC_600 = "#52525b";
-declare const ZINC_700 = "#3f3f46";
-declare const ZINC_800 = "#27272a";
-declare const ZINC_900 = "#18181b";
+declare const DS_TEXT_COLORS: {
+    light: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+    };
+    dark: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+    };
+};
+declare const DS_BORDER_COLORS: {
+    light: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        inverted: string;
+    };
+    dark: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        inverted: string;
+    };
+};
+declare const DS_SURFACE_PLATFORM_COLORS: {
+    light: {
+        nested: string;
+        background: string;
+        panel: string;
+        page: string;
+        card: string;
+        inverted: string;
+        translucent: string;
+    };
+    dark: {
+        nested: string;
+        background: string;
+        panel: string;
+        page: string;
+        card: string;
+        inverted: string;
+        translucent: string;
+    };
+};
 declare const TEAL = "#003f5c";
 declare const DARK_BLUE = "#2f4b7c";
 declare const DARK_PURPLE = "#665191";
@@ -279,19 +307,14 @@ declare const color_CYAN_30: typeof CYAN_30;
 declare const color_CYAN_40: typeof CYAN_40;
 declare const color_DARK_BLUE: typeof DARK_BLUE;
 declare const color_DARK_PURPLE: typeof DARK_PURPLE;
+declare const color_DS_BORDER_COLORS: typeof DS_BORDER_COLORS;
+declare const color_DS_SURFACE_PLATFORM_COLORS: typeof DS_SURFACE_PLATFORM_COLORS;
+declare const color_DS_TEXT_COLORS: typeof DS_TEXT_COLORS;
 declare const color_GREEN_30: typeof GREEN_30;
 declare const color_GREEN_40: typeof GREEN_40;
 declare const color_LIGHT_PINK: typeof LIGHT_PINK;
-declare const color_LIME_200: typeof LIME_200;
 declare const color_LIME_30: typeof LIME_30;
-declare const color_LIME_300: typeof LIME_300;
 declare const color_LIME_40: typeof LIME_40;
-declare const color_LIME_400: typeof LIME_400;
-declare const color_LIME_500: typeof LIME_500;
-declare const color_LIME_600: typeof LIME_600;
-declare const color_LIME_700: typeof LIME_700;
-declare const color_LIME_800: typeof LIME_800;
-declare const color_LIME_900: typeof LIME_900;
 declare const color_ORANGE: typeof ORANGE;
 declare const color_ORANGE_30: typeof ORANGE_30;
 declare const color_ORANGE_40: typeof ORANGE_40;
@@ -307,16 +330,6 @@ declare const color_TEAL: typeof TEAL;
 declare const color_YELLOW: typeof YELLOW;
 declare const color_YELLOW_30: typeof YELLOW_30;
 declare const color_YELLOW_40: typeof YELLOW_40;
-declare const color_ZINC_100: typeof ZINC_100;
-declare const color_ZINC_200: typeof ZINC_200;
-declare const color_ZINC_300: typeof ZINC_300;
-declare const color_ZINC_400: typeof ZINC_400;
-declare const color_ZINC_50: typeof ZINC_50;
-declare const color_ZINC_500: typeof ZINC_500;
-declare const color_ZINC_600: typeof ZINC_600;
-declare const color_ZINC_700: typeof ZINC_700;
-declare const color_ZINC_800: typeof ZINC_800;
-declare const color_ZINC_900: typeof ZINC_900;
 declare namespace color {
   export {
     color_BLUE_30 as BLUE_30,
@@ -328,19 +341,14 @@ declare namespace color {
     color_CYAN_40 as CYAN_40,
     color_DARK_BLUE as DARK_BLUE,
     color_DARK_PURPLE as DARK_PURPLE,
+    color_DS_BORDER_COLORS as DS_BORDER_COLORS,
+    color_DS_SURFACE_PLATFORM_COLORS as DS_SURFACE_PLATFORM_COLORS,
+    color_DS_TEXT_COLORS as DS_TEXT_COLORS,
     color_GREEN_30 as GREEN_30,
     color_GREEN_40 as GREEN_40,
     color_LIGHT_PINK as LIGHT_PINK,
-    color_LIME_200 as LIME_200,
     color_LIME_30 as LIME_30,
-    color_LIME_300 as LIME_300,
     color_LIME_40 as LIME_40,
-    color_LIME_400 as LIME_400,
-    color_LIME_500 as LIME_500,
-    color_LIME_600 as LIME_600,
-    color_LIME_700 as LIME_700,
-    color_LIME_800 as LIME_800,
-    color_LIME_900 as LIME_900,
     color_ORANGE as ORANGE,
     color_ORANGE_30 as ORANGE_30,
     color_ORANGE_40 as ORANGE_40,
@@ -356,16 +364,6 @@ declare namespace color {
     color_YELLOW as YELLOW,
     color_YELLOW_30 as YELLOW_30,
     color_YELLOW_40 as YELLOW_40,
-    color_ZINC_100 as ZINC_100,
-    color_ZINC_200 as ZINC_200,
-    color_ZINC_300 as ZINC_300,
-    color_ZINC_400 as ZINC_400,
-    color_ZINC_50 as ZINC_50,
-    color_ZINC_500 as ZINC_500,
-    color_ZINC_600 as ZINC_600,
-    color_ZINC_700 as ZINC_700,
-    color_ZINC_800 as ZINC_800,
-    color_ZINC_900 as ZINC_900,
   };
 }
 

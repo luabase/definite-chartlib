@@ -1,24 +1,51 @@
-// lime
-export const LIME_200 = "#d9f99d";
-export const LIME_300 = "#bef264";
-export const LIME_400 = "#a3e635";
-export const LIME_500 = "#84cc16";
-export const LIME_600 = "#65a30d";
-export const LIME_700 = "#4d7c0f";
-export const LIME_800 = "#3f6212";
-export const LIME_900 = "#365314";
+export const DS_TEXT_COLORS = {
+  light: {
+    primary: "#292929",
+    secondary: "#3D3D3D",
+    tertiary: "#7A7A7A",
+  },
+  dark: {
+    primary: "#F5F5F5",
+    secondary: "#B8B8B8",
+    tertiary: "#7A7A7A",
+  },
+};
 
-// zinc
-export const ZINC_50 = "#fafafa";
-export const ZINC_100 = "#f4f4f5";
-export const ZINC_200 = "#e4e4e7";
-export const ZINC_300 = "#d4d4d8";
-export const ZINC_400 = "#a1a1aa";
-export const ZINC_500 = "#71717a";
-export const ZINC_600 = "#52525b";
-export const ZINC_700 = "#3f3f46";
-export const ZINC_800 = "#27272a";
-export const ZINC_900 = "#18181b";
+export const DS_BORDER_COLORS = {
+  light: {
+    primary: "#E0E0E0", // var(--color_border--primary)
+    secondary: "#E0E0E0", // var(--color_border--secondary)
+    tertiary: "#EBEBEB", // var(--color_border--tertiary)
+    inverted: "#292929", // var(--color_border--inverted)
+  },
+  dark: {
+    primary: "#3D3D3D", // var(--color_border--primary)
+    secondary: "#292929", // var(--color_border--secondary)
+    tertiary: "#1F1F1F", // var(--color_border--tertiary)
+    inverted: "#292929", // var(--color_border--inverted)
+  },
+};
+
+export const DS_SURFACE_PLATFORM_COLORS = {
+  light: {
+    nested: "#F5F5F5",
+    background: "#FAFAFA",
+    panel: "#FFFFFF",
+    page: "#F5F5F5",
+    card: "#FFFFFF",
+    inverted: "#1F1F1F",
+    translucent: "rgba(255,255,255,0.9)",
+  },
+  dark: {
+    nested: "#0A0A0A",
+    background: "#0F0F0F",
+    panel: "#141414",
+    page: "#1F1F1F",
+    card: "#141414",
+    inverted: "#1F1F1F",
+    translucent: "rgba(26,26,26,0.9)",
+  },
+};
 
 // other
 export const TEAL = "#003f5c";

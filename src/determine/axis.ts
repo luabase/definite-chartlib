@@ -10,10 +10,15 @@ import {
   tooltipFormatter,
   determineFormatter,
 } from "../formatters";
-import { color } from "../constants";
+import { DS_BORDER_COLORS, DS_TEXT_COLORS } from "../constants/color";
 import * as utils from "../utils";
+import { isValid, parseISO } from "date-fns";
 
 const MAX_INTERVAL = 3;
+
+function isDateValue(value: string) {
+  return isValid(parseISO(value));
+}
 
 export function axis<T extends ChartType>(
   chart: Chart<T>,
@@ -30,16 +35,25 @@ export function axis<T extends ChartType>(
   if (isDimensionalAxis(chart, kind)) {
     const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
+    const firstValue = df.col(chart.getDimensions()[ix].index)[0];
+    const isDate = typeof firstValue === "string" && isDateValue(firstValue);
+
     const item: echarts.Axis = {
       show: chart.isCartesian(),
       type: "category",
       name: utils.string.truncate(name, 42),
-      nameGap: kind === "y" ? 85 : isLarge ? 50 : 30,
+      nameGap: kind === "y" || isDate ? 50 : 30,
       nameTextStyle: {
-        color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+        color:
+          theme === "light"
+            ? DS_TEXT_COLORS.light.secondary
+            : DS_TEXT_COLORS.dark.secondary,
       },
       axisLabel: {
-        color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+        color:
+          theme === "light"
+            ? DS_TEXT_COLORS.light.secondary
+            : DS_TEXT_COLORS.dark.secondary,
         interval: isLarge
           ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL)
           : 0,
@@ -48,7 +62,10 @@ export function axis<T extends ChartType>(
       },
       axisLine: {
         lineStyle: {
-          color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+          color:
+            theme === "light"
+              ? DS_BORDER_COLORS.light.primary
+              : DS_BORDER_COLORS.dark.primary,
         },
       },
       axisPointer: {
@@ -60,7 +77,7 @@ export function axis<T extends ChartType>(
       },
     };
     if (chart.getChartType() === "bar") {
-      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
+      item.nameGap = isLarge ? item.nameGap + 20 : item.nameGap;
     }
     axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
   } else {
@@ -75,20 +92,33 @@ export function axis<T extends ChartType>(
         }
         const name =
           metrics.length > 1 ? "" : df.columns.get(metrics[0].index) ?? "";
+        const firstValue = df.col(metrics[0].index)[0];
+        const isDate =
+          typeof firstValue === "string" && isDateValue(firstValue);
+
         const item: echarts.Axis = {
           show: chart.isCartesian(),
           type: "value",
           name: utils.string.truncate(name, 42),
-          nameGap: kind === "x" ? 30 : 50,
+          nameGap: kind === "x" ? (isDate ? 50 : 30) : 50,
           nameTextStyle: {
-            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+            color:
+              theme === "light"
+                ? DS_TEXT_COLORS.light.secondary
+                : DS_TEXT_COLORS.dark.secondary,
           },
           axisLine: {
-            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+            color:
+              theme === "light"
+                ? DS_BORDER_COLORS.light.primary
+                : DS_BORDER_COLORS.dark.primary,
           },
           axisLabel: {
             formatter: determineFormatter(chart, k),
-            color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+            color:
+              theme === "light"
+                ? DS_TEXT_COLORS.light.secondary
+                : DS_TEXT_COLORS.dark.secondary,
           },
         };
         if (metrics[0].min !== undefined && String(metrics[0].min) !== "") {
@@ -131,13 +161,19 @@ function addCommonFeatures(
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
-    color: theme === "light" ? color.ZINC_800 : color.ZINC_400,
+    color:
+      theme === "light"
+        ? DS_TEXT_COLORS.light.secondary
+        : DS_TEXT_COLORS.dark.secondary,
   };
   if (kind === "y" || chartType === "scatter") {
     item.splitLine = {
       lineStyle: {
         type: "dashed",
-        color: theme === "light" ? color.ZINC_200 : color.ZINC_800,
+        color:
+          theme === "light"
+            ? DS_BORDER_COLORS.light.secondary
+            : DS_BORDER_COLORS.dark.secondary,
       },
     };
     if (typeof formatter === "function") {

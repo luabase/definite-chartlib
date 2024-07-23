@@ -6,7 +6,11 @@ import {
   longFormValueFormatter,
   determineFormatter,
 } from "../formatters";
-import { color } from "../constants";
+import {
+  DS_SURFACE_PLATFORM_COLORS,
+  DS_BORDER_COLORS,
+  DS_TEXT_COLORS,
+} from "../constants/color";
 
 const legendFormatter = (params, chart) => {
   const formatter = determineFormatter(chart, "left");
@@ -39,16 +43,28 @@ export function tooltip<T extends ChartType>(
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item: echarts.ToolTip = {
     confine: true,
-    backgroundColor: theme === "light" ? color.ZINC_100 : color.ZINC_900,
-    borderColor: theme === "light" ? color.ZINC_300 : color.ZINC_500,
+    backgroundColor:
+      theme === "light"
+        ? DS_SURFACE_PLATFORM_COLORS.light.panel
+        : DS_SURFACE_PLATFORM_COLORS.dark.panel,
+    borderColor:
+      theme === "light"
+        ? DS_BORDER_COLORS.light.primary
+        : DS_BORDER_COLORS.dark.primary,
     textStyle: {
-      color: theme === "light" ? color.ZINC_900 : color.ZINC_300,
+      color:
+        theme === "light"
+          ? DS_TEXT_COLORS.light.secondary
+          : DS_TEXT_COLORS.dark.secondary,
     },
     show: true,
     trigger: !isBarOrLine ? "item" : "axis",
     axisPointer: {
       label: {
-        backgroundColor: color.ZINC_500,
+        backgroundColor:
+          theme === "light"
+            ? DS_SURFACE_PLATFORM_COLORS.light.nested
+            : DS_SURFACE_PLATFORM_COLORS.dark.nested,
       },
     },
   };
@@ -56,9 +72,12 @@ export function tooltip<T extends ChartType>(
     item.axisPointer = {
       type: "cross",
       label: {
-        backgroundColor: color.ZINC_500,
+        backgroundColor:
+          theme === "light"
+            ? DS_SURFACE_PLATFORM_COLORS.light.nested
+            : DS_SURFACE_PLATFORM_COLORS.dark.nested,
       },
-      crossStyle: { color: "#999999" },
+      crossStyle: { color: "#999999" }, // This can be adjusted if needed
     };
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
