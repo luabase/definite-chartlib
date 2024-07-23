@@ -1,7 +1,10 @@
 import { DataFrame } from "../dataframe";
 import { Chart } from "../chart";
 import { ChartType, echarts } from "../types";
-import { color } from "../constants";
+import {
+  DS_SURFACE_PLATFORM_COLORS,
+  DS_BORDER_COLORS,
+} from "../constants/color"; // Update this import to the correct path
 
 export function calendar<T extends ChartType>(
   chart: Chart<T>,
@@ -27,14 +30,23 @@ export function calendar<T extends ChartType>(
       cellSize: ["auto", 13],
       range: String(y),
       itemStyle: {
-        color: theme === "light" ? color.ZINC_100 : color.ZINC_900,
-        borderColor: color.ZINC_500,
+        color:
+          theme === "light"
+            ? DS_SURFACE_PLATFORM_COLORS.light.card
+            : DS_SURFACE_PLATFORM_COLORS.dark.card,
+        borderColor:
+          theme === "light"
+            ? DS_BORDER_COLORS.light.secondary
+            : DS_BORDER_COLORS.dark.secondary,
         borderWidth: 0.5,
       },
       orient: "horizontal",
       splitLine: {
         lineStyle: {
-          color: theme === "light" ? color.ZINC_500 : color.ZINC_400,
+          color:
+            theme === "light"
+              ? DS_BORDER_COLORS.light.secondary
+              : DS_BORDER_COLORS.dark.secondary,
           type: "solid",
         },
       },

@@ -11,28 +11,21 @@ export function grid<T extends ChartType>(
   const showLegend = chart.getStyleShowLegend();
   const isLarge = utils.datasets.containsLargeData(datasets);
   const orientation = chart.getStyleOrientation();
+
   let grid: echarts.Grid = {
     show: false,
-    containLabel: false,
-    left: "12%",
-    bottom: isLarge ? "20%" : "12%",
-    right: "9%",
-    top: "2%",
+    containLabel: true,
+    left: 40,
+    bottom: 30,
+    right: 40,
+    top: 40,
   };
+
   if (showTitle && showLegend) {
-    grid.top = "14%";
+    grid.top = 70;
   } else if (utils.boolean.xor(showTitle, showLegend)) {
-    grid.top = "10%";
+    grid.top = 50;
   }
-  if (["bar", "line"].includes(chartType)) {
-    grid.right = chart.canAddAxis() ? "9%" : "12%";
-    if (orientation === "vertical") {
-      grid.bottom = isLarge ? "18%" : "12%";
-    } else if (orientation === "horizontal") {
-      grid.left = isLarge ? "18%" : "15%";
-    }
-  } else if (chartType === "heatmap") {
-    grid.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
-  }
+
   return grid;
 }

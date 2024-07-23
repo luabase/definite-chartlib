@@ -78,19 +78,14 @@ __export(color_exports, {
   CYAN_40: () => CYAN_40,
   DARK_BLUE: () => DARK_BLUE,
   DARK_PURPLE: () => DARK_PURPLE,
+  DS_BORDER_COLORS: () => DS_BORDER_COLORS,
+  DS_SURFACE_PLATFORM_COLORS: () => DS_SURFACE_PLATFORM_COLORS,
+  DS_TEXT_COLORS: () => DS_TEXT_COLORS,
   GREEN_30: () => GREEN_30,
   GREEN_40: () => GREEN_40,
   LIGHT_PINK: () => LIGHT_PINK,
-  LIME_200: () => LIME_200,
   LIME_30: () => LIME_30,
-  LIME_300: () => LIME_300,
   LIME_40: () => LIME_40,
-  LIME_400: () => LIME_400,
-  LIME_500: () => LIME_500,
-  LIME_600: () => LIME_600,
-  LIME_700: () => LIME_700,
-  LIME_800: () => LIME_800,
-  LIME_900: () => LIME_900,
   ORANGE: () => ORANGE,
   ORANGE_30: () => ORANGE_30,
   ORANGE_40: () => ORANGE_40,
@@ -105,36 +100,62 @@ __export(color_exports, {
   TEAL: () => TEAL,
   YELLOW: () => YELLOW,
   YELLOW_30: () => YELLOW_30,
-  YELLOW_40: () => YELLOW_40,
-  ZINC_100: () => ZINC_100,
-  ZINC_200: () => ZINC_200,
-  ZINC_300: () => ZINC_300,
-  ZINC_400: () => ZINC_400,
-  ZINC_50: () => ZINC_50,
-  ZINC_500: () => ZINC_500,
-  ZINC_600: () => ZINC_600,
-  ZINC_700: () => ZINC_700,
-  ZINC_800: () => ZINC_800,
-  ZINC_900: () => ZINC_900
+  YELLOW_40: () => YELLOW_40
 });
-var LIME_200 = "#d9f99d";
-var LIME_300 = "#bef264";
-var LIME_400 = "#a3e635";
-var LIME_500 = "#84cc16";
-var LIME_600 = "#65a30d";
-var LIME_700 = "#4d7c0f";
-var LIME_800 = "#3f6212";
-var LIME_900 = "#365314";
-var ZINC_50 = "#fafafa";
-var ZINC_100 = "#f4f4f5";
-var ZINC_200 = "#e4e4e7";
-var ZINC_300 = "#d4d4d8";
-var ZINC_400 = "#a1a1aa";
-var ZINC_500 = "#71717a";
-var ZINC_600 = "#52525b";
-var ZINC_700 = "#3f3f46";
-var ZINC_800 = "#27272a";
-var ZINC_900 = "#18181b";
+var DS_TEXT_COLORS = {
+  light: {
+    primary: "#292929",
+    secondary: "#3D3D3D",
+    tertiary: "#7A7A7A"
+  },
+  dark: {
+    primary: "#F5F5F5",
+    secondary: "#B8B8B8",
+    tertiary: "#7A7A7A"
+  }
+};
+var DS_BORDER_COLORS = {
+  light: {
+    primary: "#E0E0E0",
+    // var(--color_border--primary)
+    secondary: "#E0E0E0",
+    // var(--color_border--secondary)
+    tertiary: "#EBEBEB",
+    // var(--color_border--tertiary)
+    inverted: "#292929"
+    // var(--color_border--inverted)
+  },
+  dark: {
+    primary: "#3D3D3D",
+    // var(--color_border--primary)
+    secondary: "#292929",
+    // var(--color_border--secondary)
+    tertiary: "#1F1F1F",
+    // var(--color_border--tertiary)
+    inverted: "#292929"
+    // var(--color_border--inverted)
+  }
+};
+var DS_SURFACE_PLATFORM_COLORS = {
+  light: {
+    nested: "#F5F5F5",
+    background: "#FAFAFA",
+    panel: "#FFFFFF",
+    page: "#F5F5F5",
+    card: "#FFFFFF",
+    inverted: "#1F1F1F",
+    translucent: "rgba(255,255,255,0.9)"
+  },
+  dark: {
+    nested: "#0A0A0A",
+    background: "#0F0F0F",
+    panel: "#141414",
+    page: "#1F1F1F",
+    card: "#141414",
+    inverted: "#1F1F1F",
+    translucent: "rgba(26,26,26,0.9)"
+  }
+};
 var TEAL = "#003f5c";
 var DARK_BLUE = "#2f4b7c";
 var DARK_PURPLE = "#665191";
@@ -22766,6 +22787,9 @@ var axisFormatter = (value) => {
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
     const date = parseISO(value);
     return format(date, "yyyy-MM-dd");
+  } else if (typeof value === "string" && !isNaN(parseFloat(value))) {
+    console.log("ITS A NUMBER!");
+    return valueFormatter(parseFloat(value));
   } else {
     return categoryFormatter(value);
   }
@@ -22788,12 +22812,21 @@ function determineFormatter(chart, axis2) {
   } else if (firstMetric?.format === "currency") {
     return currencyFormatter;
   } else {
-    return tooltipFormatter;
+    return (value) => {
+      if (typeof value === "number" || typeof value === "string" && !isNaN(parseFloat(value))) {
+        return valueFormatter(value);
+      }
+      return tooltipFormatter(value);
+    };
   }
 }
 
 // src/determine/axis.ts
+import { isValid as isValid2, parseISO as parseISO2 } from "date-fns";
 var MAX_INTERVAL = 3;
+function isDateValue(value) {
+  return isValid2(parseISO2(value));
+}
 function axis(chart, datasets2, kind, theme) {
   if (chart.getChartType() === "kpi") {
     return [];
@@ -22804,23 +22837,25 @@ function axis(chart, datasets2, kind, theme) {
   if (isDimensionalAxis(chart, kind)) {
     const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
+    const firstValue = df.col(chart.getDimensions()[ix].index)[0];
+    const isDate = typeof firstValue === "string" && isDateValue(firstValue);
     const item = {
       show: chart.isCartesian(),
       type: "category",
       name: string_exports.truncate(name, 42),
-      nameGap: kind === "y" ? 85 : isLarge ? 50 : 30,
+      nameGap: kind === "y" || isDate ? 50 : 30,
       nameTextStyle: {
-        color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+        color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
       },
       axisLabel: {
-        color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400,
+        color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary,
         interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL) : 0,
         rotate: isLarge ? 30 : 0,
         formatter: axisFormatter
       },
       axisLine: {
         lineStyle: {
-          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+          color: theme === "light" ? DS_BORDER_COLORS.light.primary : DS_BORDER_COLORS.dark.primary
         }
       },
       axisPointer: {
@@ -22832,7 +22867,7 @@ function axis(chart, datasets2, kind, theme) {
       }
     };
     if (chart.getChartType() === "bar") {
-      item.nameGap = isLarge ? item.nameGap + 25 : item.nameGap;
+      item.nameGap = isLarge ? item.nameGap + 20 : item.nameGap;
     }
     axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
   } else {
@@ -22844,20 +22879,22 @@ function axis(chart, datasets2, kind, theme) {
         metrics = kind === "x" ? [metrics[0]] : [metrics[1]];
       }
       const name = metrics.length > 1 ? "" : df.columns.get(metrics[0].index) ?? "";
+      const firstValue = df.col(metrics[0].index)[0];
+      const isDate = typeof firstValue === "string" && isDateValue(firstValue);
       const item = {
         show: chart.isCartesian(),
         type: "value",
         name: string_exports.truncate(name, 42),
-        nameGap: kind === "x" ? 30 : 50,
+        nameGap: kind === "x" ? isDate ? 50 : 30 : 50,
         nameTextStyle: {
-          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+          color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
         },
         axisLine: {
-          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+          color: theme === "light" ? DS_BORDER_COLORS.light.primary : DS_BORDER_COLORS.dark.primary
         },
         axisLabel: {
           formatter: determineFormatter(chart, k),
-          color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+          color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
         }
       };
       if (metrics[0].min !== void 0 && String(metrics[0].min) !== "") {
@@ -22889,13 +22926,13 @@ function addCommonFeatures(chartType, item, kind, theme, formatter) {
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
-    color: theme === "light" ? color_exports.ZINC_800 : color_exports.ZINC_400
+    color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
   };
   if (kind === "y" || chartType === "scatter") {
     item.splitLine = {
       lineStyle: {
         type: "dashed",
-        color: theme === "light" ? color_exports.ZINC_200 : color_exports.ZINC_800
+        color: theme === "light" ? DS_BORDER_COLORS.light.secondary : DS_BORDER_COLORS.dark.secondary
       }
     };
     if (typeof formatter === "function") {
@@ -22945,14 +22982,14 @@ function calendar(chart, df, theme) {
       cellSize: ["auto", 13],
       range: String(y),
       itemStyle: {
-        color: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
-        borderColor: color_exports.ZINC_500,
+        color: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.card : DS_SURFACE_PLATFORM_COLORS.dark.card,
+        borderColor: theme === "light" ? DS_BORDER_COLORS.light.secondary : DS_BORDER_COLORS.dark.secondary,
         borderWidth: 0.5
       },
       orient: "horizontal",
       splitLine: {
         lineStyle: {
-          color: theme === "light" ? color_exports.ZINC_500 : color_exports.ZINC_400,
+          color: theme === "light" ? DS_BORDER_COLORS.light.secondary : DS_BORDER_COLORS.dark.secondary,
           type: "solid"
         }
       }
@@ -23055,26 +23092,16 @@ function grid(chart, datasets2) {
   const orientation = chart.getStyleOrientation();
   let grid2 = {
     show: false,
-    containLabel: false,
-    left: "12%",
-    bottom: isLarge ? "20%" : "12%",
-    right: "9%",
-    top: "2%"
+    containLabel: true,
+    left: 40,
+    bottom: 30,
+    right: 40,
+    top: 40
   };
   if (showTitle && showLegend) {
-    grid2.top = "14%";
+    grid2.top = 70;
   } else if (boolean_exports.xor(showTitle, showLegend)) {
-    grid2.top = "10%";
-  }
-  if (["bar", "line"].includes(chartType)) {
-    grid2.right = chart.canAddAxis() ? "9%" : "12%";
-    if (orientation === "vertical") {
-      grid2.bottom = isLarge ? "18%" : "12%";
-    } else if (orientation === "horizontal") {
-      grid2.left = isLarge ? "18%" : "15%";
-    }
-  } else if (chartType === "heatmap") {
-    grid2.right = chart.getStyleColorGrouping() === "piecewise" ? "15%" : "11%";
+    grid2.top = 50;
   }
   return grid2;
 }
@@ -23084,10 +23111,10 @@ function legend(chart, theme) {
   return {
     show: chart.getStyleShowLegend(),
     left: "center",
-    top: chart.getStyleShowTitle() ? "8%" : "2%",
+    top: chart.getStyleShowTitle() ? 40 : 10,
     type: "scroll",
     textStyle: {
-      color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
+      color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
     },
     formatter: tooltipFormatter
   };
@@ -23138,14 +23165,14 @@ function findCountryOrStateIndices(arr) {
 
 // src/determine/series.ts
 import country from "country-list-js";
-import { format as format2, isValid as isValid2, parseISO as parseISO2 } from "date-fns";
+import { format as format2, isValid as isValid3, parseISO as parseISO3 } from "date-fns";
 var funnelFormatter = (value) => {
   function isValidDate2(dateString) {
-    const date = parseISO2(dateString);
-    return isValid2(date);
+    const date = parseISO3(dateString);
+    return isValid3(date);
   }
   if (typeof value === "string" && isValidDate2(value) && value.length > 6) {
-    const date = parseISO2(value);
+    const date = parseISO3(value);
     return format2(date, "yyyy-MM-dd");
   } else {
     return categoryFormatter(value);
@@ -23197,12 +23224,11 @@ function series(chart, datasets2, theme) {
     let [mix, t, dix, name, mid] = dataset.id.split("::");
     const metric = chart.getMetric(
       (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t && m.id == mid
-      // ID is now uuidv4(), legacy is number. TODO Run a migration to update them all to uuid
     );
     if (!metric)
       throw new Error("Metric not found");
     const colorId = `${mid}-${metric.color}`;
-    const c = colors.includes(colorId) ? array_exports.unboundedReadItem(color_exports.COLOR_PALETTE, Number(dix) - 1) : metric.color;
+    const c = colors.includes(colorId) ? array_exports.unboundedReadItem(color.COLOR_PALETTE, Number(dix) - 1) : metric.color;
     colors.push(colorId);
     t = t === "calendar" ? "heatmap" : t;
     const item = {
@@ -23213,10 +23239,10 @@ function series(chart, datasets2, theme) {
     };
     if (chart.getChartType() === "funnel") {
       item.label = {
-        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_100,
+        color: theme === "light" ? DS_TEXT_COLORS.light.primary : DS_TEXT_COLORS.dark.primary,
         show: true,
         position: "inside",
-        backgroundColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.card : DS_SURFACE_PLATFORM_COLORS.dark.card,
         padding: [1, 2],
         borderRadius: 2,
         formatter: (params) => funnelFormatter(params.name)
@@ -23233,17 +23259,17 @@ function series(chart, datasets2, theme) {
         value: dataset.dimensions[1]
       };
       item.itemStyle = {
-        borderColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
+        borderColor: theme === "light" ? DS_BORDER_COLORS.light.secondary : DS_BORDER_COLORS.dark.secondary,
         borderRadius: 10,
         borderWidth: 2
       };
       item.label = {
-        color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_100,
+        color: theme === "light" ? DS_TEXT_COLORS.light.primary : DS_TEXT_COLORS.dark.primary,
         show: true
       };
       item.yAxisIndex = 0;
       item.textStyle = {
-        color: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900
+        color: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.card : DS_SURFACE_PLATFORM_COLORS.dark.card
       };
       item.radius = ["40%", "70%"];
     } else if (chart.getChartType() === "scatter") {
@@ -23297,7 +23323,6 @@ function series(chart, datasets2, theme) {
       item.type = "map";
       item.label = { show: false };
       item.itemStyle = {
-        // Color of the point.
         color: "rgba(0,0,0,0)"
       };
       const { stateIndex, countryIndex } = findCountryOrStateIndices(
@@ -23392,16 +23417,16 @@ function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const item = {
     confine: true,
-    backgroundColor: theme === "light" ? color_exports.ZINC_100 : color_exports.ZINC_900,
-    borderColor: theme === "light" ? color_exports.ZINC_300 : color_exports.ZINC_500,
+    backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.panel : DS_SURFACE_PLATFORM_COLORS.dark.panel,
+    borderColor: theme === "light" ? DS_BORDER_COLORS.light.primary : DS_BORDER_COLORS.dark.primary,
     textStyle: {
-      color: theme === "light" ? color_exports.ZINC_900 : color_exports.ZINC_300
+      color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
     },
     show: true,
     trigger: !isBarOrLine ? "item" : "axis",
     axisPointer: {
       label: {
-        backgroundColor: color_exports.ZINC_500
+        backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       }
     }
   };
@@ -23409,9 +23434,10 @@ function tooltip(chart, theme) {
     item.axisPointer = {
       type: "cross",
       label: {
-        backgroundColor: color_exports.ZINC_500
+        backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       },
       crossStyle: { color: "#999999" }
+      // This can be adjusted if needed
     };
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {

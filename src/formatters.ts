@@ -68,12 +68,15 @@ function isValidDate(dateString: string) {
   return isValid(date);
 }
 
-export const axisFormatter = (value: string) => {
+export const axisFormatter = (value: string | number) => {
   // Check if the value can represent a valid date
   if (typeof value === "string" && isValidDate(value) && value.length > 6) {
     // It's a valid date string; format it
     const date = parseISO(value);
     return format(date, "yyyy-MM-dd"); // Customize as needed
+  } else if (typeof value === "string" && !isNaN(parseFloat(value))) {
+    console.log("ITS A NUMBER!");
+    return valueFormatter(parseFloat(value));
   } else {
     // Not a valid date string; use categoryFormatter
     return categoryFormatter(value);
@@ -106,6 +109,14 @@ export function determineFormatter<T extends ChartType>(
   } else if (firstMetric?.format === "currency") {
     return currencyFormatter;
   } else {
-    return tooltipFormatter;
+    return (value: string | number) => {
+      if (
+        typeof value === "number" ||
+        (typeof value === "string" && !isNaN(parseFloat(value)))
+      ) {
+        return valueFormatter(value);
+      }
+      return tooltipFormatter(value);
+    };
   }
 }
