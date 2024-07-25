@@ -22788,7 +22788,6 @@ var axisFormatter = (value) => {
     const date = parseISO(value);
     return format(date, "yyyy-MM-dd");
   } else if (typeof value === "string" && !isNaN(parseFloat(value))) {
-    console.log("ITS A NUMBER!");
     return valueFormatter(parseFloat(value));
   } else {
     return categoryFormatter(value);
@@ -22823,7 +22822,6 @@ function determineFormatter(chart, axis2) {
 
 // src/determine/axis.ts
 import { isValid as isValid2, parseISO as parseISO2 } from "date-fns";
-var MAX_INTERVAL = 3;
 function isDateValue(value) {
   return isValid2(parseISO2(value));
 }
@@ -22839,6 +22837,11 @@ function axis(chart, datasets2, kind, theme) {
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
     const firstValue = df.col(chart.getDimensions()[ix].index)[0];
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
+    const totalPoints = df.shape.height;
+    const chartWidth = 500;
+    const labelWidth = 50;
+    const maxLabels = Math.floor(chartWidth / labelWidth);
+    const interval = Math.ceil(totalPoints / maxLabels);
     const item = {
       show: chart.isCartesian(),
       type: "category",
@@ -22849,7 +22852,7 @@ function axis(chart, datasets2, kind, theme) {
       },
       axisLabel: {
         color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary,
-        interval: isLarge ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL) : 0,
+        interval: isDate ? interval : 0,
         rotate: isLarge ? 30 : 0,
         formatter: axisFormatter
       },
@@ -23228,7 +23231,7 @@ function series(chart, datasets2, theme) {
     if (!metric)
       throw new Error("Metric not found");
     const colorId = `${mid}-${metric.color}`;
-    const c = colors.includes(colorId) ? array_exports.unboundedReadItem(color.COLOR_PALETTE, Number(dix) - 1) : metric.color;
+    const c = colors.includes(colorId) ? array_exports.unboundedReadItem(color_exports.COLOR_PALETTE, Number(dix) - 1) : metric.color;
     colors.push(colorId);
     t = t === "calendar" ? "heatmap" : t;
     const item = {

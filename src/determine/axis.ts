@@ -38,6 +38,12 @@ export function axis<T extends ChartType>(
     const firstValue = df.col(chart.getDimensions()[ix].index)[0];
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
 
+    const totalPoints = df.shape.height;
+    const chartWidth = 500; // You may want to get this dynamically
+    const labelWidth = 50; // Average label width
+    const maxLabels = Math.floor(chartWidth / labelWidth);
+    const interval = Math.ceil(totalPoints / maxLabels);
+
     const item: echarts.Axis = {
       show: chart.isCartesian(),
       type: "category",
@@ -54,9 +60,7 @@ export function axis<T extends ChartType>(
           theme === "light"
             ? DS_TEXT_COLORS.light.secondary
             : DS_TEXT_COLORS.dark.secondary,
-        interval: isLarge
-          ? Math.min(Math.floor((df.shape.height - 1) / 10), MAX_INTERVAL)
-          : 0,
+        interval: isDate ? interval : 0,
         rotate: isLarge ? 30 : 0,
         formatter: axisFormatter,
       },

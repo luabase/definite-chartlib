@@ -9,6 +9,7 @@ import { findCountryOrStateIndices, findNumberIndex } from "./helpers";
 import country from "country-list-js";
 import { format, isValid, parseISO, getYear } from "date-fns";
 import { categoryFormatter } from "../formatters";
+import { color } from "../constants";
 import { DS_BORDER_COLORS } from "../constants/color";
 
 const funnelFormatter = (value: string) => {
