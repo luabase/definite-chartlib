@@ -75,7 +75,6 @@ export const axisFormatter = (value: string | number) => {
     const date = parseISO(value);
     return format(date, "yyyy-MM-dd"); // Customize as needed
   } else if (typeof value === "string" && !isNaN(parseFloat(value))) {
-    console.log("ITS A NUMBER!");
     return valueFormatter(parseFloat(value));
   } else {
     // Not a valid date string; use categoryFormatter
