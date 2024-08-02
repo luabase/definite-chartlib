@@ -64,6 +64,10 @@ const chartMatchConfig: ChartMatchConfigOption[] = [
     column_type: ["datetime", "category", "value"],
     chart_types: ["line", "heatmap"],
   },
+  {
+    column_type: ["value"],
+    chart_types: ["kpi"], // Add KPI chart type for single value
+  },
 ];
 
 function forAddValueColumnType(
@@ -93,9 +97,9 @@ export class AutoChartFactory {
     if (subsets) {
       min_subset_size = 2;
     }
-
     this.subsetQ = utils.array.getAllSubsets(opts, min_subset_size);
     this.createQ = [];
+
     while (this.subsetQ.length > 0) {
       const subset = this.subsetQ.shift();
       if (subset) {

@@ -24164,6 +24164,11 @@ var chartMatchConfig = [
   {
     column_type: ["datetime", "category", "value"],
     chart_types: ["line", "heatmap"]
+  },
+  {
+    column_type: ["value"],
+    chart_types: ["kpi"]
+    // Add KPI chart type for single value
   }
 ];
 function forAddValueColumnType(column_types, min, max) {
