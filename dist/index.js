@@ -24143,32 +24143,31 @@ var chartMatchConfig = [
   ),
   {
     column_type: ["category", "value"],
-    chart_types: ["pie"]
+    chart_types: ["pie", "kpi"]
   },
   {
     column_type: ["datetime", "value"],
-    chart_types: ["calendar"]
+    chart_types: ["calendar", "kpi"]
   },
   {
     column_type: ["category", "value", "value"],
-    chart_types: ["scatter"]
+    chart_types: ["scatter", "kpi"]
   },
   {
     column_type: ["datetime", "value", "value"],
-    chart_types: ["scatter"]
+    chart_types: ["scatter", "kpi"]
   },
   {
     column_type: ["category", "category", "value"],
-    chart_types: ["bar", "heatmap"]
+    chart_types: ["bar", "heatmap", "kpi"]
   },
   {
     column_type: ["datetime", "category", "value"],
-    chart_types: ["line", "heatmap"]
+    chart_types: ["line", "heatmap", "kpi"]
   },
   {
     column_type: ["value"],
     chart_types: ["kpi"]
-    // Add KPI chart type for single value
   }
 ];
 function forAddValueColumnType(column_types, min, max) {
@@ -24226,14 +24225,18 @@ var AutoChartFactory = class {
       (opt) => opt.dataType !== "value"
     );
     otherOptions.forEach((opt) => {
-      chart.addDimension({
-        index: opt.index,
-        dataType: opt.dataType,
-        format: opt.format
-      });
+      if (chart.canAddDimension()) {
+        chart.addDimension({
+          index: opt.index,
+          dataType: opt.dataType,
+          format: opt.format
+        });
+      }
     });
     valueOptions.forEach((opt, i) => {
-      const colorChoice = ["pie", "calendar", "heatmap"].includes(msg.type) ? color_exports.COLOR_PALETTE : array_exports.unboundedReadItem(COLORS, i);
+      const colorChoice = ["pie", "calendar", "heatmap", "kpi"].includes(
+        msg.type
+      ) ? color_exports.COLOR_PALETTE : array_exports.unboundedReadItem(COLORS, i);
       const aggregation = ["scatter", "heatmap", "kpi"].includes(msg.type) ? "none" : "sum";
       if (chart.canAddMetric()) {
         chart.addMetric({
