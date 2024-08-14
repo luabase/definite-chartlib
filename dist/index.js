@@ -24201,7 +24201,7 @@ var AutoChartFactory = class {
   addAllCreateChartMessagesToQueue(opts) {
     const column_options = opts.map((opt) => opt.dataType);
     const matches = chartMatchConfig.filter(
-      (config) => config.column_type.length === column_options.length && config.column_type.sort().join() === column_options.sort().join()
+      (config) => config.column_type.length === column_options.length && config.column_type.sort().join() === column_options.sort().join() || config.chart_types[0] === "kpi" && column_options.includes("value")
     );
     if (matches.length > 0) {
       matches.forEach((match) => {
