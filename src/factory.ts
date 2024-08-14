@@ -115,8 +115,9 @@ export class AutoChartFactory {
     // Sort here to ignore order of columns.
     const matches = chartMatchConfig.filter(
       (config) =>
-        config.column_type.length === column_options.length &&
-        config.column_type.sort().join() === column_options.sort().join()
+        (config.column_type.length === column_options.length &&
+          config.column_type.sort().join() === column_options.sort().join()) ||
+        (config.chart_types[0] === "kpi" && column_options.includes("value"))
     );
 
     if (matches.length > 0) {
@@ -126,7 +127,7 @@ export class AutoChartFactory {
         );
       });
     } else {
-      return; // Unsupported combination
+      return;
     }
   }
 
