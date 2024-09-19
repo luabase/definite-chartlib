@@ -87,15 +87,6 @@ function removeDuplicates(arr) {
   return Array.from(new Set(arr));
 }
 
-// src/utils/boolean.ts
-var boolean_exports = {};
-__export(boolean_exports, {
-  xor: () => xor
-});
-function xor(a, b) {
-  return (a || b) && !(a && b);
-}
-
 // src/utils/color.ts
 var color_exports2 = {};
 __export(color_exports2, {
@@ -22883,7 +22874,7 @@ function axis(chart, datasets2, kind, theme) {
       show: chart.isCartesian(),
       type: "category",
       name: string_exports.truncate(name, 42),
-      nameGap: kind === "y" || isDate ? 50 : 30,
+      nameGap: kind === "y" || isDate ? 45 : 30,
       nameTextStyle: {
         color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
       },
@@ -22906,9 +22897,6 @@ function axis(chart, datasets2, kind, theme) {
         }
       }
     };
-    if (chart.getChartType() === "bar") {
-      item.nameGap = isLarge ? item.nameGap + 20 : item.nameGap;
-    }
     axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
   } else {
     const map = getMapOfValueAxes(chart);
@@ -22925,7 +22913,7 @@ function axis(chart, datasets2, kind, theme) {
         show: chart.isCartesian(),
         type: "value",
         name: string_exports.truncate(name, 42),
-        nameGap: kind === "x" ? isDate ? 50 : 30 : 50,
+        nameGap: kind === "x" ? isDate ? 45 : 30 : 45,
         nameTextStyle: {
           color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
         },
@@ -23125,22 +23113,19 @@ function datasets(chart, df) {
 
 // src/determine/grid.ts
 function grid(chart, datasets2) {
-  const chartType = chart.getChartType();
-  const showTitle = chart.getStyleShowTitle();
+  const needsLegendLabel = chart.getDoesNeedLegendLabel();
   const showLegend = chart.getStyleShowLegend();
-  const isLarge = datasets_exports.containsLargeData(datasets2);
-  const orientation = chart.getStyleOrientation();
   let grid2 = {
     show: false,
     containLabel: true,
     left: 40,
     bottom: 30,
     right: 40,
-    top: 40
+    top: 20
   };
-  if (showTitle && showLegend) {
-    grid2.top = 70;
-  } else if (boolean_exports.xor(showTitle, showLegend)) {
+  if (needsLegendLabel && showLegend) {
+    grid2.top = 80;
+  } else if (showLegend) {
     grid2.top = 50;
   }
   return grid2;
@@ -23148,10 +23133,11 @@ function grid(chart, datasets2) {
 
 // src/determine/legend.ts
 function legend(chart, theme) {
+  const needsLegendLabel = chart.getDoesNeedLegendLabel();
   return {
     show: chart.getStyleShowLegend(),
     left: "center",
-    top: chart.getStyleShowTitle() ? 40 : 10,
+    top: needsLegendLabel ? 40 : 10,
     type: "scroll",
     textStyle: {
       color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
@@ -23412,7 +23398,9 @@ function series(chart, datasets2, theme) {
 }
 
 // src/determine/title.ts
-function title(chart, s) {
+function title(chart, s, theme, label) {
+  const needsLegendLabel = chart.getDoesNeedLegendLabel();
+  const showLegend = chart.getStyleShowLegend();
   let left = "center";
   if (chart.getChartType() === "calendar") {
     left = "auto";
@@ -23420,10 +23408,15 @@ function title(chart, s) {
     left = "left";
   }
   return {
-    show: chart.getStyleShowTitle(),
-    text: string_exports.truncate(s, 42),
-    top: "2%",
-    left
+    show: needsLegendLabel && showLegend,
+    text: label,
+    top: 20,
+    left,
+    textStyle: {
+      color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary,
+      fontSize: 14,
+      fontWeight: "normal"
+    }
   };
 }
 
@@ -23957,6 +23950,7 @@ var _Chart = class {
     }
     const df = new DataFrame(data);
     const datasets2 = datasets(this, df);
+    const legendLabel = datasets2[0]?.dimensions?.[this.getDimensions()[1]?.index];
     try {
       return {
         animation: true,
@@ -23966,7 +23960,7 @@ var _Chart = class {
         grid: grid(this, datasets2),
         legend: legend(this, theme),
         series: series(this, datasets2, theme),
-        title: title(this, title2),
+        title: title(this, title2, theme, legendLabel),
         toolbox: toolbox(this),
         tooltip: tooltip(this, theme),
         visualMap: visualMap(this, datasets2, theme),
@@ -24039,6 +24033,9 @@ var _Chart = class {
   }
   getStyleShowTitle() {
     return this.style.showTitle;
+  }
+  getDoesNeedLegendLabel() {
+    return this.dimensions.length > 1;
   }
   getStyleShowLongNumber() {
     if (this.chartType === "kpi") {

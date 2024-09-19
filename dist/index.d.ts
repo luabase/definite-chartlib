@@ -79888,6 +79888,7 @@ declare class Chart<T extends ChartType> {
     getChartType(): ChartType;
     isCartesian(): boolean;
     getStyleShowTitle(): boolean;
+    getDoesNeedLegendLabel(): boolean;
     getStyleShowLongNumber(): boolean;
     getStyleShowToolbox(): boolean;
     getStyleShowLegend(): boolean;

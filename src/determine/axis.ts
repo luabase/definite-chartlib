@@ -48,7 +48,7 @@ export function axis<T extends ChartType>(
       show: chart.isCartesian(),
       type: "category",
       name: utils.string.truncate(name, 42),
-      nameGap: kind === "y" || isDate ? 50 : 30,
+      nameGap: kind === "y" || isDate ? 45 : 30,
       nameTextStyle: {
         color:
           theme === "light"
@@ -80,9 +80,6 @@ export function axis<T extends ChartType>(
         },
       },
     };
-    if (chart.getChartType() === "bar") {
-      item.nameGap = isLarge ? item.nameGap + 20 : item.nameGap;
-    }
     axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
   } else {
     const map = getMapOfValueAxes(chart);
@@ -104,7 +101,7 @@ export function axis<T extends ChartType>(
           show: chart.isCartesian(),
           type: "value",
           name: utils.string.truncate(name, 42),
-          nameGap: kind === "x" ? (isDate ? 50 : 30) : 50,
+          nameGap: kind === "x" ? (isDate ? 45 : 30) : 45,
           nameTextStyle: {
             color:
               theme === "light"
