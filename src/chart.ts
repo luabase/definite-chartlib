@@ -475,6 +475,8 @@ export class Chart<T extends ChartType> {
     }
     const df = new DataFrame(data);
     const datasets = determine.datasets(this, df);
+    const legendLabel =
+      datasets[0]?.dimensions?.[this.getDimensions()[1]?.index];
 
     try {
       return {
@@ -485,7 +487,7 @@ export class Chart<T extends ChartType> {
         grid: determine.grid(this, datasets),
         legend: determine.legend(this, theme),
         series: determine.series(this, datasets, theme),
-        title: determine.title(this, title),
+        title: determine.title(this, title, theme, legendLabel),
         toolbox: determine.toolbox(this),
         tooltip: determine.tooltip(this, theme),
         visualMap: determine.visualMap(this, datasets, theme),
@@ -570,6 +572,10 @@ export class Chart<T extends ChartType> {
 
   getStyleShowTitle(): boolean {
     return this.style.showTitle;
+  }
+
+  getDoesNeedLegendLabel(): boolean {
+    return this.dimensions.length > 1;
   }
 
   getStyleShowLongNumber(): boolean {

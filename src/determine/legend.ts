@@ -7,10 +7,11 @@ export function legend<T extends ChartType>(
   chart: Chart<T>,
   theme: string
 ): echarts.Legend {
+  const needsLegendLabel = chart.getDoesNeedLegendLabel();
   return {
     show: chart.getStyleShowLegend(),
     left: "center",
-    top: chart.getStyleShowTitle() ? 40 : 10,
+    top: needsLegendLabel ? 40 : 10,
     type: "scroll",
     textStyle: {
       color:

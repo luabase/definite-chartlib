@@ -1,11 +1,17 @@
 import { Chart } from "../chart";
 import { ChartType, echarts } from "../types";
 import * as utils from "../utils";
+import { DS_TEXT_COLORS } from "../constants/color";
 
 export function title<T extends ChartType>(
   chart: Chart<T>,
-  s: string
+  s: string,
+  theme: string,
+  label: string
 ): echarts.Title {
+  const needsLegendLabel = chart.getDoesNeedLegendLabel();
+  const showLegend = chart.getStyleShowLegend();
+
   let left = "center";
   if (chart.getChartType() === "calendar") {
     left = "auto";
@@ -13,9 +19,17 @@ export function title<T extends ChartType>(
     left = "left";
   }
   return {
-    show: chart.getStyleShowTitle(),
-    text: utils.string.truncate(s, 42),
-    top: "2%",
-    left
+    show: needsLegendLabel && showLegend,
+    text: label,
+    top: 20,
+    left,
+    textStyle: {
+      color:
+        theme === "light"
+          ? DS_TEXT_COLORS.light.secondary
+          : DS_TEXT_COLORS.dark.secondary,
+      fontSize: 14,
+      fontWeight: "normal",
+    },
   };
 }
