@@ -68,6 +68,7 @@ export type Metric<T extends ChartType> = Identifiable &
     aggregation?: AggregationType;
     color: string | string[];
     dataType?: "value";
+    chartType?: string;
   } & Formattable &
   OptionalNumberRange;
 
