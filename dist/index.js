@@ -23731,14 +23731,16 @@ var _Chart = class {
     const chart = new _Chart("bar");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
-    this.metrics.forEach(
-      (metric) => chart.addMetric({
+    this.metrics.forEach((metric) => {
+      const chartType = metric.chartType === "line" || metric.chartType === "bar" ? metric.chartType : void 0;
+      chart.addMetric({
         index: metric.index,
         color: color_exports2.asSingleton(metric.color),
         aggregation: "sum",
-        format: metric.format
-      })
-    );
+        format: metric.format,
+        chartType
+      });
+    });
     return chart;
   }
   toLineChart() {
@@ -23746,11 +23748,13 @@ var _Chart = class {
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     this.metrics.forEach((metric) => {
+      const chartType = metric.chartType === "line" || metric.chartType === "bar" ? metric.chartType : void 0;
       chart.addMetric({
         index: metric.index,
         color: color_exports2.asSingleton(metric.color),
         aggregation: "sum",
-        format: metric.format
+        format: metric.format,
+        chartType
       });
     });
     return chart;
@@ -24101,6 +24105,7 @@ var _Chart = class {
   }
   setMetric(where, v) {
     const metric = this.metrics.find((m) => where(m));
+    console.log("FIND ME ", metric);
     if (!metric) {
       console.warn("Could not update metric. Predicate returned 0 results");
       return this;

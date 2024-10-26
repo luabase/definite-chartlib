@@ -79801,6 +79801,7 @@ type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetri
     aggregation?: AggregationType;
     color: string | string[];
     dataType?: "value";
+    chartType?: string;
 } & Formattable & OptionalNumberRange;
 interface BaseStyleOptions {
     showTitle: boolean;

@@ -282,14 +282,21 @@ export class Chart<T extends ChartType> {
     const chart = new Chart("bar");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
-    this.metrics.forEach((metric) =>
+    this.metrics.forEach((metric) => {
+      const chartType: "line" | "bar" | undefined =
+        metric.chartType === "line" || metric.chartType === "bar"
+          ? metric.chartType
+          : undefined;
+
       chart.addMetric({
         index: metric.index,
         color: utils.color.asSingleton(metric.color),
         aggregation: "sum",
         format: metric.format,
-      })
-    );
+        chartType: chartType,
+      });
+    });
+
     return chart;
   }
 
@@ -298,11 +305,17 @@ export class Chart<T extends ChartType> {
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
     chart.addDimension(this.dimensions[0]);
     this.metrics.forEach((metric) => {
+      const chartType: "line" | "bar" | undefined =
+        metric.chartType === "line" || metric.chartType === "bar"
+          ? metric.chartType
+          : undefined;
+
       chart.addMetric({
         index: metric.index,
         color: utils.color.asSingleton(metric.color),
         aggregation: "sum",
         format: metric.format,
+        chartType: chartType,
       });
     });
     return chart;
@@ -700,6 +713,8 @@ export class Chart<T extends ChartType> {
 
   setMetric(where: Predicate<Metric<T>>, v: Metric<T>): Chart<T> {
     const metric = this.metrics.find((m) => where(m));
+
+    console.log("FIND ME ", metric);
     if (!metric) {
       console.warn("Could not update metric. Predicate returned 0 results");
       return this;
