@@ -14,25 +14,35 @@ import {
 
 const legendFormatter = (params, chart) => {
   const formatter = determineFormatter(chart, "left");
+  const isPercentage = chart.getStyleValueStyle() === "percentage";
+
+  // Calculate total value for the category
+  const total = params.reduce((acc, item) => acc + item.value[1], 0);
+
   var result =
     '<div style="font-weight: bold">' +
     tooltipFormatter(params[0].axisValueLabel) +
     "</div>"; // Category label
+
   params.forEach(function (item) {
+    const value = item.value[1];
+    const percentage = total ? ((value / total) * 100).toFixed(2) + "%" : "0%";
+
     result +=
-      "<div>" + // No color style here
+      "<div>" +
       '<span style="color: ' +
       item.color +
       '">' +
       item.marker +
-      "</span>" + // Color only applied to the marker
+      "</span>" +
       " " +
       tooltipFormatter(item.seriesName) +
       ": " +
       '<span style="font-weight: bold">' +
-      formatter(item.value[1]) +
+      (isPercentage ? percentage : formatter(value)) +
       "</span></div>"; // Bold the value, text in default color
   });
+
   return result;
 };
 

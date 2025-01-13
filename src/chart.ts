@@ -1,5 +1,6 @@
 import {
   BarStyleType,
+  ValueStyleType,
   ChartOptions,
   ChartType,
   ColorGroupingType,
@@ -621,6 +622,13 @@ export class Chart<T extends ChartType> {
   getStyleBarStyle(): BarStyleType | undefined {
     if (this.chartType === "bar") {
       return (<StyleOptions<"bar">>{ ...this.style }).barStyle;
+    }
+    return undefined;
+  }
+
+  getStyleValueStyle(): ValueStyleType | undefined {
+    if (this.chartType === "bar") {
+      return (<StyleOptions<"bar">>{ ...this.style }).valueStyle;
     }
     return undefined;
   }

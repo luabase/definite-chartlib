@@ -5,6 +5,7 @@ import {
   categoryFormatter,
   valueFormatter,
   percentFormatter,
+  percentageCalculator,
   currencyFormatter,
   axisFormatter,
   tooltipFormatter,
@@ -44,6 +45,13 @@ export function axis<T extends ChartType>(
     const maxLabels = Math.floor(chartWidth / labelWidth);
     const interval = Math.ceil(totalPoints / maxLabels);
 
+    const totals = datasets.reduce((acc, dataset) => {
+      dataset.source.forEach((row: any, idx: number) => {
+        acc[idx] = (acc[idx] || 0) + (row[ix] ?? 0);
+      });
+      return acc;
+    }, [] as number[]);
+
     const item: echarts.Axis = {
       show: chart.isCartesian(),
       type: "category",
@@ -62,7 +70,13 @@ export function axis<T extends ChartType>(
             : DS_TEXT_COLORS.dark.secondary,
         interval: isDate ? interval : 0,
         rotate: isLarge ? 30 : 0,
-        formatter: axisFormatter,
+        formatter: (params, index) => {
+          const value = Number(params);
+          if (chart.getStyleValueStyle === "percentage" && totals[index]) {
+            return percentageCalculator(value, totals[index]);
+          }
+          return axisFormatter(params);
+        },
       },
       axisLine: {
         lineStyle: {

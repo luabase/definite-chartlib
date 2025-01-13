@@ -5,6 +5,7 @@ import {
   AxisType,
   OrientationType,
   BarStyleType,
+  ValueStyleType,
   LineStyleType,
   ColorGroupingType,
 } from "./literals";
@@ -81,6 +82,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
   ? {
       showLegend: boolean;
       barStyle: BarStyleType;
+      valueStyle: ValueStyleType;
       orientation: OrientationType;
     }
   : T extends "line"
