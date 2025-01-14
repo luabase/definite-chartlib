@@ -79751,6 +79751,7 @@ type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "n
 type AxisType = "left" | "right";
 type OrientationType = "vertical" | "horizontal";
 type BarStyleType = "grouped" | "stacked";
+type ValueStyleType = "value" | "percentage";
 type LineStyleType = "point" | "area";
 type ColorGroupingType = "continuous" | "piecewise";
 
@@ -79810,6 +79811,7 @@ interface BaseStyleOptions {
 type ExtraStyleOptions<T extends ChartType> = T extends "bar" ? {
     showLegend: boolean;
     barStyle: BarStyleType;
+    valueStyle: ValueStyleType;
     orientation: OrientationType;
 } : T extends "line" ? {
     showLegend: boolean;
@@ -79895,6 +79897,7 @@ declare class Chart<T extends ChartType> {
     getStyleShowLegend(): boolean;
     getStyleOrientation(): OrientationType | undefined;
     getStyleBarStyle(): BarStyleType | undefined;
+    getStyleValueStyle(): ValueStyleType | undefined;
     getStyleLineStyle(): LineStyleType | undefined;
     getStyleColorGrouping(): ColorGroupingType | undefined;
     setStyleOption(k: keyof StyleOptions<T>, v: StyleOptions<T>[typeof k]): Chart<T>;
@@ -79938,4 +79941,4 @@ declare class InvalidChartError extends Error {
     constructor(message: string);
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };

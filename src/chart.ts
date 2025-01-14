@@ -1,5 +1,6 @@
 import {
   BarStyleType,
+  ValueStyleType,
   ChartOptions,
   ChartType,
   ColorGroupingType,
@@ -625,6 +626,13 @@ export class Chart<T extends ChartType> {
     return undefined;
   }
 
+  getStyleValueStyle(): ValueStyleType | undefined {
+    if (this.chartType === "bar") {
+      return (<StyleOptions<"bar">>{ ...this.style }).valueStyle;
+    }
+    return undefined;
+  }
+
   getStyleLineStyle(): LineStyleType | undefined {
     if (this.chartType === "line") {
       return (<StyleOptions<"line">>{ ...this.style }).lineStyle;
@@ -713,8 +721,6 @@ export class Chart<T extends ChartType> {
 
   setMetric(where: Predicate<Metric<T>>, v: Metric<T>): Chart<T> {
     const metric = this.metrics.find((m) => where(m));
-
-    console.log("FIND ME ", metric);
     if (!metric) {
       console.warn("Could not update metric. Predicate returned 0 results");
       return this;

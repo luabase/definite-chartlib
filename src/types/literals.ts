@@ -26,6 +26,8 @@ export type OrientationType = "vertical" | "horizontal";
 
 export type BarStyleType = "grouped" | "stacked";
 
+export type ValueStyleType = "value" | "percentage";
+
 export type LineStyleType = "point" | "area";
 
 export type ColorGroupingType = "continuous" | "piecewise";

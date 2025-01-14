@@ -22810,6 +22810,12 @@ function determineFormatter(chart, axis2) {
     };
   }
 }
+function percentageCalculator(value, total) {
+  if (!total || total === 0)
+    return "0%";
+  const percentage = value / total * 100;
+  return `${percentage.toFixed(2)}%`;
+}
 
 // src/determine/axis.ts
 import { isValid as isValid2, parseISO as parseISO2 } from "date-fns";
@@ -22833,6 +22839,12 @@ function axis(chart, datasets2, kind, theme) {
     const labelWidth = 50;
     const maxLabels = Math.floor(chartWidth / labelWidth);
     const interval = Math.ceil(totalPoints / maxLabels);
+    const totals = datasets2.reduce((acc, dataset) => {
+      dataset.source.forEach((row, idx) => {
+        acc[idx] = (acc[idx] || 0) + (row[ix] ?? 0);
+      });
+      return acc;
+    }, []);
     const item = {
       show: chart.isCartesian(),
       type: "category",
@@ -22845,7 +22857,13 @@ function axis(chart, datasets2, kind, theme) {
         color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary,
         interval: isDate ? interval : 0,
         rotate: isLarge ? 30 : 0,
-        formatter: axisFormatter
+        formatter: (params, index) => {
+          const value = Number(params);
+          if (chart.getStyleValueStyle === "percentage" && totals[index]) {
+            return percentageCalculator(value, totals[index]);
+          }
+          return axisFormatter(params);
+        }
       },
       axisLine: {
         lineStyle: {
@@ -23403,9 +23421,13 @@ function toolbox(chart) {
 // src/determine/tooltip.ts
 var legendFormatter = (params, chart) => {
   const formatter = determineFormatter(chart, "left");
+  const isPercentage = chart.getStyleValueStyle() === "percentage";
+  const total = params.reduce((acc, item) => acc + item.value[1], 0);
   var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
   params.forEach(function(item) {
-    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + formatter(item.value[1]) + "</span></div>";
+    const value = item.value[1];
+    const percentage = total ? (value / total * 100).toFixed(2) + "%" : "0%";
+    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + (isPercentage ? percentage : formatter(value)) + "</span></div>";
   });
   return result;
 };
@@ -24033,6 +24055,12 @@ var _Chart = class {
     }
     return void 0;
   }
+  getStyleValueStyle() {
+    if (this.chartType === "bar") {
+      return { ...this.style }.valueStyle;
+    }
+    return void 0;
+  }
   getStyleLineStyle() {
     if (this.chartType === "line") {
       return { ...this.style }.lineStyle;
@@ -24105,7 +24133,6 @@ var _Chart = class {
   }
   setMetric(where, v) {
     const metric = this.metrics.find((m) => where(m));
-    console.log("FIND ME ", metric);
     if (!metric) {
       console.warn("Could not update metric. Predicate returned 0 results");
       return this;
