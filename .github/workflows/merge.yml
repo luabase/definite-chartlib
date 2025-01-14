@@ -44,5 +44,5 @@ jobs:
         run: |
           gh release create v$VERSION --generate-notes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
           VERSION: ${{ steps.get_package_version.outputs.version }}
