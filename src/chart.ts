@@ -721,8 +721,6 @@ export class Chart<T extends ChartType> {
 
   setMetric(where: Predicate<Metric<T>>, v: Metric<T>): Chart<T> {
     const metric = this.metrics.find((m) => where(m));
-
-    console.log("FIND ME ", metric);
     if (!metric) {
       console.warn("Could not update metric. Predicate returned 0 results");
       return this;

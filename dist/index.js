@@ -23422,7 +23422,6 @@ function toolbox(chart) {
 var legendFormatter = (params, chart) => {
   const formatter = determineFormatter(chart, "left");
   const isPercentage = chart.getStyleValueStyle() === "percentage";
-  console.log("FIND ME ", isPercentage, chart);
   const total = params.reduce((acc, item) => acc + item.value[1], 0);
   var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
   params.forEach(function(item) {
@@ -24134,7 +24133,6 @@ var _Chart = class {
   }
   setMetric(where, v) {
     const metric = this.metrics.find((m) => where(m));
-    console.log("FIND ME ", metric);
     if (!metric) {
       console.warn("Could not update metric. Predicate returned 0 results");
       return this;
