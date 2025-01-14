@@ -13,7 +13,7 @@ jobs:
       - name: Assign PR to author
         uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.PAT}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const issue_number = context.issue.number;
             const user = context.payload.pull_request.user.login;
@@ -26,7 +26,7 @@ jobs:
       - name: Label PR based on title
         uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.PAT}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { number: prNumber, title } = context.payload.pull_request;
             const match = title.match(/^(feat|fix|chore)/);
@@ -95,11 +95,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v2
         name: Setup pnpm
