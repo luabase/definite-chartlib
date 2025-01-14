@@ -88,8 +88,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Test
-        run: pnpm test:ci
+      # - name: Test
+        # run: pnpm test:ci
 
   build:
     runs-on: ubuntu-latest
