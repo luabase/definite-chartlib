@@ -123,5 +123,5 @@ export function determineFormatter<T extends ChartType>(
 export function percentageCalculator(value: number, total: number): string {
   if (!total || total === 0) return "0%";
   const percentage = (value / total) * 100;
-  return `${percentage.toFixed(2)}%`; //
+  return `${percentage.toFixed(2)}%`;
 }
