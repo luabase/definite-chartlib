@@ -33,6 +33,7 @@ export function axis<T extends ChartType>(
   const df = DataFrame.fromDataSet(datasets[0]);
   const isLarge = utils.datasets.containsLargeData(datasets);
   const axes: echarts.Axis[] = [];
+  const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (isDimensionalAxis(chart, kind)) {
     const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
@@ -94,8 +95,17 @@ export function axis<T extends ChartType>(
         },
       },
     };
-    axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
+    axes.push(
+      addCommonFeatures(
+        chart.getChartType(),
+        item,
+        kind,
+        theme,
+        isPercentageStyle
+      )
+    );
   } else {
+    const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
     const map = getMapOfValueAxes(chart);
     const keys = Array.from(map.keys());
     keys
@@ -129,7 +139,9 @@ export function axis<T extends ChartType>(
                 : DS_BORDER_COLORS.dark.primary,
           },
           axisLabel: {
-            formatter: determineFormatter(chart, k),
+            formatter: isPercentageStyle
+              ? percentFormatter
+              : determineFormatter(chart, k),
             color:
               theme === "light"
                 ? DS_TEXT_COLORS.light.secondary
@@ -144,7 +156,14 @@ export function axis<T extends ChartType>(
         }
         const formatter = determineFormatter(chart, "left");
         axes.push(
-          addCommonFeatures(chart.getChartType(), item, kind, theme, formatter)
+          addCommonFeatures(
+            chart.getChartType(),
+            item,
+            kind,
+            theme,
+            formatter,
+            isPercentageStyle
+          )
         );
       });
   }
@@ -171,7 +190,8 @@ function addCommonFeatures(
   item: echarts.Axis,
   kind: "x" | "y",
   theme: string,
-  formatter?: any
+  formatter?: any,
+  isPercentageStyle?: boolean
 ) {
   item.nameLocation = "center";
   item.nameTextStyle = {
@@ -194,7 +214,11 @@ function addCommonFeatures(
     if (typeof formatter === "function") {
       item.axisPointer = {
         label: {
-          formatter: (params) => formatter(params.value),
+          formatter: (params) => {
+            return isPercentageStyle
+              ? percentFormatter(params.value)
+              : formatter(params.value);
+          },
         },
       };
     }

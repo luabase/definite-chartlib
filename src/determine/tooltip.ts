@@ -5,6 +5,7 @@ import {
   calendarTooltipFormatter,
   longFormValueFormatter,
   determineFormatter,
+  percentFormatter,
 } from "../formatters";
 import {
   DS_SURFACE_PLATFORM_COLORS,
@@ -13,11 +14,10 @@ import {
 } from "../constants/color";
 
 const legendFormatter = (params, chart) => {
-  const formatter = determineFormatter(chart, "left");
   const isPercentage = chart.getStyleValueStyle() === "percentage";
-
-  // Calculate total value for the category
-  const total = params.reduce((acc, item) => acc + item.value[1], 0);
+  const formatter = isPercentage
+    ? percentFormatter
+    : determineFormatter(chart, "left");
 
   var result =
     '<div style="font-weight: bold">' +
@@ -26,7 +26,6 @@ const legendFormatter = (params, chart) => {
 
   params.forEach(function (item) {
     const value = item.value[1];
-    const percentage = total ? ((value / total) * 100).toFixed(2) + "%" : "0%";
 
     result +=
       "<div>" +
@@ -39,7 +38,7 @@ const legendFormatter = (params, chart) => {
       tooltipFormatter(item.seriesName) +
       ": " +
       '<span style="font-weight: bold">' +
-      (isPercentage ? percentage : formatter(value)) +
+      formatter(value) +
       "</span></div>"; // Bold the value, text in default color
   });
 
