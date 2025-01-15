@@ -11,6 +11,7 @@ export function datasets<T extends ChartType>(
   df: DataFrame
 ): echarts.DataSet[] {
   const datasets: echarts.DataSet[] = [df.asDataSet()];
+  const datasets1: echarts.DataSet[] = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
   if (chart.getChartType() === "kpi") {
     const dataset = df.asDataSet();
@@ -36,6 +37,85 @@ export function datasets<T extends ChartType>(
   if (!groupBy) {
     return datasets;
   }
+
+  const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
+  if (isPercentageStyle) {
+    const categoryTotals: Record<string, number> = {};
+
+    // Calculate totals for each category
+    df.data.forEach((row) => {
+      const category = row[groupBy.index]; // Category value (e.g., "Thursday")
+      const total = chart.getMetrics().reduce((sum, metric) => {
+        const metricValue = row[metric.index]; // Value for the metric
+        return sum + (typeof metricValue === "number" ? metricValue : 0);
+      }, 0);
+      categoryTotals[category] = total;
+    });
+
+    // Normalize all rows for the first dataset
+    const normalizedRows = df.data.map((row) => {
+      const category = row[groupBy.index];
+      const total = categoryTotals[category];
+      return row.map((value, index) => {
+        // Normalize only metric values, leave non-metric columns unchanged
+        const metric = chart.getMetrics().find((m) => m.index === index);
+        if (metric) {
+          return total > 0 ? value / total : 0; // Convert to percentage
+        }
+        return value; // Non-metric values (e.g., category) remain unchanged
+      });
+    });
+
+    // Create a normalized DataFrame for datasets1[0]
+    const normalizedDataFrame = new DataFrame(
+      normalizedRows,
+      Array.from(df.columns.values())
+    ); // Convert columns map to array
+
+    const normalizedDataset = normalizedDataFrame.asDataSet();
+
+    // Ensure dimensions contain proper names
+    normalizedDataset.dimensions = Array.from(df.columns.values());
+
+    // Replace the original dataset with normalized data
+    datasets1[0] = normalizedDataset;
+
+    // Create separate datasets for each metric (datasets1[1], datasets1[2], ...)
+    chart.getMetrics().forEach((metric, metricIndex) => {
+      const metricName =
+        df.columns.get(metric.index) ?? `Metric ${metricIndex}`;
+      const groupByName = df.columns.get(groupBy.index) ?? "Category";
+
+      const normalizedRowsForMetric = df.data.map((row) => {
+        const category = row[groupBy.index];
+        const total = categoryTotals[category];
+        const value = row[metric.index];
+        const percentage = total > 0 ? value / total : 0;
+        return [category, percentage]; // Include only the category and percentage for this metric
+      });
+
+      const normalizedMetricDataFrame = new DataFrame(normalizedRowsForMetric, [
+        groupByName, // Use the actual name of the groupBy dimension
+        metricName, // Use the actual name of the metric
+      ]);
+
+      const dataset = normalizedMetricDataFrame.asDataSet();
+
+      // Ensure dimensions contain proper names
+      dataset.dimensions = [groupByName, metricName];
+
+      // Add a unique ID for the dataset
+      dataset.id = `${metric.index}::${chart.getChartType()}::${
+        datasets1.length
+      }::${metricName}::${metric.id}`;
+      datasets1.push(dataset);
+    });
+
+    console.log("FIND ME ", datasets1);
+
+    return datasets1;
+  }
+
   const splitBy = chart.getBreakdownDimension();
   const dfs: DataFrame[] = [];
   if (splitBy) {
@@ -61,6 +141,7 @@ export function datasets<T extends ChartType>(
   } else {
     dfs.push(df);
   }
+
   dfs.forEach((df) => {
     if (["scatter", "heatmap"].includes(chart.getChartType())) {
       const metric = chart.getMetrics()[0];
@@ -72,7 +153,7 @@ export function datasets<T extends ChartType>(
     } else {
       if (!!splitBy) {
         const metric = chart.getMetrics()[0];
-        const dataset = df.asDataSet();
+
         const name = df.columns.get(1);
         const type = chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
@@ -100,5 +181,7 @@ export function datasets<T extends ChartType>(
       }
     }
   });
+
+  console.log("FIND ME 2", datasets);
   return datasets;
 }

@@ -22559,10 +22559,10 @@ var _DataFrame = class {
       source: this.data
     };
   }
-  static fromDataSet(dataset) {
+  static fromDataSet(dataset2) {
     return _DataFrame.load(
-      dataset.source,
-      new Map(dataset.dimensions.map((s, i) => [i, s]))
+      dataset2.source,
+      new Map(dataset2.dimensions.map((s, i) => [i, s]))
     );
   }
   filter(col, where) {
@@ -22829,6 +22829,7 @@ function axis(chart, datasets2, kind, theme) {
   const df = DataFrame.fromDataSet(datasets2[0]);
   const isLarge = datasets_exports.containsLargeData(datasets2);
   const axes = [];
+  const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (isDimensionalAxis(chart, kind)) {
     const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
@@ -22839,8 +22840,8 @@ function axis(chart, datasets2, kind, theme) {
     const labelWidth = 50;
     const maxLabels = Math.floor(chartWidth / labelWidth);
     const interval = Math.ceil(totalPoints / maxLabels);
-    const totals = datasets2.reduce((acc, dataset) => {
-      dataset.source.forEach((row, idx) => {
+    const totals = datasets2.reduce((acc, dataset2) => {
+      dataset2.source.forEach((row, idx) => {
         acc[idx] = (acc[idx] || 0) + (row[ix] ?? 0);
       });
       return acc;
@@ -22878,8 +22879,17 @@ function axis(chart, datasets2, kind, theme) {
         }
       }
     };
-    axes.push(addCommonFeatures(chart.getChartType(), item, kind, theme));
+    axes.push(
+      addCommonFeatures(
+        chart.getChartType(),
+        item,
+        kind,
+        theme,
+        isPercentageStyle
+      )
+    );
   } else {
+    const isPercentageStyle2 = chart.getStyleValueStyle() === "percentage";
     const map = getMapOfValueAxes(chart);
     const keys = Array.from(map.keys());
     keys.sort().forEach((k) => {
@@ -22902,7 +22912,7 @@ function axis(chart, datasets2, kind, theme) {
           color: theme === "light" ? DS_BORDER_COLORS.light.primary : DS_BORDER_COLORS.dark.primary
         },
         axisLabel: {
-          formatter: determineFormatter(chart, k),
+          formatter: isPercentageStyle2 ? percentFormatter : determineFormatter(chart, k),
           color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
         }
       };
@@ -22914,7 +22924,14 @@ function axis(chart, datasets2, kind, theme) {
       }
       const formatter = determineFormatter(chart, "left");
       axes.push(
-        addCommonFeatures(chart.getChartType(), item, kind, theme, formatter)
+        addCommonFeatures(
+          chart.getChartType(),
+          item,
+          kind,
+          theme,
+          formatter,
+          isPercentageStyle2
+        )
       );
     });
   }
@@ -22931,7 +22948,7 @@ function isDimensionalAxis(chart, kind) {
   }
   return dim;
 }
-function addCommonFeatures(chartType, item, kind, theme, formatter) {
+function addCommonFeatures(chartType, item, kind, theme, formatter, isPercentageStyle) {
   item.nameLocation = "center";
   item.nameTextStyle = {
     fontSize: 14,
@@ -22947,7 +22964,9 @@ function addCommonFeatures(chartType, item, kind, theme, formatter) {
     if (typeof formatter === "function") {
       item.axisPointer = {
         label: {
-          formatter: (params) => formatter(params.value)
+          formatter: (params) => {
+            return isPercentageStyle ? percentFormatter(params.value) : formatter(params.value);
+          }
         }
       };
     }
@@ -23009,17 +23028,18 @@ function calendar(chart, df, theme) {
 // src/determine/datasets.ts
 function datasets(chart, df) {
   const datasets2 = [df.asDataSet()];
+  const datasets1 = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
   if (chart.getChartType() === "kpi") {
-    const dataset = df.asDataSet();
+    const dataset2 = df.asDataSet();
     const metric = chart.getMetrics()[0];
-    const lastIndex = dataset.source.length - 1;
+    const lastIndex = dataset2.source.length - 1;
     const selectedMetricDataset = {
-      dimensions: [dataset.dimensions[metric.index]],
+      dimensions: [dataset2.dimensions[metric.index]],
       source: [
         [
-          dataset.source[lastIndex][metric.index],
-          dataset.source[lastIndex - 1]?.[metric.index]
+          dataset2.source[lastIndex][metric.index],
+          dataset2.source[lastIndex - 1]?.[metric.index]
         ]
       ]
     };
@@ -23031,6 +23051,59 @@ function datasets(chart, df) {
   }
   if (!groupBy) {
     return datasets2;
+  }
+  const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
+  if (isPercentageStyle) {
+    const categoryTotals = {};
+    df.data.forEach((row) => {
+      const category = row[groupBy.index];
+      const total = chart.getMetrics().reduce((sum2, metric) => {
+        const metricValue = row[metric.index];
+        return sum2 + (typeof metricValue === "number" ? metricValue : 0);
+      }, 0);
+      categoryTotals[category] = total;
+    });
+    const normalizedRows = df.data.map((row) => {
+      const category = row[groupBy.index];
+      const total = categoryTotals[category];
+      return row.map((value, index) => {
+        const metric = chart.getMetrics().find((m) => m.index === index);
+        if (metric) {
+          return total > 0 ? value / total : 0;
+        }
+        return value;
+      });
+    });
+    const normalizedDataFrame = new DataFrame(
+      normalizedRows,
+      Array.from(df.columns.values())
+    );
+    const normalizedDataset = normalizedDataFrame.asDataSet();
+    normalizedDataset.dimensions = Array.from(df.columns.values());
+    datasets1[0] = normalizedDataset;
+    chart.getMetrics().forEach((metric, metricIndex) => {
+      const metricName = df.columns.get(metric.index) ?? `Metric ${metricIndex}`;
+      const groupByName = df.columns.get(groupBy.index) ?? "Category";
+      const normalizedRowsForMetric = df.data.map((row) => {
+        const category = row[groupBy.index];
+        const total = categoryTotals[category];
+        const value = row[metric.index];
+        const percentage = total > 0 ? value / total : 0;
+        return [category, percentage];
+      });
+      const normalizedMetricDataFrame = new DataFrame(normalizedRowsForMetric, [
+        groupByName,
+        // Use the actual name of the groupBy dimension
+        metricName
+        // Use the actual name of the metric
+      ]);
+      const dataset2 = normalizedMetricDataFrame.asDataSet();
+      dataset2.dimensions = [groupByName, metricName];
+      dataset2.id = `${metric.index}::${chart.getChartType()}::${datasets1.length}::${metricName}::${metric.id}`;
+      datasets1.push(dataset2);
+    });
+    console.log("FIND ME ", datasets1);
+    return datasets1;
   }
   const splitBy = chart.getBreakdownDimension();
   const dfs = [];
@@ -23058,15 +23131,14 @@ function datasets(chart, df) {
   dfs.forEach((df2) => {
     if (["scatter", "heatmap"].includes(chart.getChartType())) {
       const metric = chart.getMetrics()[0];
-      const dataset = df2.asDataSet();
+      const dataset2 = df2.asDataSet();
       const name = !!splitBy ? df2.col(splitBy.index)[0] : "";
       const type = chart.getChartType();
-      dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
-      datasets2.push(dataset);
+      dataset2.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
+      datasets2.push(dataset2);
     } else {
       if (!!splitBy) {
         const metric = chart.getMetrics()[0];
-        const dataset = df2.asDataSet();
         const name = df2.columns.get(1);
         const type = chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
@@ -23075,7 +23147,7 @@ function datasets(chart, df) {
         chart.getMetrics().forEach((metric) => {
           if (metric.aggregation === "none")
             throw new Error("Cannot be none");
-          const dataset = df2.groupBy(metric.index, groupBy?.index, metric.aggregation).asDataSet();
+          const dataset2 = df2.groupBy(metric.index, groupBy?.index, metric.aggregation).asDataSet();
           let name = df2.columns.get(metric.index);
           const uniqueMetricIndices = array_exports.removeDuplicates(
             chart.getMetrics().map((m) => m.index)
@@ -23083,12 +23155,13 @@ function datasets(chart, df) {
           const totalMetrics = chart.getMetrics().length;
           name = ["count", "distinct"].includes(metric.aggregation) || uniqueMetricIndices === 1 && totalMetrics > 1 ? `${name} (${metric.aggregation})` : name;
           const type = metric.chartType ?? chart.getChartType();
-          dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
-          datasets2.push(dataset);
+          dataset2.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
+          datasets2.push(dataset2);
         });
       }
     }
   });
+  console.log("FIND ME 2", datasets2);
   return datasets2;
 }
 
@@ -23224,11 +23297,11 @@ function series(chart, datasets2, theme) {
     });
     return series2;
   }
-  datasets2.slice(1).forEach((dataset) => {
-    if (!dataset.id) {
+  datasets2.slice(1).forEach((dataset2) => {
+    if (!dataset2.id) {
       throw new Error("Dataset for series must include ID");
     }
-    let [mix, t, dix, name, mid] = dataset.id.split("::");
+    let [mix, t, dix, name, mid] = dataset2.id.split("::");
     const metric = chart.getMetric(
       (m) => m.index === Number(mix) && (m.chartType ?? chart.getChartType()) === t && m.id == mid
     );
@@ -23259,11 +23332,11 @@ function series(chart, datasets2, theme) {
       };
     } else if (chart.getStyleOrientation() === "horizontal") {
       item.xAxisIndex = 0;
-      item.encode = { x: dataset.dimensions[1], y: dataset.dimensions[0] };
+      item.encode = { x: dataset2.dimensions[1], y: dataset2.dimensions[0] };
     } else if (chart.getChartType() === "pie") {
       item.encode = {
-        itemName: dataset.dimensions[0],
-        value: dataset.dimensions[1]
+        itemName: dataset2.dimensions[0],
+        value: dataset2.dimensions[1]
       };
       item.itemStyle = {
         borderColor: theme === "light" ? DS_BORDER_COLORS.light.secondary : DS_BORDER_COLORS.dark.secondary,
@@ -23291,16 +23364,16 @@ function series(chart, datasets2, theme) {
         };
       }
       item.encode = {
-        x: dataset.dimensions[metrics[0].index],
-        y: dataset.dimensions[metrics[1].index],
+        x: dataset2.dimensions[metrics[0].index],
+        y: dataset2.dimensions[metrics[1].index],
         tooltip: [
-          dataset.dimensions[chart.getGroupByDimension()?.index ?? 0],
-          dataset.dimensions[metrics[0].index],
-          dataset.dimensions[metrics[1].index]
+          dataset2.dimensions[chart.getGroupByDimension()?.index ?? 0],
+          dataset2.dimensions[metrics[0].index],
+          dataset2.dimensions[metrics[1].index]
         ]
       };
     } else if (chart.getChartType() === "calendar") {
-      const df = DataFrame.fromDataSet(dataset);
+      const df = DataFrame.fromDataSet(dataset2);
       Array.from(
         new Set(
           df.col(0).map((v) => new Date(String(v))).map((d) => d.getUTCFullYear()).sort()
@@ -23320,11 +23393,11 @@ function series(chart, datasets2, theme) {
       const [dim1, dim2] = chart.getDimensions();
       item.datasetIndex = 1;
       item.encode = {
-        x: dataset.dimensions[dim1.index],
-        y: dataset.dimensions[dim2.index],
-        value: dataset.dimensions[metric.index]
+        x: dataset2.dimensions[dim1.index],
+        y: dataset2.dimensions[dim2.index],
+        value: dataset2.dimensions[metric.index]
       };
-      item.name = dataset.dimensions[metric.index];
+      item.name = dataset2.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
       item.roam = false;
       item.type = "map";
@@ -23333,15 +23406,15 @@ function series(chart, datasets2, theme) {
         color: "rgba(0,0,0,0)"
       };
       const { stateIndex, countryIndex } = findCountryOrStateIndices(
-        dataset.dimensions
+        dataset2.dimensions
       );
       const isCountries = countryIndex > -1;
       const isStates = stateIndex > -1;
       item.map = isCountries ? "Countries" : "USA";
-      const { numberIndex } = findNumberIndex(dataset.source);
-      item.name = dataset.dimensions[numberIndex];
+      const { numberIndex } = findNumberIndex(dataset2.source);
+      item.name = dataset2.dimensions[numberIndex];
       const data = [];
-      dataset.source.forEach((sourceItem) => {
+      dataset2.source.forEach((sourceItem) => {
         const region = (isCountries ? sourceItem[countryIndex] : sourceItem[stateIndex]) || "";
         let regionFullName = "";
         if (isCountries) {
@@ -23357,7 +23430,7 @@ function series(chart, datasets2, theme) {
       item.data = data;
     } else {
       item.yAxisIndex = 0;
-      item.encode = { x: dataset.dimensions[0], y: dataset.dimensions[1] };
+      item.encode = { x: dataset2.dimensions[0], y: dataset2.dimensions[1] };
     }
     if (chart.getStyleBarStyle() === "stacked" || chart.getStyleLineStyle() === "area") {
       item.stack = "total";
@@ -23420,14 +23493,12 @@ function toolbox(chart) {
 
 // src/determine/tooltip.ts
 var legendFormatter = (params, chart) => {
-  const formatter = determineFormatter(chart, "left");
   const isPercentage = chart.getStyleValueStyle() === "percentage";
-  const total = params.reduce((acc, item) => acc + item.value[1], 0);
+  const formatter = isPercentage ? percentFormatter : determineFormatter(chart, "left");
   var result = '<div style="font-weight: bold">' + tooltipFormatter(params[0].axisValueLabel) + "</div>";
   params.forEach(function(item) {
     const value = item.value[1];
-    const percentage = total ? (value / total * 100).toFixed(2) + "%" : "0%";
-    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + (isPercentage ? percentage : formatter(value)) + "</span></div>";
+    result += '<div><span style="color: ' + item.color + '">' + item.marker + "</span> " + tooltipFormatter(item.seriesName) + ': <span style="font-weight: bold">' + formatter(value) + "</span></div>";
   });
   return result;
 };
@@ -23469,8 +23540,8 @@ function visualMap(chart, datasets2, theme) {
   if (!["heatmap", "calendar", "map"].includes(chart.getChartType()))
     return null;
   if (chart.getChartType() == "map") {
-    const dataset2 = datasets2[1];
-    const { min, max } = findMinMax(dataset2.source);
+    const dataset3 = datasets2[1];
+    const { min, max } = findMinMax(dataset3.source);
     return {
       left: "right",
       min,
@@ -23482,10 +23553,10 @@ function visualMap(chart, datasets2, theme) {
       calculable: true
     };
   }
-  const dataset = datasets2[1];
-  if (!dataset)
+  const dataset2 = datasets2[1];
+  if (!dataset2)
     throw new Error("dataset not found");
-  const df = DataFrame.fromDataSet(dataset);
+  const df = DataFrame.fromDataSet(dataset2);
   const metric = chart.getMetrics()[0];
   const ix = chart.getChartType() === "heatmap" ? metric.index : 1;
   const arr = df.col(ix).map((v) => Number(v));
