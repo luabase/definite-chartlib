@@ -40,30 +40,49 @@ export function datasets<T extends ChartType>(
 
   const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (isPercentageStyle) {
+    const dataset = df.asDataSet();
+
+    // STEFAN TO DO - consider multiple metrics
+    const metricToCalculate = chart.getMetrics()[0];
+    const dimenstionToCalculate = groupBy;
     const categoryTotals: Record<string, number> = {};
 
-    // Calculate totals for each category
-    df.data.forEach((row) => {
-      const category = row[groupBy.index]; // Category value (e.g., "Thursday")
-      const total = chart.getMetrics().reduce((sum, metric) => {
-        const metricValue = row[metric.index]; // Value for the metric
-        return sum + (typeof metricValue === "number" ? metricValue : 0);
-      }, 0);
-      categoryTotals[category] = total;
+    // Determine the index of the selected dimension
+    const metricIndex = metricToCalculate.index;
+    const dimensionIndex = dimenstionToCalculate.index;
+
+    // Validate that the dimension index exists in the dataset
+    if (metricIndex >= dataset.dimensions.length) {
+      throw new Error("Dimension index out of bounds");
+    }
+
+    // Iterate over each row in the source
+    dataset.source.forEach((row) => {
+      // Get the category value for the selected dimension
+      const dimensionCategory = row[dimensionIndex];
+
+      if (!categoryTotals[dimensionCategory]) {
+        categoryTotals[dimensionCategory] = 0; // Initialize total for the category
+      }
+
+      // Sum all numeric values in the row (excluding the category column itself)
+      row.forEach((value, index) => {
+        if (index === metricIndex && typeof value === "number") {
+          categoryTotals[dimensionCategory] += value;
+        }
+      });
     });
 
-    // Normalize all rows for the first dataset
-    const normalizedRows = df.data.map((row) => {
-      const category = row[groupBy.index];
-      const total = categoryTotals[category];
-      return row.map((value, index) => {
-        // Normalize only metric values, leave non-metric columns unchanged
-        const metric = chart.getMetrics().find((m) => m.index === index);
-        if (metric) {
-          return total > 0 ? value / total : 0; // Convert to percentage
-        }
-        return value; // Non-metric values (e.g., category) remain unchanged
-      });
+    console.log("FIND ME CATEGORY TOTALS", categoryTotals);
+
+    const normalizedRows = dataset.source.map((row) => {
+      const valueToNormalize = row[metricIndex];
+      const groupByCategory = row[groupBy.index];
+      const categoryTotal = categoryTotals[groupByCategory];
+      const normalizedValue = valueToNormalize / categoryTotal;
+      const newRow = [...row];
+      newRow[metricIndex] = normalizedValue;
+      return newRow;
     });
 
     // Create a normalized DataFrame for datasets1[0]
@@ -73,45 +92,100 @@ export function datasets<T extends ChartType>(
     ); // Convert columns map to array
 
     const normalizedDataset = normalizedDataFrame.asDataSet();
-
     // Ensure dimensions contain proper names
     normalizedDataset.dimensions = Array.from(df.columns.values());
 
     // Replace the original dataset with normalized data
     datasets1[0] = normalizedDataset;
 
-    // Create separate datasets for each metric (datasets1[1], datasets1[2], ...)
-    chart.getMetrics().forEach((metric, metricIndex) => {
-      const metricName =
-        df.columns.get(metric.index) ?? `Metric ${metricIndex}`;
-      const groupByName = df.columns.get(groupBy.index) ?? "Category";
+    // WORKING HERE
+    const splitBy = chart.getBreakdownDimension();
+    const dfs: DataFrame[] = [];
+    if (splitBy) {
+      if (chart.getChartType() === "scatter") {
+        dfs.push(
+          ...utils.array
+            .removeDuplicates(df.col(splitBy.index))
+            .map((v) => df.filter(splitBy.index, (w) => w === v))
+        );
+      } else {
+        const pivoted = df.pivot(
+          groupBy.index,
+          splitBy.index,
+          chart.getMetrics()[0].index,
+          chart.getMetrics()[0].aggregation
+        );
+        for (const k of pivoted.columns.keys()) {
+          if (k !== 0) {
+            dfs.push(pivoted.select([0, k]));
+          }
+        }
+      }
+    } else {
+      dfs.push(df);
+    }
 
-      const normalizedRowsForMetric = df.data.map((row) => {
-        const category = row[groupBy.index];
-        const total = categoryTotals[category];
-        const value = row[metric.index];
-        const percentage = total > 0 ? value / total : 0;
-        return [category, percentage]; // Include only the category and percentage for this metric
+    dfs.forEach((df, index) => {
+      const originalSource = df.data;
+      const normalizedSource = [];
+      originalSource.forEach((row) => {
+        const normalizedRow = [...row];
+        const total = categoryTotals[row[0]];
+        const normalizedValue = row[1] / total;
+        normalizedRow[1] = normalizedValue ?? null;
+        normalizedSource.push(normalizedRow);
       });
-
-      const normalizedMetricDataFrame = new DataFrame(normalizedRowsForMetric, [
-        groupByName, // Use the actual name of the groupBy dimension
-        metricName, // Use the actual name of the metric
-      ]);
-
-      const dataset = normalizedMetricDataFrame.asDataSet();
-
-      // Ensure dimensions contain proper names
-      dataset.dimensions = [groupByName, metricName];
-
-      // Add a unique ID for the dataset
-      dataset.id = `${metric.index}::${chart.getChartType()}::${
-        datasets1.length
-      }::${metricName}::${metric.id}`;
-      datasets1.push(dataset);
+      const dataset = {};
+      dataset.dimensions = Array.from(df.columns.values());
+      dataset.source = normalizedSource;
+      chart.getMetrics().forEach((metric) => {
+        let name = df.columns.get(metric.index);
+        const uniqueMetricIndices = utils.array.removeDuplicates(
+          chart.getMetrics().map((m) => m.index)
+        ).length;
+        const type = metric.chartType ?? chart.getChartType();
+        dataset.id = `${metric.index}::${type}::${index + 1}::${name}::${
+          metric.id
+        }`;
+        datasets1.push(dataset);
+      });
     });
 
-    console.log("FIND ME ", datasets1);
+    // // Create separate datasets for each metric (datasets1[1], datasets1[2], ...)
+    // chart.getMetrics().forEach((metric, metricIndex) => {
+    //   const metricName = df.columns.get(metric.index);
+    //   const groupByName = df.columns.get(groupBy.index);
+
+    //   const normalizedRowsForMetric = df.data.map((row) => {
+    //     const category = row[groupBy.index];
+    //     const total = categoryTotals[category];
+    //     const value = row[metric.index];
+    //     const percentage = total > 0 ? value / total : 0;
+    //     return [category, percentage]; // Include only the category and percentage for this metric
+    //   });
+
+    //   console.log("FIND ME normalizedRowsForMetric", normalizedRowsForMetric);
+
+    //   const normalizedMetricDataFrame = new DataFrame(normalizedRowsForMetric, [
+    //     groupByName, // Use the actual name of the groupBy dimension
+    //     metricName, // Use the actual name of the metric
+    //   ]);
+
+    //   const dataset = normalizedMetricDataFrame.asDataSet();
+
+    //   console.log("FIND ME DATASET", dataset);
+
+    //   // Ensure dimensions contain proper names
+    //   dataset.dimensions = [groupByName, metricName];
+
+    //   // Add a unique ID for the dataset
+    //   dataset.id = `${metric.index}::${chart.getChartType()}::${
+    //     datasets1.length
+    //   }::${metricName}::${metric.id}`;
+    //   datasets1.push(dataset);
+    // });
+
+    console.log("FIND ME EDITED", datasets1);
 
     return datasets1;
   }
@@ -153,7 +227,7 @@ export function datasets<T extends ChartType>(
     } else {
       if (!!splitBy) {
         const metric = chart.getMetrics()[0];
-
+        const dataset = df.asDataSet();
         const name = df.columns.get(1);
         const type = chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
@@ -182,6 +256,6 @@ export function datasets<T extends ChartType>(
     }
   });
 
-  console.log("FIND ME 2", datasets);
+  console.log("FIND ME ORIGINAL ", datasets);
   return datasets;
 }
