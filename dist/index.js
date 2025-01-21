@@ -23028,8 +23028,10 @@ function calendar(chart, df, theme) {
 // src/determine/datasets.ts
 function datasets(chart, df) {
   const datasets2 = [df.asDataSet()];
-  const datasets1 = [df.asDataSet()];
+  const normalizedDatasets = [df.asDataSet()];
   const groupBy = chart.getGroupByDimension();
+  const categoryTotals = {};
+  const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (chart.getChartType() === "kpi") {
     const dataset = df.asDataSet();
     const metric = chart.getMetrics()[0];
@@ -23052,36 +23054,39 @@ function datasets(chart, df) {
   if (!groupBy) {
     return datasets2;
   }
-  const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (isPercentageStyle) {
     const dataset = df.asDataSet();
-    const metricToCalculate = chart.getMetrics()[0];
+    const metricsToCalculate = chart.getMetrics();
     const dimenstionToCalculate = groupBy;
-    const categoryTotals = {};
-    const metricIndex = metricToCalculate.index;
     const dimensionIndex = dimenstionToCalculate.index;
-    if (metricIndex >= dataset.dimensions.length) {
-      throw new Error("Dimension index out of bounds");
-    }
-    dataset.source.forEach((row) => {
-      const dimensionCategory = row[dimensionIndex];
-      if (!categoryTotals[dimensionCategory]) {
-        categoryTotals[dimensionCategory] = 0;
+    metricsToCalculate.forEach((metric) => {
+      const metricIndex = metric.index;
+      if (metricIndex >= dataset.dimensions.length) {
+        throw new Error("Dimension index out of bounds");
       }
-      row.forEach((value, index) => {
-        if (index === metricIndex && typeof value === "number") {
-          categoryTotals[dimensionCategory] += value;
+      dataset.source.forEach((row) => {
+        const dimensionCategory = row[dimensionIndex];
+        if (!categoryTotals[dimensionCategory]) {
+          categoryTotals[dimensionCategory] = 0;
         }
+        row.forEach((value, index) => {
+          if (index === metricIndex && typeof value === "number") {
+            categoryTotals[dimensionCategory] += value;
+          }
+        });
       });
     });
-    console.log("FIND ME CATEGORY TOTALS", categoryTotals);
     const normalizedRows = dataset.source.map((row) => {
-      const valueToNormalize = row[metricIndex];
-      const groupByCategory = row[groupBy.index];
-      const categoryTotal = categoryTotals[groupByCategory];
-      const normalizedValue = valueToNormalize / categoryTotal;
+      const metricsToCalculate2 = chart.getMetrics();
       const newRow = [...row];
-      newRow[metricIndex] = normalizedValue;
+      metricsToCalculate2.forEach((metric) => {
+        const metricIndex = metric.index;
+        const valueToNormalize = row[metricIndex];
+        const groupByCategory = row[groupBy.index];
+        const categoryTotal = categoryTotals[groupByCategory];
+        const normalizedValue = valueToNormalize / categoryTotal;
+        newRow[metricIndex] = normalizedValue;
+      });
       return newRow;
     });
     const normalizedDataFrame = new DataFrame(
@@ -23090,55 +23095,7 @@ function datasets(chart, df) {
     );
     const normalizedDataset = normalizedDataFrame.asDataSet();
     normalizedDataset.dimensions = Array.from(df.columns.values());
-    datasets1[0] = normalizedDataset;
-    const splitBy2 = chart.getBreakdownDimension();
-    const dfs2 = [];
-    if (splitBy2) {
-      if (chart.getChartType() === "scatter") {
-        dfs2.push(
-          ...array_exports.removeDuplicates(df.col(splitBy2.index)).map((v) => df.filter(splitBy2.index, (w) => w === v))
-        );
-      } else {
-        const pivoted = df.pivot(
-          groupBy.index,
-          splitBy2.index,
-          chart.getMetrics()[0].index,
-          chart.getMetrics()[0].aggregation
-        );
-        for (const k of pivoted.columns.keys()) {
-          if (k !== 0) {
-            dfs2.push(pivoted.select([0, k]));
-          }
-        }
-      }
-    } else {
-      dfs2.push(df);
-    }
-    dfs2.forEach((df2, index) => {
-      const originalSource = df2.data;
-      const normalizedSource = [];
-      originalSource.forEach((row) => {
-        const normalizedRow = [...row];
-        const total = categoryTotals[row[0]];
-        const normalizedValue = row[1] / total;
-        normalizedRow[1] = normalizedValue ?? null;
-        normalizedSource.push(normalizedRow);
-      });
-      const dataset2 = {};
-      dataset2.dimensions = Array.from(df2.columns.values());
-      dataset2.source = normalizedSource;
-      chart.getMetrics().forEach((metric) => {
-        let name = df2.columns.get(metric.index);
-        const uniqueMetricIndices = array_exports.removeDuplicates(
-          chart.getMetrics().map((m) => m.index)
-        ).length;
-        const type = metric.chartType ?? chart.getChartType();
-        dataset2.id = `${metric.index}::${type}::${index + 1}::${name}::${metric.id}`;
-        datasets1.push(dataset2);
-      });
-    });
-    console.log("FIND ME EDITED", datasets1);
-    return datasets1;
+    normalizedDatasets[0] = normalizedDataset;
   }
   const splitBy = chart.getBreakdownDimension();
   const dfs = [];
@@ -23178,6 +23135,19 @@ function datasets(chart, df) {
         const name = df2.columns.get(1);
         const type = chart.getChartType();
         dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
+        if (isPercentageStyle) {
+          const normalizedDataset = { ...dataset };
+          const normalizedSource = dataset.source.map((source) => {
+            const newSource = [...source];
+            const category = source[0];
+            const total = categoryTotals[category];
+            const newTotal = source[1] / total;
+            newSource[1] = newTotal || null;
+            return newSource;
+          });
+          normalizedDataset.source = normalizedSource;
+          normalizedDatasets.push(normalizedDataset);
+        }
         datasets2.push(dataset);
       } else {
         chart.getMetrics().forEach((metric) => {
@@ -23192,12 +23162,27 @@ function datasets(chart, df) {
           name = ["count", "distinct"].includes(metric.aggregation) || uniqueMetricIndices === 1 && totalMetrics > 1 ? `${name} (${metric.aggregation})` : name;
           const type = metric.chartType ?? chart.getChartType();
           dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
+          if (isPercentageStyle) {
+            const normalizedDataset = { ...dataset };
+            const normalizedSource = dataset.source.map((source) => {
+              const newSource = [...source];
+              const category = source[0];
+              const total = categoryTotals[category];
+              const newTotal = source[1] / total;
+              newSource[1] = newTotal || null;
+              return newSource;
+            });
+            normalizedDataset.source = normalizedSource;
+            normalizedDatasets.push(normalizedDataset);
+          }
           datasets2.push(dataset);
         });
       }
     }
   });
-  console.log("FIND ME ORIGINAL ", datasets2);
+  if (isPercentageStyle) {
+    return normalizedDatasets;
+  }
   return datasets2;
 }
 
