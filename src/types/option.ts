@@ -8,6 +8,7 @@ import {
   ValueStyleType,
   LineStyleType,
   ColorGroupingType,
+  MetaType,
 } from "./literals";
 
 interface Indexable {
@@ -70,6 +71,7 @@ export type Metric<T extends ChartType> = Identifiable &
     color: string | string[];
     dataType?: "value";
     chartType?: string;
+    meta?: MetaType;
   } & Formattable &
   OptionalNumberRange;
 

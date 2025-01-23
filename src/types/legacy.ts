@@ -1,9 +1,10 @@
-import { ChartType, OrientationType } from "./literals";
+import { ChartType, MetaType, OrientationType } from "./literals";
 
 interface Column {
   index: number;
   type: ChartType | null;
   color: string | string[] | null;
+  meta: MetaType;
 }
 
 interface Axis {

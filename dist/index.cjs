@@ -22785,9 +22785,12 @@ function longFormCurrencyFormatter(value) {
     maximumFractionDigits: 0
   }).format(Number(value));
 }
-function currencyFormatter(value) {
-  const shortened = valueFormatter(value);
-  return "$" + shortened;
+function currencyFormatter(value, currency_code) {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    notation: "compact",
+    currency: currency_code || "USD"
+  }).format(Number(value));
 }
 function calendarTooltipFormatter(params) {
   return `
@@ -22837,7 +22840,7 @@ function determineFormatter(chart, axis2) {
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
-    return currencyFormatter;
+    return (params) => currencyFormatter(params, firstMetric.meta?.currency_code);
   } else {
     return (value) => {
       if (typeof value === "number" || typeof value === "string" && !isNaN(parseFloat(value))) {
@@ -23322,7 +23325,7 @@ function series(chart, datasets2, theme) {
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format3 = metric.format ?? "number";
-    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
+    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : void 0;
     if (format3 === "percent") {
       formatter = percentFormatter;
     } else if (format3 === "currency") {
@@ -23681,7 +23684,8 @@ var _Chart = class {
               chart.getMetrics().length
             ),
             chartType: col.type === "line" ? "line" : "bar",
-            aggregation: "sum"
+            aggregation: "sum",
+            meta: col.meta
           })
         );
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -23709,7 +23713,8 @@ var _Chart = class {
               chart.getMetrics().length
             ),
             chartType: col.type === "line" ? "line" : "bar",
-            aggregation: "sum"
+            aggregation: "sum",
+            meta: col.meta
           })
         );
         chart.setStyleOption("showTitle", opts.features.title ?? false);
@@ -23889,7 +23894,8 @@ var _Chart = class {
         color: color_exports2.asSingleton(metric.color),
         aggregation: "sum",
         format: metric.format,
-        chartType
+        chartType,
+        meta: metric.meta
       });
     });
     return chart;
@@ -23905,7 +23911,8 @@ var _Chart = class {
         color: color_exports2.asSingleton(metric.color),
         aggregation: "sum",
         format: metric.format,
-        chartType
+        chartType,
+        meta: metric.meta
       });
     });
     return chart;
@@ -24001,7 +24008,8 @@ var _Chart = class {
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "none",
-      format: this.metrics[0].format
+      format: this.metrics[0].format,
+      meta: this.metrics[0].meta
     });
     return chart;
   }
@@ -24401,7 +24409,8 @@ var AutoChartFactory = class {
           index: opt.index,
           color: colorChoice,
           aggregation,
-          format: opt.format
+          format: opt.format,
+          meta: opt.meta
         });
       }
     });

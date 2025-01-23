@@ -22,6 +22,10 @@ export type AggregationType =
 
 export type AxisType = "left" | "right";
 
+export type MetaType = {
+  [currency_code: string]: "USD" | "EUR";
+};
+
 export type OrientationType = "vertical" | "horizontal";
 
 export type BarStyleType = "grouped" | "stacked";

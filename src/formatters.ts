@@ -8,7 +8,7 @@ export function categoryFormatter(value: string | number): string {
     : String(value);
 }
 
-export function valueFormatter(value: string | number): string {
+function valueFormatter(value) {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
     maximumFractionDigits: 1,
@@ -39,9 +39,15 @@ export function longFormCurrencyFormatter(value: string | number): string {
   }).format(Number(value));
 }
 
-export function currencyFormatter(value: string | number): string {
-  const shortened = valueFormatter(value);
-  return "$" + shortened;
+export function currencyFormatter(
+  value: string | number,
+  currency_code: string
+): string {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    notation: "compact",
+    currency: currency_code || "USD",
+  }).format(Number(value));
 }
 
 export function calendarTooltipFormatter(params: any): string {
@@ -106,7 +112,8 @@ export function determineFormatter<T extends ChartType>(
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
-    return currencyFormatter;
+    return (params) =>
+      currencyFormatter(params, firstMetric.meta?.currency_code);
   } else {
     return (value: string | number) => {
       if (

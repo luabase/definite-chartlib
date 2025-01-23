@@ -79749,6 +79749,9 @@ type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter" | "
 type DataType = "category" | "datetime" | "value";
 type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "none";
 type AxisType = "left" | "right";
+type MetaType = {
+    [currency_code: string]: "USD" | "EUR";
+};
 type OrientationType = "vertical" | "horizontal";
 type BarStyleType = "grouped" | "stacked";
 type ValueStyleType = "value" | "percentage";
@@ -79803,6 +79806,7 @@ type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetri
     color: string | string[];
     dataType?: "value";
     chartType?: string;
+    meta?: MetaType;
 } & Formattable & OptionalNumberRange;
 interface BaseStyleOptions {
     showTitle: boolean;
@@ -79835,6 +79839,7 @@ interface Column {
     index: number;
     type: ChartType | null;
     color: string | string[] | null;
+    meta: MetaType;
 }
 interface Axis {
     columns: Column[];
@@ -79917,6 +79922,7 @@ type ColumnOptions = {
     index: number;
     dataType: string;
     format?: "number" | "currency" | "percent";
+    meta?: MetaType;
 };
 
 declare function create<T extends ChartType>(type: T): Chart<T>;
@@ -79941,4 +79947,4 @@ declare class InvalidChartError extends Error {
     constructor(message: string);
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, MetaType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };

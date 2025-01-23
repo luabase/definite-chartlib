@@ -61,6 +61,7 @@ app.post("/factory", (req, res) => {
   limit = Math.min(limit, 10);
   let counter = 0;
   let safety = 0;
+
   const generator = chartlib.chartGenerator(options, subsets);
   const charts = [];
   while (counter < limit && safety < 25) {
