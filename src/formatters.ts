@@ -8,9 +8,10 @@ export function categoryFormatter(value: string | number): string {
     : String(value);
 }
 
-export function valueFormatter(value: string | number): string {
+export function valueFormatter(value: string | number, currency_code): string {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
+    currency_code,
     maximumFractionDigits: 1,
   }).format(Number(value));
 }
@@ -39,9 +40,16 @@ export function longFormCurrencyFormatter(value: string | number): string {
   }).format(Number(value));
 }
 
-export function currencyFormatter(value: string | number): string {
-  const shortened = valueFormatter(value);
-  return "$" + shortened;
+export function currencyFormatter(
+  value: string | number,
+  currency_code: string
+): string {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    notation: "compact",
+    currency: currency_code || "USD",
+    maximumFractionDigits: 1,
+  }).format(Number(value));
 }
 
 export function calendarTooltipFormatter(params: any): string {
@@ -103,12 +111,11 @@ export function determineFormatter<T extends ChartType>(
   const metrics = chart.getMetrics();
   const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis);
 
-  console.log("FIND ME FIRST METRIC", firstMetric);
-
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
-    return currencyFormatter;
+    return (params) =>
+      currencyFormatter(params, firstMetric.meta.currency_code);
   } else {
     return (value: string | number) => {
       if (

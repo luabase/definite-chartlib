@@ -79750,7 +79750,7 @@ type DataType = "category" | "datetime" | "value";
 type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "none";
 type AxisType = "left" | "right";
 type MetaType = {
-    [currencyCode: string]: "USD" | "EUR";
+    [currency_code: string]: "USD" | "EUR";
 };
 type OrientationType = "vertical" | "horizontal";
 type BarStyleType = "grouped" | "stacked";
@@ -79781,7 +79781,6 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
     chartType?: "bar" | "line";
     axis?: AxisType;
     aggregation: Exclude<AggregationType, "none">;
-    meta?: MetaType;
 } : T extends "line" ? {
     chartType?: "line" | "bar";
     axis?: AxisType;
@@ -79807,6 +79806,7 @@ type Metric<T extends ChartType> = Identifiable & Indexable & ChartSpecificMetri
     color: string | string[];
     dataType?: "value";
     chartType?: string;
+    meta?: MetaType;
 } & Formattable & OptionalNumberRange;
 interface BaseStyleOptions {
     showTitle: boolean;
@@ -79839,6 +79839,7 @@ interface Column {
     index: number;
     type: ChartType | null;
     color: string | string[] | null;
+    meta: MetaType;
 }
 interface Axis {
     columns: Column[];
@@ -79921,6 +79922,7 @@ type ColumnOptions = {
     index: number;
     dataType: string;
     format?: "number" | "currency" | "percent";
+    meta?: MetaType;
 };
 
 declare function create<T extends ChartType>(type: T): Chart<T>;

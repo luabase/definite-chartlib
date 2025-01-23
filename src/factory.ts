@@ -1,12 +1,14 @@
 import { Chart } from "./chart";
 import { ChartType, DataType } from "./types";
 import { color } from "./constants";
+import { MetaType } from "./types";
 import * as utils from "./utils";
 
 export type ColumnOptions = {
   index: number;
   dataType: string;
   format?: "number" | "currency" | "percent";
+  meta?: MetaType;
 };
 
 type CreateChartMessage = {
@@ -168,6 +170,7 @@ export class AutoChartFactory {
           color: colorChoice,
           aggregation: aggregation,
           format: opt.format,
+          meta: opt.meta,
         });
       }
     });

@@ -42,7 +42,6 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar"
       chartType?: "bar" | "line";
       axis?: AxisType;
       aggregation: Exclude<AggregationType, "none">;
-      meta?: MetaType;
     }
   : T extends "line"
   ? {
@@ -72,6 +71,7 @@ export type Metric<T extends ChartType> = Identifiable &
     color: string | string[];
     dataType?: "value";
     chartType?: string;
+    meta?: MetaType;
   } & Formattable &
   OptionalNumberRange;
 

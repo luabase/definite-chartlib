@@ -23,7 +23,7 @@ export type AggregationType =
 export type AxisType = "left" | "right";
 
 export type MetaType = {
-  [currencyCode: string]: "USD" | "EUR";
+  [currency_code: string]: "USD" | "EUR";
 };
 
 export type OrientationType = "vertical" | "horizontal";
