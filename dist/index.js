@@ -22803,7 +22803,7 @@ function determineFormatter(chart, axis2) {
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
-    return (params) => currencyFormatter(params, firstMetric.meta.currency_code);
+    return (params) => currencyFormatter(params, firstMetric.meta?.currency_code);
   } else {
     return (value) => {
       if (typeof value === "number" || typeof value === "string" && !isNaN(parseFloat(value))) {
