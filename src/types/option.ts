@@ -8,6 +8,7 @@ import {
   ValueStyleType,
   LineStyleType,
   ColorGroupingType,
+  MetaType,
 } from "./literals";
 
 interface Indexable {
@@ -41,6 +42,7 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar"
       chartType?: "bar" | "line";
       axis?: AxisType;
       aggregation: Exclude<AggregationType, "none">;
+      meta?: MetaType;
     }
   : T extends "line"
   ? {

@@ -103,6 +103,8 @@ export function determineFormatter<T extends ChartType>(
   const metrics = chart.getMetrics();
   const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis);
 
+  console.log("FIND ME FIRST METRIC", firstMetric);
+
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {

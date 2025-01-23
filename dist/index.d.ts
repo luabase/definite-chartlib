@@ -79749,6 +79749,9 @@ type ChartType = "line" | "bar" | "calendar" | "heatmap" | "pie" | "scatter" | "
 type DataType = "category" | "datetime" | "value";
 type AggregationType = "avg" | "count" | "distinct" | "sum" | "min" | "max" | "none";
 type AxisType = "left" | "right";
+type MetaType = {
+    [currencyCode: string]: "USD" | "EUR";
+};
 type OrientationType = "vertical" | "horizontal";
 type BarStyleType = "grouped" | "stacked";
 type ValueStyleType = "value" | "percentage";
@@ -79778,6 +79781,7 @@ type ChartSpecificMetric<T extends ChartType> = T extends "bar" ? {
     chartType?: "bar" | "line";
     axis?: AxisType;
     aggregation: Exclude<AggregationType, "none">;
+    meta?: MetaType;
 } : T extends "line" ? {
     chartType?: "line" | "bar";
     axis?: AxisType;
@@ -79941,4 +79945,4 @@ declare class InvalidChartError extends Error {
     constructor(message: string);
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, MetaType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };

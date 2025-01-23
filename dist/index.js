@@ -22797,6 +22797,7 @@ var tooltipFormatter = (value) => {
 function determineFormatter(chart, axis2) {
   const metrics = chart.getMetrics();
   const firstMetric = metrics.find((m) => (m?.axis ?? "left") == axis2);
+  console.log("FIND ME FIRST METRIC", firstMetric);
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
@@ -23620,6 +23621,7 @@ var _Chart = class {
     this.metrics = [];
   }
   static load(opts) {
+    console.log("FIND ME LOAD ", opts);
     const manager = new _Chart(opts.chartType);
     manager.style = { ...manager.style, ...opts.style };
     opts.dimensions.forEach((d) => manager.addDimension(d));
@@ -24211,6 +24213,7 @@ var _Chart = class {
   addMetric(metric) {
     if (!this.canAddMetric())
       throw new Error("Cannot add another metric");
+    console.log("FIND ME METRIC CHARTLIB", metric);
     if (metric.id === void 0) {
       metric.id = uuidv4();
     }

@@ -36,6 +36,7 @@ export class Chart<T extends ChartType> {
   }
 
   static load<T extends ChartType>(opts: ChartOptions<T>): Chart<T> {
+    console.log("FIND ME LOAD ", opts);
     const manager = new Chart(opts.chartType);
     manager.style = { ...manager.style, ...opts.style };
     opts.dimensions.forEach((d) => manager.addDimension(d));
@@ -704,6 +705,8 @@ export class Chart<T extends ChartType> {
 
   addMetric(metric: Metric<T>): Chart<T> {
     if (!this.canAddMetric()) throw new Error("Cannot add another metric");
+
+    console.log("FIND ME METRIC CHARTLIB", metric);
     if (metric.id === undefined) {
       metric.id = uuidv4();
     }
