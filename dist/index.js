@@ -22722,10 +22722,9 @@ import { format, isValid, parseISO } from "date-fns";
 function categoryFormatter(value) {
   return String(value).length > 13 ? String(value).slice(0, 8) + "..." + String(value).slice(-2) : String(value);
 }
-function valueFormatter(value, currency_code) {
+function valueFormatter(value) {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
-    currency_code,
     maximumFractionDigits: 1
   }).format(Number(value));
 }
@@ -23289,7 +23288,7 @@ function series(chart, datasets2, theme) {
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format3 = metric.format ?? "number";
-    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
+    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : void 0;
     if (format3 === "percent") {
       formatter = percentFormatter;
     } else if (format3 === "currency") {
