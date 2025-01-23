@@ -22790,8 +22790,7 @@ function currencyFormatter(value, currency_code) {
   return Intl.NumberFormat("en-US", {
     style: "currency",
     notation: "compact",
-    currency: currency_code || "USD",
-    maximumFractionDigits: 1
+    currency: currency_code || "USD"
   }).format(Number(value));
 }
 function calendarTooltipFormatter(params) {

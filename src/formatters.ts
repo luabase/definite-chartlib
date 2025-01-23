@@ -8,10 +8,9 @@ export function categoryFormatter(value: string | number): string {
     : String(value);
 }
 
-export function valueFormatter(value: string | number, currency_code): string {
+function valueFormatter(value) {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
-    currency_code,
     maximumFractionDigits: 1,
   }).format(Number(value));
 }
@@ -48,7 +47,6 @@ export function currencyFormatter(
     style: "currency",
     notation: "compact",
     currency: currency_code || "USD",
-    maximumFractionDigits: 1,
   }).format(Number(value));
 }
 
