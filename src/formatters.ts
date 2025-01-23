@@ -113,7 +113,7 @@ export function determineFormatter<T extends ChartType>(
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
     return (params) =>
-      currencyFormatter(params, firstMetric.meta?.currency_code?);
+      currencyFormatter(params, firstMetric.meta?.currency_code);
   } else {
     return (value: string | number) => {
       if (
