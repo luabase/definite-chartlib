@@ -30,10 +30,13 @@ export function percentFormatter(value: string | number): string {
 
 // TODO: have different formatters for charts and KPI
 
-export function longFormCurrencyFormatter(value: string | number): string {
+export function longFormCurrencyFormatter(
+  value: string | number,
+  currency_code
+): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: currency_code || "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(Number(value));

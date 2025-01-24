@@ -22777,10 +22777,10 @@ function percentFormatter(value) {
     maximumFractionDigits: 1
   }).format(Number(value));
 }
-function longFormCurrencyFormatter(value) {
+function longFormCurrencyFormatter(value, currency_code) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: currency_code || "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(Number(value));
