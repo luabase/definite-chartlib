@@ -8,7 +8,7 @@ export function categoryFormatter(value: string | number): string {
     : String(value);
 }
 
-function valueFormatter(value) {
+export function valueFormatter(value: string | number): string {
   return Intl.NumberFormat("en-US", {
     notation: "compact",
     maximumFractionDigits: 1,
@@ -112,8 +112,7 @@ export function determineFormatter<T extends ChartType>(
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
-    return (params) =>
-      currencyFormatter(params, firstMetric.meta?.currency_code);
+    return (value) => currencyFormatter(value, firstMetric.meta?.currency_code);
   } else {
     return (value: string | number) => {
       if (

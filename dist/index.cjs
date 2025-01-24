@@ -22840,7 +22840,7 @@ function determineFormatter(chart, axis2) {
   if (firstMetric?.format === "percent") {
     return percentFormatter;
   } else if (firstMetric?.format === "currency") {
-    return (params) => currencyFormatter(params, firstMetric.meta?.currency_code);
+    return (value) => currencyFormatter(value, firstMetric.meta?.currency_code);
   } else {
     return (value) => {
       if (typeof value === "number" || typeof value === "string" && !isNaN(parseFloat(value))) {
@@ -23325,7 +23325,7 @@ function series(chart, datasets2, theme) {
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format3 = metric.format ?? "number";
-    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : void 0;
+    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
     if (format3 === "percent") {
       formatter = percentFormatter;
     } else if (format3 === "currency") {
