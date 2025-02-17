@@ -12,9 +12,14 @@ function load<T extends ChartType>(opts: ChartOptions<T> | LegacyOptions<T>) {
   return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
 
-function* chartGenerator(columns: Array<ColumnOptions>, subsets: boolean) {
+function* chartGenerator(
+  columns: Array<ColumnOptions>,
+  subsets: boolean,
+  numberOfRows: number
+) {
   let i = 0;
-  const factory = new AutoChartFactory(columns, subsets);
+
+  const factory = new AutoChartFactory(columns, subsets, numberOfRows);
   const charts = factory.generateAllCharts();
   while (true) {
     yield utils.array.unboundedReadItem(charts, i);
