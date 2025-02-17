@@ -25,52 +25,59 @@ export type ChartMatchConfigOption = {
   chart_types: string[];
 };
 
-const chartMatchConfig: ChartMatchConfigOption[] = [
-  ...forAddValueColumnType(
+const getChartMatchConfig = (
+  numberOfRows: number
+): ChartMatchConfigOption[] => {
+  // Determine default chart types based on row count
+  const defaultValueChartTypes = numberOfRows > 10 ? ["bar", "line"] : ["kpi"];
+
+  return [
+    ...forAddValueColumnType(
+      {
+        column_type: ["category"],
+        chart_types: ["bar"],
+      },
+      1,
+      COLORS.length
+    ),
+    ...forAddValueColumnType(
+      {
+        column_type: ["datetime"],
+        chart_types: ["line"],
+      },
+      1,
+      COLORS.length
+    ),
     {
-      column_type: ["category"],
-      chart_types: ["bar"],
+      column_type: ["value"],
+      chart_types: defaultValueChartTypes, // Dynamically choose bar/line or kpi
     },
-    1,
-    COLORS.length
-  ),
-  ...forAddValueColumnType(
     {
-      column_type: ["datetime"],
-      chart_types: ["line"],
+      column_type: ["category", "value"],
+      chart_types: ["pie", "kpi"],
     },
-    1,
-    COLORS.length
-  ),
-  {
-    column_type: ["category", "value"],
-    chart_types: ["pie", "kpi"],
-  },
-  {
-    column_type: ["datetime", "value"],
-    chart_types: ["calendar", "kpi"],
-  },
-  {
-    column_type: ["category", "value", "value"],
-    chart_types: ["scatter", "kpi"],
-  },
-  {
-    column_type: ["datetime", "value", "value"],
-    chart_types: ["scatter", "kpi"],
-  },
-  {
-    column_type: ["category", "category", "value"],
-    chart_types: ["bar", "heatmap", "kpi"],
-  },
-  {
-    column_type: ["datetime", "category", "value"],
-    chart_types: ["line", "heatmap", "kpi"],
-  },
-  {
-    column_type: ["value"],
-    chart_types: ["kpi"],
-  },
-];
+    {
+      column_type: ["datetime", "value"],
+      chart_types: ["calendar", "kpi"],
+    },
+    {
+      column_type: ["category", "value", "value"],
+      chart_types: ["scatter", "kpi"],
+    },
+    {
+      column_type: ["datetime", "value", "value"],
+      chart_types: ["scatter", "kpi"],
+    },
+    {
+      column_type: ["category", "category", "value"],
+      chart_types: ["bar", "heatmap", "kpi"],
+    },
+    {
+      column_type: ["datetime", "category", "value"],
+      chart_types: ["line", "heatmap", "kpi"],
+    },
+  ];
+};
 
 function forAddValueColumnType(
   column_types: ChartMatchConfigOption,
@@ -91,8 +98,14 @@ function forAddValueColumnType(
 export class AutoChartFactory {
   private subsetQ: Array<Array<ColumnOptions>>;
   private createQ: Array<CreateChartMessage>;
+  numberOfRows: number;
 
-  constructor(opts: Array<ColumnOptions>, subsets: boolean) {
+  constructor(
+    opts: Array<ColumnOptions>,
+    subsets: boolean,
+    numberOfRows: number
+  ) {
+    this.numberOfRows = numberOfRows;
     // Unordered.
     opts = opts.slice(0, 6);
     let min_subset_size = opts.length;
@@ -112,25 +125,63 @@ export class AutoChartFactory {
   }
 
   private addAllCreateChartMessagesToQueue(opts: Array<ColumnOptions>) {
-    const column_options = opts.map((opt) => opt.dataType);
+    const columnOptions = opts.map((opt) => opt.dataType);
+    const columnSet = new Set(columnOptions); // Convert to set for flexible matching
+    const configList = getChartMatchConfig(this.numberOfRows);
 
-    // Sort here to ignore order of columns.
-    const matches = chartMatchConfig.filter(
-      (config) =>
-        (config.column_type.length === column_options.length &&
-          config.column_type.sort().join() === column_options.sort().join()) ||
-        (config.chart_types[0] === "kpi" && column_options.includes("value"))
-    );
+    // Find exact matches first
+    let matches = configList.filter((config) => {
+      return (
+        new Set(config.column_type).size === columnSet.size &&
+        config.column_type.every((type) => columnSet.has(type))
+      );
+    });
 
-    if (matches.length > 0) {
-      matches.forEach((match) => {
-        match.chart_types.forEach((chartType) =>
-          this.createQ.push({ type: chartType, options: opts })
-        );
-      });
-    } else {
-      return;
+    if (matches.length === 0) {
+      // No exact match? Find best match based on highest column overlap
+      matches = configList
+        .map((config) => ({
+          config,
+          matchScore: config.column_type.filter((type) => columnSet.has(type))
+            .length,
+          extraValues: config.column_type.filter((type) => type === "value")
+            .length, // Count extra values
+        }))
+        .sort((a, b) => {
+          if (b.matchScore !== a.matchScore) {
+            return b.matchScore - a.matchScore; // Prioritize highest overlap
+          }
+          return a.extraValues - b.extraValues; // Prefer fewer additional "value" fields
+        })
+        .map((match) => match.config)
+        .slice(0, 3); // Pick top 3 best-matching results
     }
+
+    // Reduce redundant configurations that have too many "value" columns
+    const uniqueMatches: ChartMatchConfigOption[] = [];
+    const seenChartTypes = new Set<string>();
+
+    for (const match of matches) {
+      // If a chart type was already added, skip redundant configurations
+      const key = match.chart_types.join("-");
+      if (!seenChartTypes.has(key)) {
+        seenChartTypes.add(key);
+        uniqueMatches.push(match);
+      }
+    }
+
+    // Ensure at least one KPI fallback if no strong match is found
+    if (uniqueMatches.length === 0 && columnOptions.includes("value")) {
+      uniqueMatches.push(
+        ...configList.filter((config) => config.chart_types.includes("kpi"))
+      );
+    }
+
+    uniqueMatches.forEach((match) => {
+      match.chart_types.forEach((chartType) =>
+        this.createQ.push({ type: chartType, options: opts })
+      );
+    });
   }
 
   private generateSingleChart(): Chart<ChartType> {
@@ -145,6 +196,21 @@ export class AutoChartFactory {
       (opt) => opt.dataType !== "value"
     );
 
+    if (otherOptions.length === 0 && valueOptions.length > 0) {
+      // ✅ Randomly select one of the "value" columns to be a dimension
+      const randomIndex = Math.floor(Math.random() * valueOptions.length);
+      const randomValueAsDimension = valueOptions.splice(randomIndex, 1)[0]; // Remove and store the selected value
+
+      if (randomValueAsDimension && chart.canAddDimension()) {
+        chart.addDimension({
+          index: randomValueAsDimension.index,
+          dataType: "value" as Exclude<DataType, "value">, // Treat as categorical-like axis
+          format: randomValueAsDimension.format,
+        });
+      }
+    }
+
+    // ✅ Add otherOptions as dimensions if available
     otherOptions.forEach((opt) => {
       if (chart.canAddDimension()) {
         chart.addDimension({
@@ -155,6 +221,7 @@ export class AutoChartFactory {
       }
     });
 
+    // ✅ Add remaining valueOptions as metrics
     valueOptions.forEach((opt, i) => {
       const colorChoice = ["pie", "calendar", "heatmap", "kpi"].includes(
         msg.type
@@ -174,6 +241,7 @@ export class AutoChartFactory {
         });
       }
     });
+
     return chart;
   }
 

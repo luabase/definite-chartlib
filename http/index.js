@@ -57,12 +57,12 @@ app.get("/schema", (_, res) => {
 // POST factory
 app.post("/factory", (req, res) => {
   console.log("Request body", JSON.stringify(req.body));
-  let { limit, allow, options, subsets = true } = req.body;
+  let { limit, allow, options, subsets = true, numberOfRows } = req.body;
   limit = Math.min(limit, 10);
   let counter = 0;
   let safety = 0;
 
-  const generator = chartlib.chartGenerator(options, subsets);
+  const generator = chartlib.chartGenerator(options, subsets, numberOfRows);
   const charts = [];
   while (counter < limit && safety < 25) {
     const { value } = generator.next();

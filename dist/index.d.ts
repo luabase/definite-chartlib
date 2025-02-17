@@ -79927,7 +79927,7 @@ type ColumnOptions = {
 
 declare function create<T extends ChartType>(type: T): Chart<T>;
 declare function load<T extends ChartType>(opts: ChartOptions<T> | LegacyOptions<T>): Chart<"bar"> | Chart<"line"> | Chart<"pie"> | Chart<"scatter"> | Chart<"heatmap"> | Chart<"calendar"> | Chart<T>;
-declare function chartGenerator(columns: Array<ColumnOptions>, subsets: boolean): Generator<Chart<ChartType>, void, unknown>;
+declare function chartGenerator(columns: Array<ColumnOptions>, subsets: boolean, numberOfRows: number): Generator<Chart<ChartType>, void, unknown>;
 
 declare const chartlib_chartGenerator: typeof chartGenerator;
 declare const chartlib_create: typeof create;

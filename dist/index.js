@@ -22840,7 +22840,7 @@ function axis(chart, datasets2, kind, theme) {
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
     const totalPoints = df.shape.height;
     const chartWidth = 500;
-    const labelWidth = 50;
+    const labelWidth = 20;
     const maxLabels = Math.floor(chartWidth / labelWidth);
     const interval = Math.ceil(totalPoints / maxLabels);
     const totals = datasets2.reduce((acc, dataset) => {
@@ -22859,7 +22859,7 @@ function axis(chart, datasets2, kind, theme) {
       },
       axisLabel: {
         color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary,
-        interval: isDate ? interval : 0,
+        interval: isDate ? interval * 2 : interval,
         rotate: isLarge ? 30 : 0,
         formatter: (params, index) => {
           const value = Number(params);
@@ -24253,52 +24253,56 @@ __decorateClass([
 
 // src/factory.ts
 var COLORS = color_exports.COLOR_PALETTE;
-var chartMatchConfig = [
-  ...forAddValueColumnType(
+var getChartMatchConfig = (numberOfRows) => {
+  const defaultValueChartTypes = numberOfRows > 10 ? ["bar", "line"] : ["kpi"];
+  return [
+    ...forAddValueColumnType(
+      {
+        column_type: ["category"],
+        chart_types: ["bar"]
+      },
+      1,
+      COLORS.length
+    ),
+    ...forAddValueColumnType(
+      {
+        column_type: ["datetime"],
+        chart_types: ["line"]
+      },
+      1,
+      COLORS.length
+    ),
     {
-      column_type: ["category"],
-      chart_types: ["bar"]
+      column_type: ["value"],
+      chart_types: defaultValueChartTypes
+      // Dynamically choose bar/line or kpi
     },
-    1,
-    COLORS.length
-  ),
-  ...forAddValueColumnType(
     {
-      column_type: ["datetime"],
-      chart_types: ["line"]
+      column_type: ["category", "value"],
+      chart_types: ["pie", "kpi"]
     },
-    1,
-    COLORS.length
-  ),
-  {
-    column_type: ["category", "value"],
-    chart_types: ["pie", "kpi"]
-  },
-  {
-    column_type: ["datetime", "value"],
-    chart_types: ["calendar", "kpi"]
-  },
-  {
-    column_type: ["category", "value", "value"],
-    chart_types: ["scatter", "kpi"]
-  },
-  {
-    column_type: ["datetime", "value", "value"],
-    chart_types: ["scatter", "kpi"]
-  },
-  {
-    column_type: ["category", "category", "value"],
-    chart_types: ["bar", "heatmap", "kpi"]
-  },
-  {
-    column_type: ["datetime", "category", "value"],
-    chart_types: ["line", "heatmap", "kpi"]
-  },
-  {
-    column_type: ["value"],
-    chart_types: ["kpi"]
-  }
-];
+    {
+      column_type: ["datetime", "value"],
+      chart_types: ["calendar", "kpi"]
+    },
+    {
+      column_type: ["category", "value", "value"],
+      chart_types: ["scatter", "kpi"]
+    },
+    {
+      column_type: ["datetime", "value", "value"],
+      chart_types: ["scatter", "kpi"]
+    },
+    {
+      column_type: ["category", "category", "value"],
+      chart_types: ["bar", "heatmap", "kpi"]
+    },
+    {
+      column_type: ["datetime", "category", "value"],
+      chart_types: ["line", "heatmap", "kpi"]
+    }
+  ];
+};
 function forAddValueColumnType(column_types, min, max) {
   const entries = [];
   for (let i = min; i <= max; i++) {
@@ -24311,7 +24315,8 @@ function forAddValueColumnType(column_types, min, max) {
   return entries;
 }
 var AutoChartFactory = class {
-  constructor(opts, subsets) {
+  constructor(opts, subsets, numberOfRows) {
+    this.numberOfRows = numberOfRows;
     opts = opts.slice(0, 6);
     let min_subset_size = opts.length;
     if (subsets) {
@@ -24328,19 +24333,44 @@ var AutoChartFactory = class {
     this.createQ = array_exports.removeDuplicates(this.createQ);
   }
   addAllCreateChartMessagesToQueue(opts) {
-    const column_options = opts.map((opt) => opt.dataType);
-    const matches = chartMatchConfig.filter(
-      (config) => config.column_type.length === column_options.length && config.column_type.sort().join() === column_options.sort().join() || config.chart_types[0] === "kpi" && column_options.includes("value")
-    );
-    if (matches.length > 0) {
-      matches.forEach((match) => {
-        match.chart_types.forEach(
-          (chartType) => this.createQ.push({ type: chartType, options: opts })
-        );
-      });
-    } else {
-      return;
+    const columnOptions = opts.map((opt) => opt.dataType);
+    const columnSet = new Set(columnOptions);
+    const configList = getChartMatchConfig(this.numberOfRows);
+    let matches = configList.filter((config) => {
+      return new Set(config.column_type).size === columnSet.size && config.column_type.every((type) => columnSet.has(type));
+    });
+    if (matches.length === 0) {
+      matches = configList.map((config) => ({
+        config,
+        matchScore: config.column_type.filter((type) => columnSet.has(type)).length,
+        extraValues: config.column_type.filter((type) => type === "value").length
+        // Count extra values
+      })).sort((a, b) => {
+        if (b.matchScore !== a.matchScore) {
+          return b.matchScore - a.matchScore;
+        }
+        return a.extraValues - b.extraValues;
+      }).map((match) => match.config).slice(0, 3);
     }
+    const uniqueMatches = [];
+    const seenChartTypes = /* @__PURE__ */ new Set();
+    for (const match of matches) {
+      const key = match.chart_types.join("-");
+      if (!seenChartTypes.has(key)) {
+        seenChartTypes.add(key);
+        uniqueMatches.push(match);
+      }
+    }
+    if (uniqueMatches.length === 0 && columnOptions.includes("value")) {
+      uniqueMatches.push(
+        ...configList.filter((config) => config.chart_types.includes("kpi"))
+      );
+    }
+    uniqueMatches.forEach((match) => {
+      match.chart_types.forEach(
+        (chartType) => this.createQ.push({ type: chartType, options: opts })
+      );
+    });
   }
   generateSingleChart() {
     const msg = this.createQ.shift();
@@ -24353,6 +24383,18 @@ var AutoChartFactory = class {
     const otherOptions = msg.options.filter(
       (opt) => opt.dataType !== "value"
     );
+    if (otherOptions.length === 0 && valueOptions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * valueOptions.length);
+      const randomValueAsDimension = valueOptions.splice(randomIndex, 1)[0];
+      if (randomValueAsDimension && chart.canAddDimension()) {
+        chart.addDimension({
+          index: randomValueAsDimension.index,
+          dataType: "value",
+          // Treat as categorical-like axis
+          format: randomValueAsDimension.format
+        });
+      }
+    }
     otherOptions.forEach((opt) => {
       if (chart.canAddDimension()) {
         chart.addDimension({
@@ -24396,9 +24438,9 @@ function create(type) {
 function load(opts) {
   return "chartType" in opts ? Chart.load(opts) : Chart.fromLegacy(opts);
 }
-function* chartGenerator(columns, subsets) {
+function* chartGenerator(columns, subsets, numberOfRows) {
   let i = 0;
-  const factory = new AutoChartFactory(columns, subsets);
+  const factory = new AutoChartFactory(columns, subsets, numberOfRows);
   const charts = factory.generateAllCharts();
   while (true) {
     yield array_exports.unboundedReadItem(charts, i);

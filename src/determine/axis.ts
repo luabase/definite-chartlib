@@ -41,8 +41,8 @@ export function axis<T extends ChartType>(
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
 
     const totalPoints = df.shape.height;
-    const chartWidth = 500; // You may want to get this dynamically
-    const labelWidth = 50; // Average label width
+    const chartWidth = 500;
+    const labelWidth = 20; // Average label width
     const maxLabels = Math.floor(chartWidth / labelWidth);
     const interval = Math.ceil(totalPoints / maxLabels);
 
@@ -69,7 +69,7 @@ export function axis<T extends ChartType>(
           theme === "light"
             ? DS_TEXT_COLORS.light.secondary
             : DS_TEXT_COLORS.dark.secondary,
-        interval: isDate ? interval : 0,
+        interval: isDate ? interval * 2 : interval,
         rotate: isLarge ? 30 : 0,
         formatter: (params, index) => {
           const value = Number(params);
