@@ -129,6 +129,12 @@ export class AutoChartFactory {
     const columnSet = new Set(columnOptions); // Convert to set for flexible matching
     const configList = getChartMatchConfig(this.numberOfRows);
 
+    // Count how many value and dimension (category/datetime) columns exist
+    const valueOptions = opts.filter((opt) => opt.dataType === "value");
+    const dimensionOptions = opts.filter(
+      (opt) => opt.dataType === "category" || opt.dataType === "datetime"
+    );
+
     // Find exact matches first
     let matches = configList.filter((config) => {
       return (
@@ -157,12 +163,30 @@ export class AutoChartFactory {
         .slice(0, 3); // Pick top 3 best-matching results
     }
 
+    // ❌ Remove scatter charts if fewer than 2 value columns
+    matches.forEach((match) => {
+      if (match.chart_types.includes("scatter") && valueOptions.length < 2) {
+        match.chart_types = match.chart_types.filter(
+          (type) => type !== "scatter"
+        );
+      }
+
+      // ❌ Remove heatmap if fewer than 2 dimension columns
+      if (
+        match.chart_types.includes("heatmap") &&
+        dimensionOptions.length < 2
+      ) {
+        match.chart_types = match.chart_types.filter(
+          (type) => type !== "heatmap"
+        );
+      }
+    });
+
     // Reduce redundant configurations that have too many "value" columns
     const uniqueMatches: ChartMatchConfigOption[] = [];
     const seenChartTypes = new Set<string>();
 
     for (const match of matches) {
-      // If a chart type was already added, skip redundant configurations
       const key = match.chart_types.join("-");
       if (!seenChartTypes.has(key)) {
         seenChartTypes.add(key);

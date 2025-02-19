@@ -117,7 +117,7 @@ export function axis<T extends ChartType>(
         }
         const name =
           metrics.length > 1 ? "" : df.columns.get(metrics[0].index) ?? "";
-        const firstValue = df.col(metrics[0].index)[0];
+        const firstValue = df.col(metrics[0]?.index)?.[0] ?? null;
         const isDate =
           typeof firstValue === "string" && isDateValue(firstValue);
 
