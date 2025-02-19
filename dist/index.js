@@ -22901,7 +22901,7 @@ function axis(chart, datasets2, kind, theme) {
         metrics = kind === "x" ? [metrics[0]] : [metrics[1]];
       }
       const name = metrics.length > 1 ? "" : df.columns.get(metrics[0].index) ?? "";
-      const firstValue = df.col(metrics[0].index)[0];
+      const firstValue = df.col(metrics[0]?.index)?.[0] ?? null;
       const isDate = typeof firstValue === "string" && isDateValue(firstValue);
       const item = {
         show: chart.isCartesian(),
@@ -24336,6 +24336,10 @@ var AutoChartFactory = class {
     const columnOptions = opts.map((opt) => opt.dataType);
     const columnSet = new Set(columnOptions);
     const configList = getChartMatchConfig(this.numberOfRows);
+    const valueOptions = opts.filter((opt) => opt.dataType === "value");
+    const dimensionOptions = opts.filter(
+      (opt) => opt.dataType === "category" || opt.dataType === "datetime"
+    );
     let matches = configList.filter((config) => {
       return new Set(config.column_type).size === columnSet.size && config.column_type.every((type) => columnSet.has(type));
     });
@@ -24352,6 +24356,18 @@ var AutoChartFactory = class {
         return a.extraValues - b.extraValues;
       }).map((match) => match.config).slice(0, 3);
     }
+    matches.forEach((match) => {
+      if (match.chart_types.includes("scatter") && valueOptions.length < 2) {
+        match.chart_types = match.chart_types.filter(
+          (type) => type !== "scatter"
+        );
+      }
+      if (match.chart_types.includes("heatmap") && dimensionOptions.length < 2) {
+        match.chart_types = match.chart_types.filter(
+          (type) => type !== "heatmap"
+        );
+      }
+    });
     const uniqueMatches = [];
     const seenChartTypes = /* @__PURE__ */ new Set();
     for (const match of matches) {
