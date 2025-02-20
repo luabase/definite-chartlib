@@ -25,6 +25,19 @@ export type ChartMatchConfigOption = {
   chart_types: string[];
 };
 
+const CHART_REQUIREMENTS: Record<
+  string,
+  { minMetrics: number; minDimensions: number }
+> = {
+  bar: { minMetrics: 1, minDimensions: 1 },
+  line: { minMetrics: 1, minDimensions: 1 },
+  pie: { minMetrics: 1, minDimensions: 1 },
+  scatter: { minMetrics: 2, minDimensions: 0 },
+  heatmap: { minMetrics: 1, minDimensions: 2 },
+  calendar: { minMetrics: 1, minDimensions: 1 },
+  kpi: { minMetrics: 1, minDimensions: 0 },
+};
+
 const getChartMatchConfig = (
   numberOfRows: number
 ): ChartMatchConfigOption[] => {
@@ -163,23 +176,15 @@ export class AutoChartFactory {
         .slice(0, 3); // Pick top 3 best-matching results
     }
 
-    // ❌ Remove scatter charts if fewer than 2 value columns
+    // ✅ Validate chart types based on required metrics & dimensions
     matches.forEach((match) => {
-      if (match.chart_types.includes("scatter") && valueOptions.length < 2) {
-        match.chart_types = match.chart_types.filter(
-          (type) => type !== "scatter"
+      match.chart_types = match.chart_types.filter((chartType) => {
+        const requirements = CHART_REQUIREMENTS[chartType];
+        return (
+          valueOptions.length >= requirements.minMetrics &&
+          dimensionOptions.length >= requirements.minDimensions
         );
-      }
-
-      // ❌ Remove heatmap if fewer than 2 dimension columns
-      if (
-        match.chart_types.includes("heatmap") &&
-        dimensionOptions.length < 2
-      ) {
-        match.chart_types = match.chart_types.filter(
-          (type) => type !== "heatmap"
-        );
-      }
+      });
     });
 
     // Reduce redundant configurations that have too many "value" columns
@@ -220,15 +225,27 @@ export class AutoChartFactory {
       (opt) => opt.dataType !== "value"
     );
 
+    const requirements = CHART_REQUIREMENTS[msg.type];
+
+    // ✅ Ensure chart meets metric & dimension requirements
+    if (
+      valueOptions.length < requirements.minMetrics ||
+      otherOptions.length < requirements.minDimensions
+    ) {
+      throw new Error(
+        `Invalid chart configuration: ${msg.type} requires at least ${requirements.minMetrics} metrics and ${requirements.minDimensions} dimensions.`
+      );
+    }
+
+    // ✅ If no categorical dimension, use one of the "value" columns as a dimension
     if (otherOptions.length === 0 && valueOptions.length > 0) {
-      // ✅ Randomly select one of the "value" columns to be a dimension
       const randomIndex = Math.floor(Math.random() * valueOptions.length);
-      const randomValueAsDimension = valueOptions.splice(randomIndex, 1)[0]; // Remove and store the selected value
+      const randomValueAsDimension = valueOptions.splice(randomIndex, 1)[0];
 
       if (randomValueAsDimension && chart.canAddDimension()) {
         chart.addDimension({
           index: randomValueAsDimension.index,
-          dataType: "value" as Exclude<DataType, "value">, // Treat as categorical-like axis
+          dataType: "value" as Exclude<DataType, "value">,
           format: randomValueAsDimension.format,
         });
       }
