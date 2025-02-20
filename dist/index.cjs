@@ -24290,6 +24290,15 @@ __decorateClass([
 
 // src/factory.ts
 var COLORS = color_exports.COLOR_PALETTE;
+var CHART_REQUIREMENTS = {
+  bar: { minMetrics: 1, minDimensions: 1 },
+  line: { minMetrics: 1, minDimensions: 1 },
+  pie: { minMetrics: 1, minDimensions: 1 },
+  scatter: { minMetrics: 2, minDimensions: 0 },
+  heatmap: { minMetrics: 1, minDimensions: 2 },
+  calendar: { minMetrics: 1, minDimensions: 1 },
+  kpi: { minMetrics: 1, minDimensions: 0 }
+};
 var getChartMatchConfig = (numberOfRows) => {
   const defaultValueChartTypes = numberOfRows > 10 ? ["bar", "line"] : ["kpi"];
   return [
@@ -24394,16 +24403,10 @@ var AutoChartFactory = class {
       }).map((match) => match.config).slice(0, 3);
     }
     matches.forEach((match) => {
-      if (match.chart_types.includes("scatter") && valueOptions.length < 2) {
-        match.chart_types = match.chart_types.filter(
-          (type) => type !== "scatter"
-        );
-      }
-      if (match.chart_types.includes("heatmap") && dimensionOptions.length < 2) {
-        match.chart_types = match.chart_types.filter(
-          (type) => type !== "heatmap"
-        );
-      }
+      match.chart_types = match.chart_types.filter((chartType) => {
+        const requirements = CHART_REQUIREMENTS[chartType];
+        return valueOptions.length >= requirements.minMetrics && dimensionOptions.length >= requirements.minDimensions;
+      });
     });
     const uniqueMatches = [];
     const seenChartTypes = /* @__PURE__ */ new Set();
@@ -24436,6 +24439,12 @@ var AutoChartFactory = class {
     const otherOptions = msg.options.filter(
       (opt) => opt.dataType !== "value"
     );
+    const requirements = CHART_REQUIREMENTS[msg.type];
+    if (valueOptions.length < requirements.minMetrics || otherOptions.length < requirements.minDimensions) {
+      throw new Error(
+        `Invalid chart configuration: ${msg.type} requires at least ${requirements.minMetrics} metrics and ${requirements.minDimensions} dimensions.`
+      );
+    }
     if (otherOptions.length === 0 && valueOptions.length > 0) {
       const randomIndex = Math.floor(Math.random() * valueOptions.length);
       const randomValueAsDimension = valueOptions.splice(randomIndex, 1)[0];
@@ -24443,7 +24452,6 @@ var AutoChartFactory = class {
         chart.addDimension({
           index: randomValueAsDimension.index,
           dataType: "value",
-          // Treat as categorical-like axis
           format: randomValueAsDimension.format
         });
       }
