@@ -121,12 +121,24 @@ export class AutoChartFactory {
     this.numberOfRows = numberOfRows;
     // Unordered.
     opts = opts.slice(0, 6);
+
+    // CHANGE: Allow single column subsets when row count is small
     let min_subset_size = opts.length;
     if (subsets) {
       min_subset_size = 2;
     }
+
     this.subsetQ = utils.array.getAllSubsets(opts, min_subset_size);
     this.createQ = [];
+
+    // Special case for single value column with few rows - prioritize KPI
+    if (
+      numberOfRows <= 10 &&
+      opts.length === 1 &&
+      opts[0].dataType === "value"
+    ) {
+      this.createQ.push({ type: "kpi", options: opts });
+    }
 
     while (this.subsetQ.length > 0) {
       const subset = this.subsetQ.shift();
@@ -235,6 +247,25 @@ export class AutoChartFactory {
       throw new Error(
         `Invalid chart configuration: ${msg.type} requires at least ${requirements.minMetrics} metrics and ${requirements.minDimensions} dimensions.`
       );
+    }
+
+    // ✅ Special handling for KPI charts with a single value column
+    if (
+      msg.type === "kpi" &&
+      valueOptions.length === 1 &&
+      otherOptions.length === 0
+    ) {
+      // For KPI charts with a single value column, use it as a metric directly
+      const opt = valueOptions[0];
+      chart.addMetric({
+        index: opt.index,
+        color: color.COLOR_PALETTE,
+        aggregation: "none",
+        format: opt.format,
+        meta: opt.meta,
+      });
+
+      return chart;
     }
 
     // ✅ If no categorical dimension, use one of the "value" columns as a dimension

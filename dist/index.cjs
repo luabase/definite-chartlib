@@ -24370,6 +24370,9 @@ var AutoChartFactory = class {
     }
     this.subsetQ = array_exports.getAllSubsets(opts, min_subset_size);
     this.createQ = [];
+    if (numberOfRows <= 10 && opts.length === 1 && opts[0].dataType === "value") {
+      this.createQ.push({ type: "kpi", options: opts });
+    }
     while (this.subsetQ.length > 0) {
       const subset = this.subsetQ.shift();
       if (subset) {
@@ -24444,6 +24447,17 @@ var AutoChartFactory = class {
       throw new Error(
         `Invalid chart configuration: ${msg.type} requires at least ${requirements.minMetrics} metrics and ${requirements.minDimensions} dimensions.`
       );
+    }
+    if (msg.type === "kpi" && valueOptions.length === 1 && otherOptions.length === 0) {
+      const opt = valueOptions[0];
+      chart.addMetric({
+        index: opt.index,
+        color: color_exports.COLOR_PALETTE,
+        aggregation: "none",
+        format: opt.format,
+        meta: opt.meta
+      });
+      return chart;
     }
     if (otherOptions.length === 0 && valueOptions.length > 0) {
       const randomIndex = Math.floor(Math.random() * valueOptions.length);
