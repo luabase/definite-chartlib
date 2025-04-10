@@ -20,7 +20,9 @@ function* chartGenerator(
   let i = 0;
 
   const factory = new AutoChartFactory(columns, subsets, numberOfRows);
+
   const charts = factory.generateAllCharts();
+
   while (true) {
     yield utils.array.unboundedReadItem(charts, i);
     i++;
