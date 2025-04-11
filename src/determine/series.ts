@@ -31,6 +31,11 @@ export function series<T extends ChartType>(
   datasets: echarts.DataSet[],
   theme: string
 ): echarts.Series[] {
+  // Handle sankey chart type first
+  if (chart.getChartType() === "sankey") {
+    return sankeyChart(chart, datasets, theme);
+  }
+
   const series: echarts.Series[] = [];
   const colors: string[] = [];
   if (chart.getChartType() === "kpi") {
@@ -270,4 +275,52 @@ export function series<T extends ChartType>(
   });
 
   return series;
+}
+
+// Add this new function for Sankey chart series
+function sankeyChart(
+  chart: Chart<"sankey">,
+  datasets: echarts.DatasetOption[],
+  theme: string
+): echarts.SeriesOption[] {
+  const metrics = chart.getMetrics();
+  const dimensions = chart.getDimensions();
+
+  if (dimensions.length < 2) {
+    throw new Error("Sankey chart requires at least 2 dimensions");
+  }
+
+  // Get the source and target dimension indices
+  const sourceDimIndex = dimensions[0].index;
+  const targetDimIndex = dimensions[1].index;
+  const valueDimIndex = metrics[0].index;
+
+  // Create the series configuration for Sankey chart
+  return [
+    {
+      type: "sankey",
+      data: [], // Nodes will be automatically inferred from links
+      links: datasets[0].source.map((row: any) => ({
+        source: row[sourceDimIndex],
+        target: row[targetDimIndex],
+        value: row[valueDimIndex],
+      })),
+      emphasis: {
+        focus: "adjacency",
+      },
+      lineStyle: {
+        color: "gradient",
+        curveness: 0.5,
+      },
+      // Use the metric color for the nodes
+      itemStyle: {
+        color: Array.isArray(metrics[0].color)
+          ? metrics[0].color[0]
+          : metrics[0].color,
+      },
+      label: {
+        color: theme === "dark" ? "#ffffff" : "#000000",
+      },
+    },
+  ];
 }

@@ -23183,6 +23183,16 @@ function datasets(chart, df) {
       }
     }
   });
+  if (chart.getChartType() === "sankey") {
+    const dimensions = chart.getDimensions();
+    const metrics = chart.getMetrics();
+    if (dimensions.length < 2 || metrics.length < 1) {
+      throw new Error(
+        "Sankey chart requires at least 2 dimensions and 1 metric"
+      );
+    }
+    return datasets2;
+  }
   if (isPercentageStyle) {
     return normalizedDatasets;
   }
@@ -23283,6 +23293,9 @@ var funnelFormatter = (value) => {
   }
 };
 function series(chart, datasets2, theme) {
+  if (chart.getChartType() === "sankey") {
+    return sankeyChart(chart, datasets2, theme);
+  }
   const series2 = [];
   const colors = [];
   if (chart.getChartType() === "kpi") {
@@ -23474,6 +23487,42 @@ function series(chart, datasets2, theme) {
   });
   return series2;
 }
+function sankeyChart(chart, datasets2, theme) {
+  const metrics = chart.getMetrics();
+  const dimensions = chart.getDimensions();
+  if (dimensions.length < 2) {
+    throw new Error("Sankey chart requires at least 2 dimensions");
+  }
+  const sourceDimIndex = dimensions[0].index;
+  const targetDimIndex = dimensions[1].index;
+  const valueDimIndex = metrics[0].index;
+  return [
+    {
+      type: "sankey",
+      data: [],
+      // Nodes will be automatically inferred from links
+      links: datasets2[0].source.map((row) => ({
+        source: row[sourceDimIndex],
+        target: row[targetDimIndex],
+        value: row[valueDimIndex]
+      })),
+      emphasis: {
+        focus: "adjacency"
+      },
+      lineStyle: {
+        color: "gradient",
+        curveness: 0.5
+      },
+      // Use the metric color for the nodes
+      itemStyle: {
+        color: Array.isArray(metrics[0].color) ? metrics[0].color[0] : metrics[0].color
+      },
+      label: {
+        color: theme === "dark" ? "#ffffff" : "#000000"
+      }
+    }
+  ];
+}
 
 // src/determine/title.ts
 function title(chart, s, theme, label) {
@@ -23528,6 +23577,7 @@ var legendFormatter = (params, chart) => {
 };
 function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
+  const isSankey = chart.getChartType() === "sankey";
   const item = {
     confine: true,
     backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.panel : DS_SURFACE_PLATFORM_COLORS.dark.panel,
@@ -23536,21 +23586,27 @@ function tooltip(chart, theme) {
       color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
     },
     show: true,
-    trigger: !isBarOrLine ? "item" : "axis",
+    trigger: !isBarOrLine && !isSankey ? "item" : "axis",
     axisPointer: {
       label: {
         backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       }
     }
   };
-  if (isBarOrLine) {
+  if (isSankey) {
+    item.trigger = "item";
+    item.formatter = (params) => {
+      const { source, target, value } = params.data;
+      const formatter = determineFormatter(chart, "left");
+      return `${source} \u2192 ${target}: <strong>${formatter(value)}</strong>`;
+    };
+  } else if (isBarOrLine) {
     item.axisPointer = {
       type: "cross",
       label: {
         backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       },
       crossStyle: { color: "#999999" }
-      // This can be adjusted if needed
     };
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
@@ -23819,6 +23875,11 @@ var _Chart = class {
           showTitle: false,
           showToolbox: false
         };
+      case "sankey":
+        return {
+          showTitle: false,
+          showToolbox: false
+        };
     }
   }
   convertTo(to, theme) {
@@ -23844,6 +23905,8 @@ var _Chart = class {
         return this.toKpi(theme);
       case "funnel":
         return this.toFunnel(theme);
+      case "sankey":
+        return this.toSankey(theme);
     }
   }
   toBarChart() {
@@ -24001,6 +24064,23 @@ var _Chart = class {
     });
     return chart;
   }
+  toSankey(theme) {
+    const chart = new _Chart("sankey");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    chart.addDimension(this.dimensions[0]);
+    if (this.dimensions.length > 1) {
+      chart.addDimension(this.dimensions[1]);
+    } else {
+      chart.addDimension({ ...this.dimensions[0], id: uuidv4() });
+    }
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color, theme),
+      aggregation: "sum",
+      format: this.metrics[0].format
+    });
+    return chart;
+  }
   assertIsValid() {
     if (this.dimensions.length < 1 && this.chartType !== "kpi") {
       throw new InvalidChartError("Chart must have at least one dimension");
@@ -24118,7 +24198,9 @@ var _Chart = class {
     return this.chartType;
   }
   isCartesian() {
-    return !["pie", "calendar", "map", "funnel"].includes(this.chartType);
+    return !["pie", "calendar", "map", "funnel", "sankey"].includes(
+      this.chartType
+    );
   }
   getStyleShowTitle() {
     return this.style.showTitle;
@@ -24260,7 +24342,9 @@ var CHART_REQUIREMENTS = {
   scatter: { minMetrics: 2, minDimensions: 0 },
   heatmap: { minMetrics: 1, minDimensions: 2 },
   calendar: { minMetrics: 1, minDimensions: 1 },
-  kpi: { minMetrics: 1, minDimensions: 0 }
+  kpi: { minMetrics: 1, minDimensions: 0 },
+  map: { minMetrics: 1, minDimensions: 1 },
+  sankey: { minMetrics: 1, minDimensions: 2 }
 };
 var getChartMatchConfig = (numberOfRows) => {
   const defaultValueChartTypes = numberOfRows > 10 ? ["bar", "line"] : ["kpi"];
@@ -24304,7 +24388,7 @@ var getChartMatchConfig = (numberOfRows) => {
     },
     {
       column_type: ["category", "category", "value"],
-      chart_types: ["bar", "heatmap", "kpi"]
+      chart_types: ["bar", "heatmap", "sankey", "kpi"]
     },
     {
       column_type: ["datetime", "category", "value"],

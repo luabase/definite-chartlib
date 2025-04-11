@@ -50,6 +50,8 @@ export function tooltip<T extends ChartType>(
   theme: string
 ): echarts.ToolTip {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
+  const isSankey = chart.getChartType() === "sankey";
+
   const item: echarts.ToolTip = {
     confine: true,
     backgroundColor:
@@ -67,7 +69,7 @@ export function tooltip<T extends ChartType>(
           : DS_TEXT_COLORS.dark.secondary,
     },
     show: true,
-    trigger: !isBarOrLine ? "item" : "axis",
+    trigger: !isBarOrLine && !isSankey ? "item" : "axis",
     axisPointer: {
       label: {
         backgroundColor:
@@ -77,7 +79,17 @@ export function tooltip<T extends ChartType>(
       },
     },
   };
-  if (isBarOrLine) {
+
+  if (isSankey) {
+    // For Sankey charts, we want to show the value of the link
+    item.trigger = "item";
+    item.formatter = (params) => {
+      const { source, target, value } = params.data;
+      const formatter = determineFormatter(chart, "left");
+      return `${source} → ${target}: <strong>${formatter(value)}</strong>`;
+    };
+  } else if (isBarOrLine) {
+    // Existing bar/line logic
     item.axisPointer = {
       type: "cross",
       label: {
@@ -86,11 +98,12 @@ export function tooltip<T extends ChartType>(
             ? DS_SURFACE_PLATFORM_COLORS.light.nested
             : DS_SURFACE_PLATFORM_COLORS.dark.nested,
       },
-      crossStyle: { color: "#999999" }, // This can be adjusted if needed
+      crossStyle: { color: "#999999" },
     };
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
   }
+
   return item;
 }

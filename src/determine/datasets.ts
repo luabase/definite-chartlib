@@ -188,6 +188,22 @@ export function datasets<T extends ChartType>(
     }
   });
 
+  // Add special handling for Sankey charts
+  if (chart.getChartType() === "sankey") {
+    // For Sankey charts, we need to ensure we have the source, target, and value columns
+    const dimensions = chart.getDimensions();
+    const metrics = chart.getMetrics();
+
+    if (dimensions.length < 2 || metrics.length < 1) {
+      throw new Error(
+        "Sankey chart requires at least 2 dimensions and 1 metric"
+      );
+    }
+
+    // We can use the dataset as is, since the sankeyChart function will extract the right columns
+    return datasets;
+  }
+
   if (isPercentageStyle) {
     return normalizedDatasets;
   }

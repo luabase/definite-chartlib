@@ -253,6 +253,11 @@ export class Chart<T extends ChartType> {
           showTitle: false,
           showToolbox: false,
         };
+      case "sankey":
+        return {
+          showTitle: false,
+          showToolbox: false,
+        };
     }
   }
 
@@ -278,6 +283,8 @@ export class Chart<T extends ChartType> {
         return this.toKpi(theme);
       case "funnel":
         return this.toFunnel(theme);
+      case "sankey":
+        return this.toSankey(theme);
     }
   }
 
@@ -454,6 +461,32 @@ export class Chart<T extends ChartType> {
     return chart;
   }
 
+  private toSankey(theme: string): Chart<"sankey"> {
+    const chart = new Chart("sankey");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+
+    // Sankey charts need at least one dimension for source nodes
+    chart.addDimension(this.dimensions[0]);
+
+    // If there's a second dimension, use it for target nodes
+    if (this.dimensions.length > 1) {
+      chart.addDimension(this.dimensions[1]);
+    } else {
+      // If there's no second dimension, duplicate the first one
+      chart.addDimension({ ...this.dimensions[0], id: uuidv4() });
+    }
+
+    // Add a metric for the link value
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: utils.color.asArray(this.metrics[0].color, theme),
+      aggregation: "sum",
+      format: this.metrics[0].format,
+    });
+
+    return chart;
+  }
+
   private assertIsValid(): void {
     if (this.dimensions.length < 1 && this.chartType !== "kpi") {
       throw new InvalidChartError("Chart must have at least one dimension");
@@ -586,7 +619,9 @@ export class Chart<T extends ChartType> {
   }
 
   isCartesian(): boolean {
-    return !["pie", "calendar", "map", "funnel"].includes(this.chartType);
+    return !["pie", "calendar", "map", "funnel", "sankey"].includes(
+      this.chartType
+    );
   }
 
   getStyleShowTitle(): boolean {
