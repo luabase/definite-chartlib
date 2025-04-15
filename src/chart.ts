@@ -462,28 +462,22 @@ export class Chart<T extends ChartType> {
   }
 
   private toSankey(theme: string): Chart<"sankey"> {
+    console.log("FIND ME ENTERED SANKEY CONVERT");
     const chart = new Chart("sankey");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
-
-    // Sankey charts need at least one dimension for source nodes
-    chart.addDimension(this.dimensions[0]);
-
-    // If there's a second dimension, use it for target nodes
-    if (this.dimensions.length > 1) {
-      chart.addDimension(this.dimensions[1]);
-    } else {
-      // If there's no second dimension, duplicate the first one
-      chart.addDimension({ ...this.dimensions[0], id: uuidv4() });
+    this.dimensions.slice(0, 2).forEach((dim) => {
+      chart.addDimension(dim);
+    });
+    if (chart.canAddDimension()) {
+      chart.addDimension({ ...chart.getDimensions()[0], id: uuidv4() }); // re-add same dimension
     }
-
-    // Add a metric for the link value
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format,
     });
-
+    console.log("FIND ME ENTERED SANKEY CONVERT 2");
     return chart;
   }
 
@@ -557,6 +551,8 @@ export class Chart<T extends ChartType> {
       return this.chartType !== "kpi";
     } else if (["bar", "line", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
+    } else if (this.chartType === "sankey") {
+      return true;
     } else if (this.chartType === "scatter") {
       return this.dimensions.length < 2 && this.metrics.length <= 2;
     } else {

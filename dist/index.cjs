@@ -23492,9 +23492,9 @@ function series(chart, datasets2, theme) {
         const region = (isCountries ? sourceItem[countryIndex] : sourceItem[stateIndex]) || "";
         let regionFullName = "";
         if (isCountries) {
-          regionFullName = region.length === 2 ? import_country_list_js.default.findByIso2(region)?.name || "" : region;
+          regionFullName = typeof region === "string" && region.length === 2 ? import_country_list_js.default.findByIso2(region)?.name || "" : String(region);
         } else if (isStates) {
-          regionFullName = region.length === 2 ? stateAbbreviations?.[sourceItem?.[stateIndex]] || "" : sourceItem[stateIndex];
+          regionFullName = typeof region === "string" && region.length === 2 ? stateAbbreviations[region] || "" : String(sourceItem[stateIndex]);
         }
         data.push({
           name: regionFullName,
@@ -23525,24 +23525,36 @@ function series(chart, datasets2, theme) {
   return series2;
 }
 function sankeyChart(chart, datasets2, theme) {
-  const metrics = chart.getMetrics();
   const dimensions = chart.getDimensions();
-  if (dimensions.length < 2) {
-    throw new Error("Sankey chart requires at least 2 dimensions");
-  }
-  const sourceDimIndex = dimensions[0].index;
-  const targetDimIndex = dimensions[1].index;
+  const metrics = chart.getMetrics();
   const valueDimIndex = metrics[0].index;
-  return [
-    {
-      type: "sankey",
-      data: [],
-      // Nodes will be automatically inferred from links
-      links: datasets2[0].source.map((row) => ({
+  const rawLinks = [];
+  datasets2[0].source.forEach((row) => {
+    for (let i = 0; i < dimensions.length - 1; i++) {
+      const sourceDimIndex = dimensions[i].index;
+      const targetDimIndex = dimensions[i + 1].index;
+      rawLinks.push({
         source: row[sourceDimIndex],
         target: row[targetDimIndex],
         value: row[valueDimIndex]
-      })),
+      });
+    }
+  });
+  const links = removeCycles(rawLinks);
+  const nodes = links.reduce((acc, link) => {
+    if (!acc.some((node) => node.name === link.source)) {
+      acc.push({ name: link.source });
+    }
+    if (!acc.some((node) => node.name === link.target)) {
+      acc.push({ name: link.target });
+    }
+    return acc;
+  }, []);
+  return [
+    {
+      type: "sankey",
+      data: nodes,
+      links,
       emphasis: {
         focus: "adjacency"
       },
@@ -23556,9 +23568,148 @@ function sankeyChart(chart, datasets2, theme) {
       },
       label: {
         color: theme === "dark" ? "#ffffff" : "#000000"
-      }
+      },
+      levels: [
+        {
+          depth: 0,
+          itemStyle: {
+            color: "#fbb4ae"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        },
+        {
+          depth: 1,
+          itemStyle: {
+            color: "#b3cde3"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        },
+        {
+          depth: 2,
+          itemStyle: {
+            color: "#ccebc5"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        },
+        {
+          depth: 3,
+          itemStyle: {
+            color: "#decbe4"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        }
+      ]
     }
   ];
+}
+function removeCycles(links) {
+  const graph = {};
+  links.forEach((link) => {
+    if (!graph[link.source]) {
+      graph[link.source] = [];
+    }
+    if (!graph[link.target]) {
+      graph[link.target] = [];
+    }
+    graph[link.source].push(link.target);
+  });
+  function findCycle(node, visited, recStack, path = []) {
+    visited.add(node);
+    recStack.add(node);
+    path.push(node);
+    for (const neighbor of graph[node]) {
+      if (recStack.has(neighbor)) {
+        const cycleStart = path.indexOf(neighbor);
+        return path.slice(cycleStart);
+      }
+      if (!visited.has(neighbor)) {
+        const cyclePath = findCycle(neighbor, visited, recStack, [...path]);
+        if (cyclePath) {
+          return cyclePath;
+        }
+      }
+    }
+    recStack.delete(node);
+    return null;
+  }
+  const modifiedLinks = [...links];
+  let cyclesHandled = 0;
+  const duplicateNodeMap = /* @__PURE__ */ new Map();
+  while (true) {
+    let cycleFound = false;
+    for (const node of Object.keys(graph)) {
+      const visited = /* @__PURE__ */ new Set();
+      const recStack = /* @__PURE__ */ new Set();
+      const cyclePath = findCycle(node, visited, recStack);
+      if (cyclePath) {
+        cycleFound = true;
+        cyclesHandled++;
+        let nodeToBreak = cyclePath[0];
+        let maxConnections = 0;
+        for (const cycleNode of cyclePath) {
+          const connections = (graph[cycleNode] || []).length;
+          if (connections > maxConnections) {
+            maxConnections = connections;
+            nodeToBreak = cycleNode;
+          }
+        }
+        const duplicateCount = duplicateNodeMap.get(nodeToBreak) || 0;
+        const duplicateNodeName = `${nodeToBreak} (${duplicateCount + 1})`;
+        duplicateNodeMap.set(nodeToBreak, duplicateCount + 1);
+        const incomingLinks = modifiedLinks.filter(
+          (link) => link.target === nodeToBreak
+        );
+        incomingLinks.forEach((link) => {
+          if (cyclePath.includes(link.source)) {
+            modifiedLinks.push({
+              source: link.source,
+              target: duplicateNodeName,
+              value: link.value
+            });
+            const linkIndex = modifiedLinks.indexOf(link);
+            if (linkIndex !== -1) {
+              modifiedLinks.splice(linkIndex, 1);
+            }
+          }
+        });
+        Object.keys(graph).forEach((key) => {
+          graph[key] = [];
+        });
+        graph[duplicateNodeName] = [];
+        modifiedLinks.forEach((link) => {
+          if (!graph[link.source]) {
+            graph[link.source] = [];
+          }
+          if (!graph[link.target]) {
+            graph[link.target] = [];
+          }
+          graph[link.source].push(link.target);
+        });
+        break;
+      }
+    }
+    if (!cycleFound) {
+      break;
+    }
+  }
+  if (cyclesHandled > 0) {
+    console.log(
+      `Handled ${cyclesHandled} cycles by creating duplicate nodes in Sankey diagram`
+    );
+  }
+  return modifiedLinks;
 }
 
 // src/determine/title.ts
@@ -24102,13 +24253,14 @@ var _Chart = class {
     return chart;
   }
   toSankey(theme) {
+    console.log("FIND ME ENTERED SANKEY CONVERT");
     const chart = new _Chart("sankey");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
-    chart.addDimension(this.dimensions[0]);
-    if (this.dimensions.length > 1) {
-      chart.addDimension(this.dimensions[1]);
-    } else {
-      chart.addDimension({ ...this.dimensions[0], id: (0, import_uuid.v4)() });
+    this.dimensions.slice(0, 2).forEach((dim) => {
+      chart.addDimension(dim);
+    });
+    if (chart.canAddDimension()) {
+      chart.addDimension({ ...chart.getDimensions()[0], id: (0, import_uuid.v4)() });
     }
     chart.addMetric({
       index: this.metrics[0].index,
@@ -24116,6 +24268,7 @@ var _Chart = class {
       aggregation: "sum",
       format: this.metrics[0].format
     });
+    console.log("FIND ME ENTERED SANKEY CONVERT 2");
     return chart;
   }
   assertIsValid() {
@@ -24183,6 +24336,8 @@ var _Chart = class {
       return this.chartType !== "kpi";
     } else if (["bar", "line", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
+    } else if (this.chartType === "sankey") {
+      return true;
     } else if (this.chartType === "scatter") {
       return this.dimensions.length < 2 && this.metrics.length <= 2;
     } else {
