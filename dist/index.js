@@ -24216,22 +24216,17 @@ var _Chart = class {
     return chart;
   }
   toSankey(theme) {
-    console.log("FIND ME ENTERED SANKEY CONVERT");
     const chart = new _Chart("sankey");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
-    this.dimensions.slice(0, 2).forEach((dim) => {
+    this.dimensions.forEach((dim) => {
       chart.addDimension(dim);
     });
-    if (chart.canAddDimension()) {
-      chart.addDimension({ ...chart.getDimensions()[0], id: uuidv4() });
-    }
     chart.addMetric({
       index: this.metrics[0].index,
       color: color_exports2.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format
     });
-    console.log("FIND ME ENTERED SANKEY CONVERT 2");
     return chart;
   }
   assertIsValid() {
@@ -24548,6 +24543,14 @@ var getChartMatchConfig = (numberOfRows) => {
     {
       column_type: ["datetime", "category", "value"],
       chart_types: ["line", "heatmap", "kpi"]
+    },
+    {
+      column_type: ["value", "category", "category"],
+      chart_types: ["sankey"]
+    },
+    {
+      column_type: ["value", "category", "category", "category"],
+      chart_types: ["sankey"]
     }
   ];
 };

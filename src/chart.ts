@@ -462,22 +462,21 @@ export class Chart<T extends ChartType> {
   }
 
   private toSankey(theme: string): Chart<"sankey"> {
-    console.log("FIND ME ENTERED SANKEY CONVERT");
     const chart = new Chart("sankey");
     chart.setStyleOption("showTitle", this.getStyleShowTitle());
-    this.dimensions.slice(0, 2).forEach((dim) => {
+
+    // Add all dimensions from the source chart
+    this.dimensions.forEach((dim) => {
       chart.addDimension(dim);
     });
-    if (chart.canAddDimension()) {
-      chart.addDimension({ ...chart.getDimensions()[0], id: uuidv4() }); // re-add same dimension
-    }
+
     chart.addMetric({
       index: this.metrics[0].index,
       color: utils.color.asArray(this.metrics[0].color, theme),
       aggregation: "sum",
       format: this.metrics[0].format,
     });
-    console.log("FIND ME ENTERED SANKEY CONVERT 2");
+
     return chart;
   }
 

@@ -91,6 +91,14 @@ const getChartMatchConfig = (
       column_type: ["datetime", "category", "value"],
       chart_types: ["line", "heatmap", "kpi"],
     },
+    {
+      column_type: ["value", "category", "category"],
+      chart_types: ["sankey"],
+    },
+    {
+      column_type: ["value", "category", "category", "category"],
+      chart_types: ["sankey"],
+    },
   ];
 };
 
