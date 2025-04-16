@@ -23746,11 +23746,6 @@ function tooltip(chart, theme) {
   };
   if (isSankey) {
     item.trigger = "item";
-    item.formatter = (params) => {
-      const { source, target, value } = params.data;
-      const formatter = determineFormatter(chart, "left");
-      return `${source} \u2192 ${target}: <strong>${formatter(value)}</strong>`;
-    };
   } else if (isBarOrLine) {
     item.axisPointer = {
       type: "cross",

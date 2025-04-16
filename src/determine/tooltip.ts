@@ -83,11 +83,6 @@ export function tooltip<T extends ChartType>(
   if (isSankey) {
     // For Sankey charts, we want to show the value of the link
     item.trigger = "item";
-    item.formatter = (params) => {
-      const { source, target, value } = params.data;
-      const formatter = determineFormatter(chart, "left");
-      return `${source} → ${target}: <strong>${formatter(value)}</strong>`;
-    };
   } else if (isBarOrLine) {
     // Existing bar/line logic
     item.axisPointer = {
