@@ -7,7 +7,8 @@ export type ChartType =
   | "scatter"
   | "kpi"
   | "map"
-  | "funnel";
+  | "funnel"
+  | "sankey";
 
 export type DataType = "category" | "datetime" | "value";
 

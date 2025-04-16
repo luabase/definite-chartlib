@@ -36,6 +36,8 @@ const CHART_REQUIREMENTS: Record<
   heatmap: { minMetrics: 1, minDimensions: 2 },
   calendar: { minMetrics: 1, minDimensions: 1 },
   kpi: { minMetrics: 1, minDimensions: 0 },
+  map: { minMetrics: 1, minDimensions: 1 },
+  sankey: { minMetrics: 1, minDimensions: 2 },
 };
 
 const getChartMatchConfig = (
@@ -83,11 +85,19 @@ const getChartMatchConfig = (
     },
     {
       column_type: ["category", "category", "value"],
-      chart_types: ["bar", "heatmap", "kpi"],
+      chart_types: ["bar", "heatmap", "sankey", "kpi"],
     },
     {
       column_type: ["datetime", "category", "value"],
       chart_types: ["line", "heatmap", "kpi"],
+    },
+    {
+      column_type: ["value", "category", "category"],
+      chart_types: ["sankey"],
+    },
+    {
+      column_type: ["value", "category", "category", "category"],
+      chart_types: ["sankey"],
     },
   ];
 };

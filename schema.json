@@ -13,7 +13,8 @@
         "heatmap",
         "calendar",
         "kpi",
-        "map"
+        "map",
+        "sankey"
       ],
       "description": "Chart type",
       "default": "bar"
@@ -148,7 +149,8 @@
               "heatmap",
               "calendar",
               "kpi",
-              "map"
+              "map",
+              "sankey"
             ],
             "description": "Chart type"
           },

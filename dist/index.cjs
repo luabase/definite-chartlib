@@ -23220,6 +23220,16 @@ function datasets(chart, df) {
       }
     }
   });
+  if (chart.getChartType() === "sankey") {
+    const dimensions = chart.getDimensions();
+    const metrics = chart.getMetrics();
+    if (dimensions.length < 2 || metrics.length < 1) {
+      throw new Error(
+        "Sankey chart requires at least 2 dimensions and 1 metric"
+      );
+    }
+    return datasets2;
+  }
   if (isPercentageStyle) {
     return normalizedDatasets;
   }
@@ -23320,6 +23330,9 @@ var funnelFormatter = (value) => {
   }
 };
 function series(chart, datasets2, theme) {
+  if (chart.getChartType() === "sankey") {
+    return sankeyChart(chart, datasets2, theme);
+  }
   const series2 = [];
   const colors = [];
   if (chart.getChartType() === "kpi") {
@@ -23479,9 +23492,9 @@ function series(chart, datasets2, theme) {
         const region = (isCountries ? sourceItem[countryIndex] : sourceItem[stateIndex]) || "";
         let regionFullName = "";
         if (isCountries) {
-          regionFullName = region.length === 2 ? import_country_list_js.default.findByIso2(region)?.name || "" : region;
+          regionFullName = typeof region === "string" && region.length === 2 ? import_country_list_js.default.findByIso2(region)?.name || "" : String(region);
         } else if (isStates) {
-          regionFullName = region.length === 2 ? stateAbbreviations?.[sourceItem?.[stateIndex]] || "" : sourceItem[stateIndex];
+          regionFullName = typeof region === "string" && region.length === 2 ? stateAbbreviations[region] || "" : String(sourceItem[stateIndex]);
         }
         data.push({
           name: regionFullName,
@@ -23510,6 +23523,193 @@ function series(chart, datasets2, theme) {
     series2.push(item);
   });
   return series2;
+}
+function sankeyChart(chart, datasets2, theme) {
+  const dimensions = chart.getDimensions();
+  const metrics = chart.getMetrics();
+  const valueDimIndex = metrics[0].index;
+  const rawLinks = [];
+  datasets2[0].source.forEach((row) => {
+    for (let i = 0; i < dimensions.length - 1; i++) {
+      const sourceDimIndex = dimensions[i].index;
+      const targetDimIndex = dimensions[i + 1].index;
+      rawLinks.push({
+        source: row[sourceDimIndex],
+        target: row[targetDimIndex],
+        value: row[valueDimIndex]
+      });
+    }
+  });
+  const links = removeCycles(rawLinks);
+  const nodes = links.reduce((acc, link) => {
+    if (!acc.some((node) => node.name === link.source)) {
+      acc.push({ name: link.source });
+    }
+    if (!acc.some((node) => node.name === link.target)) {
+      acc.push({ name: link.target });
+    }
+    return acc;
+  }, []);
+  return [
+    {
+      type: "sankey",
+      data: nodes,
+      links,
+      emphasis: {
+        focus: "adjacency"
+      },
+      lineStyle: {
+        color: "gradient",
+        curveness: 0.5
+      },
+      // Use the metric color for the nodes
+      itemStyle: {
+        color: Array.isArray(metrics[0].color) ? metrics[0].color[0] : metrics[0].color
+      },
+      label: {
+        color: theme === "dark" ? "#ffffff" : "#000000"
+      },
+      levels: [
+        {
+          depth: 0,
+          itemStyle: {
+            color: "#fbb4ae"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        },
+        {
+          depth: 1,
+          itemStyle: {
+            color: "#b3cde3"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        },
+        {
+          depth: 2,
+          itemStyle: {
+            color: "#ccebc5"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        },
+        {
+          depth: 3,
+          itemStyle: {
+            color: "#decbe4"
+          },
+          lineStyle: {
+            color: "source",
+            opacity: 0.6
+          }
+        }
+      ]
+    }
+  ];
+}
+function removeCycles(links) {
+  const graph = {};
+  links.forEach((link) => {
+    if (!graph[link.source]) {
+      graph[link.source] = [];
+    }
+    if (!graph[link.target]) {
+      graph[link.target] = [];
+    }
+    graph[link.source].push(link.target);
+  });
+  function findCycle(node, visited, recStack, path = []) {
+    visited.add(node);
+    recStack.add(node);
+    path.push(node);
+    for (const neighbor of graph[node]) {
+      if (recStack.has(neighbor)) {
+        const cycleStart = path.indexOf(neighbor);
+        return path.slice(cycleStart);
+      }
+      if (!visited.has(neighbor)) {
+        const cyclePath = findCycle(neighbor, visited, recStack, [...path]);
+        if (cyclePath) {
+          return cyclePath;
+        }
+      }
+    }
+    recStack.delete(node);
+    return null;
+  }
+  const modifiedLinks = [...links];
+  let cyclesHandled = 0;
+  const duplicateNodeMap = /* @__PURE__ */ new Map();
+  while (true) {
+    let cycleFound = false;
+    for (const node of Object.keys(graph)) {
+      const visited = /* @__PURE__ */ new Set();
+      const recStack = /* @__PURE__ */ new Set();
+      const cyclePath = findCycle(node, visited, recStack);
+      if (cyclePath) {
+        cycleFound = true;
+        cyclesHandled++;
+        let nodeToBreak = cyclePath[0];
+        let maxConnections = 0;
+        for (const cycleNode of cyclePath) {
+          const connections = (graph[cycleNode] || []).length;
+          if (connections > maxConnections) {
+            maxConnections = connections;
+            nodeToBreak = cycleNode;
+          }
+        }
+        const duplicateCount = duplicateNodeMap.get(nodeToBreak) || 0;
+        const duplicateNodeName = `${nodeToBreak} (${duplicateCount + 1})`;
+        duplicateNodeMap.set(nodeToBreak, duplicateCount + 1);
+        const incomingLinks = modifiedLinks.filter(
+          (link) => link.target === nodeToBreak
+        );
+        incomingLinks.forEach((link) => {
+          if (cyclePath.includes(link.source)) {
+            modifiedLinks.push({
+              source: link.source,
+              target: duplicateNodeName,
+              value: link.value
+            });
+            const linkIndex = modifiedLinks.indexOf(link);
+            if (linkIndex !== -1) {
+              modifiedLinks.splice(linkIndex, 1);
+            }
+          }
+        });
+        Object.keys(graph).forEach((key) => {
+          graph[key] = [];
+        });
+        graph[duplicateNodeName] = [];
+        modifiedLinks.forEach((link) => {
+          if (!graph[link.source]) {
+            graph[link.source] = [];
+          }
+          if (!graph[link.target]) {
+            graph[link.target] = [];
+          }
+          graph[link.source].push(link.target);
+        });
+        break;
+      }
+    }
+    if (!cycleFound) {
+      break;
+    }
+  }
+  if (cyclesHandled > 0) {
+    console.log(
+      `Handled ${cyclesHandled} cycles by creating duplicate nodes in Sankey diagram`
+    );
+  }
+  return modifiedLinks;
 }
 
 // src/determine/title.ts
@@ -23565,6 +23765,7 @@ var legendFormatter = (params, chart) => {
 };
 function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
+  const isSankey = chart.getChartType() === "sankey";
   const item = {
     confine: true,
     backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.panel : DS_SURFACE_PLATFORM_COLORS.dark.panel,
@@ -23573,21 +23774,22 @@ function tooltip(chart, theme) {
       color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary
     },
     show: true,
-    trigger: !isBarOrLine ? "item" : "axis",
+    trigger: !isBarOrLine && !isSankey ? "item" : "axis",
     axisPointer: {
       label: {
         backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       }
     }
   };
-  if (isBarOrLine) {
+  if (isSankey) {
+    item.trigger = "item";
+  } else if (isBarOrLine) {
     item.axisPointer = {
       type: "cross",
       label: {
         backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       },
       crossStyle: { color: "#999999" }
-      // This can be adjusted if needed
     };
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
@@ -23856,6 +24058,11 @@ var _Chart = class {
           showTitle: false,
           showToolbox: false
         };
+      case "sankey":
+        return {
+          showTitle: false,
+          showToolbox: false
+        };
     }
   }
   convertTo(to, theme) {
@@ -23881,6 +24088,8 @@ var _Chart = class {
         return this.toKpi(theme);
       case "funnel":
         return this.toFunnel(theme);
+      case "sankey":
+        return this.toSankey(theme);
     }
   }
   toBarChart() {
@@ -24038,6 +24247,20 @@ var _Chart = class {
     });
     return chart;
   }
+  toSankey(theme) {
+    const chart = new _Chart("sankey");
+    chart.setStyleOption("showTitle", this.getStyleShowTitle());
+    this.dimensions.forEach((dim) => {
+      chart.addDimension(dim);
+    });
+    chart.addMetric({
+      index: this.metrics[0].index,
+      color: color_exports2.asArray(this.metrics[0].color, theme),
+      aggregation: "sum",
+      format: this.metrics[0].format
+    });
+    return chart;
+  }
   assertIsValid() {
     if (this.dimensions.length < 1 && this.chartType !== "kpi") {
       throw new InvalidChartError("Chart must have at least one dimension");
@@ -24103,6 +24326,8 @@ var _Chart = class {
       return this.chartType !== "kpi";
     } else if (["bar", "line", "heatmap"].includes(this.chartType)) {
       return this.dimensions.length < 2 && this.metrics.length < 2;
+    } else if (this.chartType === "sankey") {
+      return true;
     } else if (this.chartType === "scatter") {
       return this.dimensions.length < 2 && this.metrics.length <= 2;
     } else {
@@ -24155,7 +24380,9 @@ var _Chart = class {
     return this.chartType;
   }
   isCartesian() {
-    return !["pie", "calendar", "map", "funnel"].includes(this.chartType);
+    return !["pie", "calendar", "map", "funnel", "sankey"].includes(
+      this.chartType
+    );
   }
   getStyleShowTitle() {
     return this.style.showTitle;
@@ -24297,7 +24524,9 @@ var CHART_REQUIREMENTS = {
   scatter: { minMetrics: 2, minDimensions: 0 },
   heatmap: { minMetrics: 1, minDimensions: 2 },
   calendar: { minMetrics: 1, minDimensions: 1 },
-  kpi: { minMetrics: 1, minDimensions: 0 }
+  kpi: { minMetrics: 1, minDimensions: 0 },
+  map: { minMetrics: 1, minDimensions: 1 },
+  sankey: { minMetrics: 1, minDimensions: 2 }
 };
 var getChartMatchConfig = (numberOfRows) => {
   const defaultValueChartTypes = numberOfRows > 10 ? ["bar", "line"] : ["kpi"];
@@ -24341,11 +24570,19 @@ var getChartMatchConfig = (numberOfRows) => {
     },
     {
       column_type: ["category", "category", "value"],
-      chart_types: ["bar", "heatmap", "kpi"]
+      chart_types: ["bar", "heatmap", "sankey", "kpi"]
     },
     {
       column_type: ["datetime", "category", "value"],
       chart_types: ["line", "heatmap", "kpi"]
+    },
+    {
+      column_type: ["value", "category", "category"],
+      chart_types: ["sankey"]
+    },
+    {
+      column_type: ["value", "category", "category", "category"],
+      chart_types: ["sankey"]
     }
   ];
 };
