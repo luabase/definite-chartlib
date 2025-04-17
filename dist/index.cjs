@@ -23419,7 +23419,10 @@ function series(chart, datasets2, theme) {
       };
       item.label = {
         color: theme === "light" ? DS_TEXT_COLORS.light.primary : DS_TEXT_COLORS.dark.primary,
-        show: true
+        show: true,
+        formatter: function(params) {
+          return params.name + ": " + (typeof params.value === "number" ? params.value : params.value[1]) + " (" + params.percent + "%)";
+        }
       };
       item.yAxisIndex = 0;
       item.textStyle = {
@@ -23766,6 +23769,7 @@ var legendFormatter = (params, chart) => {
 function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const isSankey = chart.getChartType() === "sankey";
+  const isPie = chart.getChartType() === "pie";
   const item = {
     confine: true,
     backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.panel : DS_SURFACE_PLATFORM_COLORS.dark.panel,
@@ -23781,7 +23785,11 @@ function tooltip(chart, theme) {
       }
     }
   };
-  if (isSankey) {
+  if (isPie) {
+    item.formatter = function(params) {
+      return params.seriesName + "<br/>" + params.name + ": " + (typeof params.value === "number" ? params.value : params.value[1]) + " (" + params.percent + "%)";
+    };
+  } else if (isSankey) {
     item.trigger = "item";
   } else if (isBarOrLine) {
     item.axisPointer = {
