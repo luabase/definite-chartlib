@@ -145,6 +145,18 @@ export function series<T extends ChartType>(
             ? DS_TEXT_COLORS.light.primary
             : DS_TEXT_COLORS.dark.primary,
         show: true,
+        formatter: function (params) {
+          return (
+            params.name +
+            ": " +
+            (typeof params.value === "number"
+              ? params.value
+              : params.value[1]) +
+            " (" +
+            params.percent +
+            "%)"
+          );
+        },
       };
       item.yAxisIndex = 0;
       item.textStyle = {
