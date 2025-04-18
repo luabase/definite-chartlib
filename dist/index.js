@@ -22822,6 +22822,7 @@ function percentageCalculator(value, total) {
 
 // src/determine/axis.ts
 import { isValid as isValid2, parseISO as parseISO2 } from "date-fns";
+var MAX_INTERVAL = 3;
 function isDateValue(value) {
   return isValid2(parseISO2(value));
 }
@@ -22838,11 +22839,12 @@ function axis(chart, datasets2, kind, theme) {
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
     const firstValue = df.col(chart.getDimensions()[ix].index)[0];
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
+    const showAllAxisLabels = chart.getStyleShowAllAxisLabels();
     const totalPoints = df.shape.height;
     const chartWidth = 500;
     const labelWidth = 20;
     const maxLabels = Math.floor(chartWidth / labelWidth);
-    const interval = Math.ceil(totalPoints / maxLabels);
+    const interval = totalPoints <= MAX_INTERVAL ? 0 : Math.ceil(totalPoints / maxLabels);
     const totals = datasets2.reduce((acc, dataset) => {
       dataset.source.forEach((row, idx) => {
         acc[idx] = (acc[idx] || 0) + (row[ix] ?? 0);
@@ -22859,11 +22861,11 @@ function axis(chart, datasets2, kind, theme) {
       },
       axisLabel: {
         color: theme === "light" ? DS_TEXT_COLORS.light.secondary : DS_TEXT_COLORS.dark.secondary,
-        interval: isDate ? interval * 2 : interval,
+        interval: showAllAxisLabels ? 0 : isDate ? interval * 2 : interval,
         rotate: isLarge ? 30 : 0,
         formatter: (params, index) => {
           const value = Number(params);
-          if (chart.getStyleValueStyle === "percentage" && totals[index]) {
+          if (chart.getStyleValueStyle() === "percentage" && totals[index]) {
             return percentageCalculator(value, totals[index]);
           }
           return axisFormatter(params);
@@ -23991,7 +23993,8 @@ var _Chart = class {
           showToolbox: false,
           showLegend: true,
           barStyle: "grouped",
-          orientation: "vertical"
+          orientation: "vertical",
+          showAllAxisLabels: false
         };
       case "line":
         return {
@@ -24357,6 +24360,12 @@ var _Chart = class {
   }
   getStyleShowTitle() {
     return this.style.showTitle;
+  }
+  getStyleShowAllAxisLabels() {
+    if (["bar"].includes(this.chartType)) {
+      return { ...this.style }.showAllAxisLabels;
+    }
+    return false;
   }
   getDoesNeedLegendLabel() {
     return this.dimensions.length > 1;

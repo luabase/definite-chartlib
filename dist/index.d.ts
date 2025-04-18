@@ -79817,6 +79817,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar" ? {
     barStyle: BarStyleType;
     valueStyle: ValueStyleType;
     orientation: OrientationType;
+    showAllAxisLabels: boolean;
 } : T extends "line" ? {
     showLegend: boolean;
     lineStyle: LineStyleType;
@@ -79897,6 +79898,7 @@ declare class Chart<T extends ChartType> {
     getChartType(): ChartType;
     isCartesian(): boolean;
     getStyleShowTitle(): boolean;
+    getStyleShowAllAxisLabels(): boolean;
     getDoesNeedLegendLabel(): boolean;
     getStyleShowLongNumber(): boolean;
     getStyleShowToolbox(): boolean;

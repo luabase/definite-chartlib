@@ -86,6 +86,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
       barStyle: BarStyleType;
       valueStyle: ValueStyleType;
       orientation: OrientationType;
+      showAllAxisLabels: boolean;
     }
   : T extends "line"
   ? { showLegend: boolean; lineStyle: LineStyleType }
