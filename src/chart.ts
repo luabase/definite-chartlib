@@ -216,6 +216,7 @@ export class Chart<T extends ChartType> {
           showLegend: true,
           barStyle: "grouped",
           orientation: "vertical",
+          showAllAxisLabels: false,
         };
       case "line":
         return {
@@ -621,6 +622,13 @@ export class Chart<T extends ChartType> {
 
   getStyleShowTitle(): boolean {
     return this.style.showTitle;
+  }
+
+  getStyleShowAllAxisLabels(): boolean {
+    if (["bar"].includes(this.chartType)) {
+      return (<StyleOptions<"bar">>{ ...this.style }).showAllAxisLabels;
+    }
+    return false;
   }
 
   getDoesNeedLegendLabel(): boolean {

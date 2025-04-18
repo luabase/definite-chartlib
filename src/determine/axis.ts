@@ -39,12 +39,15 @@ export function axis<T extends ChartType>(
     const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
     const firstValue = df.col(chart.getDimensions()[ix].index)[0];
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
+    const showAllAxisLabels = chart.getStyleShowAllAxisLabels();
 
     const totalPoints = df.shape.height;
+
     const chartWidth = 500;
     const labelWidth = 20; // Average label width
     const maxLabels = Math.floor(chartWidth / labelWidth);
-    const interval = Math.ceil(totalPoints / maxLabels);
+    const interval =
+      totalPoints <= MAX_INTERVAL ? 0 : Math.ceil(totalPoints / maxLabels);
 
     const totals = datasets.reduce((acc, dataset) => {
       dataset.source.forEach((row: any, idx: number) => {
@@ -69,11 +72,11 @@ export function axis<T extends ChartType>(
           theme === "light"
             ? DS_TEXT_COLORS.light.secondary
             : DS_TEXT_COLORS.dark.secondary,
-        interval: isDate ? interval * 2 : interval,
+        interval: showAllAxisLabels ? 0 : isDate ? interval * 2 : interval,
         rotate: isLarge ? 30 : 0,
-        formatter: (params, index) => {
+        formatter: (params: string | number, index: number) => {
           const value = Number(params);
-          if (chart.getStyleValueStyle === "percentage" && totals[index]) {
+          if (chart.getStyleValueStyle() === "percentage" && totals[index]) {
             return percentageCalculator(value, totals[index]);
           }
           return axisFormatter(params);
@@ -89,7 +92,7 @@ export function axis<T extends ChartType>(
       },
       axisPointer: {
         label: {
-          formatter: (params) => {
+          formatter: (params: any) => {
             return tooltipFormatter(params.value);
           },
         },
@@ -212,9 +215,9 @@ function addCommonFeatures(
       },
     };
     if (typeof formatter === "function") {
-      item.axisPointer = {
+      (item as any).axisPointer = {
         label: {
-          formatter: (params) => {
+          formatter: (params: any) => {
             return isPercentageStyle
               ? percentFormatter(params.value)
               : formatter(params.value);
