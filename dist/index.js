@@ -23300,14 +23300,15 @@ function series(chart, datasets2, theme) {
   }
   const series2 = [];
   const colors = [];
+  const formatter = determineFormatter(chart, "left");
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format3 = metric.format ?? "number";
-    let formatter = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
+    let formatter2 = chart.getStyleShowLongNumber() ? longFormValueFormatter : valueFormatter;
     if (format3 === "percent") {
-      formatter = percentFormatter;
+      formatter2 = percentFormatter;
     } else if (format3 === "currency") {
-      formatter = chart.getStyleShowLongNumber() ? longFormCurrencyFormatter : currencyFormatter;
+      formatter2 = chart.getStyleShowLongNumber() ? longFormCurrencyFormatter : currencyFormatter;
     }
     series2.push({
       datasetIndex: 1,
@@ -23331,7 +23332,7 @@ function series(chart, datasets2, theme) {
       detail: {
         show: true,
         fontSize: 42,
-        formatter
+        formatter: formatter2
       }
     });
     return series2;
@@ -23386,7 +23387,7 @@ function series(chart, datasets2, theme) {
         color: theme === "light" ? DS_TEXT_COLORS.light.primary : DS_TEXT_COLORS.dark.primary,
         show: true,
         formatter: function(params) {
-          return params.name + ": " + (typeof params.value === "number" ? params.value : params.value[1]) + " (" + params.percent + "%)";
+          return params.name + ": " + (typeof params.value === "number" ? formatter(params.value) : formatter(params.value[1])) + " (" + percentFormatter(params.percent / 100) + ")";
         }
       };
       item.yAxisIndex = 0;
@@ -23735,6 +23736,7 @@ function tooltip(chart, theme) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const isSankey = chart.getChartType() === "sankey";
   const isPie = chart.getChartType() === "pie";
+  const formatter = determineFormatter(chart, "left");
   const item = {
     confine: true,
     backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.panel : DS_SURFACE_PLATFORM_COLORS.dark.panel,
@@ -23752,7 +23754,7 @@ function tooltip(chart, theme) {
   };
   if (isPie) {
     item.formatter = function(params) {
-      return params.seriesName + "<br/>" + params.name + ": " + (typeof params.value === "number" ? params.value : params.value[1]) + " (" + params.percent + "%)";
+      return params.name + ": " + (typeof params.value === "number" ? formatter(params.value) : formatter(params.value[1])) + " (" + percentFormatter(params.percent / 100) + ")";
     };
   } else if (isSankey) {
     item.trigger = "item";
