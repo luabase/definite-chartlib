@@ -52,6 +52,7 @@ export function tooltip<T extends ChartType>(
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const isSankey = chart.getChartType() === "sankey";
   const isPie = chart.getChartType() === "pie";
+  const formatter = determineFormatter(chart, "left");
 
   const item: echarts.ToolTip = {
     confine: true,
@@ -83,16 +84,17 @@ export function tooltip<T extends ChartType>(
 
   if (isPie) {
     // For pie charts, show value and percentage
+
     item.formatter = function (params) {
       return (
-        params.seriesName +
-        "<br/>" +
         params.name +
         ": " +
-        (typeof params.value === "number" ? params.value : params.value[1]) +
+        (typeof params.value === "number"
+          ? formatter(params.value)
+          : formatter(params.value[1])) +
         " (" +
-        params.percent +
-        "%)"
+        percentFormatter(params.percent / 100) +
+        ")"
       );
     };
   } else if (isSankey) {

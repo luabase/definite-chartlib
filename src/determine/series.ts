@@ -38,6 +38,8 @@ export function series<T extends ChartType>(
 
   const series: echarts.Series[] = [];
   const colors: string[] = [];
+  const formatter = formatters.determineFormatter(chart, "left");
+
   if (chart.getChartType() === "kpi") {
     const metric = chart.getMetrics()[0];
     const format = metric.format ?? "number";
@@ -150,11 +152,11 @@ export function series<T extends ChartType>(
             params.name +
             ": " +
             (typeof params.value === "number"
-              ? params.value
-              : params.value[1]) +
+              ? formatter(params.value)
+              : formatter(params.value[1])) +
             " (" +
-            params.percent +
-            "%)"
+            formatters.percentFormatter(params.percent / 100) +
+            ")"
           );
         },
       };
