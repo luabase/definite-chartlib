@@ -23846,7 +23846,8 @@ function visualMap(chart, datasets2, theme) {
     orient: isHeatmap ? "vertical" : "horizontal",
     min: Math.min(...arr),
     max: Math.max(...arr),
-    calculable: true
+    calculable: true,
+    dimension: ix
   };
 }
 
