@@ -216,6 +216,7 @@ export function series<T extends ChartType>(
         x: dataset.dimensions[dim1.index],
         y: dataset.dimensions[dim2.index],
         value: dataset.dimensions[metric.index],
+        tooltip: [dataset.dimensions[metric.index]],
       };
       item.name = dataset.dimensions[metric.index];
     } else if (chart.getChartType() === "map") {
