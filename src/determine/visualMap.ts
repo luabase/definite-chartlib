@@ -24,7 +24,7 @@ export function visualMap<T extends ChartType>(
       },
       text: ["High", "Low"],
       calculable: true,
-    };
+    } as echarts.VisualMap;
   }
   const dataset = datasets[1];
   if (!dataset) throw new Error("dataset not found");
@@ -44,5 +44,6 @@ export function visualMap<T extends ChartType>(
     min: Math.min(...arr),
     max: Math.max(...arr),
     calculable: true,
-  };
+    dimension: ix,
+  } as echarts.VisualMap;
 }
