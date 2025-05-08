@@ -8,6 +8,7 @@ import {
   ValueStyleType,
   LineStyleType,
   ColorGroupingType,
+  HeatmapGradientType,
   MetaType,
 } from "./literals";
 
@@ -93,7 +94,10 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
   : T extends "calendar"
   ? { colorGrouping: ColorGroupingType }
   : T extends "heatmap"
-  ? { colorGrouping: ColorGroupingType }
+  ? {
+      colorGradient: HeatmapGradientType;
+      colorGrouping: ColorGroupingType;
+    }
   : T extends "kpi"
   ? { showLongNumber: boolean }
   : {};

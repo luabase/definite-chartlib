@@ -36,3 +36,10 @@ export type ValueStyleType = "value" | "percentage";
 export type LineStyleType = "point" | "area";
 
 export type ColorGroupingType = "continuous" | "piecewise";
+
+export type HeatmapGradientType =
+  | "default"
+  | "red"
+  | "blue"
+  | "purple"
+  | "monochrome";

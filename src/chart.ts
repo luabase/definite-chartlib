@@ -4,6 +4,7 @@ import {
   ChartOptions,
   ChartType,
   ColorGroupingType,
+  HeatmapGradientType,
   Dimension,
   LineStyleType,
   Metric,
@@ -686,6 +687,13 @@ export class Chart<T extends ChartType> {
   getStyleColorGrouping(): ColorGroupingType | undefined {
     if (["heatmap", "calendar"].includes(this.chartType)) {
       return (<StyleOptions<"heatmap">>this.style).colorGrouping;
+    }
+    return undefined;
+  }
+
+  getStyleColorGradient(): HeatmapGradientType | undefined {
+    if (["heatmap"].includes(this.chartType)) {
+      return (<StyleOptions<"heatmap">>this.style).colorGradient;
     }
     return undefined;
   }

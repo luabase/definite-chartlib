@@ -41,11 +41,14 @@ var src_exports = {};
 __export(src_exports, {
   Chart: () => Chart,
   CompileChartError: () => CompileChartError,
+  HEATMAP_GRADIENTS: () => HEATMAP_GRADIENTS,
+  HEATMAP_GRADIENT_OPTIONS: () => HEATMAP_GRADIENT_OPTIONS,
   InvalidChartError: () => InvalidChartError,
   color: () => color_exports,
   countriesMap: () => countriesMap_default,
   default: () => src_default,
   echarts: () => echarts_exports,
+  getGradientBackground: () => getGradientBackground,
   stateAbbreviations: () => stateAbbreviations,
   usaMap: () => usaMap_default
 });
@@ -97,39 +100,95 @@ __export(color_exports2, {
 // src/constants/color.ts
 var color_exports = {};
 __export(color_exports, {
-  BLUE_30: () => BLUE_30,
-  BLUE_40: () => BLUE_40,
   COLOR_PALETTE: () => COLOR_PALETTE,
   COLOR_PALETTE_30: () => COLOR_PALETTE_30,
   COLOR_PALETTE_40: () => COLOR_PALETTE_40,
-  CYAN_30: () => CYAN_30,
-  CYAN_40: () => CYAN_40,
   DARK_BLUE: () => DARK_BLUE,
   DARK_PURPLE: () => DARK_PURPLE,
   DS_BORDER_COLORS: () => DS_BORDER_COLORS,
   DS_SURFACE_PLATFORM_COLORS: () => DS_SURFACE_PLATFORM_COLORS,
   DS_TEXT_COLORS: () => DS_TEXT_COLORS,
-  GREEN_30: () => GREEN_30,
-  GREEN_40: () => GREEN_40,
+  HEATMAP_GRADIENTS: () => HEATMAP_GRADIENTS,
+  HEATMAP_GRADIENT_OPTIONS: () => HEATMAP_GRADIENT_OPTIONS,
   LIGHT_PINK: () => LIGHT_PINK,
-  LIME_30: () => LIME_30,
-  LIME_40: () => LIME_40,
   ORANGE: () => ORANGE,
-  ORANGE_30: () => ORANGE_30,
-  ORANGE_40: () => ORANGE_40,
   PINK: () => PINK,
-  PINK_30: () => PINK_30,
-  PINK_40: () => PINK_40,
   PURPLE: () => PURPLE,
-  PURPLE_30: () => PURPLE_30,
-  PURPLE_40: () => PURPLE_40,
-  RED_30: () => RED_30,
-  RED_40: () => RED_40,
   TEAL: () => TEAL,
   YELLOW: () => YELLOW,
-  YELLOW_30: () => YELLOW_30,
-  YELLOW_40: () => YELLOW_40
+  getGradientBackground: () => getGradientBackground
 });
+
+// src/constants/palette.ts
+var BLUE_30 = "#47B3FF";
+var BLUE_40 = "#0077CC";
+var PURPLE_30 = "#C247FF";
+var PURPLE_40 = "#8800CC";
+var YELLOW_30 = "#FFE047";
+var YELLOW_40 = "#CCAA00";
+var PINK_30 = "#FF47C2";
+var PINK_40 = "#CC0088";
+var ORANGE_30 = "#FF9447";
+var ORANGE_40 = "#CC5500";
+var RED_30 = "#FF5747";
+var RED_40 = "#CC1100";
+var GREEN_30 = "#47FF75";
+var GREEN_40 = "#00CC33";
+var CYAN_30 = "#47FFFF";
+var CYAN_40 = "#00CCCC";
+var LIME_30 = "#E0FF47";
+var LIME_40 = "#AACC00";
+var COLOR_PALETTE_30 = [
+  BLUE_30,
+  PURPLE_30,
+  YELLOW_30,
+  PINK_30,
+  ORANGE_30,
+  RED_30,
+  GREEN_30,
+  CYAN_30,
+  LIME_30
+];
+var COLOR_PALETTE_40 = [
+  BLUE_40,
+  PURPLE_40,
+  YELLOW_40,
+  PINK_40,
+  ORANGE_40,
+  RED_40,
+  GREEN_40,
+  CYAN_40,
+  LIME_40
+];
+var COLOR_PALETTE = COLOR_PALETTE_40;
+
+// src/constants/gradients.ts
+var HEATMAP_GRADIENTS = {
+  default: COLOR_PALETTE,
+  red: ["#ffefba", "#ffce87", "#ff9770", "#d63447"],
+  // Heat (Yellow-Red)
+  blue: ["#ffffff", "#caf0f8", "#90e0ef", "#0077b6"],
+  // Cool (White-Blue)
+  purple: ["#3498db", "#8e44ad", "#c0392b"],
+  // Diverging (Blue-Purple-Red)
+  monochrome: ["#f8f9fa", "#e9ecef", "#adb5bd", "#343a40"]
+  // Monochrome (Light-Dark)
+};
+var HEATMAP_GRADIENT_OPTIONS = [
+  { value: "default", label: "Default (Dynamic)" },
+  { value: "red", label: "Heat (Yellow-Red)" },
+  { value: "blue", label: "Cool (White-Blue)" },
+  { value: "purple", label: "Diverging (Blue-Purple-Red)" },
+  { value: "monochrome", label: "Monochrome (Light-Dark)" }
+];
+function getGradientBackground(gradientType) {
+  console.log("FIND ME ", gradientType);
+  const type = gradientType && gradientType in HEATMAP_GRADIENTS ? gradientType : "default";
+  const colors = HEATMAP_GRADIENTS[type];
+  return `linear-gradient(to right, ${colors.join(", ")})`;
+}
+
+// src/constants/color.ts
 var DS_TEXT_COLORS = {
   light: {
     primary: "#292929",
@@ -192,47 +251,6 @@ var PINK = "#d45087";
 var LIGHT_PINK = "#f95d6a";
 var ORANGE = "#ff7c43";
 var YELLOW = "#ffa600";
-var BLUE_30 = "#47B3FF";
-var BLUE_40 = "#0077CC";
-var PURPLE_30 = "#C247FF";
-var PURPLE_40 = "#8800CC";
-var YELLOW_30 = "#FFE047";
-var YELLOW_40 = "#CCAA00";
-var PINK_30 = "#FF47C2";
-var PINK_40 = "#CC0088";
-var ORANGE_30 = "#FF9447";
-var ORANGE_40 = "#CC5500";
-var RED_30 = "#FF5747";
-var RED_40 = "#CC1100";
-var GREEN_30 = "#47FF75";
-var GREEN_40 = "#00CC33";
-var CYAN_30 = "#47FFFF";
-var CYAN_40 = "#00CCCC";
-var LIME_30 = "#E0FF47";
-var LIME_40 = "#AACC00";
-var COLOR_PALETTE_30 = [
-  BLUE_30,
-  PURPLE_30,
-  YELLOW_30,
-  PINK_30,
-  ORANGE_30,
-  RED_30,
-  GREEN_30,
-  CYAN_30,
-  LIME_30
-];
-var COLOR_PALETTE_40 = [
-  BLUE_40,
-  PURPLE_40,
-  YELLOW_40,
-  PINK_40,
-  ORANGE_40,
-  RED_40,
-  GREEN_40,
-  CYAN_40,
-  LIME_40
-];
-var COLOR_PALETTE = COLOR_PALETTE_40;
 
 // src/constants/usaMap.json
 var usaMap_default = {
@@ -23826,7 +23844,9 @@ function visualMap(chart, datasets2, theme) {
         color: color_exports.COLOR_PALETTE
       },
       text: ["High", "Low"],
-      calculable: true
+      calculable: true,
+      type: "continuous",
+      orient: "vertical"
     };
   }
   const dataset = datasets2[1];
@@ -23837,9 +23857,15 @@ function visualMap(chart, datasets2, theme) {
   const ix = chart.getChartType() === "heatmap" ? metric.index : 1;
   const arr = df.col(ix).map((v) => Number(v));
   const isHeatmap = chart.getChartType() === "heatmap";
+  const gradientType = chart.getStyleColorGradient() || "default";
+  console.log("Selected gradient type:", gradientType);
+  console.log("Available gradients:", Object.keys(HEATMAP_GRADIENTS));
+  console.log("Default gradient:", HEATMAP_GRADIENTS["default"]);
+  const gradientColors = HEATMAP_GRADIENTS[gradientType];
+  console.log("Selected gradient colors:", gradientColors);
   return {
     inRange: {
-      color: color_exports2.asArray(metric.color, theme)
+      color: gradientColors
     },
     left: isHeatmap ? "right" : "center",
     top: isHeatmap ? "center" : 3,
@@ -24458,6 +24484,12 @@ var _Chart = class {
     }
     return void 0;
   }
+  getStyleColorGradient() {
+    if (["heatmap"].includes(this.chartType)) {
+      return this.style.colorGradient;
+    }
+    return void 0;
+  }
   setStyleOption(k, v) {
     this.style = { ...this.style, ...{ [k]: v } };
     return this;
@@ -24790,10 +24822,13 @@ var src_default = main_exports;
 0 && (module.exports = {
   Chart,
   CompileChartError,
+  HEATMAP_GRADIENTS,
+  HEATMAP_GRADIENT_OPTIONS,
   InvalidChartError,
   color,
   countriesMap,
   echarts,
+  getGradientBackground,
   stateAbbreviations,
   usaMap
 });

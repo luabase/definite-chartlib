@@ -222,6 +222,35 @@ type RowOriented = Array<{
     [key: string]: Option<number | string | boolean>;
 }>;
 
+declare const HEATMAP_GRADIENTS: {
+    default: string[];
+    red: string[];
+    blue: string[];
+    purple: string[];
+    monochrome: string[];
+};
+declare const HEATMAP_GRADIENT_OPTIONS: readonly [{
+    readonly value: "default";
+    readonly label: "Default (Dynamic)";
+}, {
+    readonly value: "red";
+    readonly label: "Heat (Yellow-Red)";
+}, {
+    readonly value: "blue";
+    readonly label: "Cool (White-Blue)";
+}, {
+    readonly value: "purple";
+    readonly label: "Diverging (Blue-Purple-Red)";
+}, {
+    readonly value: "monochrome";
+    readonly label: "Monochrome (Light-Dark)";
+}];
+declare function getGradientBackground(gradientType: HeatmapGradientType | undefined): string;
+
+declare const COLOR_PALETTE_30: string[];
+declare const COLOR_PALETTE_40: string[];
+declare const COLOR_PALETTE: string[];
+
 declare const DS_TEXT_COLORS: {
     light: {
         primary: string;
@@ -276,94 +305,43 @@ declare const PINK = "#d45087";
 declare const LIGHT_PINK = "#f95d6a";
 declare const ORANGE = "#ff7c43";
 declare const YELLOW = "#ffa600";
-declare const BLUE_30 = "#47B3FF";
-declare const BLUE_40 = "#0077CC";
-declare const PURPLE_30 = "#C247FF";
-declare const PURPLE_40 = "#8800CC";
-declare const YELLOW_30 = "#FFE047";
-declare const YELLOW_40 = "#CCAA00";
-declare const PINK_30 = "#FF47C2";
-declare const PINK_40 = "#CC0088";
-declare const ORANGE_30 = "#FF9447";
-declare const ORANGE_40 = "#CC5500";
-declare const RED_30 = "#FF5747";
-declare const RED_40 = "#CC1100";
-declare const GREEN_30 = "#47FF75";
-declare const GREEN_40 = "#00CC33";
-declare const CYAN_30 = "#47FFFF";
-declare const CYAN_40 = "#00CCCC";
-declare const LIME_30 = "#E0FF47";
-declare const LIME_40 = "#AACC00";
-declare const COLOR_PALETTE_30: string[];
-declare const COLOR_PALETTE_40: string[];
-declare const COLOR_PALETTE: string[];
 
-declare const color_BLUE_30: typeof BLUE_30;
-declare const color_BLUE_40: typeof BLUE_40;
 declare const color_COLOR_PALETTE: typeof COLOR_PALETTE;
 declare const color_COLOR_PALETTE_30: typeof COLOR_PALETTE_30;
 declare const color_COLOR_PALETTE_40: typeof COLOR_PALETTE_40;
-declare const color_CYAN_30: typeof CYAN_30;
-declare const color_CYAN_40: typeof CYAN_40;
 declare const color_DARK_BLUE: typeof DARK_BLUE;
 declare const color_DARK_PURPLE: typeof DARK_PURPLE;
 declare const color_DS_BORDER_COLORS: typeof DS_BORDER_COLORS;
 declare const color_DS_SURFACE_PLATFORM_COLORS: typeof DS_SURFACE_PLATFORM_COLORS;
 declare const color_DS_TEXT_COLORS: typeof DS_TEXT_COLORS;
-declare const color_GREEN_30: typeof GREEN_30;
-declare const color_GREEN_40: typeof GREEN_40;
+declare const color_HEATMAP_GRADIENTS: typeof HEATMAP_GRADIENTS;
+declare const color_HEATMAP_GRADIENT_OPTIONS: typeof HEATMAP_GRADIENT_OPTIONS;
 declare const color_LIGHT_PINK: typeof LIGHT_PINK;
-declare const color_LIME_30: typeof LIME_30;
-declare const color_LIME_40: typeof LIME_40;
 declare const color_ORANGE: typeof ORANGE;
-declare const color_ORANGE_30: typeof ORANGE_30;
-declare const color_ORANGE_40: typeof ORANGE_40;
 declare const color_PINK: typeof PINK;
-declare const color_PINK_30: typeof PINK_30;
-declare const color_PINK_40: typeof PINK_40;
 declare const color_PURPLE: typeof PURPLE;
-declare const color_PURPLE_30: typeof PURPLE_30;
-declare const color_PURPLE_40: typeof PURPLE_40;
-declare const color_RED_30: typeof RED_30;
-declare const color_RED_40: typeof RED_40;
 declare const color_TEAL: typeof TEAL;
 declare const color_YELLOW: typeof YELLOW;
-declare const color_YELLOW_30: typeof YELLOW_30;
-declare const color_YELLOW_40: typeof YELLOW_40;
+declare const color_getGradientBackground: typeof getGradientBackground;
 declare namespace color {
   export {
-    color_BLUE_30 as BLUE_30,
-    color_BLUE_40 as BLUE_40,
     color_COLOR_PALETTE as COLOR_PALETTE,
     color_COLOR_PALETTE_30 as COLOR_PALETTE_30,
     color_COLOR_PALETTE_40 as COLOR_PALETTE_40,
-    color_CYAN_30 as CYAN_30,
-    color_CYAN_40 as CYAN_40,
     color_DARK_BLUE as DARK_BLUE,
     color_DARK_PURPLE as DARK_PURPLE,
     color_DS_BORDER_COLORS as DS_BORDER_COLORS,
     color_DS_SURFACE_PLATFORM_COLORS as DS_SURFACE_PLATFORM_COLORS,
     color_DS_TEXT_COLORS as DS_TEXT_COLORS,
-    color_GREEN_30 as GREEN_30,
-    color_GREEN_40 as GREEN_40,
+    color_HEATMAP_GRADIENTS as HEATMAP_GRADIENTS,
+    color_HEATMAP_GRADIENT_OPTIONS as HEATMAP_GRADIENT_OPTIONS,
     color_LIGHT_PINK as LIGHT_PINK,
-    color_LIME_30 as LIME_30,
-    color_LIME_40 as LIME_40,
     color_ORANGE as ORANGE,
-    color_ORANGE_30 as ORANGE_30,
-    color_ORANGE_40 as ORANGE_40,
     color_PINK as PINK,
-    color_PINK_30 as PINK_30,
-    color_PINK_40 as PINK_40,
     color_PURPLE as PURPLE,
-    color_PURPLE_30 as PURPLE_30,
-    color_PURPLE_40 as PURPLE_40,
-    color_RED_30 as RED_30,
-    color_RED_40 as RED_40,
     color_TEAL as TEAL,
     color_YELLOW as YELLOW,
-    color_YELLOW_30 as YELLOW_30,
-    color_YELLOW_40 as YELLOW_40,
+    color_getGradientBackground as getGradientBackground,
   };
 }
 
@@ -79757,6 +79735,7 @@ type BarStyleType = "grouped" | "stacked";
 type ValueStyleType = "value" | "percentage";
 type LineStyleType = "point" | "area";
 type ColorGroupingType = "continuous" | "piecewise";
+type HeatmapGradientType = "default" | "red" | "blue" | "purple" | "monochrome";
 
 interface Indexable {
     index: number;
@@ -79824,6 +79803,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar" ? {
 } : T extends "calendar" ? {
     colorGrouping: ColorGroupingType;
 } : T extends "heatmap" ? {
+    colorGradient: HeatmapGradientType;
     colorGrouping: ColorGroupingType;
 } : T extends "kpi" ? {
     showLongNumber: boolean;
@@ -79908,6 +79888,7 @@ declare class Chart<T extends ChartType> {
     getStyleValueStyle(): ValueStyleType | undefined;
     getStyleLineStyle(): LineStyleType | undefined;
     getStyleColorGrouping(): ColorGroupingType | undefined;
+    getStyleColorGradient(): HeatmapGradientType | undefined;
     setStyleOption(k: keyof StyleOptions<T>, v: StyleOptions<T>[typeof k]): Chart<T>;
     addDimension(dim?: Dimension<T>): Chart<T>;
     getDimensions(): Dimension<T>[];
@@ -79950,4 +79931,4 @@ declare class InvalidChartError extends Error {
     constructor(message: string);
 }
 
-export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, InvalidChartError, LineStyleType, MetaType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, stateAbbreviations, usaMap };
+export { AggregationType, AxisType, BarStyleType, Chart, ChartOptions, ChartType, ColorGroupingType, CompileChartError, DataType, Dimension, HEATMAP_GRADIENTS, HEATMAP_GRADIENT_OPTIONS, HeatmapGradientType, InvalidChartError, LineStyleType, MetaType, Metric, Option, OrientationType, Predicate, RowOriented, StyleOptions, ValueStyleType, color, countriesMap, chartlib as default, index as echarts, getGradientBackground, stateAbbreviations, usaMap };
