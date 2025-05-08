@@ -1,9 +1,9 @@
 import { DataFrame } from "../dataframe";
 import { Chart } from "../chart";
-import { ChartType, echarts } from "../types";
+import { ChartType, echarts, HeatmapGradientType } from "../types";
 import * as utils from "../utils";
 import { findMinMax } from "./helpers";
-import { color } from "../constants";
+import { color, HEATMAP_GRADIENTS } from "../constants";
 
 export function visualMap<T extends ChartType>(
   chart: Chart<T>,
@@ -12,6 +12,7 @@ export function visualMap<T extends ChartType>(
 ): echarts.VisualMap | null {
   if (!["heatmap", "calendar", "map"].includes(chart.getChartType()))
     return null;
+
   if (chart.getChartType() == "map") {
     const dataset = datasets[1];
     const { min, max } = findMinMax(dataset.source);
@@ -24,8 +25,11 @@ export function visualMap<T extends ChartType>(
       },
       text: ["High", "Low"],
       calculable: true,
+      type: "continuous",
+      orient: "vertical",
     } as echarts.VisualMap;
   }
+
   const dataset = datasets[1];
   if (!dataset) throw new Error("dataset not found");
   const df = DataFrame.fromDataSet(dataset);
@@ -33,9 +37,22 @@ export function visualMap<T extends ChartType>(
   const ix = chart.getChartType() === "heatmap" ? metric.index : 1;
   const arr = df.col(ix).map((v) => Number(v));
   const isHeatmap = chart.getChartType() === "heatmap";
+
+  // Get the gradient type from chart style options or use default
+  const gradientType = chart.getStyleColorGradient() || "default";
+  console.log("Selected gradient type:", gradientType);
+
+  // Log the available gradients
+  console.log("Available gradients:", Object.keys(HEATMAP_GRADIENTS));
+  console.log("Default gradient:", HEATMAP_GRADIENTS["default"]);
+
+  // Use the selected gradient
+  const gradientColors = HEATMAP_GRADIENTS[gradientType];
+  console.log("Selected gradient colors:", gradientColors);
+
   return {
     inRange: {
-      color: utils.color.asArray(metric.color, theme),
+      color: gradientColors,
     },
     left: isHeatmap ? "right" : "center",
     top: isHeatmap ? "center" : 3,
