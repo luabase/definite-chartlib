@@ -182,7 +182,6 @@ var HEATMAP_GRADIENT_OPTIONS = [
   { value: "monochrome", label: "Monochrome (Light-Dark)" }
 ];
 function getGradientBackground(gradientType) {
-  console.log("FIND ME ", gradientType);
   const type = gradientType && gradientType in HEATMAP_GRADIENTS ? gradientType : "default";
   const colors = HEATMAP_GRADIENTS[type];
   return `linear-gradient(to right, ${colors.join(", ")})`;
@@ -23497,6 +23496,13 @@ function series(chart, datasets2, theme) {
         tooltip: [dataset.dimensions[metric.index]]
       };
       item.name = dataset.dimensions[metric.index];
+      item.label = {
+        show: chart.getStyleShowValueInCell(),
+        formatter: (params) => {
+          const value = params.value[metric.index];
+          return formatter(value);
+        }
+      };
     } else if (chart.getChartType() === "map") {
       item.roam = false;
       item.type = "map";
@@ -23788,7 +23794,7 @@ var legendFormatter = (params, chart) => {
   });
   return result;
 };
-function tooltip(chart, theme) {
+function tooltip(chart, theme, df) {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const isSankey = chart.getChartType() === "sankey";
   const isPie = chart.getChartType() === "pie";
@@ -23803,6 +23809,7 @@ function tooltip(chart, theme) {
     show: true,
     trigger: !isBarOrLine && !isSankey ? "item" : "axis",
     axisPointer: {
+      type: "line",
       label: {
         backgroundColor: theme === "light" ? DS_SURFACE_PLATFORM_COLORS.light.nested : DS_SURFACE_PLATFORM_COLORS.dark.nested
       }
@@ -23825,6 +23832,30 @@ function tooltip(chart, theme) {
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
+  } else if (chart.getChartType() === "heatmap") {
+    item.formatter = function(params) {
+      const dimensions = chart.getDimensions();
+      const metrics = chart.getMetrics();
+      const metricIndex = metrics[0].index;
+      const metricValues = df.col(metricIndex);
+      const maxValue = Math.max(
+        ...metricValues.filter((v) => typeof v === "number")
+      );
+      const xAxisName = params.dimensionNames[dimensions[0].index] || "X-Axis";
+      const yAxisName = params.dimensionNames[dimensions[1].index] || "Y-Axis";
+      const metricName = params.dimensionNames[metrics[0].index] || "Value";
+      const xAxisValue = params.data[dimensions[0].index];
+      const yAxisValue = params.data[dimensions[1].index];
+      const value = params.data[metricIndex];
+      const percentOfMax = maxValue > 0 ? value / maxValue * 100 : 0;
+      const formattedValue = formatter(value);
+      const percentageDisplay = params.percent !== void 0 ? ` (${percentFormatter(params.percent / 100)})` : ` (${percentFormatter(percentOfMax / 100)})`;
+      return `<div style="font-weight: bold">Cell Data</div><div>${yAxisName}: <span style="font-weight: bold">${tooltipFormatter(
+        yAxisValue
+      )}</span></div><div>${xAxisName}: <span style="font-weight: bold">${tooltipFormatter(
+        xAxisValue
+      )}</span></div><div>${metricName}: <span style="font-weight: bold">${formattedValue}</span>${percentageDisplay}</div>`;
+    };
   }
   return item;
 }
@@ -23858,11 +23889,10 @@ function visualMap(chart, datasets2, theme) {
   const arr = df.col(ix).map((v) => Number(v));
   const isHeatmap = chart.getChartType() === "heatmap";
   const gradientType = chart.getStyleColorGradient() || "default";
-  console.log("Selected gradient type:", gradientType);
-  console.log("Available gradients:", Object.keys(HEATMAP_GRADIENTS));
-  console.log("Default gradient:", HEATMAP_GRADIENTS["default"]);
-  const gradientColors = HEATMAP_GRADIENTS[gradientType];
-  console.log("Selected gradient colors:", gradientColors);
+  let gradientColors = HEATMAP_GRADIENTS[gradientType];
+  if (chart.getStyleInverseGradient()) {
+    gradientColors = [...HEATMAP_GRADIENTS[gradientType]].reverse();
+  }
   return {
     inRange: {
       color: gradientColors
@@ -24081,7 +24111,8 @@ var _Chart = class {
         return {
           showTitle: false,
           showToolbox: false,
-          colorGrouping: "continuous"
+          colorGrouping: "continuous",
+          showValueInCell: false
         };
       case "kpi":
         return {
@@ -24352,7 +24383,7 @@ var _Chart = class {
         series: series(this, datasets2, theme),
         title: title(this, title2, theme, legendLabel),
         toolbox: toolbox(this),
-        tooltip: tooltip(this, theme),
+        tooltip: tooltip(this, theme, df),
         visualMap: visualMap(this, datasets2, theme),
         xAxis: axis(this, datasets2, "x", theme),
         yAxis: axis(this, datasets2, "y", theme)
@@ -24429,8 +24460,14 @@ var _Chart = class {
     return this.style.showTitle;
   }
   getStyleShowAllAxisLabels() {
-    if (["bar"].includes(this.chartType)) {
+    if (["bar", "heatmap"].includes(this.chartType)) {
       return { ...this.style }.showAllAxisLabels;
+    }
+    return false;
+  }
+  getStyleInverseGradient() {
+    if (["heatmap"].includes(this.chartType)) {
+      return { ...this.style }.inverseGradient;
     }
     return false;
   }
@@ -24440,6 +24477,12 @@ var _Chart = class {
   getStyleShowLongNumber() {
     if (this.chartType === "kpi") {
       return { ...this.style }.showLongNumber;
+    }
+    return false;
+  }
+  getStyleShowValueInCell() {
+    if (this.chartType === "heatmap") {
+      return { ...this.style }.showValueInCell;
     }
     return false;
   }

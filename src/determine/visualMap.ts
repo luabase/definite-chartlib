@@ -40,15 +40,13 @@ export function visualMap<T extends ChartType>(
 
   // Get the gradient type from chart style options or use default
   const gradientType = chart.getStyleColorGradient() || "default";
-  console.log("Selected gradient type:", gradientType);
-
-  // Log the available gradients
-  console.log("Available gradients:", Object.keys(HEATMAP_GRADIENTS));
-  console.log("Default gradient:", HEATMAP_GRADIENTS["default"]);
 
   // Use the selected gradient
-  const gradientColors = HEATMAP_GRADIENTS[gradientType];
-  console.log("Selected gradient colors:", gradientColors);
+  let gradientColors = HEATMAP_GRADIENTS[gradientType];
+
+  if (chart.getStyleInverseGradient()) {
+    gradientColors = [...HEATMAP_GRADIENTS[gradientType]].reverse();
+  }
 
   return {
     inRange: {

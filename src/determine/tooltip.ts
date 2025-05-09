@@ -12,8 +12,9 @@ import {
   DS_BORDER_COLORS,
   DS_TEXT_COLORS,
 } from "../constants/color";
+import { DataFrame } from "../dataframe";
 
-const legendFormatter = (params, chart) => {
+const legendFormatter = (params: any[], chart: Chart<any>) => {
   const isPercentage = chart.getStyleValueStyle() === "percentage";
   const formatter = isPercentage
     ? percentFormatter
@@ -24,7 +25,7 @@ const legendFormatter = (params, chart) => {
     tooltipFormatter(params[0].axisValueLabel) +
     "</div>"; // Category label
 
-  params.forEach(function (item) {
+  params.forEach(function (item: any) {
     const value = item.value[1];
 
     result +=
@@ -47,7 +48,8 @@ const legendFormatter = (params, chart) => {
 
 export function tooltip<T extends ChartType>(
   chart: Chart<T>,
-  theme: string
+  theme: string,
+  df: DataFrame
 ): echarts.ToolTip {
   const isBarOrLine = ["bar", "line"].includes(chart.getChartType());
   const isSankey = chart.getChartType() === "sankey";
@@ -73,6 +75,7 @@ export function tooltip<T extends ChartType>(
     show: true,
     trigger: !isBarOrLine && !isSankey ? "item" : "axis",
     axisPointer: {
+      type: "line",
       label: {
         backgroundColor:
           theme === "light"
@@ -115,6 +118,59 @@ export function tooltip<T extends ChartType>(
     item.formatter = (params) => legendFormatter(params, chart);
   } else if (chart.getChartType() === "calendar") {
     item.formatter = calendarTooltipFormatter;
+  } else if (chart.getChartType() === "heatmap") {
+    item.formatter = function (params) {
+      // Get dimensions from the chart
+      const dimensions = chart.getDimensions();
+      const metrics = chart.getMetrics();
+
+      // Get the metric index
+      const metricIndex = metrics[0].index;
+
+      // Find the maximum value of the metric in the DataFrame
+      const metricValues = df.col(metricIndex);
+      const maxValue = Math.max(
+        ...metricValues.filter((v) => typeof v === "number")
+      );
+
+      // Extract axis names from the DataFrame columns based on dimension indices
+      const xAxisName = params.dimensionNames[dimensions[0].index] || "X-Axis";
+      const yAxisName = params.dimensionNames[dimensions[1].index] || "Y-Axis";
+
+      // Get the metric name
+      const metricName = params.dimensionNames[metrics[0].index] || "Value";
+
+      // Get axis values from params.data using dimension indices
+      const xAxisValue = params.data[dimensions[0].index];
+      const yAxisValue = params.data[dimensions[1].index];
+
+      // Get the value from the metric
+      const value = params.data[metricIndex];
+
+      // Calculate percentage of max value
+      const percentOfMax = maxValue > 0 ? (value / maxValue) * 100 : 0;
+
+      // Format the value based on chart formatting settings
+      const formattedValue = formatter(value);
+
+      // Calculate percentage if available from params
+      const percentageDisplay =
+        params.percent !== undefined
+          ? ` (${percentFormatter(params.percent / 100)})`
+          : ` (${percentFormatter(percentOfMax / 100)})`;
+
+      // Create a tooltip with proper axis labels and metric name
+      return (
+        `<div style="font-weight: bold">Cell Data</div>` +
+        `<div>${yAxisName}: <span style="font-weight: bold">${tooltipFormatter(
+          yAxisValue
+        )}</span></div>` +
+        `<div>${xAxisName}: <span style="font-weight: bold">${tooltipFormatter(
+          xAxisValue
+        )}</span></div>` +
+        `<div>${metricName}: <span style="font-weight: bold">${formattedValue}</span>${percentageDisplay}</div>`
+      );
+    };
   }
 
   return item;
