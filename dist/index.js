@@ -131,15 +131,18 @@ var HEATMAP_GRADIENTS = {
   // Cool (White-Blue)
   purple: ["#3498db", "#8e44ad", "#c0392b"],
   // Diverging (Blue-Purple-Red)
-  monochrome: ["#f8f9fa", "#e9ecef", "#adb5bd", "#343a40"]
+  monochrome: ["#f8f9fa", "#e9ecef", "#adb5bd", "#343a40"],
   // Monochrome (Light-Dark)
+  redToGreen: ["#A60126", "#FDD481", "#FAFDBA", "#69BE63", "#006737"]
+  // Red to Green (Dark Red-Light Red-Yellow-Light Green-Dark Green)
 };
 var HEATMAP_GRADIENT_OPTIONS = [
   { value: "default", label: "Default (Dynamic)" },
   { value: "red", label: "Heat (Yellow-Red)" },
   { value: "blue", label: "Cool (White-Blue)" },
   { value: "purple", label: "Diverging (Blue-Purple-Red)" },
-  { value: "monochrome", label: "Monochrome (Light-Dark)" }
+  { value: "monochrome", label: "Monochrome (Light-Dark)" },
+  { value: "redToGreen", label: "Red to Green" }
 ];
 function getGradientBackground(gradientType) {
   const type = gradientType && gradientType in HEATMAP_GRADIENTS ? gradientType : "default";
@@ -23308,7 +23311,7 @@ var funnelFormatter = (value) => {
     return categoryFormatter(value);
   }
 };
-function series(chart, datasets2, theme) {
+function series(chart, datasets2, theme, df) {
   if (chart.getChartType() === "sankey") {
     return sankeyChart(chart, datasets2, theme);
   }
@@ -23430,10 +23433,10 @@ function series(chart, datasets2, theme) {
         ]
       };
     } else if (chart.getChartType() === "calendar") {
-      const df = DataFrame.fromDataSet(dataset);
+      const df2 = DataFrame.fromDataSet(dataset);
       Array.from(
         new Set(
-          df.col(0).map((v) => new Date(String(v))).map((d) => d.getUTCFullYear()).sort()
+          df2.col(0).map((v) => new Date(String(v))).map((d) => d.getUTCFullYear()).sort()
         )
       ).forEach((_, i) => {
         series2.push({
@@ -23446,8 +23449,13 @@ function series(chart, datasets2, theme) {
       });
       return;
     } else if (chart.getChartType() === "heatmap") {
-      delete item.color;
+      const isCohortData = chart.getStyleCohortData();
+      const transformedData = transformCohortData(chart, dataset.source, df);
       const [dim1, dim2] = chart.getDimensions();
+      if (isCohortData) {
+        item.originalData = dataset.source;
+      }
+      item.data = transformedData;
       item.datasetIndex = 1;
       item.encode = {
         x: dataset.dimensions[dim1.index],
@@ -23460,6 +23468,9 @@ function series(chart, datasets2, theme) {
         show: chart.getStyleShowValueInCell(),
         formatter: (params) => {
           const value = params.value[metric.index];
+          if (isCohortData) {
+            return `${value.toFixed(0)}%`;
+          }
           return formatter(value);
         }
       };
@@ -23702,6 +23713,40 @@ function removeCycles(links) {
   }
   return modifiedLinks;
 }
+function transformCohortData(chart, data, df) {
+  if (!chart.getStyleCohortData() || chart.getChartType() !== "heatmap") {
+    return data;
+  }
+  const dimensions = chart.getDimensions();
+  const metrics = chart.getMetrics();
+  const metricIndex = metrics[0].index;
+  const firstValueByRow = /* @__PURE__ */ new Map();
+  data.forEach((item) => {
+    const yValue = item[dimensions[1].index];
+    if (!firstValueByRow.has(yValue)) {
+      firstValueByRow.set(yValue, item[metricIndex]);
+    }
+  });
+  return data.map((item) => {
+    const yValue = item[dimensions[1].index];
+    const value = item[metricIndex];
+    const firstValue = firstValueByRow.get(yValue);
+    const newItem = Array.isArray(item) ? [...item] : Object.assign([], item);
+    if (typeof item === "object") {
+      Object.keys(item).forEach((key) => {
+        if (isNaN(Number(key))) {
+          newItem[key] = item[key];
+        }
+      });
+    }
+    if (firstValue !== null && firstValue !== 0) {
+      newItem[metricIndex] = value / firstValue * 100;
+    } else {
+      newItem[metricIndex] = 0;
+    }
+    return newItem;
+  });
+}
 
 // src/determine/title.ts
 function title(chart, s, theme, label) {
@@ -23796,20 +23841,21 @@ function tooltip(chart, theme, df) {
     item.formatter = function(params) {
       const dimensions = chart.getDimensions();
       const metrics = chart.getMetrics();
+      const isCohortData = chart.getStyleCohortData();
       const metricIndex = metrics[0].index;
+      const xAxisName = df.columns.get(dimensions[0].index) || "X-Axis";
+      const yAxisName = df.columns.get(dimensions[1].index) || "Y-Axis";
+      const metricName = df.columns.get(metrics[0].index) || "Value";
+      const xAxisValue = params.data[dimensions[0].index];
+      const yAxisValue = params.data[dimensions[1].index];
+      const value = df.data[params.dataIndex][metricIndex];
       const metricValues = df.col(metricIndex);
       const maxValue = Math.max(
         ...metricValues.filter((v) => typeof v === "number")
       );
-      const xAxisName = params.dimensionNames[dimensions[0].index] || "X-Axis";
-      const yAxisName = params.dimensionNames[dimensions[1].index] || "Y-Axis";
-      const metricName = params.dimensionNames[metrics[0].index] || "Value";
-      const xAxisValue = params.data[dimensions[0].index];
-      const yAxisValue = params.data[dimensions[1].index];
-      const value = params.data[metricIndex];
       const percentOfMax = maxValue > 0 ? value / maxValue * 100 : 0;
       const formattedValue = formatter(value);
-      const percentageDisplay = params.percent !== void 0 ? ` (${percentFormatter(params.percent / 100)})` : ` (${percentFormatter(percentOfMax / 100)})`;
+      const percentageDisplay = isCohortData ? ` (${params.data[metricIndex].toFixed(2)}%)` : ` (${percentFormatter(percentOfMax / 100)})`;
       return `<div style="font-weight: bold">Cell Data</div><div>${yAxisName}: <span style="font-weight: bold">${tooltipFormatter(
         yAxisValue
       )}</span></div><div>${xAxisName}: <span style="font-weight: bold">${tooltipFormatter(
@@ -23826,11 +23872,11 @@ function visualMap(chart, datasets2, theme) {
     return null;
   if (chart.getChartType() == "map") {
     const dataset2 = datasets2[1];
-    const { min, max } = findMinMax(dataset2.source);
+    const { min: min2, max: max2 } = findMinMax(dataset2.source);
     return {
       left: "right",
-      min,
-      max,
+      min: min2,
+      max: max2,
       inRange: {
         color: color_exports.COLOR_PALETTE
       },
@@ -23853,6 +23899,14 @@ function visualMap(chart, datasets2, theme) {
   if (chart.getStyleInverseGradient()) {
     gradientColors = [...HEATMAP_GRADIENTS[gradientType]].reverse();
   }
+  let min, max;
+  if (isHeatmap && chart.getStyleCohortData()) {
+    min = 0;
+    max = 100;
+  } else {
+    min = Math.min(...arr);
+    max = Math.max(...arr);
+  }
   return {
     inRange: {
       color: gradientColors
@@ -23861,8 +23915,8 @@ function visualMap(chart, datasets2, theme) {
     top: isHeatmap ? "center" : 3,
     type: chart.getStyleColorGrouping() ?? "continuous",
     orient: isHeatmap ? "vertical" : "horizontal",
-    min: Math.min(...arr),
-    max: Math.max(...arr),
+    min,
+    max,
     calculable: true,
     dimension: ix
   };
@@ -24340,7 +24394,7 @@ var _Chart = class {
         dataset: datasets2,
         grid: grid(this, datasets2),
         legend: legend(this, theme),
-        series: series(this, datasets2, theme),
+        series: series(this, datasets2, theme, df),
         title: title(this, title2, theme, legendLabel),
         toolbox: toolbox(this),
         tooltip: tooltip(this, theme, df),
@@ -24422,6 +24476,12 @@ var _Chart = class {
   getStyleShowAllAxisLabels() {
     if (["bar", "heatmap"].includes(this.chartType)) {
       return { ...this.style }.showAllAxisLabels;
+    }
+    return false;
+  }
+  getStyleCohortData() {
+    if (["heatmap"].includes(this.chartType)) {
+      return { ...this.style }.cohortData;
     }
     return false;
   }

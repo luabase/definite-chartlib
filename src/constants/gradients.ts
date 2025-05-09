@@ -8,6 +8,7 @@ export const HEATMAP_GRADIENTS = {
   blue: ["#ffffff", "#caf0f8", "#90e0ef", "#0077b6"], // Cool (White-Blue)
   purple: ["#3498db", "#8e44ad", "#c0392b"], // Diverging (Blue-Purple-Red)
   monochrome: ["#f8f9fa", "#e9ecef", "#adb5bd", "#343a40"], // Monochrome (Light-Dark)
+  redToGreen: ["#A60126", "#FDD481", "#FAFDBA", "#69BE63", "#006737"], // Red to Green (Dark Red-Light Red-Yellow-Light Green-Dark Green)
 };
 
 // Define gradient options for the frontend UI
@@ -17,6 +18,7 @@ export const HEATMAP_GRADIENT_OPTIONS = [
   { value: "blue", label: "Cool (White-Blue)" },
   { value: "purple", label: "Diverging (Blue-Purple-Red)" },
   { value: "monochrome", label: "Monochrome (Light-Dark)" },
+  { value: "redToGreen", label: "Red to Green" },
 ] as const;
 
 // Helper function to get CSS gradient string from gradient type

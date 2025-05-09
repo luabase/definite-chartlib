@@ -100,6 +100,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
       showValueInCell: boolean;
       showAllAxisLabels: boolean;
       inverseGradient: boolean;
+      cohortData: boolean;
     }
   : T extends "kpi"
   ? { showLongNumber: boolean }

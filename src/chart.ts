@@ -534,7 +534,7 @@ export class Chart<T extends ChartType> {
         dataset: datasets,
         grid: determine.grid(this, datasets),
         legend: determine.legend(this, theme),
-        series: determine.series(this, datasets, theme),
+        series: determine.series(this, datasets, theme, df),
         title: determine.title(this, title, theme, legendLabel),
         toolbox: determine.toolbox(this),
         tooltip: determine.tooltip(this, theme, df),
@@ -630,6 +630,13 @@ export class Chart<T extends ChartType> {
     if (["bar", "heatmap"].includes(this.chartType)) {
       return (<StyleOptions<"bar" | "heatmap">>{ ...this.style })
         .showAllAxisLabels;
+    }
+    return false;
+  }
+
+  getStyleCohortData(): boolean {
+    if (["heatmap"].includes(this.chartType)) {
+      return (<StyleOptions<"heatmap">>{ ...this.style }).cohortData;
     }
     return false;
   }

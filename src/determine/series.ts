@@ -29,7 +29,8 @@ const funnelFormatter = (value: string) => {
 export function series<T extends ChartType>(
   chart: Chart<T>,
   datasets: echarts.DataSet[],
-  theme: string
+  theme: string,
+  df: DataFrame
 ): echarts.Series[] {
   // Handle sankey chart type first
   if (chart.getChartType() === "sankey") {
@@ -209,8 +210,19 @@ export function series<T extends ChartType>(
       });
       return;
     } else if (chart.getChartType() === "heatmap") {
-      delete item.color;
+      // Get the transformed data if cohort data style is enabled
+      const isCohortData = chart.getStyleCohortData();
+      const transformedData = transformCohortData(chart, dataset.source, df);
+
+      // Get dimensions for encoding
       const [dim1, dim2] = chart.getDimensions();
+
+      // Store original data for tooltip reference if using cohort data
+      if (isCohortData) {
+        (item as any).originalData = dataset.source;
+      }
+
+      item.data = transformedData;
       item.datasetIndex = 1;
       item.encode = {
         x: dataset.dimensions[dim1.index],
@@ -223,6 +235,9 @@ export function series<T extends ChartType>(
         show: chart.getStyleShowValueInCell(),
         formatter: (params: any) => {
           const value = params.value[metric.index];
+          if (isCohortData) {
+            return `${value.toFixed(0)}%`;
+          }
           return formatter(value);
         },
       };
@@ -566,4 +581,59 @@ function removeCycles(
   }
 
   return modifiedLinks;
+}
+
+export function transformCohortData<T extends ChartType>(
+  chart: Chart<T>,
+  data: any[],
+  df: DataFrame
+): any[] {
+  if (!chart.getStyleCohortData() || chart.getChartType() !== "heatmap") {
+    return data;
+  }
+
+  const dimensions = chart.getDimensions();
+  const metrics = chart.getMetrics();
+  const metricIndex = metrics[0].index;
+
+  // Create a map to store the first value of each row
+  const firstValueByRow = new Map();
+
+  // First pass: collect the first value for each row (y-axis value)
+  data.forEach((item) => {
+    const yValue = item[dimensions[1].index];
+
+    // If we haven't seen this y-value yet, store its first value
+    if (!firstValueByRow.has(yValue)) {
+      firstValueByRow.set(yValue, item[metricIndex]);
+    }
+  });
+
+  // Second pass: transform the data to show percentages
+  return data.map((item) => {
+    const yValue = item[dimensions[1].index];
+    const value = item[metricIndex];
+    const firstValue = firstValueByRow.get(yValue);
+
+    // Create a new item with the same structure but preserve any non-array properties
+    const newItem = Array.isArray(item) ? [...item] : Object.assign([], item);
+
+    // Copy over any non-index properties that might contain dimension names
+    if (typeof item === "object") {
+      Object.keys(item).forEach((key) => {
+        if (isNaN(Number(key))) {
+          newItem[key] = item[key];
+        }
+      });
+    }
+
+    // Replace the metric value with the percentage
+    if (firstValue !== null && firstValue !== 0) {
+      newItem[metricIndex] = (value / firstValue) * 100;
+    } else {
+      newItem[metricIndex] = 0;
+    }
+
+    return newItem;
+  });
 }

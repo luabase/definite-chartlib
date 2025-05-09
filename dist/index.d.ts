@@ -228,6 +228,7 @@ declare const HEATMAP_GRADIENTS: {
     blue: string[];
     purple: string[];
     monochrome: string[];
+    redToGreen: string[];
 };
 declare const HEATMAP_GRADIENT_OPTIONS: readonly [{
     readonly value: "default";
@@ -244,6 +245,9 @@ declare const HEATMAP_GRADIENT_OPTIONS: readonly [{
 }, {
     readonly value: "monochrome";
     readonly label: "Monochrome (Light-Dark)";
+}, {
+    readonly value: "redToGreen";
+    readonly label: "Red to Green";
 }];
 declare function getGradientBackground(gradientType: HeatmapGradientType | undefined): string;
 
@@ -79808,6 +79812,7 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar" ? {
     showValueInCell: boolean;
     showAllAxisLabels: boolean;
     inverseGradient: boolean;
+    cohortData: boolean;
 } : T extends "kpi" ? {
     showLongNumber: boolean;
 } : {};
@@ -79882,6 +79887,7 @@ declare class Chart<T extends ChartType> {
     isCartesian(): boolean;
     getStyleShowTitle(): boolean;
     getStyleShowAllAxisLabels(): boolean;
+    getStyleCohortData(): boolean;
     getStyleInverseGradient(): boolean;
     getDoesNeedLegendLabel(): boolean;
     getStyleShowLongNumber(): boolean;
