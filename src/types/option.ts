@@ -97,6 +97,9 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar"
   ? {
       colorGradient: HeatmapGradientType;
       colorGrouping: ColorGroupingType;
+      showValueInCell: boolean;
+      showAllAxisLabels: boolean;
+      inverseGradient: boolean;
     }
   : T extends "kpi"
   ? { showLongNumber: boolean }

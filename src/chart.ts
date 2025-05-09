@@ -238,6 +238,7 @@ export class Chart<T extends ChartType> {
           showTitle: false,
           showToolbox: false,
           colorGrouping: "continuous",
+          showValueInCell: false,
         };
       case "kpi":
         return {
@@ -536,7 +537,7 @@ export class Chart<T extends ChartType> {
         series: determine.series(this, datasets, theme),
         title: determine.title(this, title, theme, legendLabel),
         toolbox: determine.toolbox(this),
-        tooltip: determine.tooltip(this, theme),
+        tooltip: determine.tooltip(this, theme, df),
         visualMap: determine.visualMap(this, datasets, theme),
         xAxis: determine.axis(this, datasets, "x", theme),
         yAxis: determine.axis(this, datasets, "y", theme),
@@ -626,8 +627,16 @@ export class Chart<T extends ChartType> {
   }
 
   getStyleShowAllAxisLabels(): boolean {
-    if (["bar"].includes(this.chartType)) {
-      return (<StyleOptions<"bar">>{ ...this.style }).showAllAxisLabels;
+    if (["bar", "heatmap"].includes(this.chartType)) {
+      return (<StyleOptions<"bar" | "heatmap">>{ ...this.style })
+        .showAllAxisLabels;
+    }
+    return false;
+  }
+
+  getStyleInverseGradient(): boolean {
+    if (["heatmap"].includes(this.chartType)) {
+      return (<StyleOptions<"heatmap">>{ ...this.style }).inverseGradient;
     }
     return false;
   }
@@ -639,6 +648,13 @@ export class Chart<T extends ChartType> {
   getStyleShowLongNumber(): boolean {
     if (this.chartType === "kpi") {
       return (<StyleOptions<"kpi">>{ ...this.style }).showLongNumber;
+    }
+    return false;
+  }
+
+  getStyleShowValueInCell(): boolean {
+    if (this.chartType === "heatmap") {
+      return (<StyleOptions<"heatmap">>{ ...this.style }).showValueInCell;
     }
     return false;
   }

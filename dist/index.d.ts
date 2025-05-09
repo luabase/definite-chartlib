@@ -79805,6 +79805,9 @@ type ExtraStyleOptions<T extends ChartType> = T extends "bar" ? {
 } : T extends "heatmap" ? {
     colorGradient: HeatmapGradientType;
     colorGrouping: ColorGroupingType;
+    showValueInCell: boolean;
+    showAllAxisLabels: boolean;
+    inverseGradient: boolean;
 } : T extends "kpi" ? {
     showLongNumber: boolean;
 } : {};
@@ -79879,8 +79882,10 @@ declare class Chart<T extends ChartType> {
     isCartesian(): boolean;
     getStyleShowTitle(): boolean;
     getStyleShowAllAxisLabels(): boolean;
+    getStyleInverseGradient(): boolean;
     getDoesNeedLegendLabel(): boolean;
     getStyleShowLongNumber(): boolean;
+    getStyleShowValueInCell(): boolean;
     getStyleShowToolbox(): boolean;
     getStyleShowLegend(): boolean;
     getStyleOrientation(): OrientationType | undefined;

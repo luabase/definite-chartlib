@@ -219,6 +219,13 @@ export function series<T extends ChartType>(
         tooltip: [dataset.dimensions[metric.index]],
       };
       item.name = dataset.dimensions[metric.index];
+      item.label = {
+        show: chart.getStyleShowValueInCell(),
+        formatter: (params: any) => {
+          const value = params.value[metric.index];
+          return formatter(value);
+        },
+      };
     } else if (chart.getChartType() === "map") {
       item.roam = false;
       item.type = "map";
