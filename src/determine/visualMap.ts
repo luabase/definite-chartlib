@@ -48,6 +48,18 @@ export function visualMap<T extends ChartType>(
     gradientColors = [...HEATMAP_GRADIENTS[gradientType]].reverse();
   }
 
+  // Set min and max values based on whether cohort data is enabled
+  let min, max;
+  if (isHeatmap && chart.getStyleCohortData()) {
+    // For cohort data, use fixed range of 0-100 (percentage)
+    min = 0;
+    max = 100;
+  } else {
+    // For regular data, use the actual min and max values
+    min = Math.min(...arr);
+    max = Math.max(...arr);
+  }
+
   return {
     inRange: {
       color: gradientColors,
@@ -56,8 +68,8 @@ export function visualMap<T extends ChartType>(
     top: isHeatmap ? "center" : 3,
     type: chart.getStyleColorGrouping() ?? "continuous",
     orient: isHeatmap ? "vertical" : "horizontal",
-    min: Math.min(...arr),
-    max: Math.max(...arr),
+    min: min,
+    max: max,
     calculable: true,
     dimension: ix,
   } as echarts.VisualMap;

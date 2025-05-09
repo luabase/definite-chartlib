@@ -13,6 +13,7 @@ import {
   DS_TEXT_COLORS,
 } from "../constants/color";
 import { DataFrame } from "../dataframe";
+import * as formatters from "../formatters";
 
 const legendFormatter = (params: any[], chart: Chart<any>) => {
   const isPercentage = chart.getStyleValueStyle() === "percentage";
@@ -124,28 +125,29 @@ export function tooltip<T extends ChartType>(
       const dimensions = chart.getDimensions();
       const metrics = chart.getMetrics();
 
+      const isCohortData = chart.getStyleCohortData();
       // Get the metric index
       const metricIndex = metrics[0].index;
 
-      // Find the maximum value of the metric in the DataFrame
-      const metricValues = df.col(metricIndex);
-      const maxValue = Math.max(
-        ...metricValues.filter((v) => typeof v === "number")
-      );
-
       // Extract axis names from the DataFrame columns based on dimension indices
-      const xAxisName = params.dimensionNames[dimensions[0].index] || "X-Axis";
-      const yAxisName = params.dimensionNames[dimensions[1].index] || "Y-Axis";
+      const xAxisName = df.columns.get(dimensions[0].index) || "X-Axis";
+      const yAxisName = df.columns.get(dimensions[1].index) || "Y-Axis";
 
       // Get the metric name
-      const metricName = params.dimensionNames[metrics[0].index] || "Value";
+      const metricName = df.columns.get(metrics[0].index) || "Value";
 
       // Get axis values from params.data using dimension indices
       const xAxisValue = params.data[dimensions[0].index];
       const yAxisValue = params.data[dimensions[1].index];
 
       // Get the value from the metric
-      const value = params.data[metricIndex];
+      const value = df.data[params.dataIndex][metricIndex];
+
+      // Find the maximum value of the metric in the DataFrame
+      const metricValues = df.col(metricIndex);
+      const maxValue = Math.max(
+        ...metricValues.filter((v) => typeof v === "number")
+      );
 
       // Calculate percentage of max value
       const percentOfMax = maxValue > 0 ? (value / maxValue) * 100 : 0;
@@ -154,10 +156,9 @@ export function tooltip<T extends ChartType>(
       const formattedValue = formatter(value);
 
       // Calculate percentage if available from params
-      const percentageDisplay =
-        params.percent !== undefined
-          ? ` (${percentFormatter(params.percent / 100)})`
-          : ` (${percentFormatter(percentOfMax / 100)})`;
+      const percentageDisplay = isCohortData
+        ? ` (${params.data[metricIndex].toFixed(2)}%)`
+        : ` (${percentFormatter(percentOfMax / 100)})`;
 
       // Create a tooltip with proper axis labels and metric name
       return (
