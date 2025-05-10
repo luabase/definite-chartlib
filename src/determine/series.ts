@@ -217,6 +217,52 @@ export function series<T extends ChartType>(
       // Get dimensions for encoding
       const [dim1, dim2] = chart.getDimensions();
 
+      // Add debugging info
+      console.warn("==== HEATMAP DIMENSION DEBUG ====");
+      console.warn("Chart Dimensions:");
+      console.warn("dim1 (x-axis):", { index: dim1.index, dataType: dim1.dataType });
+      console.warn("dim2 (y-axis):", { index: dim2.index, dataType: dim2.dataType });
+      console.warn("metric:", { index: metric.index });
+      console.warn("Dataset Dimensions:", dataset.dimensions);
+      console.warn("Mapping:");
+      console.warn("x mapped to:", dataset.dimensions[dim1.index]);
+      console.warn("y mapped to:", dataset.dimensions[dim2.index]);
+      console.warn("value mapped to:", dataset.dimensions[metric.index]);
+      console.warn("Sample data:", dataset.source.slice(0, 2));
+      
+      // Add more detailed debugging
+      console.warn("==== HEATMAP ADVANCED DEBUG ====");
+      console.warn("Dataset dimensions array:", dataset.dimensions);
+      console.warn("Dataset indices:", { 
+        x_index: dataset.dimensions.indexOf(dataset.dimensions[dim1.index]),
+        y_index: dataset.dimensions.indexOf(dataset.dimensions[dim2.index]),
+        value_index: dataset.dimensions.indexOf(dataset.dimensions[metric.index])
+      });
+      console.warn("Full encode object:", {
+        x: dataset.dimensions[dim1.index],
+        y: dataset.dimensions[dim2.index],
+        value: dataset.dimensions[metric.index],
+        tooltip: [dataset.dimensions[metric.index]]
+      });
+      
+      // Check if series data structure matches encode indices
+      const checkData = transformedData.slice(0, 1)[0];
+      if (checkData) {
+        console.warn("First data point:", checkData);
+        console.warn("Dims by position:", { 
+          x_pos: checkData[dataset.dimensions.indexOf(dataset.dimensions[dim1.index])], 
+          y_pos: checkData[dataset.dimensions.indexOf(dataset.dimensions[dim2.index])], 
+          value_pos: checkData[dataset.dimensions.indexOf(dataset.dimensions[metric.index])] 
+        });
+        console.warn("Dims by direct index:", { 
+          x_direct: checkData[dim1.index], 
+          y_direct: checkData[dim2.index], 
+          value_direct: checkData[metric.index] 
+        });
+      }
+      console.warn("==== END HEATMAP ADVANCED DEBUG ====");
+      console.warn("==== END HEATMAP DIMENSION DEBUG ====");
+
       // Store original data for tooltip reference if using cohort data
       if (isCohortData) {
         (item as any).originalData = dataset.source;
@@ -230,6 +276,25 @@ export function series<T extends ChartType>(
         value: dataset.dimensions[metric.index],
         tooltip: [dataset.dimensions[metric.index]],
       };
+      
+      // Test an alternative direct encoding approach - this might fix the issue
+      console.warn("==== TRYING ALTERNATIVE ENCODING ====");
+      // Instead of looking up by dimension index in dataset.dimensions, use the position in the array
+      const xPos = dataset.dimensions.indexOf(dataset.dimensions[dim1.index]);
+      const yPos = dataset.dimensions.indexOf(dataset.dimensions[dim2.index]);
+      const valuePos = dataset.dimensions.indexOf(dataset.dimensions[metric.index]);
+      
+      // Use positional encoding instead (the positions in the dataset.dimensions array)
+      console.warn("Using positional encoding instead:", { xPos, yPos, valuePos });
+      item.encode = {
+        x: xPos,
+        y: yPos,
+        value: valuePos,
+        tooltip: [valuePos]
+      };
+      console.warn("Final encode object:", item.encode);
+      console.warn("==== END ALTERNATIVE ENCODING ====");
+
       item.name = dataset.dimensions[metric.index];
       item.label = {
         show: chart.getStyleShowValueInCell(),
