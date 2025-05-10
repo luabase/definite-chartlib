@@ -22892,11 +22892,22 @@ function axis(chart, datasets2, kind, theme) {
   const axes = [];
   const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (isDimensionalAxis(chart, kind)) {
-    const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
-    const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
-    const firstValue = df.col(chart.getDimensions()[ix].index)[0];
+    const dimPosition = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
+    const dimIndex = chart.getDimensions()[dimPosition].index;
+    const name = df.columns.get(dimIndex) ?? "";
+    const firstValue = df.col(dimIndex)[0];
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
     const showAllAxisLabels = chart.getStyleShowAllAxisLabels();
+    if (chart.getChartType() === "heatmap") {
+      console.warn(`==== HEATMAP ${kind.toUpperCase()}-AXIS DEBUG ====`);
+      console.warn("Dimensions:", chart.getDimensions());
+      console.warn(`Using dimension index for ${kind}-axis:`, dimIndex);
+      console.warn(`Column name for ${kind}-axis:`, name);
+      console.warn(`First value for ${kind}-axis:`, firstValue);
+      console.warn(`Column index in data:`, dimIndex);
+      console.warn("Column names in DataFrame:", Array.from(df.columns.entries()));
+      console.warn(`==== END HEATMAP ${kind.toUpperCase()}-AXIS DEBUG ====`);
+    }
     const totalPoints = df.shape.height;
     const chartWidth = 500;
     const labelWidth = 20;
@@ -22904,7 +22915,7 @@ function axis(chart, datasets2, kind, theme) {
     const interval = totalPoints <= MAX_INTERVAL ? 0 : Math.ceil(totalPoints / maxLabels);
     const totals = datasets2.reduce((acc, dataset) => {
       dataset.source.forEach((row, idx) => {
-        acc[idx] = (acc[idx] || 0) + (row[ix] ?? 0);
+        acc[idx] = (acc[idx] || 0) + (row[dimIndex] ?? 0);
       });
       return acc;
     }, []);
@@ -23189,6 +23200,19 @@ function datasets(chart, df) {
       const name = !!splitBy ? df2.col(splitBy.index)[0] : "";
       const type = chart.getChartType();
       dataset.id = `${metric.index}::${type}::${datasets2.length}::${name}::${metric.id}`;
+      if (chart.getChartType() === "heatmap") {
+        console.warn("==== HEATMAP DATASET DEBUG ====");
+        console.warn("Dimensions in chart:", chart.getDimensions().map((d) => ({ index: d.index, dataType: d.dataType })));
+        console.warn("Metrics in chart:", chart.getMetrics().map((m) => ({ index: m.index, aggregation: m.aggregation })));
+        console.warn("Dataset columns:", dataset.dimensions);
+        console.warn("Dataset id:", dataset.id);
+        console.warn("First row sample:", dataset.source[0]);
+        console.warn("Original DataFrame columns:", Array.from(df2.columns.entries()));
+        console.warn("DataFrame shape:", df2.shape);
+        console.warn("Original source rows (first 2):", df2.data.slice(0, 2));
+        console.warn("Dataset source rows (first 2):", dataset.source.slice(0, 2));
+        console.warn("==== END HEATMAP DATASET DEBUG ====");
+      }
       datasets2.push(dataset);
     } else {
       if (!!splitBy) {
@@ -23492,6 +23516,46 @@ function series(chart, datasets2, theme, df) {
       const isCohortData = chart.getStyleCohortData();
       const transformedData = transformCohortData(chart, dataset.source, df);
       const [dim1, dim2] = chart.getDimensions();
+      console.warn("==== HEATMAP DIMENSION DEBUG ====");
+      console.warn("Chart Dimensions:");
+      console.warn("dim1 (x-axis):", { index: dim1.index, dataType: dim1.dataType });
+      console.warn("dim2 (y-axis):", { index: dim2.index, dataType: dim2.dataType });
+      console.warn("metric:", { index: metric.index });
+      console.warn("Dataset Dimensions:", dataset.dimensions);
+      console.warn("Mapping:");
+      console.warn("x mapped to:", dataset.dimensions[dim1.index]);
+      console.warn("y mapped to:", dataset.dimensions[dim2.index]);
+      console.warn("value mapped to:", dataset.dimensions[metric.index]);
+      console.warn("Sample data:", dataset.source.slice(0, 2));
+      console.warn("==== HEATMAP ADVANCED DEBUG ====");
+      console.warn("Dataset dimensions array:", dataset.dimensions);
+      console.warn("Dataset indices:", {
+        x_index: dataset.dimensions.indexOf(dataset.dimensions[dim1.index]),
+        y_index: dataset.dimensions.indexOf(dataset.dimensions[dim2.index]),
+        value_index: dataset.dimensions.indexOf(dataset.dimensions[metric.index])
+      });
+      console.warn("Full encode object:", {
+        x: dataset.dimensions[dim1.index],
+        y: dataset.dimensions[dim2.index],
+        value: dataset.dimensions[metric.index],
+        tooltip: [dataset.dimensions[metric.index]]
+      });
+      const checkData = transformedData.slice(0, 1)[0];
+      if (checkData) {
+        console.warn("First data point:", checkData);
+        console.warn("Dims by position:", {
+          x_pos: checkData[dataset.dimensions.indexOf(dataset.dimensions[dim1.index])],
+          y_pos: checkData[dataset.dimensions.indexOf(dataset.dimensions[dim2.index])],
+          value_pos: checkData[dataset.dimensions.indexOf(dataset.dimensions[metric.index])]
+        });
+        console.warn("Dims by direct index:", {
+          x_direct: checkData[dim1.index],
+          y_direct: checkData[dim2.index],
+          value_direct: checkData[metric.index]
+        });
+      }
+      console.warn("==== END HEATMAP ADVANCED DEBUG ====");
+      console.warn("==== END HEATMAP DIMENSION DEBUG ====");
       if (isCohortData) {
         item.originalData = dataset.source;
       }
@@ -23503,6 +23567,19 @@ function series(chart, datasets2, theme, df) {
         value: dataset.dimensions[metric.index],
         tooltip: [dataset.dimensions[metric.index]]
       };
+      console.warn("==== TRYING ALTERNATIVE ENCODING ====");
+      const xPos = dataset.dimensions.indexOf(dataset.dimensions[dim1.index]);
+      const yPos = dataset.dimensions.indexOf(dataset.dimensions[dim2.index]);
+      const valuePos = dataset.dimensions.indexOf(dataset.dimensions[metric.index]);
+      console.warn("Using positional encoding instead:", { xPos, yPos, valuePos });
+      item.encode = {
+        x: xPos,
+        y: yPos,
+        value: valuePos,
+        tooltip: [valuePos]
+      };
+      console.warn("Final encode object:", item.encode);
+      console.warn("==== END ALTERNATIVE ENCODING ====");
       item.name = dataset.dimensions[metric.index];
       item.label = {
         show: chart.getStyleShowValueInCell(),
@@ -24088,6 +24165,9 @@ var _Chart = class {
         if (!opts.zAxis)
           throw new Error("zAxis not found");
         const chart = new _Chart("heatmap");
+        console.warn("***** HEATMAP DEBUG *****");
+        console.warn("Heatmap opts:", JSON.stringify(opts, null, 2));
+        console.warn("***** END HEATMAP DEBUG *****");
         chart.addDimension({
           index: opts.xAxis[0].columns[0].index,
           dataType: "category"
@@ -24427,7 +24507,13 @@ var _Chart = class {
     const datasets2 = datasets(this, df);
     const legendLabel = datasets2[0]?.dimensions?.[this.getDimensions()[1]?.index];
     try {
-      return {
+      if (this.chartType === "heatmap") {
+        console.warn("==== HEATMAP FINAL CONFIG DEBUG ====");
+        console.warn("Chart dimensions:", this.getDimensions());
+        console.warn("Chart metrics:", this.getMetrics());
+        console.warn("Datasets:", datasets2);
+      }
+      const config = {
         animation: true,
         backgroundColor: "rgba(0,0,0,0)",
         calendar: calendar(this, df, theme),
@@ -24442,6 +24528,13 @@ var _Chart = class {
         xAxis: axis(this, datasets2, "x", theme),
         yAxis: axis(this, datasets2, "y", theme)
       };
+      if (this.chartType === "heatmap") {
+        console.warn("Series config:", config.series);
+        console.warn("xAxis config:", config.xAxis);
+        console.warn("yAxis config:", config.yAxis);
+        console.warn("==== END HEATMAP FINAL CONFIG DEBUG ====");
+      }
+      return config;
     } catch (e) {
       console.error(e);
       throw new CompileChartError("Failed to compile chart.");
