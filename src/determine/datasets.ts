@@ -129,6 +129,25 @@ export function datasets<T extends ChartType>(
       const name = !!splitBy ? df.col(splitBy.index)[0] : "";
       const type = chart.getChartType();
       dataset.id = `${metric.index}::${type}::${datasets.length}::${name}::${metric.id}`;
+      
+      // Add heatmap debugging
+      if (chart.getChartType() === "heatmap") {
+        console.warn("==== HEATMAP DATASET DEBUG ====");
+        console.warn("Dimensions in chart:", chart.getDimensions().map(d => ({ index: d.index, dataType: d.dataType })));
+        console.warn("Metrics in chart:", chart.getMetrics().map(m => ({ index: m.index, aggregation: m.aggregation })));
+        console.warn("Dataset columns:", dataset.dimensions);
+        console.warn("Dataset id:", dataset.id);
+        console.warn("First row sample:", dataset.source[0]);
+        
+        // Add raw data debugging
+        console.warn("Original DataFrame columns:", Array.from(df.columns.entries()));
+        console.warn("DataFrame shape:", df.shape);
+        console.warn("Original source rows (first 2):", df.data.slice(0, 2));
+        console.warn("Dataset source rows (first 2):", dataset.source.slice(0, 2));
+        
+        console.warn("==== END HEATMAP DATASET DEBUG ====");
+      }
+      
       datasets.push(dataset);
     } else {
       if (!!splitBy) {

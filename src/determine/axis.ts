@@ -35,11 +35,28 @@ export function axis<T extends ChartType>(
   const axes: echarts.Axis[] = [];
   const isPercentageStyle = chart.getStyleValueStyle() === "percentage";
   if (isDimensionalAxis(chart, kind)) {
-    const ix = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
-    const name = df.columns.get(chart.getDimensions()[ix].index) ?? "";
-    const firstValue = df.col(chart.getDimensions()[ix].index)[0];
+    // Get position in dimensions array (0 or 1)
+    const dimPosition = chart.getChartType() === "heatmap" && kind === "y" ? 1 : 0;
+    
+    // Get the actual data index from the dimension object
+    const dimIndex = chart.getDimensions()[dimPosition].index;
+    
+    const name = df.columns.get(dimIndex) ?? "";
+    const firstValue = df.col(dimIndex)[0];
     const isDate = typeof firstValue === "string" && isDateValue(firstValue);
     const showAllAxisLabels = chart.getStyleShowAllAxisLabels();
+
+    // Add debugging for heatmap axis
+    if (chart.getChartType() === "heatmap") {
+      console.warn(`==== HEATMAP ${kind.toUpperCase()}-AXIS DEBUG ====`);
+      console.warn("Dimensions:", chart.getDimensions());
+      console.warn(`Using dimension index for ${kind}-axis:`, dimIndex);
+      console.warn(`Column name for ${kind}-axis:`, name);
+      console.warn(`First value for ${kind}-axis:`, firstValue);
+      console.warn(`Column index in data:`, dimIndex);
+      console.warn("Column names in DataFrame:", Array.from(df.columns.entries()));
+      console.warn(`==== END HEATMAP ${kind.toUpperCase()}-AXIS DEBUG ====`);
+    }
 
     const totalPoints = df.shape.height;
 
@@ -51,7 +68,7 @@ export function axis<T extends ChartType>(
 
     const totals = datasets.reduce((acc, dataset) => {
       dataset.source.forEach((row: any, idx: number) => {
-        acc[idx] = (acc[idx] || 0) + (row[ix] ?? 0);
+        acc[idx] = (acc[idx] || 0) + (row[dimIndex] ?? 0);
       });
       return acc;
     }, [] as number[]);

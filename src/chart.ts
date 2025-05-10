@@ -153,6 +153,9 @@ export class Chart<T extends ChartType> {
       case "heatmap": {
         if (!opts.zAxis) throw new Error("zAxis not found");
         const chart = new Chart("heatmap");
+        console.warn("***** HEATMAP DEBUG *****");
+        console.warn("Heatmap opts:", JSON.stringify(opts, null, 2));
+        console.warn("***** END HEATMAP DEBUG *****");
         chart.addDimension({
           index: opts.xAxis[0].columns[0].index,
           dataType: "category",
@@ -527,7 +530,15 @@ export class Chart<T extends ChartType> {
       datasets[0]?.dimensions?.[this.getDimensions()[1]?.index];
 
     try {
-      return {
+      // For heatmap charts, add debugging of the final configuration
+      if (this.chartType === "heatmap") {
+        console.warn("==== HEATMAP FINAL CONFIG DEBUG ====");
+        console.warn("Chart dimensions:", this.getDimensions());
+        console.warn("Chart metrics:", this.getMetrics());
+        console.warn("Datasets:", datasets);
+      }
+      
+      const config = {
         animation: true,
         backgroundColor: "rgba(0,0,0,0)",
         calendar: determine.calendar(this, df, theme),
@@ -542,6 +553,16 @@ export class Chart<T extends ChartType> {
         xAxis: determine.axis(this, datasets, "x", theme),
         yAxis: determine.axis(this, datasets, "y", theme),
       };
+      
+      // Log the final configuration for heatmap charts
+      if (this.chartType === "heatmap") {
+        console.warn("Series config:", config.series);
+        console.warn("xAxis config:", config.xAxis);
+        console.warn("yAxis config:", config.yAxis);
+        console.warn("==== END HEATMAP FINAL CONFIG DEBUG ====");
+      }
+      
+      return config;
     } catch (e) {
       console.error(e);
       throw new CompileChartError("Failed to compile chart.");
